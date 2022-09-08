@@ -1,11 +1,7 @@
 #pragma once
 
-#ifdef GE_PLATFORM_WINDOWS
-	#ifdef GE_BUILD_DLL
-		#define ENGINE_API __declspec(dllexport)
-	#else
-		#define ENGINE_API __declspec(dllimport)
-	#endif
+#ifdef GE_BUILD_DLL
+	#define ENGINE_API __declspec(dllexport)
 #else
-	#error Only WIndows supported
+	#define ENGINE_API __declspec(dllimport)
 #endif
