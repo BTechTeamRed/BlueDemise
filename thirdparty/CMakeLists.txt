@@ -11,5 +11,5 @@ target_include_directories(spdlog
                             ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include
 				    ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include
 				    ${CMAKE_CURRENT_SOURCE_DIR}/glad/include
-				    ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include
+				    ${CMAKE_CURRENT_SOURCE_DIR}/glm/glm
                            )
