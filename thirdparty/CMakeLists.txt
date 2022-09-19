@@ -2,6 +2,8 @@
 add_library(spdlog INTERFACE)
 add_library(glad INTERFACE)
 add_library(glm INTERFACE)
+add_library(stb INTERFACE)
+add_library(json INTERFACE)
 
 # state that anybody linking to us needs to include the current source dir
 # to find third party libs, while we don't.
@@ -18,4 +20,14 @@ target_include_directories(glad
 target_include_directories(glm
                            INTERFACE
                             ${CMAKE_CURRENT_SOURCE_DIR}/glm/glm
+                           )
+
+target_include_directories(stb
+                           INTERFACE
+                            ${CMAKE_CURRENT_SOURCE_DIR}/stb
+                           )
+
+target_include_directories(json
+                           INTERFACE
+                            ${CMAKE_CURRENT_SOURCE_DIR}/json
                            )
