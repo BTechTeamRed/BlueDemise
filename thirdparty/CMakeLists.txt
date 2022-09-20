@@ -3,6 +3,10 @@ add_library(spdlog INTERFACE)
 add_library(glad INTERFACE)
 add_library(glm INTERFACE)
 add_library(entt INTERFACE)
+find_library(irrKlang 
+	NAMES irrKlang ikpMP3.dll ikpFlac.dll irrKlang.dll
+	PATHS "${CMAKE_CURRENT_SOURCE_DIR}/irrKlang"
+)
 
 # state that anybody linking to us needs to include the current source dir
 # to find third party libs, while we don't.
