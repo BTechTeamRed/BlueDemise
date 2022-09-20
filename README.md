@@ -24,6 +24,10 @@ Style guidelines are meant to keep the code readable and cosistent for all membe
 
 Name private data with a `m_` prefix to distinguish it from public data. `m_` stands for "member" data.
 
+ ## Don't Distinguish parameter variables
+
+Parameter variables shouldn't be prefixed (such as `t_`) should follow other naming conventions in this guideline.
+
  ## Distinguish Entities and Components
  Variables, types, and memebers of these three types should be suffixed with the corresponding types.
 ```cpp
@@ -57,8 +61,8 @@ http://stackoverflow.com/questions/228783/what-are-the-rules-about-using-an-unde
 class MyClass
 {
 public:
-  MyClass(int t_data)
-    : m_data(t_data)
+  MyClass(int data)
+    : m_data(data)
   {
   }
 
@@ -177,9 +181,9 @@ For POD types, the performance of an initializer list is the same as manual init
 class MyClass
 {
 public:
-  MyClass(int t_value)
+  MyClass(int value)
   {
-    m_value = t_value;
+    m_value = value;
   }
 
 private:
@@ -192,9 +196,9 @@ private:
 class MyClass
 {
 public:
-  MyClass(MyOtherClass t_myOtherClass)
+  MyClass(MyOtherClass myOtherClass)
   {
-    m_myOtherClass = t_myOtherClass;
+    m_myOtherClass = myOtherClass;
   }
 
 private:
@@ -206,8 +210,8 @@ private:
 class MyClass
 {
 public:
-  MyClass(int t_value)
-    : m_value(t_value)
+  MyClass(int value)
+    : m_value(value)
   {
   }
 
@@ -221,8 +225,8 @@ private:
 class MyClass
 {
 public:
-  MyClass(MyOtherClass t_myOtherClass)
-    : m_myOtherClass(t_myOtherClass)
+  MyClass(MyOtherClass myOtherClass)
+    : m_myOtherClass_myOtherClass)
   {
   }
 
@@ -268,8 +272,8 @@ If the member variable is not expected to change after the initialization, then 
 class MyClass
 {
 public:
-  MyClass(int t_value)
-    : m_value{t_value}
+  MyClass(int value)
+    : m_value{value}
   {
   }
 
