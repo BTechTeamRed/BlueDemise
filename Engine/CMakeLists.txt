@@ -1,4 +1,5 @@
-add_library(Engine SHARED src/Engine/Application.cpp src/Engine/Log.cpp )
+file (GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cpp" "*.h")
+add_library(Engine SHARED ${sources} )
 
 #preprocessor definitions
 add_compile_definitions(GE_BUILD_DLL)
