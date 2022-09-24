@@ -2,11 +2,9 @@
 
 namespace Engine
 {
-	
-	/*
-	ImportResources::returnJson(string Name) 
+	ImportResources::returnJson(std::string Name) 
 	{
-		json searchResult = m_jsons.find("Name");
+		nlohmann::json searchResult = m_jsons.find("Name");
 		
 		if (searchResult != m_jsons.end())
 		{
@@ -21,5 +19,5 @@ namespace Engine
 	
 
 		//std::cout << m_jsons[Name] << '\n';
-	}*/
+	}
 }

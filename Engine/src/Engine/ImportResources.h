@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include "json.h"
+#include <json.h>
 #include <iostream>
 #include <string>
 #include <map>
@@ -16,14 +16,14 @@ namespace Engine
 			ImportResources()
 			{
 				std::cout << "ImportResources created";
-
 			}
 			~ImportResources()
 			{
 
 
 			}
-			//json returnJson(string Name);
+			
+			nlohmann::json returnJson(std::string Name);
 		
 			//This would be used like the return json function, where the name of the image is provided and will be returned. 
 			//The return type needs to be deteremined.
@@ -36,6 +36,6 @@ namespace Engine
 			//std::map<std::string, int> m_images{ {"Enemy", 10}, {"Player", 15}, {"Tile", 20}, };
 
 			//For Json files, utilizing the json library.
-			//std::map<std::string, json> m_jsons{ {"SaveData", nullptr}, {"Settings", nullptr},};
+			std::map<std::string, nlohmann::json> m_jsons{ {"SaveData", nullptr}, {"Settings", nullptr}, };
 	};
 }
