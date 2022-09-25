@@ -2,11 +2,17 @@
 
 namespace Engine
 {
-	ImportResources::returnJson(std::string Name) 
+	/*
+	nlohmann::json ImportResources::returnJson(std::string Name)
 	{
-		nlohmann::json searchResult = m_jsons.find("Name");
+
+		std::cout << "Starting to search json";
+				
+		nlohmann::json searchResult = m_jsons[Name];
+			
+		std::cout << "Search complete, comparing...";
 		
-		if (searchResult != m_jsons.end())
+		if (searchResult != NULL)
 		{
 			std::cout << "Json of " << Name << " found.";
 			return searchResult;
@@ -16,8 +22,7 @@ namespace Engine
 			std::cout << "Json of " << Name << " not found.";
 			return nullptr;
 		}
-	
 
 		//std::cout << m_jsons[Name] << '\n';
-	}
+	}*/
 }

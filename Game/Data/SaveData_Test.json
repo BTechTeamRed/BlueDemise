@@ -1,0 +1,10 @@
+{
+	"Book": {
+		"Width":  450,
+		"Height": 30,
+		"Title":  "Hello World",
+		"isBiography": false,
+		"NumOfCopies": 4,
+		"LibraryIDs": [2319, 1406, 3854, 987]
+	}
+}
