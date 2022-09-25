@@ -2,7 +2,10 @@
 
 #include <string>
 
-struct TagComponent
+namespace Engine
 {
-    std::string tag;
-};
+	struct TagComponent
+	{
+		std::string tag;
+	};
+}
