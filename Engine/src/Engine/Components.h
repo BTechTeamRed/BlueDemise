@@ -11,34 +11,41 @@ struct CameraComponent {
 	float nearZ;
 };
 
-struct TransformComponent {
+struct TransformComponent 
+{
 	glm::vec3 position;
-	glm::vec3 position;
+	glm::vec3 scale;
 	glm::vec3 rotation;
 };
 
-struct ColorComponent {
+struct ColorComponent 
+{
 	glm::vec4 color;
 };
 
 
-//Not component, just container for vertex data
-struct VertexAttributes {
-	const char* name;
-	bool enabled;
-	GLuint indx;
+//Not component, just container for vertex attribute data format
+struct VertexAttribute 
+{
+	VertexAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei pointer) 
+		: index(index), size(size), type(type), normalized(normalized), pointer(pointer)
+	{}
+
+	GLuint index;
 	GLint size;
 	GLenum type;
 	GLboolean normalized;
-	GLsizei stride;
-	GLuint vbo;
+	GLsizei pointer;
 };
 
-struct VerticesComponent {
-	std::vector<VertexAttributes> vertices;
+//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
+struct VerticesComponent 
+{
+	std::vector<VertexAttribute> vertexAttributes;
 	GLuint vaoID;
 	GLuint iboID;
 	GLuint programID;
+	GLsizei stride;
 	unsigned long numIndices;
 };
 
