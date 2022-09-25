@@ -1,19 +1,25 @@
 #pragma once
 
-#include "../../../thirdparty/entt/entt.h"
+#include "entt.h"
 #include "Components.h"
 
-class Entity;
+namespace Engine
+{
+    class Entity;
 
-class Scene {
+    class Scene
+    {
+    private:
+        // Registry is a container to hold entities
+        entt::registry m_registry;
+    public:
+        Scene() = default;
+        ~Scene() = default;
 
-private:
-    // Registry is a container to hold entities
-    entt::registry m_registry;
-public:
-    Scene() = default;
-    ~Scene() = default;
-    Entity createEntity(std::string tag);
+        // Function to create an entity and add it to the scene
+        // Takes in a tag as a string for input
+        Entity createEntity(std::string tag);
 
-    friend class Entity;
-};
+        friend class Entity;
+    };
+}
