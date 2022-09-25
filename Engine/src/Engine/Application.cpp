@@ -5,6 +5,6 @@ namespace Engine
 {
 	void Application::Run()
 	{
-		RenderLoop();
+		renderLoop();
 	}
 }
