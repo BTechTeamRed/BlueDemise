@@ -18,7 +18,6 @@ namespace engine_concurrent
 
 	private:
 		int count; // 
-
 	};
 
 	// Wrapper class for the actual threads
