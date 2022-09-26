@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include <json.h>
+#include "json.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -43,8 +43,8 @@ namespace Engine
 
 			}
 			
-			nlohmann::json returnJson(std::string Name)
-			{
+			nlohmann::json returnJson(std::string Name);
+			/*{
 
 				std::cout << "Starting to search json";
 				
@@ -64,7 +64,7 @@ namespace Engine
 				}
 
 				//std::cout << m_jsons[Name] << '\n';
-			}
+			}*/
 		
 			//This would be used like the return json function, where the name of the image is provided and will be returned. 
 			//The return type needs to be deteremined.

@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	/*
+	
 	nlohmann::json ImportResources::returnJson(std::string Name)
 	{
 
@@ -12,7 +12,7 @@ namespace Engine
 			
 		std::cout << "Search complete, comparing...";
 		
-		if (searchResult != NULL)
+		if (searchResult != nullptr)
 		{
 			std::cout << "Json of " << Name << " found.";
 			return searchResult;
@@ -24,5 +24,5 @@ namespace Engine
 		}
 
 		//std::cout << m_jsons[Name] << '\n';
-	}*/
+	}
 }
