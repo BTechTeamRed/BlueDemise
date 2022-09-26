@@ -13,6 +13,10 @@ struct CameraComponent {
 
 struct TransformComponent 
 {
+	TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) : position(position), scale(scale), rotation(rotation) 
+	{
+
+	}
 	glm::vec3 position;
 	glm::vec3 scale;
 	glm::vec3 rotation;
@@ -20,6 +24,10 @@ struct TransformComponent
 
 struct ColorComponent 
 {
+	ColorComponent(glm::vec4 color) : color(color) 
+	{
+
+	}
 	glm::vec4 color;
 };
 
