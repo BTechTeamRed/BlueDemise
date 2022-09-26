@@ -1,9 +1,10 @@
 #include "Application.h"
+#include "RenderingSystem.h"
 
 namespace Engine
 {
 	void Application::Run()
 	{
-		while (true);
+		renderLoop();
 	}
 }
