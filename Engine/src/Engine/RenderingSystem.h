@@ -1,7 +1,6 @@
 #pragma once
-/*
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "SourceGatherer.h"
+#include "ShaderGenerator.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <memory>
@@ -73,11 +72,6 @@ VerticesComponent createTriangle() {
 	return vc;
 }
 
-*/
-
-#include "SourceGatherer.h"
-#include "ShaderGenerator.h"
-
 //Temporary function to hold rendering loop, window setup and teardown should be separate from render loop in the future
 void renderLoop() {
 	glfwInit();
@@ -108,19 +102,23 @@ void renderLoop() {
 		"..\\Engine\\src\\Engine\\Shaders\\Fill.vs",
 		"..\\Engine\\src\\Engine\\Shaders\\Fill.fs"
 		}, 2);
+
+	/* -- Read source from cmd
 	std::cout << "source(vs):" << std::endl << sg.getSource()
 		<< "source(fs):" << std::endl << sg.getSource(1) << std::endl;
-	input::ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
-	std::cout << "programID: " << shaderGenerator.getProgramId() << std::endl;
+		*/
 
-	/*
+	input::ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
+	/* --Test program ID
+	std::cout << "programID: " << shaderGenerator.getProgramId() << std::endl;
+	*/
+
 	glfwSwapInterval(1);
 	glClearColor(0, 0, 0, 0); //set clear color to white
 	glEnable(GL_DEPTH_TEST);
 	//enable transparency
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-	*/
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	while (!glfwWindowShouldClose(window))
 	{
