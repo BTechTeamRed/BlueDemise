@@ -16,7 +16,7 @@ namespace Engine
 		Entity() = default;
 		Entity(entt::entity entityHandle, Scene* scene);
 		Entity(const Entity& other) = default;
-		inline entt::entity get_handle() { return m_entityHandle; }
+		inline entt::entity getHandle() { return m_entityHandle; }
 
 		//Functions to help with managing entities' components
 		template<typename T, typename... Args>
