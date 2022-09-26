@@ -18,7 +18,7 @@ target_include_directories(glad
 
 target_include_directories(glm
                            INTERFACE
-                            ${CMAKE_CURRENT_SOURCE_DIR}/glm/glm
+                            ${CMAKE_CURRENT_SOURCE_DIR}/glm
                            )
 
 target_include_directories(entt
