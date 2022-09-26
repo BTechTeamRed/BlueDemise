@@ -1,20 +1,18 @@
 #pragma once
 #include "SourceGatherer.h"
 #include "ShaderGenerator.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 #include <memory>
 #include <entt.h>
 #include "Components.h"
 
-namespace Engine
-{
-	void renderSystem(entt::registry reg)
-	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glm::mat4 mvp;
-		glm::mat4 mvm;
-		glm::mat4 pm;
+void renderSystem(const entt::registry & reg, int programId) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glm::mat4 mvp;
+	glm::mat4 mvm;
+	glm::mat4 pm;
 
 		auto view = reg.view<const TransformComponent, const VerticesComponent, const ColorComponent>();
 		auto cameraView = reg.view<const TransformComponent, const CameraComponent>();
@@ -33,9 +31,11 @@ namespace Engine
 
 			mvp = pm * mvm;
 
-			//glUseProgram(programID)
-			//glUniform4fv(colorUniformID, 1, (const float *)glm::value_ptr(color.color)); //Consider changing the way we cast here, probably not best practices
-			//glUniformMatrix4fv(projMatID, 1, (const float *)glm::value_ptr(pm))
+		glUseProgram(programId);
+		GLuint colorUniformID = glGetUniformLocation(programId, "col");
+		GLuint mvpID = glGetUniformLocation(programId, "mvp");
+		glUniform4fv(colorUniformID, 1, (const float *)glm::value_ptr(color.color)); //Consider changing the way we cast here, probably not best practices
+		glUniformMatrix4fv(mvpID, 1,GL_FALSE, (const float*)glm::value_ptr(mvp));
 
 			glBindVertexArray(vertices.vaoID);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
@@ -124,12 +124,30 @@ namespace Engine
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		while (!glfwWindowShouldClose(window))
-		{
-			//renderSystem(registry);
-			glfwSwapBuffers(window);
-			glfwPollEvents();
-		}
-		glfwTerminate();
+	glfwSwapInterval(1);
+	glClearColor(0, 0, 0, 0); //set clear color to white
+	glEnable(GL_DEPTH_TEST);
+	//enable transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	entt::registry r;
+	auto vc = createTriangle();
+
+	TransformComponent t;
+	t.position = glm::vec3(0.0f);
+	t.scale = glm::vec3(1.0f);
+	t.rotation = glm::vec3(0.0f);
+
+	auto lonelyEntity = r.create();
+	r.emplace<TransformComponent>(lonelyEntity, glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	r.emplace<ColorComponent>(lonelyEntity, glm::vec4(255.0f, 0.0f, 0.0f, 1.0f));
+	r.emplace<TransformComponent>(lonelyEntity, vc);
+
+	while (!glfwWindowShouldClose(window))
+	{
+		renderSystem(r, shaderGenerator.getProgramId());
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 }
