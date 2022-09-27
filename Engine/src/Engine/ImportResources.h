@@ -44,27 +44,6 @@ namespace Engine
 			}
 			
 			nlohmann::json returnJson(std::string Name);
-			/*{
-
-				std::cout << "Starting to search json";
-				
-				nlohmann::json searchResult = m_jsons[Name];
-
-				//std::cout << searchResult;
-				
-				if (searchResult != nullptr)
-				{
-					std::cout << std::endl << "Json of " << Name << " found.";
-					return searchResult;
-				}
-				else
-				{
-					std::cout << std::endl << Name << " not found.";
-					return nullptr;
-				}
-
-				//std::cout << m_jsons[Name] << '\n';
-			}*/
 		
 			//This would be used like the return json function, where the name of the image is provided and will be returned. 
 			//The return type needs to be deteremined.
