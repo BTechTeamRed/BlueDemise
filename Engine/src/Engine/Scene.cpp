@@ -1,4 +1,6 @@
+#include "glad/glad.h"
 #include "Scene.h"
+#include "Log.h"
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
@@ -6,7 +8,6 @@
 #include "Entity.h"
 #include "ShaderGenerator.h"
 #include "SourceGatherer.h"
-#include "glad/glad.h"
 
 namespace Engine
 {
@@ -28,7 +29,7 @@ namespace Engine
 		m_window = glfwCreateWindow(640, 480, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
 		if (m_window == nullptr)
 		{
-			std::cout << "Failed to create GLFW window" << std::endl;
+			GE_CORE_ERROR("Failed to create GLFW window");
 			glfwTerminate();
 			return;
 		}
@@ -36,7 +37,7 @@ namespace Engine
 		glfwMakeContextCurrent(m_window);
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			std::cout << "Failed to initialize GLAD" << std::endl;
+			GE_CORE_ERROR("Failed to initialize GLAD");
 			return;
 		}
 
@@ -66,6 +67,8 @@ namespace Engine
 		{
 			onRuntimeUpdate();
 		}
+
+		onRuntimeStop();
 	}
 
 	void Scene::onRuntimeStop()

@@ -1,6 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
-#include <GLFW/glfw3.h>	
+#include "GLFW/glfw3.h"
 #include <vector>
 
 namespace Engine 
@@ -21,6 +21,7 @@ namespace Engine
 
 struct TransformComponent 
 {
+	TransformComponent() = default;
 	TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) : position(position), scale(scale), rotation(rotation) 
 	{
 

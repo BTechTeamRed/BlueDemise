@@ -1,10 +1,11 @@
 #include "Application.h"
-#include "RenderingSystem.h"
+#include "Scene.h"
 
 namespace Engine
 {
 	void Application::Run()
 	{
-		renderLoop();
+		Scene scene;
+		scene.onRuntimeStart();
 	}
 }

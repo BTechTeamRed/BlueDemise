@@ -1,4 +1,7 @@
 #include "ShaderGenerator.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "Log.h"
 
 namespace input {
 	ShaderGenerator::ShaderGenerator(const char* vertexSource, const char* fragmentSource) {
@@ -47,7 +50,7 @@ namespace input {
 		glGetShaderiv(shaderObj, status, &success);
 		if (!success) {
 			glGetShaderInfoLog(shaderObj, 512, NULL, infoLog);
-			std::cout << "Error in shader compilation: " << infoLog << std::endl;
+			GE_CORE_ERROR("Error in shader compilation {0}", infoLog);
 			return -1;
 		}
 		return 0;
