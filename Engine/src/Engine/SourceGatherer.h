@@ -13,6 +13,7 @@ namespace input {
 	public:
 		SourceGatherer(std::string sourcePath);
 		SourceGatherer(std::string* sourcePaths, size_t length);
+		void print(int sourceModule = 0);
 		std::string getSource(int sourceModule = 0);
 	};
 }

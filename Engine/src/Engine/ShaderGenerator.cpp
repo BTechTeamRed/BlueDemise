@@ -1,6 +1,4 @@
 #include "ShaderGenerator.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "Log.h"
 
 namespace input {

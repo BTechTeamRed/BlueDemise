@@ -1,4 +1,5 @@
 #include "SourceGatherer.h"
+#include "Log.h"
 
 namespace input {
 	SourceGatherer::SourceGatherer(std::string sourcePath) {
@@ -11,6 +12,10 @@ namespace input {
 		for (int i = 0; i < length; i++) {
 			m_sourceNodes[i] = readSource(sourcePaths[i]);
 		}
+	}
+
+	void SourceGatherer::print(int sourceModule) {
+		GE_CORE_INFO(getSource(sourceModule));
 	}
 
 	std::string SourceGatherer::getSource(int sourceModule) {

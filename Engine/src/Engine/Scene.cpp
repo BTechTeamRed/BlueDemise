@@ -25,8 +25,7 @@ namespace Engine
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
-		m_window = glfwCreateWindow(640, 480, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
+		m_window = glfwCreateWindow(640, 480, "BlueDemise", NULL, NULL); //switch to unique ptr with deleter for RAII?
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
@@ -46,10 +45,12 @@ namespace Engine
 			"..\\Engine\\src\\Engine\\Shaders\\Fill.fs"
 			}, 2);
 
-		/* -- Read source from cmd
-		std::cout << "source(vs):" << std::endl << sg.getSource()
-			<< "source(fs):" << std::endl << sg.getSource(1) << std::endl;
-			*/
+		/* --read shader source
+		GE_CORE_INFO("Source(vs):\n");
+		sg.print();
+		GE_CORE_INFO("Source(fs):\n");
+		sg.print(1);
+		*/
 
 		input::ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
 		/* --Test program ID
@@ -92,6 +93,19 @@ namespace Engine
 
 		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 		auto cameraView = getEntities<const TransformComponent, const CameraComponent>();
+
+		//Gets the last entity with these components, if there are multiple (TODO: Switch to wrapper)
+		//CRASHES HERE
+		//const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+
+		/*
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glm::mat4 mvp;
+		glm::mat4 mvm;
+		glm::mat4 pm;
+
+		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		auto cameraView = getEntities<const TransformComponent, const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());//Gets the last entity with these components, if there are multiple (TODO: Switch to wrapper)
 		pm = glm::ortho(0.0f, camera.viewport.x, 0.0f, camera.viewport.y, camera.nearZ, camera.farZ);
 		for (auto [entity, transform, vertices, color] : view.each())
@@ -115,5 +129,6 @@ namespace Engine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, 0);
 		}
+		*/
 	}
 }
