@@ -19,17 +19,11 @@ namespace Engine
         void onRuntimeStop();
         void onRuntimeUpdate();
 
-        void fakeStart();
-        void fakeUpdate();
-
         template<typename... Components>
         auto getEntities()
         {
             return m_registry.view<Components...>();
         }
-
-        void fakeStart();
-        void fakeUpdate();
 
     private:
         void renderScene();
