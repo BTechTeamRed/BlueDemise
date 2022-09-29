@@ -73,9 +73,9 @@ namespace Engine
 		cameraEntity.addComponent<CameraComponent>(
 			90.f,
 			glm::mat4(1.f),
-			glm::vec2(480, 480),
-			-1.f,
-			1.f
+			glm::vec2(4.8, 4.8),
+			100.0f,
+			0.1f
 			);
 
 		//
@@ -166,11 +166,13 @@ namespace Engine
 		glm::mat4 mvp;
 		glm::mat4 mvm;
 		glm::mat4 pm;
+		glm::mat4 vm;
 
 		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		pm = glm::ortho(0.0f, camera.viewport.x, 0.0f, camera.viewport.y, camera.nearZ, camera.farZ);
+		pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x /2, -camera.viewport.y / 2, camera.viewport.y /2 , camera.nearZ, camera.farZ);
+		vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in worldspace
 
 		for (auto [entity, transform, vertices, color] : view.each())
 		{
@@ -182,6 +184,8 @@ namespace Engine
 			mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
 			mvm = glm::scale(mvm, transform.scale);
 		
+			mvm = vm * mvm;
+
 			mvp = pm * mvm;
 
 			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
