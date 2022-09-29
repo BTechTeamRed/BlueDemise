@@ -118,21 +118,20 @@ namespace Engine
 		glBindVertexArray(vc.vaoID);
 
 		glGenBuffers(1, &vc.vboID);
-		glGenBuffers(1, &vc.iboID);
-		
-
 		glBindBuffer(GL_ARRAY_BUFFER, vc.vboID);
+
+		glGenBuffers(1, &vc.iboID);
 		glBindBuffer(GL_ARRAY_BUFFER, vc.iboID);
 
+    	//Buffer data
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(float), triangleVertices, GL_STATIC_DRAW);
+
 		//Define vertex attributes
-		glEnableVertexAttribArray(0);
 		for (const auto attribute : vc.vertexAttributes) 
 		{
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
 		}
-
-		//Buffer data
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(float), triangleVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
 
 		return vc;
 	}
@@ -186,6 +185,7 @@ namespace Engine
 			glBindVertexArray(vertices.vaoID);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
 			glDrawElements(GL_TRIANGLES, (GLsizei)vertices.numIndices, GL_UNSIGNED_INT, 0);
+			//glDrawArrays(GL_TRIANGLES, 0, 3);
 		}
 		
 	}
