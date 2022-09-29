@@ -6,6 +6,6 @@ namespace Engine
 	void Application::Run()
 	{
 		Scene scene;
-		scene.onRuntimeStart();
+		scene.fakeStart();
 	}
 }

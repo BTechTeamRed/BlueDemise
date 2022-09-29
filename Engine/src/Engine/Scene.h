@@ -28,6 +28,9 @@ namespace Engine
             return m_registry.view<Components...>();
         }
 
+        void fakeStart();
+        void fakeUpdate();
+
     private:
         void renderScene();
 
@@ -39,6 +42,8 @@ namespace Engine
         entt::registry m_registry;
         struct GLFWwindow* m_window;
         int m_programId;
+
+        unsigned int m_vbo, m_ibo, m_vao;
 
         friend class Entity;
     };
