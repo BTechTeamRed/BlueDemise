@@ -35,7 +35,7 @@ namespace Engine
 		template<typename T>
 		void removeComponent()
 		{
-			return m_scene->m_registry.remove<T>(m_entityHandle);
+			m_scene->m_registry.remove<T>(m_entityHandle);
 		}
 
 		template<typename T>

@@ -19,6 +19,9 @@ namespace Engine
         void onRuntimeStop();
         void onRuntimeUpdate();
 
+        void fakeStart();
+        void fakeUpdate();
+
         template<typename... Components>
         auto getEntities()
         {
@@ -27,6 +30,8 @@ namespace Engine
 
     private:
         void renderScene();
+
+        //TODO: Replace with serialized objects once that's added in
         VerticesComponent createTriangle();
 
     private:
