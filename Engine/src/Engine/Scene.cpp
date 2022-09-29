@@ -189,4 +189,61 @@ namespace Engine
 		}
 		
 	}
+
+	void Scene::fakeUpdate()
+	{
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Scene::fakeStart()
+	{
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		m_window = glfwCreateWindow(480, 480, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
+		if (m_window == nullptr)
+		{
+			GE_CORE_ERROR("Failed to create GLFW window");
+			glfwTerminate();
+			return;
+		}
+		glfwMakeContextCurrent(m_window);
+
+		gladLoadGL();
+
+		glGenVertexArrays(1, &m_vao);
+		glBindVertexArray(m_vao);
+
+		glGenBuffers(1, &m_vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+		float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f,
+		};
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    	glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+
+		glGenBuffers(1, &m_ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+
+		unsigned int indices[3] = { 0, 1, 2 };
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		while (!glfwWindowShouldClose(m_window))
+		{
+			fakeUpdate();
+			glfwSwapBuffers(m_window);
+			glfwPollEvents();
+		}
+		glfwTerminate();
+	}
 }
