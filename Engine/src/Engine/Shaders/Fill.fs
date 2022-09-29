@@ -6,5 +6,5 @@ uniform vec4 col;
 void main()
 {
 	//color = col;
-	color = vec4(0.0, 1.0, 0.0, 1.0);//test color
+	color = vec4(0.0, 1.0, 0.0, 0.5);//test color
 }

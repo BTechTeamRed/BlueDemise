@@ -7,7 +7,6 @@
 namespace Engine
 {
 	// Wrapper class for ENTT entity
-	// Credit to the following video for most of the code: https://youtu.be/8LbVpkEqKuY
 	class Entity
 	{
 	private:

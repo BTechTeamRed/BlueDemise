@@ -27,11 +27,13 @@ namespace Engine
 
     private:
         void renderScene();
+        VerticesComponent createTriangle();
 
     private:
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
+        int m_programId;
 
         friend class Entity;
     };
