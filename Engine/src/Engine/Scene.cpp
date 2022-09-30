@@ -86,6 +86,7 @@ namespace Engine
 		return true;
     }
 
+	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -118,6 +119,7 @@ namespace Engine
 		}
 	}
 
+	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
 		SourceGatherer sg(new std::string[2] {
@@ -130,7 +132,7 @@ namespace Engine
 		glUseProgram(m_programId);
 	}
 
-
+	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
 		//Camera
@@ -153,6 +155,7 @@ namespace Engine
 		triangle.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 0.5f));
     }
 
+	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.
 	VerticesComponent Scene::createTriangle()
 	{
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine

@@ -3,6 +3,9 @@
 #include "GLFW/glfw3.h"
 #include <vector>
 
+/// Container file for all components.
+///	As per the Entt specification, components are structs with data.
+///	Components shouldn't have any methods that define any kind of behavior.
 namespace Engine 
 {
 	struct TagComponent
@@ -22,26 +25,25 @@ namespace Engine
 		float nearZ;
 	};
 
-struct TransformComponent 
-{
-	TransformComponent() = default;
-	TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
-		: position(position), scale(scale), rotation(rotation) {}
+	struct TransformComponent 
+	{
+		TransformComponent() = default;
+		TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
+			: position(position), scale(scale), rotation(rotation) {}
 
-	glm::vec3 position;
-	glm::vec3 scale;
-	glm::vec3 rotation;
-};
+		glm::vec3 position;
+		glm::vec3 scale;
+		glm::vec3 rotation;
+	};
 
-struct ColorComponent 
-{
-	ColorComponent() = default;
-	ColorComponent(glm::vec4 color)
-		: color(color) {}
+	struct ColorComponent 
+	{
+		ColorComponent() = default;
+		ColorComponent(glm::vec4 color)
+			: color(color) {}
 
-	glm::vec4 color;
-};
-
+		glm::vec4 color;
+	};
 
 	//Not component, just container for vertex attribute data format
 	struct VertexAttribute 

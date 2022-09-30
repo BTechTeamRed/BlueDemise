@@ -17,7 +17,7 @@ namespace Engine
 	private:
 		int m_programId;
 		int genShader(const char* source, GLenum shaderType);
-		int requestStatus(GLuint shaderObj, GLenum status);
+		bool requestStatus(GLuint shaderObj, GLenum status);
 	};
 }
 
