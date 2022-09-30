@@ -35,7 +35,10 @@ namespace Engine
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
-        int m_programId;
+        GLuint m_programId;
+        struct DefaultShaders {
+            GLuint fillShader;
+        } defaultShaders;
 
         unsigned int m_vbo, m_ibo, m_vao;
 

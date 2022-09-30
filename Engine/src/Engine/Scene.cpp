@@ -47,6 +47,7 @@ namespace Engine
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");
+			glfwTerminate();
 			return;
 		}
 
@@ -55,9 +56,9 @@ namespace Engine
 			"..\\Engine\\src\\Engine\\Shaders\\Fill.fs"
 			}, 2);
 
-
 		input::ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
-		m_programId = shaderGenerator.getProgramId();
+		defaultShaders.fillShader = shaderGenerator.getProgramId();
+		m_programId = defaultShaders.fillShader;
 		glUseProgram(m_programId);
 
 		glfwSwapInterval(1);
@@ -88,8 +89,6 @@ namespace Engine
 		triangle.addComponent<VerticesComponent>(createTriangle());
 		triangle.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 0.5f));
 
-		createTriangle();
-
 		while (!glfwWindowShouldClose(m_window))
 		{
 			onRuntimeUpdate();
@@ -116,14 +115,11 @@ namespace Engine
 		vc.stride = sizeof(float) * 3;
 		vc.numIndices = 6;
 
-
 		glGenVertexArrays(1, &vc.vaoID);
 		glBindVertexArray(vc.vaoID);
 
 		glGenBuffers(1, &vc.vboID);
 		glBindBuffer(GL_ARRAY_BUFFER, vc.vboID);
-
-
 
     	//Buffer data
 		glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
@@ -146,6 +142,14 @@ namespace Engine
 	void Scene::onRuntimeStop()
 	{
 		glfwTerminate();
+
+		auto view = getEntities<const VerticesComponent>();
+		for (auto [entity, vertices] : view.each())
+		{
+			glDeleteVertexArrays(1, &vertices.vaoID);
+			glDeleteBuffers(1, &vertices.vboID);
+		}
+		glDeleteProgram(defaultShaders.fillShader);
 	}
 
 	void Scene::onRuntimeUpdate()
@@ -163,35 +167,30 @@ namespace Engine
 		// glEnable(GL_BLEND);
 		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glm::mat4 mvp;
-		glm::mat4 mvm;
-		glm::mat4 pm;
-		glm::mat4 vm;
-
 		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x /2, -camera.viewport.y / 2, camera.viewport.y /2 , camera.nearZ, camera.farZ);
-		vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in worldspace
+		glm::mat4 pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x /2,
+			-camera.viewport.y / 2, camera.viewport.y /2 , camera.nearZ, camera.farZ);
+		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in worldspace
 
 		for (auto [entity, transform, vertices, color] : view.each())
 		{
 			//Setup mvp and mvm matrix
-			mvm = glm::mat4(1.f);
+			glm::mat4 mvm = glm::mat4(1.f);
 			mvm = glm::translate(mvm, transform.position);
 			mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
 			mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
 			mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
 			mvm = glm::scale(mvm, transform.scale);
-		
 			mvm = vm * mvm;
 
-			mvp = pm * mvm;
+			glm::mat4 mvp = pm * mvm;
 
 			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
 			GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
-			glUniform4fv(colorUniformID, 1, (const float *)glm::value_ptr(color.color)); //Consider changing the way we cast here, probably not best practices
-			glUniformMatrix4fv(mvpID, 1, GL_FALSE, (const float*)glm::value_ptr(mvp));
+			glUniform4fv(colorUniformID, 1, glm::value_ptr(color.color));
+			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 		}
