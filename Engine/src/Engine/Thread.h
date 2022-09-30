@@ -1,25 +1,11 @@
 #pragma once
 #include <thread>
+#include "ThreadJob.h"
 
 // this is the standard for each thread
 
 namespace engine_concurrent
 {
-	// Things for the threads to do
-	class ThreadJob
-	{
-		// threadJobs need to take in a generic set of arguments
-		// and return something generic to the caller
-	public:
-		void run();
-
-	protected:
-		//
-
-	private:
-		int count; // 
-	};
-
 	// Wrapper class for the actual threads
 	class Thread
 	{
