@@ -30,7 +30,7 @@ namespace engine_concurrent
 	private:
 		EntryPoint* m_pEntryPoint;
 		void* m_param;
-		Priority m_priority;
+		const Priority& m_priority;
 		//Counter* m_pCounter;
 
 		int count; // 

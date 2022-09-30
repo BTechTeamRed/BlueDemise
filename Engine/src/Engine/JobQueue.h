@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <mutex>
 #include "ThreadJob.h"
 
 namespace engine_concurrent
@@ -19,7 +20,8 @@ namespace engine_concurrent
 	private:
 		JobQueue();
 
-		static JobQueue* INSTANCE;
+		static JobQueue* instance;
+		static std::mutex mutex;
 		std::list<ThreadJob*> m_jobList;
 	};
 }

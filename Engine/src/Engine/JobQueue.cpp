@@ -2,15 +2,16 @@
 
 using namespace engine_concurrent;
 
-static JobQueue* JobQueue::INSTANCE = nullptr;
+JobQueue* JobQueue::instance = nullptr;
+std::mutex JobQueue::mutex;
 
-static JobQueue* JobQueue::getInstance()
+JobQueue* JobQueue::getInstance()
 {
-	if (INSTANCE == nullptr)
+	if (instance == nullptr)
 	{
-		INSTANCE = new JobQueue();
+		instance = new JobQueue();
 	}
-	return INSTANCE;
+	return instance;
 }
 
 JobQueue::JobQueue() : m_jobList() {}
@@ -33,6 +34,7 @@ void JobQueue::postJob(ThreadJob* job)
 
 ThreadJob* JobQueue::getJob()
 {
+	std::unique_lock<std::mutex> lock(mutex);
 	ThreadJob* job = nullptr;
 
 	if (!m_jobList.empty())

@@ -15,7 +15,6 @@ namespace engine_concurrent
 
 		// Returning a pointer reference prevents duplicating the pool to make it singleton
 		static ThreadPool* getInstance(); 
-		void getThread();
 
 	protected:
 

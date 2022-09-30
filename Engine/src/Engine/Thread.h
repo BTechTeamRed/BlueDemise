@@ -15,7 +15,6 @@ namespace engine_concurrent
         void assignJob(ThreadJob*);
         ThreadJob* getJob();
         void run();
-        void init();
 
     protected:
         //
