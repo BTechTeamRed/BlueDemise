@@ -7,6 +7,8 @@ namespace Engine
 {
     class Entity;
 
+    // Scene keeps a registry of Entities that are then rendered and processed as part of the game loop.
+    // Also responsible for loading shaders, initializing OpenGl contexts and windows, and rendering.
     class Scene
     {
     public:
@@ -15,10 +17,16 @@ namespace Engine
         // Takes in a tag as a string for input
         Entity createEntity(std::string tag);
 
+        // Executes actions at the start of runtime
         void onRuntimeStart();
+
+        // Executes actions when runtime stops
         void onRuntimeStop();
+
+        // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate();
 
+        // Gets a view of entities with the defined components.
         template<typename... Components>
         auto getEntities()
         {
@@ -40,8 +48,8 @@ namespace Engine
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
-        int m_windowWidth = 480;
-        int m_windowHeight = 480;
+        int m_windowWidth{480};
+        int m_windowHeight{480};
 
 
         GLuint m_programId;

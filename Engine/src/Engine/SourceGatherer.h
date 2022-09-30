@@ -7,6 +7,7 @@
 
 namespace Engine
 {
+	// gathers shader source-code from files and parses it for use in Engine.
 	class SourceGatherer
 	{
 	public:

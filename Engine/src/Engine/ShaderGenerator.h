@@ -5,6 +5,8 @@ namespace Engine
 {
 	typedef unsigned int GLuint;
 	typedef unsigned int GLenum;
+
+	// Generates shaders that are then used for OpenGL programs 
 	class ShaderGenerator
 	{
 	public:
