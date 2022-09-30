@@ -1,4 +1,3 @@
-
 #include "Thread.h"
 #include "Log.h"
 #include <thread>
