@@ -26,21 +26,25 @@ namespace Engine
         }
 
     private:
+        bool initializeGL();
         void renderScene();
 
+        //TODO: shader wrapper so switching out between different shaders is easier
+        void loadShaders();
+
         //TODO: Replace with serialized objects once that's added in
+        void createEntities();
         VerticesComponent createTriangle();
 
     private:
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
-        GLuint m_programId;
-        struct DefaultShaders {
-            GLuint fillShader;
-        } defaultShaders;
+        int m_windowWidth = 480;
+        int m_windowHeight = 480;
 
-        unsigned int m_vbo, m_ibo, m_vao;
+
+        GLuint m_programId;
 
         friend class Entity;
     };

@@ -1,15 +1,16 @@
 #pragma once
 #ifndef SHADERGENERATOR_H
 #define SHADERGENERATOR_H
-namespace input
+namespace Engine
 {
 	typedef unsigned int GLuint;
 	typedef unsigned int GLenum;
-	class ShaderGenerator {
+	class ShaderGenerator
+	{
 	public:
 		ShaderGenerator(const char* vertexSource, const char* fragmentSource);
 		~ShaderGenerator();
-		int getProgramId();
+		int getProgramId() const;
 
 	private:
 		int m_programId;

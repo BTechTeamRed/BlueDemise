@@ -5,17 +5,18 @@
 #include <string>
 #include <fstream>
 
-namespace input {
-	class SourceGatherer {
+namespace Engine
+{
+	class SourceGatherer
+	{
 	public:
 		SourceGatherer(std::string sourcePath);
-		SourceGatherer(std::string* sourcePaths, size_t length);
-		void print(int sourceModule = 0);
-		std::string getSource(int sourceModule = 0);
+		SourceGatherer(const std::string* sourcePaths, size_t length);
+		std::string getSource(int sourceModule = 0) const;
 
 	private:
 		std::string* m_sourceNodes;
-		std::string readSource(std::string sourcePath);
+		std::string readSource(const std::string& sourcePath) const;
 	};
 }
 

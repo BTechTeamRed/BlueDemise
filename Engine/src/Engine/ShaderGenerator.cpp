@@ -2,10 +2,12 @@
 #include "Log.h"
 #include "glad/glad.h"
 
-namespace input {
-	ShaderGenerator::ShaderGenerator(const char* vertexSource, const char* fragmentSource) {
+namespace Engine
+{
+	ShaderGenerator::ShaderGenerator(const char* vertexSource, const char* fragmentSource)
+	{
 		m_programId = glCreateProgram();
-		int vertexShader = genShader(vertexSource, GL_VERTEX_SHADER),
+		const int vertexShader = genShader(vertexSource, GL_VERTEX_SHADER),
 			fragmentShader = genShader(fragmentSource, GL_FRAGMENT_SHADER);
 
 		if (vertexShader == -1 || fragmentShader == -1)
@@ -23,17 +25,20 @@ namespace input {
 		glDeleteShader(fragmentShader);
 	}
 
-	ShaderGenerator::~ShaderGenerator() {
+	ShaderGenerator::~ShaderGenerator()
+	{
 		glDeleteProgram(m_programId);
 	}
 
-	int ShaderGenerator::getProgramId() {
+	int ShaderGenerator::getProgramId() const
+	{
 		return m_programId;
 	}
 
-	int ShaderGenerator::genShader(const char* source, GLenum shaderType) {
+	int ShaderGenerator::genShader(const char* source, GLenum shaderType)
+	{
 		int shaderObj = glCreateShader(shaderType);
-		glShaderSource(shaderObj, 1, &source, NULL);
+		glShaderSource(shaderObj, 1, &source, nullptr);
 		glCompileShader(shaderObj);
 
 		//check for errors
@@ -43,12 +48,14 @@ namespace input {
 		return shaderObj;
 	}
 
-	int ShaderGenerator::requestStatus(GLuint shaderObj, GLenum status) {
+	int ShaderGenerator::requestStatus(GLuint shaderObj, GLenum status)
+	{
 		int success;
 		char infoLog[512];
 		glGetShaderiv(shaderObj, status, &success);
-		if (!success) {
-			glGetShaderInfoLog(shaderObj, 512, NULL, infoLog);
+		if (!success) 
+		{
+			glGetShaderInfoLog(shaderObj, 512, nullptr, infoLog);
 			GE_CORE_ERROR("Error in shader compilation {0}", infoLog);
 			return -1;
 		}
