@@ -8,7 +8,6 @@ namespace Engine
 	void Application::Run()
 	{
 		ThreadPool* thePool = ThreadPool::getInstance();
-		thePool->getThread();
 		while (true);
 	}
 }

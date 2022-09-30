@@ -1,6 +1,6 @@
 #include "ThreadJob.h"
 
-using namespace engine_concurrent
+using namespace engine_concurrent;
 
 ThreadJob::ThreadJob(EntryPoint* entryPoint, Priority priority, void* param)
 	: m_pEntryPoint(entryPoint), // Entry point is a pointer to the functions to be run
@@ -11,7 +11,7 @@ ThreadJob::ThreadJob(EntryPoint* entryPoint, Priority priority, void* param)
 
 void ThreadJob::run()
 {
-	m_pEntryPoint(param); // Run the passed-in functions with the passed params 
+	m_pEntryPoint(m_param); // Run the passed-in functions with the passed params
 }
 
 const Priority& ThreadJob::getPriority()

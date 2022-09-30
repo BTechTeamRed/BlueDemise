@@ -24,8 +24,8 @@ void JobQueue::postJob(ThreadJob* job)
 		return;
 	}
 	// Iterate over the job list
-	auto it = m_jobList = m_jobList.begin();
-	for (;it->getPriority() >= job->getPriority() && 
+	auto it = m_jobList.begin();
+	for (;(*it)->getPriority() >= job->getPriority() &&
 		it != m_jobList.end(); ++it)
 	{
 	}

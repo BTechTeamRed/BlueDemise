@@ -16,21 +16,21 @@ namespace engine_concurrent
 		// and return something generic to the caller
 	public:
 		ThreadJob(EntryPoint* entryPoint,
-			Priority priority = Priority.NORMAL,
+			Priority priority = Priority::NORMAL,
 			void* param = nullptr);
 		//Thread jobs should not be copied
 		ThreadJob(ThreadJob& other) = delete;
-		operator=(ThreadJob& other) = delete;
+		void operator=(ThreadJob& other) = delete;
 		
 		void run();
-		Priority getPriority();
+		const Priority& getPriority();
 	protected:
 		//
 
 	private:
 		EntryPoint* m_pEntryPoint;
 		void* m_param;
-		const Priority& m_priority;
+        Priority m_priority;
 		//Counter* m_pCounter;
 
 		int count; // 
