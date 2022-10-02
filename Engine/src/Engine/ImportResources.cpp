@@ -5,13 +5,10 @@ namespace Engine
 	
 	nlohmann::json ImportResources::returnJson(std::string Name)
 	{
-
-		std::cout << "Starting to search json";
+		//std::cout << "Searching for Json...";
 				
 		nlohmann::json searchResult = m_jsons[Name];
 			
-		std::cout << "Search complete, comparing...";
-		
 		if (searchResult != nullptr)
 		{
 			std::cout << "Json of " << Name << " found.";
