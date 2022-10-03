@@ -5,12 +5,10 @@
 
 namespace Engine
 {
-	Engine::SourceGatherer::SourceGatherer(std::string sourcePath)
+	Engine::SourceGatherer::SourceGatherer()
 	{
-		m_sourceNodes = new std::string[1];
-		m_sourceNodes[0] = readSource(std::move(sourcePath));
 	}
-
+	/*
 	SourceGatherer::SourceGatherer(const std::string* sourcePaths, size_t length)
 	{
 		m_sourceNodes = new std::string[length];
@@ -19,13 +17,15 @@ namespace Engine
 			m_sourceNodes[i] = readSource(sourcePaths[i]);
 		}
 	}
-
-	std::string SourceGatherer::getSource(int sourceModule) const
+	*/
+	std::string SourceGatherer::getSource(std::string sourcePath)
 	{
-		return m_sourceNodes[sourceModule];
+		std::string data = readSource(sourcePath);
+
+		return data;
 	}
 
-	std::string SourceGatherer::readSource(const std::string& sourcePath) const
+	std::string SourceGatherer::readSource(std::string sourcePath)
 	{
 		std::string src;
 		std::ifstream reader(sourcePath);

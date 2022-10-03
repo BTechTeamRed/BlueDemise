@@ -1,7 +1,9 @@
 #pragma once
 
 #include "entt.h"
+#include "ImportResources.h"
 #include "Components.h"
+#include "SourceGatherer.h"
 
 namespace Engine
 {
@@ -50,7 +52,8 @@ namespace Engine
         struct GLFWwindow* m_window;
         int m_windowWidth{480};
         int m_windowHeight{480};
-
+		
+        ImportResources m_importResources;
 
         GLuint m_programId;
 

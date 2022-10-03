@@ -10,7 +10,6 @@
 
 #include "Entity.h"
 #include "ShaderGenerator.h"
-#include "SourceGatherer.h"
 #include "Components.h"
 
 namespace Engine
@@ -122,12 +121,9 @@ namespace Engine
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
-		SourceGatherer sg(new std::string[2] {
-		"..\\Engine\\src\\Engine\\Shaders\\Fill.vs",
-		"..\\Engine\\src\\Engine\\Shaders\\Fill.fs"
-		}, 2);
+		
+		ShaderGenerator shaderGenerator(m_importResources.returnShader("Fill.vs").c_str(), m_importResources.returnShader("Fill.fs").c_str());
 
-		ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
 	}
