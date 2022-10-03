@@ -22,6 +22,6 @@ namespace engine_concurrent
 		static std::mutex mutex; // 'Static' mutex so the class can use this mutex without it being bound to an instance
 		static ThreadPool* tpInstance;
 		ThreadPool(); // Redefine constructor to ensure threadpool can't be instantiated outside the class
-		std::vector<Thread> m_threads; // This is the pool of threads
+		std::vector<Thread*> m_threads; // This is the pool of threads
 	};
 }

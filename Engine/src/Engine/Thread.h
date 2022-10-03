@@ -12,7 +12,6 @@ namespace engine_concurrent
     public:
         //TODO: Threads need a null job to start with
         explicit Thread(); // explicit constructor for threads
-        void assignJob(ThreadJob*);
         ThreadJob* getJob();
         void run();
 

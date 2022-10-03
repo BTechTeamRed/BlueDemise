@@ -13,13 +13,9 @@ Thread::Thread() :
 	m_threadJob(nullptr),
 	m_thread (new std::thread(&Thread::run, this))
 {
-	m_thread->join();
+
 }
 
-void Thread::assignJob(ThreadJob* newJob)
-{
-	m_threadJob = newJob;
-}
 
 ThreadJob* Thread::getJob()
 {
