@@ -13,10 +13,13 @@ namespace Engine
 
 		operator double() const { return m_Time; }
 
+		//returns the deltaTime in milliseconds.
 		double getMilliseconds() const { return m_Time * 1000; }
+
+		//returns the deltaTime in seconds.
 		double getSeconds() const { return m_Time; }
 
-		//Updates the value of deltaTime.
+		//Updates the value of deltaTime. Has to be called every frame.
 		void updateDeltaTime()
 		{
 			const double time = glfwGetTime();
