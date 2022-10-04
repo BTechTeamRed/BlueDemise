@@ -115,7 +115,7 @@ namespace Engine
 			glUniform4fv(colorUniformID, 1, glm::value_ptr(color.color));
 			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
 
@@ -159,23 +159,22 @@ namespace Engine
 	VerticesComponent Scene::createTriangle()
 	{
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine
-		//TODO: add UV coordinates into vertices, and change to quad
-		float triangleVertices[9] =
+		float triangleVertices[12] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+			-1.f, -1.f, 0.f,
+			1.f, 1.f, 0.f,
+			1.f, -1.f, 0.f,
+			-1.f, 1.f, 0.f
 		};
 		//vertex order
-		//TODO: Update indicies for quad
-		unsigned int indices[3] = { 0, 1, 2 };
+		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3};
 
 		VerticesComponent vc;
 		//Each vertex has one attribute, which is 2 floats to represent position
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		//TODO: Update vertexAttributes for UV
 		vc.stride = sizeof(float) * 3;
-		vc.numIndices = 6;//TODO: Update num indicies for quad
+		vc.numIndices = 6;
 
 		glGenVertexArrays(1, &vc.vaoID);
 		glBindVertexArray(vc.vaoID);
