@@ -159,12 +159,12 @@ namespace Engine
 	VerticesComponent Scene::createTriangle()
 	{
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine
-		float triangleVertices[12] =
+		float triangleVertices[20] =
 		{
-			-1.f, -1.f, 0.f,
-			1.f, 1.f, 0.f,
-			1.f, -1.f, 0.f,
-			-1.f, 1.f, 0.f
+			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
+			1.f, 1.f, 0.f, 1.f, 0.f,//top right
+			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
+			-1.f, 1.f, 0.f, 0.f, 0.f //top left
 		};
 		//vertex order
 		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3};
@@ -172,8 +172,9 @@ namespace Engine
 		VerticesComponent vc;
 		//Each vertex has one attribute, which is 2 floats to represent position
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
+		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		//TODO: Update vertexAttributes for UV
-		vc.stride = sizeof(float) * 3;
+		vc.stride = sizeof(float) * 5;
 		vc.numIndices = 6;
 
 		glGenVertexArrays(1, &vc.vaoID);
@@ -184,11 +185,13 @@ namespace Engine
 
     	//Buffer data
 		glBufferData(GL_ARRAY_BUFFER, sizeof(triangleVertices), triangleVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0); //TODO: change vertexAttribute setting to handle multiple attribs
+		 //TODO: change vertexAttribute setting to handle multiple attribs
 
 		//Define vertex attributes
-		for (const auto attribute : vc.vertexAttributes) 
+		for (int i = 0; i < vc.vertexAttributes.size(); i++) 
 		{
+			const auto attribute = vc.vertexAttributes[i];
+			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
 		}
 
