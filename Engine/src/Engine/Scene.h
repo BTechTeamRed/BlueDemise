@@ -2,6 +2,7 @@
 
 #include "entt.h"
 #include "Components.h"
+#include "DeltaTime.h"
 
 namespace Engine
 {
@@ -24,7 +25,7 @@ namespace Engine
         void onRuntimeStop();
 
         // Executes actions every time runtime is updated (every frame).
-        void onRuntimeUpdate();
+        void onRuntimeUpdate(DeltaTime dt);
 
         // Gets a view of entities with the defined components.
         template<typename... Components>
@@ -35,7 +36,7 @@ namespace Engine
 
     private:
         bool initializeGL();
-        void renderScene();
+        void renderScene(DeltaTime dt);
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
@@ -51,6 +52,7 @@ namespace Engine
         int m_windowWidth{480};
         int m_windowHeight{480};
 
+        DeltaTime m_deltaTime{0};
 
         GLuint m_programId;
 
