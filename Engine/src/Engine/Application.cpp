@@ -4,17 +4,22 @@
 namespace Engine
 {
 	void Application::Run()
-	{
-		nlohmann::json saveData = m_importResources1.returnJson("SaveData_Test.json");
+	{	
 		
+		nlohmann::json data = m_importResources1.returnJson("SaveData_Test.json");
 
-		auto fName = saveData.find("Height");
+		//std:: cout << saveData;
+
+		auto fName = data.find("pi");
 		
-		if (fName != saveData.end())
-			std::cout << fName.key() << '\n';
-		else
-			std::cout << "Json entry not found within [" << saveData.dump() << "]";
+		std::cout << fName.value();
 
+		data = m_importResources1.returnJson("SaveData_Test.json");
+
+		fName = data.find("pi");
+
+		std::cout << fName.value();
+		
 		Scene scene;
 		scene.onRuntimeStart();
 	}

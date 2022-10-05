@@ -123,7 +123,7 @@ namespace Engine
 	{
 		
 		ShaderGenerator shaderGenerator(m_importResources.returnShader("Fill.vs").c_str(), m_importResources.returnShader("Fill.fs").c_str());
-
+		
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
 	}
