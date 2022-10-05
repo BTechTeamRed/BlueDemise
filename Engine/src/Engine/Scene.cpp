@@ -11,6 +11,7 @@
 #include "Entity.h"
 #include "ShaderGenerator.h"
 #include "Components.h"
+#include "DeltaTime.h"
 
 namespace Engine
 {
@@ -33,7 +34,8 @@ namespace Engine
 
 		while (!glfwWindowShouldClose(m_window))
 		{
-			onRuntimeUpdate();
+			m_deltaTime.updateDeltaTime();
+			onRuntimeUpdate(m_deltaTime);
 		}
 
 		onRuntimeStop();
@@ -52,9 +54,9 @@ namespace Engine
 		glDeleteProgram(m_programId);
 	}
 
-	void Scene::onRuntimeUpdate()
+	void Scene::onRuntimeUpdate(DeltaTime dt)
 	{
-		renderScene();
+		renderScene(dt);
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
@@ -86,7 +88,7 @@ namespace Engine
     }
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-	void Scene::renderScene()
+	void Scene::renderScene(DeltaTime dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 

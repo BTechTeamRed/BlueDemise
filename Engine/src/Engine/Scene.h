@@ -1,9 +1,8 @@
 #pragma once
 
 #include "entt.h"
-#include "ImportResources.h"
 #include "Components.h"
-#include "SourceGatherer.h"
+#include "DeltaTime.h"
 
 namespace Engine
 {
@@ -26,7 +25,7 @@ namespace Engine
         void onRuntimeStop();
 
         // Executes actions every time runtime is updated (every frame).
-        void onRuntimeUpdate();
+        void onRuntimeUpdate(DeltaTime dt);
 
         // Gets a view of entities with the defined components.
         template<typename... Components>
@@ -37,7 +36,7 @@ namespace Engine
 
     private:
         bool initializeGL();
-        void renderScene();
+        void renderScene(DeltaTime dt);
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
@@ -52,8 +51,8 @@ namespace Engine
         struct GLFWwindow* m_window;
         int m_windowWidth{480};
         int m_windowHeight{480};
-		
-        ImportResources m_importResources;
+
+        DeltaTime m_deltaTime{0};
 
         GLuint m_programId;
 
