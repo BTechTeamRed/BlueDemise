@@ -12,11 +12,28 @@ namespace Engine
 			std::string path = m_sourcePaths[i];
 
 			//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
-			for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+			for (std::filesystem::recursive_directory_iterator i(path), end; i != end; ++i)
 			{
-				m_filePaths.insert(std::pair<std::string, std::string>(entry.path().filename().string(), entry.path().string()));
+				//File path is the full path of the found folder or file. Filename is the folder/file name, and file extension should contain the file type (to differentiate between file and folder).
+				std::filesystem::path filePath = i->path();
+				std::string fileName = filePath.filename().string();
+				std::string fileExtension = "";
+				
+				//Check if file exists in map.
+				auto it = m_filePaths.find(fileName);
 
-				GE_INFO("[ImportResources] Path added to m_filePaths [" + entry.path().string() + "]");
+				//If the filename contains a '.' (file extension), save the extension.
+				if (fileName.find(".") != std::string::npos)
+				{
+					fileExtension = fileName.substr(fileName.find_last_of(".") + 1);
+				}
+			
+				//If the file name is not already in the map, and an extension exists, add it to the map.
+				if ((it == m_filePaths.end()) && (fileExtension != ""))
+				{	
+					m_filePaths.insert(std::pair<std::string, std::string>(fileName, filePath.string()));
+					GE_INFO("[ImportResources] File added to m_filePaths [" + filePath.string() + "]");
+				}
 			}
 		}
 	}
@@ -44,7 +61,7 @@ namespace Engine
 			std::string jsonPath = m_filePaths[Name];
 			std::string extension;
 
-			GE_INFO("[ImportResources] Path is " + jsonPath);
+			//GE_INFO("[ImportResources] Path is " + jsonPath);
 
 			//If json path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the json.
 			if (jsonPath != "")
@@ -89,7 +106,7 @@ namespace Engine
 			std::string searchResult = m_filePaths[Name];
 			std::string extension;
 		
-			GE_INFO("[ImportResources] Search Result is " + searchResult);
+			//GE_INFO("[ImportResources] Search Result is " + searchResult);
 
 			//If shader path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the shader.
 			if (searchResult != "")

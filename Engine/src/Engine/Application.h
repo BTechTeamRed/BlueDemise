@@ -7,7 +7,6 @@ namespace Engine
 	class ENGINE_API Application
 	{
 	public:
-		ImportResources m_importResources1;
 		void Run();
 	};
 
