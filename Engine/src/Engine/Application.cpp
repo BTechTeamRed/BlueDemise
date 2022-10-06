@@ -9,7 +9,7 @@ using namespace engine_concurrent;
 
 namespace Engine
 {
-	//static std::mutex letterProtect;
+	static std::mutex letterProtect;
 
 	void job()
 	{
@@ -19,39 +19,50 @@ namespace Engine
 	void count(void* param)
 	{
 		std::pair<int, char*>* data = (std::pair<int, char*>*) param;
+		std::unique_lock lock(letterProtect);
 		char letter = *data->second;
 		int stop = data->first;
+		lock.unlock();
 
-		GE_CORE_TRACE("Working...");
 		for (int i = 0; i < stop; i++)
 		{
 			GE_CORE_INFO("{0}: {1}", letter, i);
 		}
-		//std::unique_lock lock(letterProtect);
+		
+		lock.lock();
 		(* data->second)++;
-		//lock.unlock();
+		lock.unlock();
 		delete data;
+	}
+
+	void spawn(void* param)
+	{
+		std::pair<int, char*>* data = (std::pair<int, char*>*) param;
+		std::pair<int, char*>* otherParam;
+		int stop = data->first;
+		ThreadJob* job;
+		std::string name;
+
+		for (int i = 0; i < stop; i++)
+		{
+			otherParam = new std::pair<int, char*>(i, data->second);
+			name = "Count Job " + i;
+			job = new ThreadJob((EntryPoint*)count, (void*)otherParam, name);
+			JobQueue::getInstance()->postJob(job);
+		}
 	}
 
 	void Application::Run()
 	{
-		GE_CORE_TRACE("Starting application!");
-		GE_CORE_TRACE("Creating thread pool");
 		ThreadPool* thePool = ThreadPool::getInstance();
-		char letter = 'a';
-		GE_CORE_TRACE("Creating jobs...");
-		for (int i = 0; i < 100; i++)
+		char letter = 'A';
+		for (int i = 1; i <= 10; i++)
 		{
-			GE_CORE_TRACE("\tCreating job {0}", i);
-			std::string name = "Test Job " + i;
+			std::string name = "Spawn Job " + (letter + i);
 			std::pair<int, char*>* data = new std::pair(i, &letter);
-			ThreadJob* job = new ThreadJob((EntryPoint*)count, (void*)data, name, Priority::NORMAL);
-			GE_CORE_TRACE("\tJob {0} created", i);
-			GE_CORE_TRACE("\t Adding job {0} to queue", i);
+			ThreadJob* job = new ThreadJob((EntryPoint*)spawn, (void*)data, name, Priority::NORMAL);
 			JobQueue::getInstance()->postJob(job);
-			GE_CORE_TRACE("Job {0} added to queue", i);
 		}
-		GE_CORE_TRACE("Job's done!");
 		while (true);
 	}
 }

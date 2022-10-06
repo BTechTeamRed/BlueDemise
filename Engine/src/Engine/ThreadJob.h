@@ -26,6 +26,7 @@ namespace engine_concurrent
 		
 		void run();
 		const Priority& getPriority();
+		const std::string& getName();
 	protected:
 		//
 

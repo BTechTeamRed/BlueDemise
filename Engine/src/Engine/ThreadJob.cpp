@@ -20,3 +20,7 @@ const Priority& ThreadJob::getPriority()
 	return m_priority;
 }
 
+const std::string& ThreadJob::getName()
+{
+	return m_jobName;
+}
