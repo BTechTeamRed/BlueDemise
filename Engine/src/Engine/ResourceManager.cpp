@@ -1,9 +1,10 @@
 #include "ResourceManager.h"
 
+
 namespace Engine
 {
-	ResourceManager* ResourceManager::pinstance_{ nullptr };
-	std::mutex ResourceManager::mutex_;
+	ResourceManager* ResourceManager::m_pinstance{ nullptr };
+	std::mutex ResourceManager::m_mutex;
 	
 	//Finds all files under the 'data' path and stores the paths in a map. 
 	ResourceManager::ResourceManager() 
@@ -21,14 +22,14 @@ namespace Engine
 	ResourceManager* ResourceManager::getInstance() 
 	{
 		//To ensure this is thread safe, lock this function until it returns a value.
-		std::lock_guard<std::mutex> lock(mutex_);
+		std::lock_guard<std::mutex> lock(m_mutex);
 
-		if (pinstance_ == nullptr)
+		if (m_pinstance == nullptr)
 		{
-			pinstance_ = new ResourceManager();
+			m_pinstance = new ResourceManager();
 		}
 
-		return pinstance_;
+		return m_pinstance;
 	}
 
 #pragma region Set Functions
@@ -37,7 +38,7 @@ namespace Engine
 	void ResourceManager::saveFilePaths(const std::string& path)
 	{
 		//Lock function to prevent other threads from saving files concurrently.
-		std::lock_guard<std::mutex> lock(functionLock);
+		std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
@@ -73,7 +74,7 @@ namespace Engine
 	//Based on the provided filename, return the json file from a map, or load it from the system.
 	nlohmann::json ResourceManager::getJsonData(const std::string& Name)
 	{
-		std::lock_guard<std::mutex> lock(functionLock);
+		std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the json is already loaded.
 		nlohmann::json data = nullptr;
@@ -99,7 +100,7 @@ namespace Engine
 			std::string extension = path.substr(path.find_last_of('.') + 1);
 			
 			//Ensure the file is a json file
-			if (extension == "json")
+			if (extension == m_jsonFileExt)
 			{
 				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
 				
@@ -117,7 +118,7 @@ namespace Engine
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& Name)
 	{
-		std::lock_guard<std::mutex> lock(functionLock);
+		std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the shader is already loaded.
 		std::string data;
@@ -144,7 +145,8 @@ namespace Engine
 			//Ensure the file is a shader file, based on the extension. 
 			std::string extension = searchResult.substr(searchResult.find_last_of('.') + 1);
 
-			if (extension == "fs" || extension == "vs")
+			//Check if the extension is apart of the acceptable shader extensions stored in m_shaderFileExts.
+			if (std::find(m_shaderFileExts.begin(), m_shaderFileExts.end(), extension) != m_shaderFileExts.end())
 			{
 				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
 				data = readSource(searchResult);

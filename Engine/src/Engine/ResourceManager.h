@@ -10,7 +10,6 @@
 #include <filesystem>
 #include <map>
 
-
 //Written by Kevin Vilanova, KevinAlexV.
 //Class is intended to import and manage assets and resources used by the game engine.
 namespace Engine
@@ -59,13 +58,24 @@ namespace Engine
 		
 		private:
 
-			//With static lock mutex_, this is used for static functions. 
-			static ResourceManager* pinstance_;
-			static std::mutex mutex_;
+			
 
-			std::mutex functionLock;
+			//The static instance of ResourceManager that will be returned if the resource manager is requested.
+			static ResourceManager* m_pinstance;
+			
+			//static lock m_mutex is the lock to be used for static functions. Otherwise, m_functionlock should be utilized.
+			static std::mutex m_mutex;
+			std::mutex m_functionLock;
+			
+			#pragma region File Storage Variables
+			
+			//Extensions for all files handled through resource manager.
+			std::string m_jsonFileExt = "json";
 
-			#pragma region Maps and Vectors
+			std::vector<std::string> m_shaderFileExts = { "vs", "fs" };
+			#pragma endregion
+
+			#pragma region File Storage Variables
 			
 						//Every file path found under the specified resources folder, 'm_sourcePath'.
 						std::unordered_map<std::string, std::string> m_filePaths{};

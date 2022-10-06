@@ -12,6 +12,7 @@
 #include "ShaderGenerator.h"
 #include "Components.h"
 #include "DeltaTime.h"
+#include "ResourceManager.h"
 
 namespace Engine
 {
