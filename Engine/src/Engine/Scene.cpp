@@ -124,7 +124,7 @@ namespace Engine
 	void Scene::loadShaders()
 	{
 		
-		ShaderGenerator shaderGenerator(m_importResources.returnShader("Fill.vs").c_str(), m_importResources.returnShader("Fill.fs").c_str());
+		ShaderGenerator shaderGenerator(ResourceManager::getInstance().getShaderData("Fill.vs").c_str(), ResourceManager::getInstance().getShaderData("Fill.fs").c_str());
 		
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
