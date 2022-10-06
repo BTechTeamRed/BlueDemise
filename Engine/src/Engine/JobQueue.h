@@ -9,6 +9,7 @@ namespace engine_concurrent
 	class JobQueue
 	{
 	public:
+		~JobQueue();
 		JobQueue(JobQueue& other) = delete;
 		void operator=(const JobQueue&) = delete;
 
@@ -21,7 +22,8 @@ namespace engine_concurrent
 		JobQueue();
 
 		static JobQueue* instance;
-		static std::mutex mutex;
-		std::list<ThreadJob*> m_jobList;
+		static std::mutex instanceMutex;
+		static std::mutex queueMutex;
+		std::list<ThreadJob*>* m_jobList;
 	};
 }

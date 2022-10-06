@@ -2,10 +2,11 @@
 
 using namespace engine_concurrent;
 
-ThreadJob::ThreadJob(EntryPoint* entryPoint, Priority priority, void* param)
+ThreadJob::ThreadJob(EntryPoint* entryPoint, void* param, std::string& name, Priority priority)
 	: m_pEntryPoint(entryPoint), // Entry point is a pointer to the functions to be run
 	m_priority(priority), 
-	m_param(param) // Param are the parameters to be passed to the entry point function  
+	m_param(param), // Param are the parameters to be passed to the entry point function  
+	m_jobName(name)
 {
 }
 

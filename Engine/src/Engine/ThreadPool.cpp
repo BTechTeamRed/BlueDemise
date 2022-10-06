@@ -13,9 +13,9 @@ std::mutex ThreadPool::mutex; // Instantiate the mutex
 //make 1 thread for each core, -1 to leave space for the main thread
 ThreadPool::ThreadPool() : m_threads(std::thread::hardware_concurrency()-1)
 {
-    for (auto& thread : m_threads)
+    for (int i = 0; i < m_threads.size(); i++)
     {
-        thread = new Thread();
+        m_threads[i] = new Thread(i);
     }
 }
 

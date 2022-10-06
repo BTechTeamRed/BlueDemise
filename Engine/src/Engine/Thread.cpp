@@ -9,13 +9,12 @@ using namespace engine_concurrent;
 // THREADS
 #pragma region Threads
 
-Thread::Thread() : 
+Thread::Thread(int id) : 
 	m_threadJob(nullptr),
-	m_thread (new std::thread(&Thread::run, this))
+	m_thread (new std::thread(&Thread::run, this)),
+	m_id(id)
 {
-
 }
-
 
 ThreadJob* Thread::getJob()
 {
@@ -37,6 +36,7 @@ void Thread::run()
 		else // If thread has a job to do
 		{
 			m_threadJob->run(); // Run the thread job
+			delete m_threadJob;
 			m_threadJob = queue->getJob();
 			//m_threadJob = nullptr; // Then go back to no job
 		}

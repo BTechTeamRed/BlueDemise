@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace engine_concurrent
 {
@@ -16,8 +17,9 @@ namespace engine_concurrent
 		// and return something generic to the caller
 	public:
 		ThreadJob(EntryPoint* entryPoint,
-			Priority priority = Priority::NORMAL,
-			void* param = nullptr);
+			void* param = nullptr,
+			std::string& name = std::string("ANON JOB"),
+			Priority priority = Priority::NORMAL);
 		//Thread jobs should not be copied
 		ThreadJob(ThreadJob& other) = delete;
 		void operator=(ThreadJob& other) = delete;
@@ -31,6 +33,7 @@ namespace engine_concurrent
 		EntryPoint* m_pEntryPoint;
 		void* m_param;
         Priority m_priority;
+		std::string m_jobName;
 		//Counter* m_pCounter;
 
 		int count; // 

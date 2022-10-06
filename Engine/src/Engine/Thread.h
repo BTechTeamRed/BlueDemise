@@ -11,16 +11,15 @@ namespace engine_concurrent
     {
     public:
         //TODO: Threads need a null job to start with
-        explicit Thread(); // explicit constructor for threads
+        explicit Thread(int id); // explicit constructor for threads
         ThreadJob* getJob();
         void run();
-
     protected:
         //
 
     private:
         std::thread* m_thread;
         ThreadJob* m_threadJob; // pointer to the thread's current job
-
+        int m_id;
     };
 }
