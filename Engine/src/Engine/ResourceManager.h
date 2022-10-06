@@ -21,67 +21,77 @@ namespace Engine
 		
 		public:
 
-#pragma region Class Instance
-			
-			static ResourceManager& getInstance()
-			{
-				//instantiated on first use. To ensure this class is a singleton, and not another instance.
-				static ResourceManager instance; 
-				return instance;
-			}
-#pragma endregion
+			#pragma region Singleton Instance Management
 
-#pragma region Set Functions
+			//Singletons should not be cloneable, this is to prevent clones.
+			ResourceManager(ResourceManager &other) = delete;
+			
+			//Singletons should not be assignable, this is to prevent that.
+			void operator=(const ResourceManager &) = delete;
+			
+			//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
+			static ResourceManager* getInstance();
+			
+			#pragma endregion
+
+			#pragma region Set Functions
 
 			//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
 			void saveFilePaths(const std::string& path);
-#pragma endregion
+			#pragma endregion
 
-#pragma region Get Functions
+			#pragma region Get Functions
 			
 			//Function to return a json from the hashmap based on a provided name. Returns a nullptr if no json is found.
 			nlohmann::json getJsonData(const std::string& Name);
 
 			//Function to return a shader from the hashmap based on a provided name. Returns an empty string if no shader is found.
 			std::string getShaderData(const std::string& Name);
-#pragma endregion
+			#pragma endregion
+
+		
+		protected:
+			#pragma region Constructors
 			
+						//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
+						ResourceManager();
+			#pragma endregion
+		
 		private:
 
-#pragma region Constructors
-			
-			//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
-			ResourceManager();
-#pragma endregion
+			//With static lock mutex_, this is used for static functions. 
+			static ResourceManager* pinstance_;
+			static std::mutex mutex_;
 
-#pragma region Maps and Vectors
-			
-			//Every file path found under the specified resources folder, 'm_sourcePath'.
-			std::unordered_map<std::string, std::string> m_filePaths{};
+			std::mutex functionLock;
 
-			//For image files. Not sure what's imported yet. @Cole, you can modify this. STB is the library currently being used.
-			//std::map<std::string, int> m_images{ {"Enemy", 10}, {"Player", 15}, {"Tile", 20}, };
-
-			//A map to store Json files, utilizing the json library.
-			std::unordered_map<std::string, nlohmann::json> m_jsons{};
+			#pragma region Maps and Vectors
 			
-			//A map to store shader files as strings
-			std::unordered_map<std::string, std::string> m_shaders{};
+						//Every file path found under the specified resources folder, 'm_sourcePath'.
+						std::unordered_map<std::string, std::string> m_filePaths{};
 
-			//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
-			//This can be added to from Application/Game code for custom paths.
-			std::vector<std::string> m_sourcePaths = { std::filesystem::current_path().string() + "\\Data" };
+						//For image files. Not sure what's imported yet. @Cole, you can modify this. STB is the library currently being used.
+						//std::map<std::string, int> m_images{ {"Enemy", 10}, {"Player", 15}, {"Tile", 20}, };
 
-#pragma endregion
+						//A map to store Json files, utilizing the json library.
+						std::unordered_map<std::string, nlohmann::json> m_jsons{};
 			
+						//A map to store shader files as strings
+						std::unordered_map<std::string, std::string> m_shaders{};
+
+						//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
+						//This can be added to from Application/Game code for custom paths.
+						std::vector<std::string> m_sourcePaths = { std::filesystem::current_path().string() + "\\Data" };
+
+			#pragma endregion
 			
-#pragma region Set & Read/Load Functions
+			#pragma region Set & Read/Load Functions
 		
-			//Add file path from provided directory_entry to the m_filePaths map.
-			void saveFilePath(std::filesystem::directory_entry path);
+						//Add file path from provided directory_entry to the m_filePaths map.
+						void saveFilePath(std::filesystem::directory_entry path);
 
-			//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
-			std::string readSource(const std::string &sourcePath);
-#pragma endregion
+						//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
+						std::string readSource(const std::string &sourcePath);
+			#pragma endregion
 	};
 }

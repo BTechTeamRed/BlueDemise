@@ -2,6 +2,8 @@
 
 namespace Engine
 {
+	ResourceManager* ResourceManager::pinstance_{ nullptr };
+	std::mutex ResourceManager::mutex_;
 	
 	//Finds all files under the 'data' path and stores the paths in a map. 
 	ResourceManager::ResourceManager() 
@@ -15,11 +17,28 @@ namespace Engine
 		}
 	}
 
+	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
+	ResourceManager* ResourceManager::getInstance() 
+	{
+		//To ensure this is thread safe, lock this function until it returns a value.
+		std::lock_guard<std::mutex> lock(mutex_);
+
+		if (pinstance_ == nullptr)
+		{
+			pinstance_ = new ResourceManager();
+		}
+
+		return pinstance_;
+	}
+
 #pragma region Set Functions
 	
 	//Save all file paths from the provided path into m_filePaths, including subdirectories.
 	void ResourceManager::saveFilePaths(const std::string& path)
 	{
+		//Lock function to prevent other threads from saving files concurrently.
+		std::lock_guard<std::mutex> lock(functionLock);
+
 		//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
 		{
@@ -54,6 +73,8 @@ namespace Engine
 	//Based on the provided filename, return the json file from a map, or load it from the system.
 	nlohmann::json ResourceManager::getJsonData(const std::string& Name)
 	{
+		std::lock_guard<std::mutex> lock(functionLock);
+
 		//Initilaze the return value, and create a map iterator to check if the json is already loaded.
 		nlohmann::json data = nullptr;
 		std::unordered_map<std::string, nlohmann::json>::iterator it = m_jsons.find(Name);
@@ -96,6 +117,8 @@ namespace Engine
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& Name)
 	{
+		std::lock_guard<std::mutex> lock(functionLock);
+
 		//Initilaze the return value, and create a map iterator to check if the shader is already loaded.
 		std::string data;
 		std::unordered_map<std::string, std::string>::iterator it = m_shaders.find(Name);

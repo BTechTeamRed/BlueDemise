@@ -124,7 +124,10 @@ namespace Engine
 	void Scene::loadShaders()
 	{
 		
-		ShaderGenerator shaderGenerator(ResourceManager::getInstance().getShaderData("Fill.vs").c_str(), ResourceManager::getInstance().getShaderData("Fill.fs").c_str());
+		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
+		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
+
+		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
 		
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
