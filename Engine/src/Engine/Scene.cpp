@@ -30,6 +30,11 @@ namespace Engine
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
+		UserInterface::initialize(m_window);
+
+		m_explorerPanel.setPosition(glm::uvec2(0, 0));
+		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight));
+
 		createEntities();
 
 		while (!glfwWindowShouldClose(m_window))
@@ -56,6 +61,13 @@ namespace Engine
 	void Scene::onRuntimeUpdate()
 	{
 		renderScene();
+
+		UserInterface::startUI();
+
+		m_explorerPanel.show();
+
+		UserInterface::endUI();
+
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}

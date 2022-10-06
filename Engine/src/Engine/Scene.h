@@ -2,6 +2,7 @@
 
 #include "entt.h"
 #include "Components.h"
+#include "Explorer.h"
 
 namespace Engine
 {
@@ -51,6 +52,7 @@ namespace Engine
         int m_windowWidth{480};
         int m_windowHeight{480};
 
+        Explorer m_explorerPanel;
 
         GLuint m_programId;
 
