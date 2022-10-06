@@ -4,6 +4,7 @@
 #include "ThreadJob.h"
 #include "Log.h"
 #include <tuple>
+#include <sstream>
 
 using namespace engine_concurrent;
 
@@ -45,8 +46,10 @@ namespace Engine
 
 		for (int i = 0; i < stop; i++)
 		{
+			std::stringstream str;
+			str << "Count Job " << i;
 			otherParam = new std::pair<int, char*>(i, data->second);
-			name = "Count Job " + i;
+			name = str.str();
 			job = new ThreadJob((EntryPoint*)count, (void*)otherParam, name);
 			JobQueue::getInstance()->postJob(job);
 		}
@@ -58,7 +61,9 @@ namespace Engine
 		char letter = 'A';
 		for (int i = 1; i <= 10; i++)
 		{
-			std::string name = "Spawn Job " + (letter + i);
+			std::stringstream str;
+			str << "Spawn Job " << i;
+			std::string name = str.str();
 			std::pair<int, char*>* data = new std::pair(i, &letter);
 			ThreadJob* job = new ThreadJob((EntryPoint*)spawn, (void*)data, name, Priority::NORMAL);
 			JobQueue::getInstance()->postJob(job);

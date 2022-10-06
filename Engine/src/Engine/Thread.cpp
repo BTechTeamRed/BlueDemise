@@ -37,7 +37,7 @@ void Thread::run()
 		} 
 		else // If thread has a job to do
 		{
-			GE_CORE_TRACE("Thread {0} working on {1}", m_id, m_threadJob->getName());
+			GE_CORE_TRACE("Thread {d} working on {s}", m_id, m_threadJob->getName());
 			m_threadJob->run(); // Run the thread job
 			//GE_CORE_TRACE("Thread {0} finished {1}", m_id, m_threadJob->getName());
 			delete m_threadJob;
