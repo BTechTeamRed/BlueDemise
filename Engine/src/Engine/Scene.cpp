@@ -10,8 +10,9 @@
 
 #include "Entity.h"
 #include "ShaderGenerator.h"
-#include "SourceGatherer.h"
 #include "Components.h"
+#include "DeltaTime.h"
+#include "ResourceManager.h"
 
 namespace Engine
 {
@@ -34,7 +35,8 @@ namespace Engine
 
 		while (!glfwWindowShouldClose(m_window))
 		{
-			onRuntimeUpdate();
+			m_deltaTime.updateDeltaTime();
+			onRuntimeUpdate(m_deltaTime);
 		}
 
 		onRuntimeStop();
@@ -53,9 +55,9 @@ namespace Engine
 		glDeleteProgram(m_programId);
 	}
 
-	void Scene::onRuntimeUpdate()
+	void Scene::onRuntimeUpdate(DeltaTime dt)
 	{
-		renderScene();
+		renderScene(dt);
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
@@ -87,7 +89,7 @@ namespace Engine
     }
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-	void Scene::renderScene()
+	void Scene::renderScene(DeltaTime dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -122,12 +124,12 @@ namespace Engine
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
-		SourceGatherer sg(new std::string[2] {
-		"..\\Engine\\src\\Engine\\Shaders\\Fill.vs",
-		"..\\Engine\\src\\Engine\\Shaders\\Fill.fs"
-		}, 2);
+		
+		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
+		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
 
-		ShaderGenerator shaderGenerator(sg.getSource().c_str(), sg.getSource(1).c_str());
+		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
+		
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
 	}
