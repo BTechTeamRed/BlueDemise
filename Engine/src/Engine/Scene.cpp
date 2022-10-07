@@ -58,14 +58,20 @@ namespace Engine
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{
-		//get a view on entities with a script Component, and execture those actions.
+		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
 		{
-			script.m_instance->onUpdate(dt);
-		}
-		
+			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
+		}		
 		renderScene(dt);
+
+		//Execute onLateUpdate().
+		for (auto [entity, script] : entities.each())
+		{
+			if (script.m_instance->m_enabled) script.m_instance->onLateUpdate(dt);//don't update if entity is disabled
+		}
+
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
