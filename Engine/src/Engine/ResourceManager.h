@@ -56,16 +56,14 @@ namespace Engine
 		protected:
 			#pragma region Constructors & Deconstructors
 			
-						//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
-						ResourceManager();
+			//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
+			ResourceManager();
 
-						//Deconstructor
-						~ResourceManager();
+			//Deconstructor
+			~ResourceManager();
 			#pragma endregion
 		
 		private:
-
-			
 
 			//The static instance of ResourceManager that will be returned if the resource manager is requested.
 			static ResourceManager* m_pinstance;
@@ -81,36 +79,35 @@ namespace Engine
 
 			std::vector<std::string> m_shaderFileExts = { "vs", "fs" };
 			
-			std::vector<std::string> m_imageFileExts = { "jpeg", "png" };
+			std::vector<std::string> m_imageFileExts = { "jpeg", "png", "jpg"};
 			#pragma endregion
 
 			#pragma region File Storage Variables
 			
-						//Every file path found under the specified resources folder, 'm_sourcePath'.
-						std::unordered_map<std::string, std::string> m_filePaths{};
+			//Every file path found under the specified resources folder, 'm_sourcePath'.
+			std::unordered_map<std::string, std::string> m_filePaths{};
 
-						//A map to store image files, utilizing the STB library (note: does not support progressive JPEG). This stores unsigned char pointers, reserving a set amount of memory for each image.
-						std::unordered_map<std::string, unsigned char*> m_images{};
-
-						//A map to store Json files, utilizing the json library.
-						std::unordered_map<std::string, nlohmann::json> m_jsons{};
+			//A map to store image files, utilizing the STB library (note: does not support progressive JPEG). This stores unsigned char pointers, reserving a set amount of memory for each image.
+			std::unordered_map<std::string, unsigned char*> m_images{};
 			
-						//A map to store shader files as strings
-						std::unordered_map<std::string, std::string> m_shaders{};
+			//A map to store Json files, utilizing the json library.
+			std::unordered_map<std::string, nlohmann::json> m_jsons{};
+			
+			//A map to store shader files as strings
+			std::unordered_map<std::string, std::string> m_shaders{};
 
-						//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
-						//This can be added to from Application/Game code for custom paths.
-						std::vector<std::string> m_sourcePaths = { std::filesystem::current_path().string() + "\\Data" };
-
+			//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
+			//This can be added to from Application/Game code for custom paths.
+			std::vector<std::string> m_sourcePaths = { std::filesystem::current_path().string() + "\\Data" };
 			#pragma endregion
 			
 			#pragma region Set & Read/Load Functions
 		
-						//Add file path from provided directory_entry to the m_filePaths map.
-						void saveFilePath(std::filesystem::directory_entry path);
+			//Add file path from provided directory_entry to the m_filePaths map.
+			void saveFilePath(std::filesystem::directory_entry path);
 
-						//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
-						std::string readSource(const std::string &sourcePath);
+			//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
+			std::string readSource(const std::string &sourcePath);
 			#pragma endregion
 	};
 }

@@ -168,6 +168,8 @@ namespace Engine
 				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
 				data = stbi_load(path.c_str(), &width, &height, &numComponents, 4);
 				
+				std::cout << "\n\nWidth: " << width << " Height: " << height << " NumComponents: " << numComponents << std::endl << std::endl;
+
 				//If image data isn't NULL, store and return data.
 				if (data != NULL)
 				{
@@ -176,6 +178,10 @@ namespace Engine
 				}
 				
 				GE_CORE_ERROR("[ResourceManager] Failed to load image " + Name);
+			}
+			else
+			{
+				GE_CORE_ERROR("[ResourceManager] " + Name + " is not an image file. Verify it is supported by STB, and the extension is stored within m_imageFileExts");
 			}
 		}
 

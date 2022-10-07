@@ -16,13 +16,8 @@
 
 namespace Engine
 {
-    Entity Scene::createEntity(std::string tag)
-    {
-        Entity entity(m_registry.create(), this);
-        entity.addComponent<TagComponent>(tag);
-        return entity;
-    }
-
+	
+#pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
 		if (!initializeGL()) return;
@@ -61,7 +56,10 @@ namespace Engine
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
+#pragma endregion
 
+#pragma OpenGL Scene management
+	//Insitialize OpenGL, returning true if successful. Window based on GLFW.
 	bool Scene::initializeGL()
     {
 		glfwInit();
@@ -133,6 +131,17 @@ namespace Engine
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
 	}
+	
+#pragma endregion
+	
+#pragma region Entity Management
+	//Create an entity from the m_registry with the provided tag component, and return the entity.
+	Entity Scene::createEntity(std::string tag)
+	{
+		Entity entity(m_registry.create(), this);
+		entity.addComponent<TagComponent>(tag);
+		return entity;
+	}
 
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
@@ -156,25 +165,79 @@ namespace Engine
 		triangle.addComponent<VerticesComponent>(createTriangle());
 		triangle.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 0.5f));
     }
-
+#pragma endregion
+	
 	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.
 	VerticesComponent Scene::createTriangle()
 	{
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine
-		float triangleVertices[20] =
+		/*float triangleVertices[] =
 		{
 			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
-			1.f, 1.f, 0.f, 1.f, 0.f,//top right
+			1.f, 1.f, 0.f, 1.f, 0.f, //top right
 			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
-			-1.f, 1.f, 0.f, 0.f, 0.f //top left
+			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
+		};*/
+		float triangleVertices[] =
+		{
+			-1.f, -1.f, 0.f,
+			1.f, 1.f, 0.f,
+			1.f, -1.f, 0.f,
+			-1.f, 1.f, 0.f
 		};
+
+		//float triangleVertices[] =
+		//{
+		//	// first triangle
+		//	0.5f, 0.5f, 0.0f,  // top right
+		//	0.5f, -0.5f, 0.0f,  // bottom right
+		//	-0.5f, 0.5f, 0.0f,  // top left 
+		//	// second triangle
+		//	0.5f, -0.5f, 0.0f,  // bottom right
+		//	-0.5f, -0.5f, 0.0f,  // bottom left
+		//	-0.5f, 0.5f, 0.0f   // top left
+		//};
+			
 		//vertex order
-		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3};
+		
+		float texCoords[] =
+		{
+			-1.f, -1.f,  //bottom left
+			1.f, 1.f, //top right
+			1.f, -1.f, //bottom right
+			-1.f, 1.f,  //top left
+		};
+
+		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3 };
 
 		VerticesComponent vc;
 		//Each vertex has one attribute, which is 2 floats to represent position
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
+		
+		GLuint m_texture;
+
+		unsigned char* image = ResourceManager::getInstance()->getImageData("Texture_Test.jpg");
+
+		glGenTextures(1, &m_texture);
+
+		glBindTexture(GL_TEXTURE_2D, m_texture);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+		//if (comp == 3)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 338, 338, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		//else if (comp == 4)
+			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, m_texture);
+
+
 		//TODO: Update vertexAttributes for UV
 		vc.stride = sizeof(float) * 5;
 		vc.numIndices = 6;
