@@ -10,16 +10,22 @@ namespace engine_concurrent
     class Thread
     {
     public:
-        //TODO: Threads need a null job to start with
+        // C'tor
+        // id - identifying number for the thread
         explicit Thread(int id); // explicit constructor for threads
-        ThreadJob* getJob();
+        // Accessor for job
+        // Return - the job performed by the thread
+        ThreadJob* getJob(); // Does this have use
+        // Method run by the underlying thread
         void run();
     protected:
-        //
-
     private:
+        // The thread that this class wraps
         std::thread* m_thread;
+        // Current job being executed by thread
         ThreadJob* m_threadJob; // pointer to the thread's current job
+        // Unique id of thread
+        // TO DO: ensure the id is unique to thread
         int m_id;
     };
 }

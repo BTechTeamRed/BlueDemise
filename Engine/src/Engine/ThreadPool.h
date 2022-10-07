@@ -6,6 +6,8 @@
 namespace engine_concurrent
 {
 	//whatever code is in here is in the above namespace
+	// Singleton
+	// Object pool for threads
 	class ThreadPool
 	{
 	public:
@@ -19,9 +21,14 @@ namespace engine_concurrent
 	protected:
 
 	private:
-		static std::mutex mutex; // 'Static' mutex so the class can use this mutex without it being bound to an instance
-		static ThreadPool* tpInstance;
+		// Private c'tor to prevent accidental construction
 		ThreadPool(); // Redefine constructor to ensure threadpool can't be instantiated outside the class
+
+		// Mutex ensuring that only one instance of the class is created
+		static std::mutex mutex; // 'Static' mutex so the class can use this mutex without it being bound to an instance
+		// Singleton instance
+		static ThreadPool* tpInstance;
+		// The threads
 		std::vector<Thread*> m_threads; // This is the pool of threads
 	};
 }
