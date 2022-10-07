@@ -171,20 +171,20 @@ namespace Engine
 	VerticesComponent Scene::createTriangle()
 	{
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine
-		/*float triangleVertices[] =
+		float triangleVertices[] =
 		{
 			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
 			1.f, 1.f, 0.f, 1.f, 0.f, //top right
 			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
 			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
-		};*/
-		float triangleVertices[] =
+		};
+		/*float triangleVertices[] =
 		{
 			-1.f, -1.f, 0.f,
 			1.f, 1.f, 0.f,
 			1.f, -1.f, 0.f,
 			-1.f, 1.f, 0.f
-		};
+		};*/
 
 		//float triangleVertices[] =
 		//{
