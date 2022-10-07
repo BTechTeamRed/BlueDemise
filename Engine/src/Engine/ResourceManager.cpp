@@ -1,4 +1,8 @@
+//Needed to define stbi class, for stb related use in this file. Essentially defines code to be used in this file.
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "ResourceManager.h"
+#include "stb_image.h"
 
 
 namespace Engine
@@ -30,6 +34,16 @@ namespace Engine
 		}
 
 		return m_pinstance;
+	}
+	
+	ResourceManager::~ResourceManager() 
+	{
+		//Delete all images
+		for (auto& image : m_images)
+		{
+			stbi_image_free(image.second);
+			delete image.second;
+		}
 	}
 
 #pragma region Set Functions
@@ -115,6 +129,59 @@ namespace Engine
 		return nullptr;
 	}
 
+	//Based on the provided filename, return the image from a map, or load it from the system.
+	unsigned char* ResourceManager::getImageData(const std::string& Name)
+	{
+		std::lock_guard<std::mutex> lock(m_functionLock);
+
+		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
+		unsigned char* data = nullptr;
+		std::unordered_map<std::string, unsigned char*>::iterator it = m_images.find(Name);
+
+		//If loaded, return the image. Else, load and store the image, then return it.
+		if (it != m_images.end())
+		{
+			//Get value based on map key "Name"
+			data = m_images.find(Name)->second;
+
+			GE_CORE_WARN("[ResourceManager] Previously loaded " + Name + " found.");
+			return data;
+		}
+
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
+		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(Name);
+
+		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the data.
+		if (imagePath != m_filePaths.end())
+		{
+			std::string path = m_filePaths[Name];
+			std::string extension = path.substr(path.find_last_of('.') + 1);
+
+			//Ensure the file is an image file
+			if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
+			{
+				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
+				
+				int width, height, numComponents;
+
+				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
+				data = stbi_load(path.c_str(), &width, &height, &numComponents, 4);
+				
+				//If image data isn't NULL, store and return data.
+				if (data != NULL)
+				{
+					m_images.insert(std::pair<std::string, unsigned char*>(Name, data));
+					return data;
+				}
+				
+				GE_CORE_ERROR("[ResourceManager] Failed to load image " + Name);
+			}
+		}
+
+		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
+		return nullptr;
+	}
+	
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& Name)
 	{
