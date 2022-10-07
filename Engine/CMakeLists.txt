@@ -1,4 +1,4 @@
-add_library(Engine SHARED src/Engine/Application.cpp src/Engine/Log.cpp )
+add_library(Engine SHARED src/Engine/Application.cpp src/Engine/Log.cpp  "src/Engine/Audio.cpp" "src/Engine/Audio.h")
 
 #preprocessor definitions
 add_compile_definitions(GE_BUILD_DLL)
