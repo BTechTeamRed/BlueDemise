@@ -12,6 +12,7 @@
 #include "ShaderGenerator.h"
 #include "Components.h"
 #include "DeltaTime.h"
+#include "Scripts/ScriptableBehavior.h"
 #include "ResourceManager.h"
 
 namespace Engine
@@ -55,8 +56,15 @@ namespace Engine
 		glDeleteProgram(m_programId);
 	}
 
-	void Scene::onRuntimeUpdate(DeltaTime dt)
+	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{
+		//get a view on entities with a script Component, and execture those actions.
+		const auto entities = getEntities<ScriptComponent>();
+		for (auto [entity, script] : entities.each())
+		{
+			script.m_instance->onUpdate(dt);
+		}
+		
 		renderScene(dt);
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
@@ -89,7 +97,7 @@ namespace Engine
     }
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-	void Scene::renderScene(DeltaTime dt)
+	void Scene::renderScene(const DeltaTime& dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -155,6 +163,21 @@ namespace Engine
 			);
 		triangle.addComponent<VerticesComponent>(createTriangle());
 		triangle.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 0.5f));
+
+
+		//TODO: After Serialization: Bind Entities HERE ***
+
+		//Get a view of all entities with script component, instantiate them, and run their onCreate().
+		auto entities = getEntities<ScriptComponent>();
+		for (auto [entity, script] : entities.each())
+		{
+			if (!script.m_instance)
+			{
+				script.m_instance = script.instantiateScript();
+				script.m_instance->m_entity = Entity{ entity, this };
+				script.m_instance->onCreate();
+			}
+		}
     }
 
 	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.

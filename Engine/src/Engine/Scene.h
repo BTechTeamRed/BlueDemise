@@ -25,7 +25,7 @@ namespace Engine
         void onRuntimeStop();
 
         // Executes actions every time runtime is updated (every frame).
-        void onRuntimeUpdate(DeltaTime dt);
+        void onRuntimeUpdate(const DeltaTime& dt);
 
         // Gets a view of entities with the defined components.
         template<typename... Components>
@@ -36,7 +36,9 @@ namespace Engine
 
     private:
         bool initializeGL();
-        void renderScene(DeltaTime dt);
+        void renderScene(const DeltaTime& dt);
+
+        void runEntityScripts(const DeltaTime& dt);
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();

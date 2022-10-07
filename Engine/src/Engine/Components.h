@@ -72,4 +72,26 @@ namespace Engine
 		GLsizei stride;
 		unsigned long numIndices;
 	};
+
+	//forward declare
+	class ScriptableBehavior;
+
+	//Defines a component to create custom script actions using ScriptableBehavior
+	struct ScriptComponent
+	{
+		ScriptableBehavior* m_instance{ nullptr };
+
+		std::function<ScriptableBehavior*()> instantiateScript;
+		std::function<void()> destroyScript;
+
+		//Links the Script Component to a scpefic ScriptableBehavior
+		template<typename T>
+		void linkBehavior()
+		{
+			instantiateScript = [] { return static_cast<ScriptableBehavior*>(new T()); };
+			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
+		}
+
+
+	};
 }
