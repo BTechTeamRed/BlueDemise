@@ -1,17 +1,11 @@
 #include "Application.h"
-#include "ThreadPool.h"
-#include "JobQueue.h"
-#include "ThreadJob.h"
-#include "Log.h"
-#include <tuple>
-#include <sstream>
-
-using namespace engine_concurrent;
+#include "Scene.h"
 
 namespace Engine
 {
 	void Application::Run()
-	{
-		while (true);
+	{	
+		Scene scene;
+		scene.onRuntimeStart();
 	}
 }
