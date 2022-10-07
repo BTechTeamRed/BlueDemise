@@ -25,27 +25,24 @@ namespace engine_concurrent
 			void* param = nullptr,
 			std::string& name = std::string("ANON JOB"),
 			Priority priority = Priority::NORMAL);
-		// Thread jobs should not be copied
+
+		// Thread jobs should not be copied, able to be cloned or assigned.  These statements prevent this:
 		ThreadJob(ThreadJob& other) = delete;
 		void operator=(ThreadJob& other) = delete;
 		
-		// Called by the thread
+		// Called by the thread to run the passed in function with the passed in parameters
 		void run();
-		// Accessors
+		// Accessors to return job properties
 		const Priority& getPriority();
 		const std::string& getName();
 	protected:
 		//
 
 	private:
-		// EntryPoint run by thread
+		// EntryPoint run by thread, contains the function provided by the caller
 		EntryPoint* m_pEntryPoint;
-		// Parameters of entrypoint
-		void* m_param;
-		// Priority of job
-        Priority m_priority;
-		// Name of job
-		std::string m_jobName;
-		//Counter* m_pCounter;
+		void* m_param;          // Parameters of entrypoint
+        Priority m_priority;    // Priority of job
+		std::string m_jobName;  // Name of job, for debugging
 	};
 }

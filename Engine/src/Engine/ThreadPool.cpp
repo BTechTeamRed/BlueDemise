@@ -10,6 +10,7 @@ std::mutex ThreadPool::mutex; // Instantiate the mutex
 
 // THE JOB OF THREAD POOL IS JUST TO MAKE ALL THE THREADS and maybe more things later 
 
+// Constructor for thread pool, is run once at the start and shouldn't be run again
 //make 1 thread for each core, -1 to leave space for the main thread
 ThreadPool::ThreadPool() : m_threads(std::thread::hardware_concurrency()-1)
 {
@@ -19,6 +20,7 @@ ThreadPool::ThreadPool() : m_threads(std::thread::hardware_concurrency()-1)
     }
 }
 
+// Get the instance of the thread pool, returns a pointer to the singleton instance
 ThreadPool* ThreadPool::getInstance()
 {
 	std::lock_guard<std::mutex> lock(mutex); // Lock getInstance so only one thread can call it at once

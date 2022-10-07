@@ -31,14 +31,14 @@ void JobQueue::postJob(ThreadJob* job)
 	}
 	// Iterate over the job list
 	auto it = m_jobList->begin();
-	for (; it != m_jobList->end(); ++it)// &&
-		//(*it)->getPriority() >= job->getPriority(); ++it)
-	{
-	}
+	for (; (it != m_jobList->end() // If we're not at the end of JobList,
+        // and the priority of the job at the iterator is less or equal to the priority of the job we're adding,
+        && ((*it)->getPriority() <= job->getPriority())); ++it) // Increment the iterator
+	{}
+    // Otherwise stop the iterator at that point and post the job
 	m_jobList->insert(it, job);
-	//lock.unlock();
 }
-
+// Grabs and returns the job at the front of m_jobList, which will be the highest priority job
 ThreadJob* JobQueue::getJob()
 {
 	std::unique_lock<std::mutex> lock(queueMutex);
@@ -49,7 +49,6 @@ ThreadJob* JobQueue::getJob()
 		job = m_jobList->front();
 		m_jobList->pop_front();
 	}
-	//lock.unlock();
 
 	return job;
 }
