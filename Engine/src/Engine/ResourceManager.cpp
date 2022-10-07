@@ -36,6 +36,7 @@ namespace Engine
 		return m_pinstance;
 	}
 	
+	//Delete all image pointers in the image map, and frees images using stb library.
 	ResourceManager::~ResourceManager() 
 	{
 		//Delete all images
