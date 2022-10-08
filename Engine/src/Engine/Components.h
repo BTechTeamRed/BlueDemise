@@ -84,7 +84,7 @@ namespace Engine
 		std::function<ScriptableBehavior*()> instantiateScript;
 		std::function<void()> destroyScript;
 
-		//Links the Script Component to a scpefic ScriptableBehavior
+		//Links the Script Component to a specific ScriptableBehavior
 		template<typename T>
 		void linkBehavior()
 		{

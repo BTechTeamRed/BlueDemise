@@ -28,10 +28,10 @@ namespace Engine
 		virtual void onDestroy() {}
 
 		//Runs on a loop before rendering
-		virtual void onUpdate(DeltaTime dt) {}
+		virtual void onUpdate(const DeltaTime& dt) {}
 
 		//Runs after all other Entity onUpdates have been called and after rendering
-		virtual void onLateUpdate(DeltaTime dt) {}
+		virtual void onLateUpdate(const DeltaTime &dt) {}
 
 		//runs when enabled/disabled
 		virtual void onDisable() {}
