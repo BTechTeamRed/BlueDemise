@@ -166,7 +166,7 @@ namespace Engine
 				int width, height, numComponents;
 
 				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data = stbi_load(path.c_str(), &width, &height, &numComponents, 4);
+				data = stbi_load(path.c_str(), &width, &height, &numComponents, STBI_rgb);
 				
 				std::cout << "\n\nWidth: " << width << " Height: " << height << " NumComponents: " << numComponents << std::endl << std::endl;
 

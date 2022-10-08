@@ -1,4 +1,4 @@
-#include "glad/glad.h"
+ #include "glad/glad.h"
 #include "Scene.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -163,7 +163,7 @@ namespace Engine
 			glm::vec3(0, 0, 0)
 			);
 		triangle.addComponent<VerticesComponent>(createTriangle());
-		triangle.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 0.5f));
+		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
     }
 #pragma endregion
 	
@@ -217,7 +217,7 @@ namespace Engine
 		
 		GLuint m_texture;
 
-		unsigned char* image = ResourceManager::getInstance()->getImageData("Texture_Test.jpg");
+		unsigned char* image = ResourceManager::getInstance()->getImageData("Texture_Test.png");
 
 		glGenTextures(1, &m_texture);
 
@@ -229,7 +229,7 @@ namespace Engine
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
 		//if (comp == 3)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 338, 338, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		//else if (comp == 4)
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
