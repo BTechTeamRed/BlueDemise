@@ -30,10 +30,25 @@ namespace Engine
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
+		//Added for UI=======================================================================================
+
 		UserInterface::initialize(m_window);
 
-		m_explorerPanel.setPosition(glm::uvec2(0, 0));
-		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight));
+		const int menuHeight = 18;
+
+		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
+		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
+
+		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
+		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
+
+		for (int i = 0; i < m_componentsPanels.size(); i++)
+		{
+			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
+			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
+		}
+
+		//===================================================================================================
 
 		createEntities();
 
@@ -62,11 +77,23 @@ namespace Engine
 	{
 		renderScene();
 
+		//Added for UI=============================================
+
 		UserInterface::startUI();
 
+		m_mainMenu.show();
+
 		m_explorerPanel.show();
+		m_entitiesPanel.show();
+
+		for (auto& panel : m_componentsPanels)
+		{
+			panel.show();
+		}
 
 		UserInterface::endUI();
+
+		//=========================================================
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
@@ -101,6 +128,11 @@ namespace Engine
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene()
 	{
+		//Added to put triangle view in top/middle of screen
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
+		glScissor(m_windowWidth * 0.2f, m_windowHeight * 0.25f, m_windowWidth * 0.6f, (m_windowHeight * 0.75f) - 18);
+		glViewport(m_windowWidth * 0.2f, m_windowHeight * 0.25f, m_windowWidth * 0.6f, (m_windowHeight * 0.75f) - 18);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();

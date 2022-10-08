@@ -1,8 +1,7 @@
 #pragma once
-
 #include "UserInterface.h"
 
-class Explorer : public UserInterface
+class MainMenu : public UserInterface
 {
 
 public:
@@ -10,7 +9,5 @@ public:
 	virtual void show() override;
 
 private:
-
-
 
 };

@@ -2,7 +2,13 @@
 
 #include "entt.h"
 #include "Components.h"
-#include "Explorer.h"
+
+//Added for UI
+#include <array>
+#include "ExplorerPanel.h"
+#include "EntitiesPanel.h"
+#include "ComponentsPanel.h"
+#include "MainMenu.h"
 
 namespace Engine
 {
@@ -49,10 +55,21 @@ namespace Engine
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
-        int m_windowWidth{480};
-        int m_windowHeight{480};
+        int m_windowWidth{1900};
+        int m_windowHeight{1000};
 
-        Explorer m_explorerPanel;
+        //Added for UI
+        MainMenu m_mainMenu;
+        ExplorerPanel m_explorerPanel;
+        EntitiesPanel m_entitiesPanel;
+
+        //Added for UI
+        std::array<ComponentsPanel, 3> m_componentsPanels
+        {
+            "Active components",
+            "Attributes",
+            "Components"
+        };
 
         GLuint m_programId;
 
