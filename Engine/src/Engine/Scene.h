@@ -3,10 +3,11 @@
 #include "entt.h"
 #include "Components.h"
 #include "DeltaTime.h"
+#include "Engine/Core.h"
 
 namespace Engine
 {
-    class Entity;
+    class ENGINE_API Entity;
 
     // Scene keeps a registry of Entities that are then rendered and processed as part of the game loop.
     // Also responsible for loading shaders, initializing OpenGl contexts and windows, and rendering.
@@ -25,7 +26,7 @@ namespace Engine
         void onRuntimeStop();
 
         // Executes actions every time runtime is updated (every frame).
-        void onRuntimeUpdate(DeltaTime dt);
+        void onRuntimeUpdate(const DeltaTime& dt);
 
         // Gets a view of entities with the defined components.
         template<typename... Components>
@@ -36,7 +37,9 @@ namespace Engine
 
     private:
         bool initializeGL();
-        void renderScene(DeltaTime dt);
+        void renderScene(const DeltaTime& dt);
+
+        void runEntityScripts(const DeltaTime& dt);
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
