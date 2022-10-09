@@ -2,8 +2,7 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
-#include <iostream>
-#include "..\irrKlang\irrKlang.h"
+#include "irrKlang.h"
 
 // A singleton for controlling sounds throughout the application.
 // Contacts: James
