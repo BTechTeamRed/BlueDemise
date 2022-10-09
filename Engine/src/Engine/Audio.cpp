@@ -2,17 +2,18 @@
 
 using namespace std;
 using namespace irrklang;
+using namespace IAudio;
 
-AudioPlayerSingleton* AudioPlayerSingleton::instance;
+AudioPlayerSingleton* AudioPlayerSingleton::m_instance;
 
 AudioPlayerSingleton* AudioPlayerSingleton::getInstance()
 {
-	if (instance == 0)
+	if (m_instance == nullptr)
 	{
-		instance = new AudioPlayerSingleton();
+		m_instance = new AudioPlayerSingleton();
 	}
 
-	return instance;
+	return m_instance;
 }
 
 // Plays a sound, takes a path to the sound as a const char, a bool if the sound should loop,
@@ -28,15 +29,9 @@ ISound* AudioPlayerSingleton::playSound(const char* soundPath, bool loop, bool s
 	{
 		return theSound;
 	}
-	return NULL;
+	return nullptr;
 	//TODO: implement alternate media folder search if multiple media folders
 	// (for game and engine for example) are implemented
-	// 
-	//else //try different media folder in sound path? if game and engine have separate media folders.
-	//{
-	//	theSound = engine->play2D(engine/media/soundPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-	//  theSound = engine->play2D(game/media/soundPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-	//}
 }
 
 // Plays a sound in 3D space, takes a const char* path to the sound, 
@@ -48,7 +43,14 @@ ISound* AudioPlayerSingleton::playSound(const char* soundPath, bool loop, bool s
 // 
 ISound* AudioPlayerSingleton::play3DSound(const char* soundPath, vec3df sound3DPosition, bool loop, bool beginPaused, bool useSoundEffects)
 {
-	return engine->play3D(soundPath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+	ISound* theSound = engine->play3D(soundPath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+	if (theSound != 0)
+	{
+		return theSound;
+	}
+	return nullptr;
+	//TODO: implement alternate media folder search if multiple media folders
+	// (for game and engine for example) are implemented
 }
 
 // Use on an ISound* to clear memory space when the sound is no longer needed.
