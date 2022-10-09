@@ -4,7 +4,8 @@
 
 #include "irrKlang.h"
 
-namespace IAudio {
+namespace Engine 
+{
 
 	// A singleton for controlling sounds throughout the application.
 	// Contacts: James
@@ -47,7 +48,7 @@ namespace IAudio {
 //#include "Audio.h"
 //#include <iostream>
 // 
-//using namespace IAudio;
+//using namespace Engine;
 //// use namespace irrklang to skip using "irrklang::"
 //
 //AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
