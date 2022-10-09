@@ -195,16 +195,10 @@ namespace Engine
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		
 
-		//if (comp == 3)
-			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-		//else if (comp == 4)
-			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
+		
 		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.png");
-		glBindTexture(GL_TEXTURE_2D , image);
-
-
-
+		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
+		glBindTexture(GL_TEXTURE_2D , image2);
 
 		
 		//TODO: Update vertexAttributes for UV

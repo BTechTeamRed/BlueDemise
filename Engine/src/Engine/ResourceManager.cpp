@@ -147,20 +147,10 @@ namespace Engine
 			return data;
 		}
 		
-		ImageData image = getImageData(Name);
+		ImageData img = readImageData(Name);
 		
-		unsigned char* imgData = image.image;
-
-		//stbi_image_free(image.image);
-
-		int imgWidth = image.width;
-		int imgHeight = image.height;
-		int imgChannels = image.numComponents;
-
-		
-
 		//If image data isn't nullptr, store and return data.
-		if (imgData != nullptr)
+		if (img.image != nullptr)
 		{
 			GLenum texType = GL_TEXTURE_2D;
 
@@ -184,14 +174,21 @@ namespace Engine
 			// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 			// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 			
-			// Assigns the image to the OpenGL Texture object
-			glTexImage2D(texType, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData);
-
+			// Assigns the image to the OpenGL Texture object based on the number of RGB components (if 4, then alpha value is present).
+			if (img.numComponents == 3)
+				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
+			else if (img.numComponents == 4)
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
+			
+			//Free the image from memory
+			stbi_image_free(img.image);
+			
 			//Generate Mimaps (different sizes of the image)
 			glGenerateMipmap(texType);
 
 			//Store texture for later use.
 			//m_textures.insert(std::pair<std::string, GLuint>(Name, data));
+			
 			
 			//Unbind the texture so it isn't modified anymore.
 			glBindTexture(texType, 0);
@@ -207,61 +204,6 @@ namespace Engine
 	
 	}
 
-	//Based on the provided filename, return the image from a map, or load it from the system.
-	ResourceManager::ImageData ResourceManager::getImageData(const std::string& Name)
-	{
-		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
-		//std::unordered_map<std::string, ResourceManager::ImageData>::iterator it = m_images.find(Name);
-
-		/*
-		//If loaded, return the image. Else, load and store the image, then return it.
-		if (it != m_images.end())
-		{
-			//Get value based on map key "Name"
-			data = m_images.find(Name)->second;
-
-			GE_CORE_WARN("[ResourceManager] Previously loaded " + Name + " found.");
-			return data;
-		}
-		*/
-		
-		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(Name);
-
-		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the data.
-		if (imagePath != m_filePaths.end())
-		{
-			std::string path = m_filePaths[Name];
-			std::string extension = path.substr(path.find_last_of('.') + 1);
-
-			//Ensure the file is an image file
-			if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
-			{
-				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
-
-				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
-				
-				//If image data isn't NULL, store and return data.
-				if (data.image != nullptr)
-				{
-					//m_images.insert(std::pair<std::string, ResourceManager::ImageData>(Name, data));
-					
-					return data;
-				}
-				
-				GE_CORE_ERROR("[ResourceManager] Failed to load image " + Name);
-			}
-			else
-			{
-				GE_CORE_ERROR("[ResourceManager] " + Name + " is not an image file. Verify it is supported by STB, and the extension is stored within m_imageFileExts");
-			}
-		}
-
-		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
-		return data;
-	}
 	
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& Name)
@@ -332,6 +274,48 @@ namespace Engine
 		}
 		
 		return src;
+	}
+
+	//Based on the provided filename, load the image from the system and return the imageData struct contain all data provided by stbi_load. 
+	//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
+	ResourceManager::ImageData ResourceManager::readImageData(const std::string& Name)
+	{
+		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
+		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
+
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
+		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(Name);
+
+		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the data.
+		if (imagePath != m_filePaths.end())
+		{
+			std::string path = m_filePaths[Name];
+			std::string extension = path.substr(path.find_last_of('.') + 1);
+
+			//Ensure the file is an image file
+			if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
+			{
+				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
+
+				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
+				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
+
+				//If image data isn't NULL, store and return data.
+				if (data.image != nullptr)
+				{
+					return data;
+				}
+
+				GE_CORE_ERROR("[ResourceManager] Failed to load image " + Name);
+			}
+			else
+			{
+				GE_CORE_ERROR("[ResourceManager] " + Name + " is not an image file. Verify it is supported by STB, and the extension is stored within m_imageFileExts");
+			}
+		}
+
+		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
+		return data;
 	}
 #pragma endregion
 }

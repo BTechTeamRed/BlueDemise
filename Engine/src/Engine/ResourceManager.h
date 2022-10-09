@@ -57,9 +57,7 @@ namespace Engine
 
 			GLuint getTexture(const std::string& Name);
 
-			//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
-			ImageData getImageData(const std::string& Name);
-
+			
 			//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 			std::string getShaderData(const std::string& Name);
 			#pragma endregion
@@ -100,9 +98,6 @@ namespace Engine
 			std::unordered_map<std::string, std::string> m_filePaths{};
 
 			std::unordered_map<std::string, GLuint> m_textures{};
-
-			//A map to store image files, utilizing the STB library (note: does not support progressive JPEG). This stores unsigned char pointers, reserving a set amount of memory for each image.
-			//std::unordered_map<std::string, ImageData> m_images{};
 			
 			//A map to store Json files, utilizing the json library.
 			std::unordered_map<std::string, nlohmann::json> m_jsons{};
@@ -119,6 +114,10 @@ namespace Engine
 		
 			//Add file path from provided directory_entry to the m_filePaths map.
 			void saveFilePath(std::filesystem::directory_entry path);
+
+			//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
+			//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
+			ImageData readImageData(const std::string& Name);
 
 			//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
 			std::string readSource(const std::string &sourcePath);
