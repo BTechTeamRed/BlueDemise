@@ -2,7 +2,7 @@
 
 using namespace std;
 using namespace irrklang;
-using namespace IAudio;
+using namespace Engine;
 
 AudioPlayerSingleton* AudioPlayerSingleton::m_instance;
 
