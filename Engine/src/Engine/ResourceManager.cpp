@@ -187,7 +187,7 @@ namespace Engine
 			glGenerateMipmap(texType);
 
 			//Store texture for later use.
-			//m_textures.insert(std::pair<std::string, GLuint>(Name, data));
+			m_textures.insert(std::pair<std::string, GLuint>(Name, data));
 			
 			
 			//Unbind the texture so it isn't modified anymore.

@@ -196,7 +196,7 @@ namespace Engine
 		
 
 		
-		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.png");
+		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		glBindTexture(GL_TEXTURE_2D , image2);
 
