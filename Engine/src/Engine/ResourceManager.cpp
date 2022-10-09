@@ -38,12 +38,11 @@ namespace Engine
 	//Delete all image pointers in the image map, and frees images using stb library.
 	ResourceManager::~ResourceManager() 
 	{
-		//Delete all images
-		//for (auto& image : m_images)
-		//{
-			//stbi_image_free(image.second.image);
-			//delete image.second.image;
-		//}/
+		//Delete all textures
+		for (auto& texture : m_textures)
+		{
+			glDeleteTextures(1, &texture.second);
+		}
 	}
 
 #pragma region Set Functions
@@ -129,6 +128,7 @@ namespace Engine
 		return nullptr;
 	}
 
+	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
 	GLuint ResourceManager::getTexture(const std::string& Name)
 	{
 		//std::lock_guard<std::mutex> lock(m_functionLock);
@@ -204,7 +204,6 @@ namespace Engine
 	
 	}
 
-	
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& Name)
 	{
