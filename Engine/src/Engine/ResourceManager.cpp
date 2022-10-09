@@ -4,7 +4,6 @@
 #include "ResourceManager.h"
 #include "stb_image.h"
 
-
 namespace Engine
 {
 	ResourceManager* ResourceManager::m_pinstance{ nullptr };
@@ -40,11 +39,11 @@ namespace Engine
 	ResourceManager::~ResourceManager() 
 	{
 		//Delete all images
-		for (auto& image : m_images)
-		{
-			stbi_image_free(image.second);
-			delete image.second;
-		}
+		//for (auto& image : m_images)
+		//{
+			//stbi_image_free(image.second.image);
+			//delete image.second.image;
+		//}/
 	}
 
 #pragma region Set Functions
@@ -130,15 +129,92 @@ namespace Engine
 		return nullptr;
 	}
 
-	//Based on the provided filename, return the image from a map, or load it from the system.
-	unsigned char* ResourceManager::getImageData(const std::string& Name)
+	GLuint ResourceManager::getTexture(const std::string& Name)
 	{
-		std::lock_guard<std::mutex> lock(m_functionLock);
+		//std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		unsigned char* data = nullptr;
-		std::unordered_map<std::string, unsigned char*>::iterator it = m_images.find(Name);
+		GLuint data;
+		std::unordered_map<std::string, GLuint>::iterator it = m_textures.find(Name);
 
+		//If loaded, return the image. Else, load and store the image, then return it.
+		if (it != m_textures.end())
+		{
+			//Get value based on map key "Name"
+			data = m_textures.find(Name)->second;
+
+			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + Name + " found.");
+			return data;
+		}
+		
+		ImageData image = getImageData(Name);
+		
+		unsigned char* imgData = image.image;
+
+		//stbi_image_free(image.image);
+
+		int imgWidth = image.width;
+		int imgHeight = image.height;
+		int imgChannels = image.numComponents;
+
+		
+
+		//If image data isn't nullptr, store and return data.
+		if (imgData != nullptr)
+		{
+			GLenum texType = GL_TEXTURE_2D;
+
+			// Generates an OpenGL texture object
+			glGenTextures(1, &data);
+			
+			// Assigns the texture to a Texture Unit
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(texType, data);
+
+			
+			// Configures the type of algorithm that is used to make the image smaller or bigger
+			glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+			glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			//Configures the way the texture repeasts
+			glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+			glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+			
+			// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
+			// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+			// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
+			
+			// Assigns the image to the OpenGL Texture object
+			glTexImage2D(texType, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData);
+
+			//Generate Mimaps (different sizes of the image)
+			glGenerateMipmap(texType);
+
+			//Store texture for later use.
+			//m_textures.insert(std::pair<std::string, GLuint>(Name, data));
+			
+			//Unbind the texture so it isn't modified anymore.
+			glBindTexture(texType, 0);
+			
+			return data;
+		}
+		else 
+		{
+			GE_CORE_ERROR("[ResourceManager] " + Name + " texture could not be created. Image = nullptr");
+		}
+		
+		return NULL;
+	
+	}
+
+	//Based on the provided filename, return the image from a map, or load it from the system.
+	ResourceManager::ImageData ResourceManager::getImageData(const std::string& Name)
+	{
+		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
+		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
+		//std::unordered_map<std::string, ResourceManager::ImageData>::iterator it = m_images.find(Name);
+
+		/*
 		//If loaded, return the image. Else, load and store the image, then return it.
 		if (it != m_images.end())
 		{
@@ -148,7 +224,8 @@ namespace Engine
 			GE_CORE_WARN("[ResourceManager] Previously loaded " + Name + " found.");
 			return data;
 		}
-
+		*/
+		
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
 		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(Name);
 
@@ -162,18 +239,15 @@ namespace Engine
 			if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
 			{
 				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
-				
-				int width, height, numComponents;
 
 				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data = stbi_load(path.c_str(), &width, &height, &numComponents, STBI_rgb);
+				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
 				
-				std::cout << "\n\nWidth: " << width << " Height: " << height << " NumComponents: " << numComponents << std::endl << std::endl;
-
 				//If image data isn't NULL, store and return data.
-				if (data != NULL)
+				if (data.image != nullptr)
 				{
-					m_images.insert(std::pair<std::string, unsigned char*>(Name, data));
+					//m_images.insert(std::pair<std::string, ResourceManager::ImageData>(Name, data));
+					
 					return data;
 				}
 				
@@ -186,7 +260,7 @@ namespace Engine
 		}
 
 		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
-		return nullptr;
+		return data;
 	}
 	
 	//Based on the provided filename, return the shader source from a map, or load it from the system.

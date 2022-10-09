@@ -178,27 +178,6 @@ namespace Engine
 			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
 			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
 		};
-		/*float triangleVertices[] =
-		{
-			-1.f, -1.f, 0.f,
-			1.f, 1.f, 0.f,
-			1.f, -1.f, 0.f,
-			-1.f, 1.f, 0.f
-		};*/
-
-		//float triangleVertices[] =
-		//{
-		//	// first triangle
-		//	0.5f, 0.5f, 0.0f,  // top right
-		//	0.5f, -0.5f, 0.0f,  // bottom right
-		//	-0.5f, 0.5f, 0.0f,  // top left 
-		//	// second triangle
-		//	0.5f, -0.5f, 0.0f,  // bottom right
-		//	-0.5f, -0.5f, 0.0f,  // bottom left
-		//	-0.5f, 0.5f, 0.0f   // top left
-		//};
-			
-		//vertex order
 		
 		float texCoords[] =
 		{
@@ -215,29 +194,19 @@ namespace Engine
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		
-		GLuint m_texture;
-
-		unsigned char* image = ResourceManager::getInstance()->getImageData("Texture_Test.png");
-
-		glGenTextures(1, &m_texture);
-
-		glBindTexture(GL_TEXTURE_2D, m_texture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
 		//if (comp == 3)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 		//else if (comp == 4)
 			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
-		glGenerateMipmap(GL_TEXTURE_2D);
+		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.png");
+		glBindTexture(GL_TEXTURE_2D , image);
 
-		glBindTexture(GL_TEXTURE_2D, m_texture);
 
 
+
+		
 		//TODO: Update vertexAttributes for UV
 		vc.stride = sizeof(float) * 5;
 		vc.numIndices = 6;

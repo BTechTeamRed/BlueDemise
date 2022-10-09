@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "json.h"
 #include "Log.h"
+#include "glad/glad.h"
 #include <iostream>
 #include <fstream>
 #include<sstream>
@@ -13,6 +14,8 @@
 //Written by Kevin Vilanova, KevinAlexV.
 //Class is intended to import and manage assets and resources used by the game engine.
 //Documentation for the stb_image library can be found here: https://github.com/nothings/stb/blob/master/stb_image.h | https://gist.github.com/roxlu/3077861
+//For texture loading, the expectation is to bind a texture then render any objects using that texture before switching to another texture, as opposed to doing a load 
+//per use-case (ie; do bind text 1 -> draw object A B C, then bind text 2).
 namespace Engine
 {
 
@@ -20,6 +23,13 @@ namespace Engine
 	{
 		
 		public:
+
+			//A struct to contain all data contained within an STB image. 
+			struct ImageData
+			{
+				unsigned char* image;
+				int width, height, numComponents;
+			};
 
 			#pragma region Singleton Instance Management
 
@@ -45,8 +55,10 @@ namespace Engine
 			//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 			nlohmann::json getJsonData(const std::string& Name);
 
+			GLuint getTexture(const std::string& Name);
+
 			//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
-			unsigned char* getImageData(const std::string& Name);
+			ImageData getImageData(const std::string& Name);
 
 			//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 			std::string getShaderData(const std::string& Name);
@@ -83,12 +95,14 @@ namespace Engine
 			#pragma endregion
 
 			#pragma region File Storage Variables
-			
+
 			//Every file path found under the specified resources folder, 'm_sourcePath'.
 			std::unordered_map<std::string, std::string> m_filePaths{};
 
+			std::unordered_map<std::string, GLuint> m_textures{};
+
 			//A map to store image files, utilizing the STB library (note: does not support progressive JPEG). This stores unsigned char pointers, reserving a set amount of memory for each image.
-			std::unordered_map<std::string, unsigned char*> m_images{};
+			//std::unordered_map<std::string, ImageData> m_images{};
 			
 			//A map to store Json files, utilizing the json library.
 			std::unordered_map<std::string, nlohmann::json> m_jsons{};
