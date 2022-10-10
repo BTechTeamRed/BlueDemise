@@ -179,13 +179,6 @@ namespace Engine
 			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
 		};
 		
-		float texCoords[] =
-		{
-			-1.f, -1.f,  //bottom left
-			1.f, 1.f, //top right
-			1.f, -1.f, //bottom right
-			-1.f, 1.f,  //top left
-		};
 
 		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3 };
 

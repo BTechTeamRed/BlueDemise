@@ -129,6 +129,7 @@ namespace Engine
 	}
 
 	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
+	//Currently only supports 2D Textures, but can be changed using texType.
 	GLuint ResourceManager::getTexture(const std::string& Name)
 	{
 		//std::lock_guard<std::mutex> lock(m_functionLock);
@@ -152,6 +153,7 @@ namespace Engine
 		//If image data isn't nullptr, store and return data.
 		if (img.image != nullptr)
 		{
+			//Determine the kind of texture being loaded. Currently only using GL_TEXTURE_2D
 			GLenum texType = GL_TEXTURE_2D;
 
 			// Generates an OpenGL texture object

@@ -13,6 +13,7 @@ namespace Engine
 		std::string tag;
 	};
 	
+	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
 		CameraComponent(float f, glm::mat4 proj, glm::vec2 view, float fZ, float nZ)
@@ -25,6 +26,7 @@ namespace Engine
 		float nearZ;
 	};
 
+	//A component containing the 'transform' of a component (position in the world).
 	struct TransformComponent 
 	{
 		TransformComponent() = default;
@@ -36,6 +38,7 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
+	//A component containing a vec4 of color data, RGBA.
 	struct ColorComponent 
 	{
 		ColorComponent() = default;
@@ -43,6 +46,33 @@ namespace Engine
 			: color(color) {}
 
 		glm::vec4 color;
+	};
+
+	//A component containing sprite data.
+	struct SpriteComponent
+	{
+		SpriteComponent() = default;
+		SpriteComponent(GLuint texture)
+			: texture(texture) {}
+
+		GLuint texture;
+		const float vertices[20] =
+		{
+			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
+			1.f, 1.f, 0.f, 1.f, 0.f, //top right
+			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
+			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
+		};
+	};
+
+	//A component containing texture data
+	struct TextureComponent
+	{
+		TextureComponent() = default;
+		TextureComponent(GLuint texID)
+			: texID(texID) {}
+
+		GLuint texID;
 	};
 
 	//Not component, just container for vertex attribute data format
