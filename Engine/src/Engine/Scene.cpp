@@ -195,7 +195,7 @@ namespace Engine
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		
 
-		
+		//Get GLuint for texture, and bind texture for rendering
 		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		glBindTexture(GL_TEXTURE_2D , image2);

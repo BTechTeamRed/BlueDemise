@@ -35,7 +35,7 @@ namespace Engine
 		return m_pinstance;
 	}
 	
-	//Delete all image pointers in the image map, and frees images using stb library.
+	//Delete all texture GLuints in the texture map.
 	ResourceManager::~ResourceManager() 
 	{
 		//Delete all textures
