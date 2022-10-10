@@ -97,6 +97,7 @@ namespace Engine
 			//Every file path found under the specified resources folder, 'm_sourcePath'.
 			std::unordered_map<std::string, std::string> m_filePaths{};
 
+			//Map to store each processed texture containing an image imported from STBI
 			std::unordered_map<std::string, GLuint> m_textures{};
 			
 			//A map to store Json files, utilizing the json library.

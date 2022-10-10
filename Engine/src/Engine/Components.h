@@ -56,13 +56,20 @@ namespace Engine
 			: texture(texture) {}
 
 		GLuint texture;
-		const float vertices[20] =
+
+		float vertices[20] =
 		{
+			// XYZ UV (UV is for texture mapping, to access [X, Y] part of the sheet)
 			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
 			1.f, 1.f, 0.f, 1.f, 0.f, //top right
 			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
 			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
 		};
+
+		//*NOTE: Use seperate VBO (for UV verts) to modify what is access from a spritesheet
+
+		//Order to draw vertices.
+		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3 };
 	};
 
 	//A component containing texture data
@@ -90,16 +97,27 @@ namespace Engine
 	};
 
 	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
+	//Contains data to communicate with the GPU about what to draw (typically per entity).
 	struct VerticesComponent 
 	{
 		VerticesComponent() = default;
 		VerticesComponent(const VerticesComponent& other) = default;
 
 		std::vector<VertexAttribute> vertexAttributes;
+
+		//
 		GLuint vaoID;
+
+		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
 		GLuint iboID;
+		
+		//Vertex buffer object ID: ID for the buffer containing the verts on the GPU
 		GLuint vboID;
+		
+		//Size of a single vertex in bytes
 		GLsizei stride;
+
+		//Num of vertices provided to GPU
 		unsigned long numIndices;
 	};
 }

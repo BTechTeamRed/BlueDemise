@@ -91,13 +91,16 @@ namespace Engine
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		//Get entities that contain transform & vertices & color components,
 		auto view = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x / 2,
 			-camera.viewport.y / 2, camera.viewport.y / 2, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
+		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : view.each())
 		{
 			//Setup mvp and mvm matrix
@@ -112,10 +115,40 @@ namespace Engine
 
 			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
 			GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
+			
+			//Sets color of shader
 			glUniform4fv(colorUniformID, 1, glm::value_ptr(color.color));
 			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+		}
+
+		//Get entities that contain transform & vertices & texture components,
+		auto view2 = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent>();
+
+		//For each updatable entity (with transform, vertices, and color components), draw them.
+		for (auto [entity, transform, vertices, texture] : view2.each())
+		{
+			//Get GLuint for texture, and bind texture for rendering
+			glBindTexture(GL_TEXTURE_2D, texture.texID);
+
+			//Setup mvp and mvm matrix
+			glm::mat4 mvm = glm::mat4(1.f);
+			mvm = glm::translate(mvm, transform.position);
+			mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
+			mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
+			mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
+			mvm = glm::scale(mvm, transform.scale);
+
+			glm::mat4 mvp = pm * vm * mvm;
+
+			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
+			GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
+			glUniform4fv(colorUniformID, 1, glm::value_ptr(glm::vec4(1.f, 1.f, 1.f, 1.f)));
+			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
+
+			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+
 		}
 	}
 
@@ -146,6 +179,9 @@ namespace Engine
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
+		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
+		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
+
 		//Camera
 		Entity cameraEntity = createEntity("camera");
 		cameraEntity.addComponent<CameraComponent>(
@@ -162,8 +198,19 @@ namespace Engine
 			glm::vec3(1, 1, 1),
 			glm::vec3(0, 0, 0)
 			);
+		triangle.addComponent<TextureComponent>(image);
 		triangle.addComponent<VerticesComponent>(createTriangle());
 		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+
+		Entity triangle2 = createEntity("triangle2");
+		triangle2.addComponent<TransformComponent>(
+			glm::vec3(2.f, 0, 0),
+			glm::vec3(1, 1, 1),
+			glm::vec3(0, 0, 0)
+			);
+		triangle2.addComponent<TextureComponent>(image2);
+		triangle2.addComponent<VerticesComponent>(createTriangle());
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
     }
 #pragma endregion
 	
@@ -173,6 +220,7 @@ namespace Engine
 		//Future consideration: have one vao/ibo for a quad that can be used by all sprites in the engine
 		float triangleVertices[] =
 		{
+			// XYZ UV (UV is for texture mapping, to access [X, Y] part of the sheet)
 			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
 			1.f, 1.f, 0.f, 1.f, 0.f, //top right
 			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
@@ -186,12 +234,6 @@ namespace Engine
 		//Each vertex has one attribute, which is 2 floats to represent position
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
-		
-
-		//Get GLuint for texture, and bind texture for rendering
-		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
-		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
-		glBindTexture(GL_TEXTURE_2D , image2);
 
 		
 		//TODO: Update vertexAttributes for UV
