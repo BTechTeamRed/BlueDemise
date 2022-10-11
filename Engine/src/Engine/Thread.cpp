@@ -1,10 +1,8 @@
 #include "Thread.h"
 #include "JobQueue.h"
 #include "Log.h"
-#include <thread>
-#include <iostream>
 
-using namespace engine_concurrent;
+using namespace Engine;
 
 // THREADS
 #pragma region Threads
@@ -12,8 +10,23 @@ using namespace engine_concurrent;
 Thread::Thread(int id) : 
 	m_threadJob(nullptr),
 	m_thread (new std::thread(&Thread::run, this)),
-	m_id(id)
+	m_id(id),
+	m_run(true)
 {
+}
+
+Thread::~Thread()
+{
+	m_run = false;
+	m_thread->join();
+	if (m_thread)
+	{
+		delete m_thread;
+	}
+	if (m_threadJob)
+	{
+		delete m_threadJob;
+	}
 }
 
 // Returns the job being performed by the thread
@@ -45,7 +58,7 @@ void Thread::run()
 //			GE_CORE_TRACE("Thread {0} grabbed {1}", m_id, m_threadJob == nullptr ? "nothing" : m_threadJob->getName());
 			//m_threadJob = nullptr; // Then go back to no job
 		}
-	} while (true); // This 'true' can be changed if we ever need to add a condition for threads to run
+	} while (m_run); // This 'true' can be changed if we ever need to add a condition for threads to run
 }
 
 #pragma endregion

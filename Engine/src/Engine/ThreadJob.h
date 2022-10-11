@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-namespace engine_concurrent
+namespace Engine
 {
 	//Type definition for thread function pointer
 	typedef void EntryPoint(void* param);
@@ -35,9 +35,6 @@ namespace engine_concurrent
 		// Accessors to return job properties
 		const Priority& getPriority();
 		const std::string& getName();
-	protected:
-		//
-
 	private:
 		// EntryPoint run by thread, contains the function provided by the caller
 		EntryPoint* m_pEntryPoint;

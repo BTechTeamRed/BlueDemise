@@ -1,12 +1,10 @@
 #include "ThreadPool.h"
-#include <iostream>
-#include <thread>
 #include "Log.h"
 
-using namespace engine_concurrent;
+using namespace Engine;
 
-ThreadPool* ThreadPool::tpInstance = nullptr;
-std::mutex ThreadPool::mutex; // Instantiate the mutex
+ThreadPool* ThreadPool::m_tpInstance = nullptr;
+std::mutex ThreadPool::m_mutex; // Instantiate the mutex
 
 // THE JOB OF THREAD POOL IS JUST TO MAKE ALL THE THREADS and maybe more things later 
 
@@ -23,10 +21,10 @@ ThreadPool::ThreadPool() : m_threads(std::thread::hardware_concurrency()-1)
 // Get the instance of the thread pool, returns a pointer to the singleton instance
 ThreadPool* ThreadPool::getInstance()
 {
-	std::lock_guard<std::mutex> lock(mutex); // Lock getInstance so only one thread can call it at once
-	if (tpInstance == nullptr) // This will only run the first time, if tpInstance is still null
+	std::lock_guard<std::mutex> lock(m_mutex); // Lock getInstance so only one thread can call it at once
+	if (m_tpInstance == nullptr) // This will only run the first time, if tpInstance is still null
 	{
-		tpInstance = new ThreadPool;
+		m_tpInstance = new ThreadPool;
 	}
-	return tpInstance;
+	return m_tpInstance;
 };

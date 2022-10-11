@@ -1,20 +1,20 @@
 #include "Log.h"
 #include "JobQueue.h"
 
-using namespace engine_concurrent;
+using namespace Engine;
 
-JobQueue* JobQueue::instance = nullptr;
-std::mutex JobQueue::instanceMutex;
-std::mutex JobQueue::queueMutex;
+JobQueue* JobQueue::m_instance = nullptr;
+std::mutex JobQueue::m_instanceMutex;
+std::mutex JobQueue::m_queueMutex;
 
 JobQueue* JobQueue::getInstance()
 {
-	std::unique_lock lock(instanceMutex);
-	if (instance == nullptr)
+	std::unique_lock lock(m_instanceMutex);
+	if (m_instance == nullptr)
 	{
-		instance = new JobQueue();
+		m_instance = new JobQueue();
 	}
-	return instance;
+	return m_instance;
 }
 
 JobQueue::JobQueue() : m_jobList(new std::list<ThreadJob*>()) {}
@@ -22,7 +22,7 @@ JobQueue::~JobQueue() { delete m_jobList; }
 
 void JobQueue::postJob(ThreadJob* job)
 {
-	std::unique_lock lock(queueMutex);
+	std::unique_lock lock(m_queueMutex);
 	//std::condition_variable
 	if (m_jobList->empty())
 	{
@@ -41,7 +41,7 @@ void JobQueue::postJob(ThreadJob* job)
 // Grabs and returns the job at the front of m_jobList, which will be the highest priority job
 ThreadJob* JobQueue::getJob()
 {
-	std::unique_lock<std::mutex> lock(queueMutex);
+	std::unique_lock<std::mutex> lock(m_queueMutex);
 	ThreadJob* job = nullptr;
 
 	if (!m_jobList->empty())

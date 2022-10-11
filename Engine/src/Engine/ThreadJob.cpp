@@ -1,6 +1,6 @@
 #include "ThreadJob.h"
 
-using namespace engine_concurrent;
+using namespace Engine;
 
 ThreadJob::ThreadJob(EntryPoint* entryPoint, void* param, std::string& name, Priority priority)
 	: m_pEntryPoint(entryPoint),    // Entry point is a pointer to the functions to be run

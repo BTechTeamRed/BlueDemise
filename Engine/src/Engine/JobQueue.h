@@ -4,14 +4,19 @@
 #include <mutex>
 #include "ThreadJob.h"
 
-namespace engine_concurrent
+namespace Engine
 {
 	// Singleton
 	// Queue for jobs to go onto to be picked up by threads
+	// 
+	// To request a job to be done for a thread a ThreadJob
+	// object must be created with the requesite function pointer
+	// to the function where the work will be done. 
+	// 
 	class JobQueue
 	{
 	public:
-		// C'tor
+		// D'tor
 		~JobQueue();
 
 		// The job queue is a singleton, so it should not be copied or cloned
@@ -28,14 +33,13 @@ namespace engine_concurrent
 		// Method to get the singleton instance
 		// Returns: the singleton instance
 		static JobQueue* getInstance();
-	protected:
 	private:
 		// Private c'tor to prevent accidental construction
 		JobQueue();
 
-		static JobQueue* instance;          // The instance
-		static std::mutex instanceMutex;    // Mutex insuring only one instance is made
-		static std::mutex queueMutex;       // Mutex protecting access to the job queue
+		static JobQueue* m_instance;          // The instance
+		static std::mutex m_instanceMutex;    // Mutex insuring only one instance is made
+		static std::mutex m_queueMutex;       // Mutex protecting access to the job queue
 		std::list<ThreadJob*>* m_jobList;   // List backing the priority queue
 	};
 }

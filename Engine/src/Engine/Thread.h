@@ -4,7 +4,7 @@
 
 // this is the standard for each thread
 
-namespace engine_concurrent
+namespace Engine
 {
     // Wrapper class for the actual threads
     class Thread
@@ -14,6 +14,13 @@ namespace engine_concurrent
         // id - identifying number for the thread
         explicit Thread(int id); // explicit constructor for threads
 
+        // D'tor
+        ~Thread();
+
+        // Prevent copying
+        Thread(const Thread& other) = delete;
+        void operator=(const Thread&) = delete;
+
         // Accessor for job
         // Returns: the job being performed by the thread
         // Currently not used by anything, just for debugging
@@ -21,7 +28,6 @@ namespace engine_concurrent
 
         // Method run by the underlying thread, runs whatever is in m_threadJob
         void run();
-    protected:
     private:
         // The thread that this class wraps
         std::thread* m_thread;
@@ -30,5 +36,7 @@ namespace engine_concurrent
         ThreadJob* m_threadJob;
         // Unique id of thread
         int m_id;
+        // Boolean to signal stop
+        bool m_run;
     };
 }
