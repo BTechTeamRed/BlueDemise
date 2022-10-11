@@ -7,6 +7,8 @@ using namespace Engine;
 // THREADS
 #pragma region Threads
 
+int Thread::m_sleepTime = 500;
+
 Thread::Thread(int id) : 
 	m_threadJob(nullptr),
 	m_thread (new std::thread(&Thread::run, this)),
@@ -38,7 +40,7 @@ ThreadJob* Thread::getJob()
 // Method to run m_threadJob
 void Thread::run()
 {
-	std::chrono::milliseconds sleepTime(500);
+	std::chrono::milliseconds sleepTime(m_sleepTime);
 	JobQueue* queue = JobQueue::getInstance();
 	do 
 	{

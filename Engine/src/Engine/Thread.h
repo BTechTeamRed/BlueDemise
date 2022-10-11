@@ -38,5 +38,7 @@ namespace Engine
         int m_id;
         // Boolean to signal stop
         bool m_run;
+        // Amount of time to sleep on no job
+        static int m_sleepTime;
     };
 }
