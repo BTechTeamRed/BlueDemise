@@ -11,7 +11,9 @@ namespace Engine
 	// 
 	// To request a job to be done for a thread a ThreadJob
 	// object must be created with the requesite function pointer
-	// to the function where the work will be done. 
+	// to the function where the work will be done. The ThreadJob
+	// must then be posted to the JobQueue via postJob(ThreadJob*).
+	// A thread will eventually pick up the job and do the work.
 	// 
 	class JobQueue
 	{

@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+#include <functional>
 
 namespace Engine
 {
 	//Type definition for thread function pointer
-	typedef void EntryPoint(void* param);
+	//typedef void EntryPoint(void* param);
 
 	//Enum defining priority of job for thread
 	enum class Priority
@@ -21,7 +22,7 @@ namespace Engine
 		// entryPoint - Pointer to the function called by thread
 		// name		  - name of the job (used for debugging)
 		// priority   - priority of the job
-		ThreadJob(EntryPoint* entryPoint,
+		ThreadJob(std::function<void(void*)> entryPoint,
 			void* param = nullptr,
 			std::string& name = std::string("ANON JOB"),
 			Priority priority = Priority::NORMAL);
@@ -37,7 +38,7 @@ namespace Engine
 		const std::string& getName();
 	private:
 		// EntryPoint run by thread, contains the function provided by the caller
-		EntryPoint* m_pEntryPoint;
+		std::function<void(void*)> m_pEntryPoint;
 		void* m_param;          // Parameters of entrypoint
         Priority m_priority;    // Priority of job
 		std::string m_jobName;  // Name of job, for debugging

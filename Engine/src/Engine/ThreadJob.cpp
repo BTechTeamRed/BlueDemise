@@ -2,7 +2,7 @@
 
 using namespace Engine;
 
-ThreadJob::ThreadJob(EntryPoint* entryPoint, void* param, std::string& name, Priority priority)
+ThreadJob::ThreadJob(std::function<void(void*)> entryPoint, void* param, std::string& name, Priority priority)
 	: m_pEntryPoint(entryPoint),    // Entry point is a pointer to the functions to be run
 	m_priority(priority), 
 	m_param(param),                 // Parameters to be passed to the entry point function

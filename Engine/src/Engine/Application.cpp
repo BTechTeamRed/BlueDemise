@@ -43,6 +43,7 @@ namespace Engine
 		int stop = data->first;
 		ThreadJob* job;
 		std::string name;
+		//std::function<void(void*)> input = count;
 
 		for (int i = 0; i < stop; i++)
 		{
@@ -50,7 +51,7 @@ namespace Engine
 			str << "Count Job " << i;
 			otherParam = new std::pair<int, char*>(i, data->second);
 			name = str.str();
-			job = new ThreadJob((EntryPoint*)count, (void*)otherParam, name);
+			job = new ThreadJob(count, (void*)otherParam, name);
 			JobQueue::getInstance()->postJob(job);
 		}
 	}
@@ -65,7 +66,7 @@ namespace Engine
 			str << "Spawn Job " << i;
 			std::string name = str.str();
 			std::pair<int, char*>* data = new std::pair(i, &letter);
-			ThreadJob* job = new ThreadJob((EntryPoint*)spawn, (void*)data, name, Priority::NORMAL);
+			ThreadJob* job = new ThreadJob(spawn, (void*)data, name, Priority::NORMAL);
 			JobQueue::getInstance()->postJob(job);
 		}
 		Scene scene;
