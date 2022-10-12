@@ -6,6 +6,7 @@
 
 namespace Engine
 {
+#pragma region Singleton Instance Management
 	ResourceManager* ResourceManager::m_pinstance{ nullptr };
 	std::mutex ResourceManager::m_mutex;
 	
@@ -44,7 +45,8 @@ namespace Engine
 			glDeleteTextures(1, &texture.second);
 		}
 	}
-
+#pragma endregion
+	
 #pragma region Set Functions
 	
 	//Save all file paths from the provided path into m_filePaths, including subdirectories.
@@ -84,6 +86,20 @@ namespace Engine
 #pragma endregion
 	
 #pragma region Get Functions
+	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
+	void ResourceManager::setIcon(GLFWwindow& window)
+	{
+		GE_CORE_INFO("[ResourceManager] Icon was set to " + m_iconPath);
+
+		GLFWimage images[1];
+
+		//Create a GLFW image and load the icon into it.
+		images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
+		
+		glfwSetWindowIcon(&window, 1, images);
+		stbi_image_free(images[0].pixels);
+	}
+
 	//Based on the provided filename, return the json file from a map, or load it from the system.
 	nlohmann::json ResourceManager::getJsonData(const std::string& Name)
 	{

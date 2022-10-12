@@ -76,6 +76,10 @@ namespace Engine
 		}
 
 		glfwMakeContextCurrent(m_window);
+
+		//Setting the icon
+		ResourceManager::getInstance()->setIcon(*m_window);
+
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");

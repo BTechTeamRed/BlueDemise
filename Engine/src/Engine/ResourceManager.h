@@ -4,6 +4,7 @@
 #include "json.h"
 #include "Log.h"
 #include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include <iostream>
 #include <fstream>
 #include<sstream>
@@ -46,12 +47,15 @@ namespace Engine
 
 			#pragma region Set Functions
 
+			//Function to set icon for the application.
+			void setIcon(GLFWwindow&);
+
 			//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
 			void saveFilePaths(const std::string& path);
 			#pragma endregion
 
 			#pragma region Get Functions
-			
+
 			//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 			nlohmann::json getJsonData(const std::string& Name);
 
@@ -93,7 +97,10 @@ namespace Engine
 			#pragma endregion
 
 			#pragma region File Storage Variables
-
+						
+			//Icon related functions.
+			std::string m_iconPath = std::filesystem::current_path().parent_path().string() + "\\Engine\\BlueDemise.png";
+						
 			//Every file path found under the specified resources folder, 'm_sourcePath'.
 			std::unordered_map<std::string, std::string> m_filePaths{};
 
