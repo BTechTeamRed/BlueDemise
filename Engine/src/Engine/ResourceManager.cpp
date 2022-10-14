@@ -68,6 +68,28 @@ namespace Engine
 			GE_CORE_INFO("[ResourceManager] File added to m_filePaths [{0}]", filePath.string());
 		}
 	}
+
+	//Save provided json object to a provided file. Will save to "Data/data.json" if file name/path are not specified.
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName = "data", std::string path = "Data/")
+	{
+		//Create a file path from the provided path, file name, and file extension.
+		std::string fileWithPath = path + fileName + "." + m_jsonFileExt;
+
+		//Create a file stream and open the file.
+		std::ofstream fileStream(fileWithPath);
+
+		//If the file stream is open, write the data to the file.
+		if (fileStream.is_open())
+		{
+			fileStream << data;
+			fileStream.close();
+		}
+		else
+		{
+			GE_CORE_ERROR("[ResourceManager] Failed to open file {0}", fileWithPath);
+		}
+	}
+	
 #pragma endregion
 	
 #pragma region Get Functions

@@ -46,6 +46,9 @@ namespace Engine
 
 			//Function to return a shader from the hashmap based on a provided name. Returns an empty string if no shader is found.
 			std::string getShaderData(const std::string& Name);
+
+			//Function to save provided json data to a provided file. Will save to "Data/data.json" if file name/path are not specified.
+			void saveJsonFile(nlohmann::json data, std::string fileName = "data", std::string path = "Data/");
 			#pragma endregion
 
 		
@@ -71,6 +74,10 @@ namespace Engine
 			
 			//Extensions for all files handled through resource manager.
 			std::string m_jsonFileExt = "json";
+			
+			//TODO: There should be some member var holding the default file path for saving json files, but c++ doesn't allow it??
+			//Default directory to save JSON data files
+			//std::string m_jsonDataPath = "\\Data";
 
 			std::vector<std::string> m_shaderFileExts = { "vs", "fs" };
 			#pragma endregion
