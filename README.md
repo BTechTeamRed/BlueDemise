@@ -104,6 +104,12 @@ int myFunc()
 
 which would be impossible if the function comment header used `/* */`.
 
+Other notes about commenting:
+ * Headers should contain comments on `public` functions to describe what the purpose is, and include what parameters/arguments are needed, and what is returned.
+ * Add your name to any classes you create/modify so that people know who to contact.
+ * Cpp functions need to contain a more in-depth explaination of how it achieves a return value for anyone who needs to modify it. This can be done through psuedo code, or explained as such: "X var is taken, and placed in array for future use".
+ * `#pragma region regionName` and `#pragma endregion` are recommended for utilization in larger classes, where distinction between groups of functions/variables are useful.
+
 ## Never Use `using namespace` in a Header File
 
 This causes the namespace you are `using` to be pulled into the namespace of all files that include the header file.

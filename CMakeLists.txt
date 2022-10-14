@@ -15,11 +15,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
  set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Add sub-directories
-add_subdirectory(Engine)
-add_subdirectory(Game)
-
 add_subdirectory(thirdparty)
 
+add_subdirectory(Engine)
+add_subdirectory(Game)
 #######
 #GLFW
 #######
