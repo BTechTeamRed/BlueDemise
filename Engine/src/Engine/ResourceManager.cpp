@@ -1,3 +1,4 @@
+#pragma once
 //Needed to define stbi class, for stb related use in this file. Essentially defines code to be used in this file.
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -83,11 +84,9 @@ namespace Engine
 			GE_CORE_INFO("[ResourceManager] File added to m_filePaths [{0}]", filePath.string());
 		}
 	}
-#pragma endregion
-	
-#pragma region Get Functions
+
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
-	void ResourceManager::setIcon(GLFWwindow& window)
+	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
 		GE_CORE_INFO("[ResourceManager] Icon was set to " + m_iconPath);
 
@@ -95,76 +94,79 @@ namespace Engine
 
 		//Create a GLFW image and load the icon into it.
 		images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
-		
+
 		glfwSetWindowIcon(&window, 1, images);
 		stbi_image_free(images[0].pixels);
 	}
+#pragma endregion
+	
+#pragma region Get Functions
 
 	//Based on the provided filename, return the json file from a map, or load it from the system.
-	nlohmann::json ResourceManager::getJsonData(const std::string& Name)
+	nlohmann::json ResourceManager::getJsonData(const std::string& name)
 	{
 		std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the json is already loaded.
 		nlohmann::json data = nullptr;
-		std::unordered_map<std::string, nlohmann::json>::iterator it = m_jsons.find(Name);
+		std::unordered_map<std::string, nlohmann::json>::iterator it = m_jsons.find(name);
 		
 		//If loaded, return the json. Else, load and store the json, then return it.
 		if (it != m_jsons.end())
 		{
-			//Get value based on map key "Name"
-			data = m_jsons.find(Name)->second;
+			//Get value based on map key "name"
+			data = m_jsons.find(name)->second;
 			
-			GE_CORE_WARN("[ResourceManager] Previously loaded " + Name + " found.");
+			GE_CORE_WARN("[ResourceManager] Previously loaded " + name + " found.");
 			return data;
 		}
 		
-		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator jsonPath = m_filePaths.find(Name);
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		std::unordered_map<std::string, std::string>::iterator jsonPath = m_filePaths.find(name);
 			
 		//If json path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the json.
 		if (jsonPath != m_filePaths.end())
 		{
-			std::string path = m_filePaths[Name];
+			std::string path = m_filePaths[name];
 			std::string extension = path.substr(path.find_last_of('.') + 1);
 			
 			//Ensure the file is a json file
 			if (extension == m_jsonFileExt)
 			{
-				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
+				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 				
 				data = nlohmann::json::parse(readSource(path));
 
-				m_jsons.insert(std::pair<std::string, nlohmann::json>(Name, data));
+				m_jsons.insert(std::pair<std::string, nlohmann::json>(name, data));
 				return data;
 			}
 		}
 
-		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
+		GE_CORE_INFO("[ResourceManager] " + name + " not found.");
 		return nullptr;
 	}
 
 	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
 	//Currently only supports 2D Textures, but can be changed using texType.
-	GLuint ResourceManager::getTexture(const std::string& Name)
+	GLuint ResourceManager::getTexture(const std::string& name)
 	{
 		//std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
 		GLuint data;
-		std::unordered_map<std::string, GLuint>::iterator it = m_textures.find(Name);
-
+		std::unordered_map<std::string, GLuint>::iterator it = m_textures.find(name);
+	
 		//If loaded, return the image. Else, load and store the image, then return it.
 		if (it != m_textures.end())
 		{
-			//Get value based on map key "Name"
-			data = m_textures.find(Name)->second;
+			//Get value based on map key "name"
+			data = m_textures.find(name)->second;
 
-			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + Name + " found.");
+			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + name + " found.");
 			return data;
 		}
 		
-		ImageData img = readImageData(Name);
+		ImageData img = readImageData(name);
 		
 		//If image data isn't nullptr, store and return data.
 		if (img.image != nullptr)
@@ -193,9 +195,9 @@ namespace Engine
 			// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 			
 			// Assigns the image to the OpenGL Texture object based on the number of RGB components (if 4, then alpha value is present).
-			if (img.numComponents == 3)
+			if (img.numComponents == m_RGB)
 				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
-			else if (img.numComponents == 4)
+			else if (img.numComponents == m_RGBA)
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
 			
 			//Free the image from memory
@@ -205,7 +207,7 @@ namespace Engine
 			glGenerateMipmap(texType);
 
 			//Store texture for later use.
-			m_textures.insert(std::pair<std::string, GLuint>(Name, data));
+			m_textures.insert(std::pair<std::string, GLuint>(name, data));
 			
 			
 			//Unbind the texture so it isn't modified anymore.
@@ -215,7 +217,7 @@ namespace Engine
 		}
 		else 
 		{
-			GE_CORE_ERROR("[ResourceManager] " + Name + " texture could not be created. Image = nullptr");
+			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
 		}
 		
 		return NULL;
@@ -223,48 +225,48 @@ namespace Engine
 	}
 
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
-	std::string ResourceManager::getShaderData(const std::string& Name)
+	std::string ResourceManager::getShaderData(const std::string& name)
 	{
 		std::lock_guard<std::mutex> lock(m_functionLock);
 
 		//Initilaze the return value, and create a map iterator to check if the shader is already loaded.
 		std::string data;
-		std::unordered_map<std::string, std::string>::iterator it = m_shaders.find(Name);
+		std::unordered_map<std::string, std::string>::iterator it = m_shaders.find(name);
 		
 		//If loaded, return the shader. Else, load and store the shader, then return it.
 		if (it != m_shaders.end())
 		{
-			//Get value based on map key "Name"
-			data = m_shaders.find(Name)->second;
+			//Get value based on map key "name"
+			data = m_shaders.find(name)->second;
 
-			GE_CORE_WARN("[ResourceManager] Previously loaded " + Name + " found.");
+			GE_CORE_WARN("[ResourceManager] Previously loaded " + name + " found.");
 			return data;
 		}
 		
-		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator shaderPath = m_filePaths.find(Name);
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		std::unordered_map<std::string, std::string>::iterator shaderPath = m_filePaths.find(name);
 			
 		//If shader path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the shader.
 		if (shaderPath != m_filePaths.end())
 		{
 			
-			std::string searchResult = m_filePaths[Name];
+			std::string searchResult = m_filePaths[name];
 			//Ensure the file is a shader file, based on the extension. 
 			std::string extension = searchResult.substr(searchResult.find_last_of('.') + 1);
 
 			//Check if the extension is apart of the acceptable shader extensions stored in m_shaderFileExts.
 			if (std::find(m_shaderFileExts.begin(), m_shaderFileExts.end(), extension) != m_shaderFileExts.end())
 			{
-				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
+				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 				data = readSource(searchResult);
 				
-				m_shaders.insert(std::pair<std::string, std::string>(Name, data));
+				m_shaders.insert(std::pair<std::string, std::string>(name, data));
 				
 				return data;
 			}
 		}
 
-		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
+		GE_CORE_INFO("[ResourceManager] " + name + " not found.");
 		return data;
 	}
 #pragma endregion
@@ -295,24 +297,24 @@ namespace Engine
 
 	//Based on the provided filename, load the image from the system and return the imageData struct contain all data provided by stbi_load. 
 	//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
-	ResourceManager::ImageData ResourceManager::readImageData(const std::string& Name)
+	ResourceManager::ImageData ResourceManager::readImageData(const std::string& name)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
 		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
 
-		//Create an iterator to check if the file exists in the map (done since using m_filePaths[Name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(Name);
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(name);
 
 		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the data.
 		if (imagePath != m_filePaths.end())
 		{
-			std::string path = m_filePaths[Name];
+			std::string path = m_filePaths[name];
 			std::string extension = path.substr(path.find_last_of('.') + 1);
 
 			//Ensure the file is an image file
 			if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
 			{
-				GE_CORE_INFO("[ResourceManager] " + Name + " found.");
+				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 
 				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
 				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
@@ -323,15 +325,15 @@ namespace Engine
 					return data;
 				}
 
-				GE_CORE_ERROR("[ResourceManager] Failed to load image " + Name);
+				GE_CORE_ERROR("[ResourceManager] Failed to load image " + name);
 			}
 			else
 			{
-				GE_CORE_ERROR("[ResourceManager] " + Name + " is not an image file. Verify it is supported by STB, and the extension is stored within m_imageFileExts");
+				GE_CORE_ERROR("[ResourceManager] " + name + " is not an image file. Verify it is supported by STB, and the extension is stored within m_imageFileExts");
 			}
 		}
 
-		GE_CORE_INFO("[ResourceManager] " + Name + " not found.");
+		GE_CORE_INFO("[ResourceManager] " + name + " not found.");
 		return data;
 	}
 #pragma endregion

@@ -65,6 +65,9 @@ namespace Engine
 		GLuint getSpriteVBO();
         GLuint getSpriteVAO();
         GLuint getSpriteIBO();
+
+        //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
+        void setColor(glm::mat4 mvp, glm::vec4 color);
 			
         // Registry is a container to hold entities
         entt::registry m_registry;
@@ -80,9 +83,9 @@ namespace Engine
         GLuint m_spriteVAO;
         GLuint m_spriteIBO;
 
-        bool createdVBO = false;
-        bool createdVAO = false;
-        bool createdIBO = false;
+        bool createdVBO = { false };
+        bool createdVAO = { false };
+        bool createdIBO = { false };
 
         friend class Entity;
     };

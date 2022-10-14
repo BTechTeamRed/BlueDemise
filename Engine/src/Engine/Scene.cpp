@@ -1,4 +1,4 @@
- #include "glad/glad.h"
+#include "glad/glad.h"
 #include "Scene.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -93,7 +93,7 @@ namespace Engine
 		glfwMakeContextCurrent(m_window);
 
 		//Setting the icon
-		ResourceManager::getInstance()->setIcon(*m_window);
+		ResourceManager::getInstance()->setAppIcon(*m_window);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -109,51 +109,47 @@ namespace Engine
 	void Scene::renderScene(const DeltaTime& dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		//Get entities that contain transform & vertices & color components,
-		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
-
-		//Get entities that contain transform & vertices & texture components,
-		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
 		
-
+		
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x / 2,
 			-camera.viewport.y / 2, camera.viewport.y / 2, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
+
 		//Render all entities
+		//Get entities that contain transform & vertices & color components,
+		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+
 		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
-
+			//Update the MVP
 			glm::mat4 mvp = updateMVP(transform, vm, pm);
 
-			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
-			GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
-			
-			//Sets color of shader
-			glUniform4fv(colorUniformID, 1, glm::value_ptr(color.color));
-			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
+			//Set the color of the object
+			setColor(mvp, color.color);
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 
+
+		//Get entities that contain transform & vertices & texture components,
+		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
+		
 		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, texture, color] : sprites.each())
 		{
 			//Get GLuint for texture, and bind texture for rendering
 			glBindTexture(GL_TEXTURE_2D, texture.texID);
 
+			//Update the mvp
 			glm::mat4 mvp = updateMVP(transform, vm, pm);
 
-			GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
-			GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
+			//Set the color of the sprite
+			setColor(mvp, color.color);
 			
-			glUniform4fv(colorUniformID, 1, glm::value_ptr(glm::vec4(1.f, 1.f, 1.f, 1.f)));
-			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
-
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 
 		}
@@ -321,6 +317,17 @@ namespace Engine
 		}
 
 		return m_spriteIBO;
+	}
+
+	//Set the color of the current drawable object. This would need to be run per entity/renderable.
+	void Scene::setColor(glm::mat4 mvp, glm::vec4 color) 
+	{
+		GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
+		GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
+
+		//Sets color of shader
+		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
 
 	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.

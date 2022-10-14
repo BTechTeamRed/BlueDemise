@@ -22,74 +22,76 @@ namespace Engine
 
 	class ENGINE_API ResourceManager
 	{
-		
-		public:
 
-			//A struct to contain all data contained within an STB image. 
-			struct ImageData
-			{
-				unsigned char* image;
-				int width, height, numComponents;
-			};
+	public:
 
-			#pragma region Singleton Instance Management
+		//A struct to contain all data contained within an STB image. 
+		struct ImageData
+		{
+			unsigned char* image;
+			int width, height, numComponents;
+		};
 
-			//Singletons should not be cloneable, this is to prevent clones.
-			ResourceManager(ResourceManager &other) = delete;
-			
-			//Singletons should not be assignable, this is to prevent that.
-			void operator=(const ResourceManager &) = delete;
-			
-			//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
-			static ResourceManager* getInstance();
-			
-			#pragma endregion
+#pragma region Singleton Instance Management
 
-			#pragma region Set Functions
+		//Singletons should not be cloneable, this is to prevent clones.
+		ResourceManager(ResourceManager& other) = delete;
 
-			//Function to set icon for the application.
-			void setIcon(GLFWwindow&);
+		//Singletons should not be assignable, this is to prevent that.
+		void operator=(const ResourceManager&) = delete;
 
-			//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
-			void saveFilePaths(const std::string& path);
-			#pragma endregion
+		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
+		static ResourceManager* getInstance();
 
-			#pragma region Get Functions
+#pragma endregion
 
-			//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
-			nlohmann::json getJsonData(const std::string& Name);
+#pragma region Set Functions
 
-			GLuint getTexture(const std::string& Name);
+		//Function to set icon for the application.
+		void setAppIcon(GLFWwindow&);
 
-			
-			//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
-			std::string getShaderData(const std::string& Name);
-			#pragma endregion
+		//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
+		void saveFilePaths(const std::string& path);
+#pragma endregion
 
-		
-		protected:
-			#pragma region Constructors & Deconstructors
-			
-			//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
-			ResourceManager();
+#pragma region Get Functions
 
-			//Deconstructor
-			~ResourceManager();
-			#pragma endregion
-		
-		private:
+		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
+		nlohmann::json getJsonData(const std::string& name);
 
-			//The static instance of ResourceManager that will be returned if the resource manager is requested.
-			static ResourceManager* m_pinstance;
-			
-			//static lock m_mutex is the lock to be used for static functions. Otherwise, m_functionlock should be utilized.
-			static std::mutex m_mutex;
-			std::mutex m_functionLock;
+		GLuint getTexture(const std::string& name);
+
+
+		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
+		std::string getShaderData(const std::string& name);
+#pragma endregion
+
+
+	protected:
+#pragma region Constructors & Destructors
+
+		//Constructor for ResourceManager Class. Finds all files under the 'data' path and stores the paths in a map. 
+		ResourceManager();
+
+		//Destructor
+		~ResourceManager();
+#pragma endregion
+
+	private:
+
+		//The static instance of ResourceManager that will be returned if the resource manager is requested.
+		static ResourceManager* m_pinstance;
+
+		//static lock m_mutex is the lock to be used for static functions. Otherwise, m_functionlock should be utilized.
+		static std::mutex m_mutex;
+		std::mutex m_functionLock;
+
+		int m_RGB = { 3 }, m_RGBA = { 4 };
 			
 			#pragma region File Extension Variables
 			
 			//Extensions for all files handled through resource manager.
-			std::string m_jsonFileExt = "json";
+			std::string m_jsonFileExt = { "json" };
 
 			std::vector<std::string> m_shaderFileExts = { "vs", "fs" };
 			
@@ -99,7 +101,7 @@ namespace Engine
 			#pragma region File Storage Variables
 						
 			//Icon related functions.
-			std::string m_iconPath = std::filesystem::current_path().parent_path().string() + "\\Engine\\BlueDemise.png";
+			std::string m_iconPath = { std::filesystem::current_path().parent_path().string() + "\\Engine\\BlueDemiseIcon.png" };
 						
 			//Every file path found under the specified resources folder, 'm_sourcePath'.
 			std::unordered_map<std::string, std::string> m_filePaths{};
@@ -125,7 +127,7 @@ namespace Engine
 
 			//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
 			//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
-			ImageData readImageData(const std::string& Name);
+			ImageData readImageData(const std::string& name);
 
 			//Read file found at sourcePath and return it as a string. Will only read the provided string. Returns an empty string if nothing is found.
 			std::string readSource(const std::string &sourcePath);
