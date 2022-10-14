@@ -20,6 +20,9 @@ CTestTestfile.cmake
 _deps
 *.sln
 
+#CMake files for CLion
+.cmake/
+
 # GLFW specific files
 thirdparty/glfw3/docs/Doxyfile
 thirdparty/glfw3/docs/html
