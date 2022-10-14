@@ -19,10 +19,6 @@ namespace Engine
 		glAttachShader(m_programId, fragmentShader);
 		glLinkProgram(m_programId);
 
-		//check for errors
-		if (requestStatus(m_programId, GL_LINK_STATUS) == -1)
-			m_programId = -1;
-
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 	}
