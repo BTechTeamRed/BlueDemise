@@ -48,30 +48,6 @@ namespace Engine
 		glm::vec4 color;
 	};
 
-	//A component containing sprite data.
-	struct SpriteComponent
-	{
-		SpriteComponent() = default;
-		SpriteComponent(GLuint texture)
-			: texture(texture) {}
-
-		GLuint texture;
-
-		float vertices[20] =
-		{
-			// XYZ UV (UV is for texture mapping, to access [X, Y] part of the sheet)
-			-1.f, -1.f, 0.f, 0.f, 1.f, //bottom left
-			1.f, 1.f, 0.f, 1.f, 0.f, //top right
-			1.f, -1.f, 0.f, 1.f, 1.f, //bottom right
-			-1.f, 1.f, 0.f, 0.f, 0.f, //top left
-		};
-
-		//*NOTE: Use seperate VBO (for UV verts) to modify what is access from a spritesheet
-
-		//Order to draw vertices.
-		unsigned int indices[6] = { 0, 1, 2, 0, 1, 3 };
-	};
-
 	//A component containing texture data
 	struct TextureComponent
 	{

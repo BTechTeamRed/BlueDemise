@@ -14,10 +14,20 @@ namespace Engine
     {
     public:
 
+        #pragma region Entity Management
         // Function to create an entity and add it to the scene
         // Takes in a tag as a string for input
         Entity createEntity(std::string tag);
 
+        // Gets a view of entities with the defined components.
+        template<typename... Components>
+        auto getEntities()
+        {
+            return m_registry.view<Components...>();
+        }
+        #pragma endregion
+        
+        #pragma region Runtime Functions
         // Executes actions at the start of runtime
         void onRuntimeStart();
 
@@ -26,26 +36,33 @@ namespace Engine
 
         // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate(DeltaTime dt);
-
-        // Gets a view of entities with the defined components.
-        template<typename... Components>
-        auto getEntities()
-        {
-            return m_registry.view<Components...>();
-        }
+        #pragma endregion
 
     private:
+
+        #pragma region OpenGL Scene Management
         bool initializeGL();
         void renderScene(DeltaTime dt);
+		
+        //Update an MVP matrix, with the MVP generated in the function and returned.
+        glm::mat4 updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
+        #pragma endregion
+		
 
         //TODO: Replace with serialized objects once that's added in
         void createEntities();
-        VerticesComponent createTriangle();
 
-    private:
+		//Create quad for sprites
+        VerticesComponent createSprite();
+		
+		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
+		GLuint getSpriteVBO();
+        GLuint getSpriteVAO();
+        GLuint getSpriteIBO();
+			
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
@@ -54,7 +71,15 @@ namespace Engine
 
         DeltaTime m_deltaTime{0};
 
+		//GL IDs for various objects. 
         GLuint m_programId;
+        GLuint m_spriteVBO;
+        GLuint m_spriteVAO;
+        GLuint m_spriteIBO;
+
+        bool createdVBO = false;
+        bool createdVAO = false;
+        bool createdIBO = false;
 
         friend class Entity;
     };
