@@ -39,13 +39,6 @@ namespace Engine
         void onRuntimeUpdate(const DeltaTime& dt);
         #pragma endregion
 
-        // Gets a view of entities with the defined components.
-        template<typename... Components>
-        auto getEntities()
-        {
-            return m_registry.view<Components...>();
-        }
-
     private:
 
         #pragma region OpenGL Scene Management
