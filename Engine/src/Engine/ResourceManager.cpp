@@ -69,24 +69,47 @@ namespace Engine
 		}
 	}
 
-	//Save provided json object to a provided file. Will save to "Data/data.json" if file name/path are not specified.
-	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName = "data", std::string path = "Data/")
+	//Save provided json object to a provided file. Defaults file name and path to "Data/data.json"
+	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be updated.
+	//IMPORTANT NOTE: "Update" works in a specific way. Consult Martin for an explanation, and contact Martin if this should change.
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path)
 	{
 		//Create a file path from the provided path, file name, and file extension.
 		std::string fileWithPath = path + fileName + "." + m_jsonFileExt;
 
-		//Create a file stream and open the file.
-		std::ofstream fileStream(fileWithPath);
-
-		//If the file stream is open, write the data to the file.
-		if (fileStream.is_open())
+		//Check if the file exists.
+		if (std::filesystem::exists(fileWithPath))					// If the file already exists:
 		{
-			fileStream << data;
-			fileStream.close();
+			saveFilePath(fileWithPath); //TODO: add the file to the file paths map so it can be loaded by getJsonData
+			nlohmann::json prevData = getJsonData(fileWithPath);	// Get the existing data from the file
+			prevData.update(data);									// Update it to include the new data
+			std::ofstream fileStream(fileWithPath);					// Create a file stream and open the file
+			if (fileStream.is_open())
+			{
+				fileStream << prevData;								// Then replace existing file content with the updated prevData
+				fileStream.close();
+			}
+			else
+			{
+				// This should never happen but is left in for debugging purposes.
+				GE_CORE_ERROR("[ResourceManager] The file stream broke!", fileWithPath);
+			}
 		}
 		else
 		{
-			GE_CORE_ERROR("[ResourceManager] Failed to open file {0}", fileWithPath);
+			//If the file does not exist, check if the directory exists.
+			if (std::filesystem::exists(path))
+			{
+				//If the directory exists, create the file and save the data.
+				std::ofstream file(fileWithPath);
+				file << data;
+				file.close();
+			}
+			else
+			{
+				//If the directory does not exist, print an error to console. (LET MARTIN KNOW IF THIS FUNCTIONALITY SHOULD CHANGE)
+				GE_CORE_ERROR("[ResourceManager] Directory does not exist. File not saved.");
+			}
 		}
 	}
 	
