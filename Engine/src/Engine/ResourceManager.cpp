@@ -1,9 +1,13 @@
-#pragma once
 //Needed to define stbi class, for stb related use in this file. Essentially defines code to be used in this file.
+#ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "ResourceManager.h"
 #include "stb_image.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include <fstream>
+#include <iostream>
 
 namespace Engine
 {
@@ -109,7 +113,7 @@ namespace Engine
 
 		//Initilaze the return value, and create a map iterator to check if the json is already loaded.
 		nlohmann::json data = nullptr;
-		std::unordered_map<std::string, nlohmann::json>::iterator it = m_jsons.find(name);
+		auto it = m_jsons.find(name);
 		
 		//If loaded, return the json. Else, load and store the json, then return it.
 		if (it != m_jsons.end())
@@ -122,7 +126,7 @@ namespace Engine
 		}
 		
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator jsonPath = m_filePaths.find(name);
+		auto jsonPath = m_filePaths.find(name);
 			
 		//If json path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the json.
 		if (jsonPath != m_filePaths.end())
@@ -150,11 +154,11 @@ namespace Engine
 	//Currently only supports 2D Textures, but can be changed using texType.
 	GLuint ResourceManager::getTexture(const std::string& name)
 	{
-		//std::lock_guard<std::mutex> lock(m_functionLock);
-
+		std::lock_guard<std::mutex> lock(m_functionLock);
+	
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		GLuint data;
-		std::unordered_map<std::string, GLuint>::iterator it = m_textures.find(name);
+		GLuint data = NULL;
+		auto it = m_textures.find(name);
 	
 		//If loaded, return the image. Else, load and store the image, then return it.
 		if (it != m_textures.end())
@@ -231,7 +235,7 @@ namespace Engine
 
 		//Initilaze the return value, and create a map iterator to check if the shader is already loaded.
 		std::string data;
-		std::unordered_map<std::string, std::string>::iterator it = m_shaders.find(name);
+		auto it = m_shaders.find(name);
 		
 		//If loaded, return the shader. Else, load and store the shader, then return it.
 		if (it != m_shaders.end())
@@ -244,7 +248,7 @@ namespace Engine
 		}
 		
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator shaderPath = m_filePaths.find(name);
+		auto shaderPath = m_filePaths.find(name);
 			
 		//If shader path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the shader.
 		if (shaderPath != m_filePaths.end())
@@ -303,7 +307,7 @@ namespace Engine
 		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
-		std::unordered_map<std::string, std::string>::iterator imagePath = m_filePaths.find(name);
+		auto imagePath = m_filePaths.find(name);
 
 		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the data.
 		if (imagePath != m_filePaths.end())
@@ -338,3 +342,4 @@ namespace Engine
 	}
 #pragma endregion
 }
+#endif

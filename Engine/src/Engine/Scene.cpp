@@ -41,7 +41,7 @@ namespace Engine
 	void Scene::onRuntimeStop()
 	{
 		glfwTerminate();
-
+	
 		const auto view = getEntities<const VerticesComponent>();
 		for (auto [entity, vertices] : view.each())
 		{
@@ -356,6 +356,7 @@ namespace Engine
 
 		return vc;
 	}
+	
 #pragma endregion
 	
 }

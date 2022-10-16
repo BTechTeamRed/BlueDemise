@@ -83,9 +83,9 @@ namespace Engine
         GLuint m_spriteVAO;
         GLuint m_spriteIBO;
 
-        bool createdVBO = { false };
-        bool createdVAO = { false };
-        bool createdIBO = { false };
+        bool createdVBO { false };
+        bool createdVAO { false };
+        bool createdIBO { false };
 
         friend class Entity;
     };
