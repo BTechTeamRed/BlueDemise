@@ -1,6 +1,7 @@
 bin/
 bin-intermediate/
 lib/
+out/
 
 #CMake
 CMakeFiles
