@@ -13,8 +13,8 @@
 	- 2f. [ High Level Maintenence ](#2f)
 3. [ **Threadpool Usage** ](#threads)
 	- 3a. [ Threading ](#3a)
-		I. [ Adding jobs for threads ](#3aI)
-		II. [ Considerations for threading ](#3aII)
+		- I. [ Adding jobs for threads ](#3aI)
+		- II. [ Considerations for threading ](#3aII)
 	- 3b. [ System overview ](#3b)
 	- 3c. [ Future add-ons ](#3c)
 
