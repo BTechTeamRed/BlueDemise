@@ -1,5 +1,15 @@
-# ==Team Red GameEngine==
-## How to build
+# BlueDemise Game Engine
+
+# Table of Contents
+
+1. [ How to Build ] (#building)
+2. [ Style Guidelines. ](#styleGuide)
+3. [ Threadpool Usage. ](#threads)
+
+
+
+<a name="building"></a>
+# 1. How to build
 1. You'll need to download the latest version of CMake https://cmake.org/download/
     (Make sure you add cmake to your PATH)
 2. Open console and navigate to the root directory of the project.
@@ -9,17 +19,9 @@
 The project should now be built according to the configure used in step 3.
 
 
-# Table of Contents
-
-1. [ Style Guidelines. ](#styleGuide)
-2. [ Threadpool Usage. ](#threads)
-
-
-
-
 
 <a name="styleGuide"></a>
-# 1. Style Guidelines
+# 2. Style Guidelines
 Style guidelines are meant to keep the code readable and cosistent for all members in the project. These guideliness are based off https://github.com/cpp-best-practices/cppbestpractices/blob/master/03-Style.md
 
 ## Naming Conventions
@@ -406,4 +408,4 @@ The goal is to let the compiler provide optimal versions that are automatically 
 
 
 <a name="threads"></a>
-## 2. Threadpool Usage
+## 3. Threadpool Usage
