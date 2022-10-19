@@ -10,8 +10,6 @@
 
 namespace Engine
 {
-	static std::mutex letterProtect;
-
 	void Application::Run()
 	{
 		Scene scene;
