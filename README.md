@@ -1,4 +1,4 @@
-# Team Red GameEngine
+# **Team Red GameEngine**
 ## How to build
 1. You'll need to download the latest version of CMake https://cmake.org/download/
     (Make sure you add cmake to your PATH)
@@ -8,7 +8,18 @@
 
 The project should now be built according to the configure used in step 3.
 
-# Style Guidelines
+
+# Table of Contents
+
+1. [ Style Guidelines. ](#styleGuide)
+2. [ Threadpool Usage. ](#threads)
+
+
+
+
+
+<a name="styleGuide"></a>
+# 1. Style Guidelines
 Style guidelines are meant to keep the code readable and cosistent for all members in the project. These guideliness are based off https://github.com/cpp-best-practices/cppbestpractices/blob/master/03-Style.md
 
 ## Naming Conventions
@@ -390,3 +401,9 @@ struct S {
 The Rule of Zero states that you do not provide any of the functions that the compiler can provide (copy constructor, copy assignment operator, move constructor, move assignment operator, destructor) unless the class you are constructing does some novel form of ownership.
 
 The goal is to let the compiler provide optimal versions that are automatically maintained when more member variables are added.
+
+
+
+
+<a name="threads"></a>
+## 2. Threadpool Usage
