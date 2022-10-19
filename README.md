@@ -39,6 +39,7 @@ Style guidelines are meant to keep the code readable and cosistent for all membe
 ## Variables 
 
 ### Naming Conventions
+-
  * prefer `CamelCase` above `snake_case`.
  * Types start with upper case: `MyClass`.
  * Functions and variables start with lower case: `myMethod`.
@@ -209,64 +210,64 @@ It also makes it possible to have two separate files next to each other on one s
 
 For POD types, the performance of an initializer list is the same as manual initialization, but for other types there is a clear performance gain, see below.
 
-		```cpp
-		// Bad Idea
-		class MyClass
+```cpp
+// Bad Idea
+class MyClass
+{
+	public:
+		MyClass(int value)
 		{
-		public:
-		  MyClass(int value)
-		  {
 			m_value = value;
-		  }
+		}
 
-		private:
-		  int m_value;
-		};
+	private:
+		int m_value;
+};
 
-		// Bad Idea
-		// This leads to an additional constructor call for m_myOtherClass
-		// before the assignment.
-		class MyClass
+// Bad Idea
+// This leads to an additional constructor call for m_myOtherClass
+// before the assignment.
+class MyClass
+{
+	public:
+		MyClass(MyOtherClass myOtherClass)
 		{
-		public:
-		  MyClass(MyOtherClass myOtherClass)
-		  {
 			m_myOtherClass = myOtherClass;
-		  }
+		}
 
-		private:
-		  MyOtherClass m_myOtherClass;
-		};
+	private:
+		MyOtherClass m_myOtherClass;
+};
 
-		// Good Idea
-		// There is no performance gain here but the code is cleaner.
-		class MyClass
+// Good Idea
+// There is no performance gain here but the code is cleaner.
+class MyClass
+{
+	public:
+		MyClass(int value)
+		: m_value(value)
 		{
-		public:
-		  MyClass(int value)
-			: m_value(value)
-		  {
-		  }
+		}
 
-		private:
-		  int m_value;
-		};
+	private:
+		int m_value;
+};
 
-		// Good Idea
-		// The default constructor for m_myOtherClass is never called here, so
-		// there is a performance gain if MyOtherClass is not is_trivially_default_constructible.
-		class MyClass
+// Good Idea
+// The default constructor for m_myOtherClass is never called here, so
+// there is a performance gain if MyOtherClass is not is_trivially_default_constructible.
+class MyClass
+{
+	public:
+		MyClass(MyOtherClass myOtherClass)
+		: m_myOtherClass_myOtherClass)
 		{
-		public:
-		  MyClass(MyOtherClass myOtherClass)
-			: m_myOtherClass_myOtherClass)
-		  {
-		  }
+		}
 
-		private:
-		  MyOtherClass m_myOtherClass;
-		};
-		```
+	private:
+		MyOtherClass m_myOtherClass;
+};
+```
 
 In C++11 you can assign default values to each member (using `=` or using `{}`).
 
