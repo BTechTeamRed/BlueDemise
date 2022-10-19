@@ -49,7 +49,7 @@ Style guidelines are meant to keep the code readable and cosistent for all membe
  * All other names use snake case: `unordered_map`.
 	 
 ### Distinguish Private Object Data
-=====
+==========
 
 Name private data with a `m_` prefix to distinguish it from public data. `m_` stands for "member" data.
 
