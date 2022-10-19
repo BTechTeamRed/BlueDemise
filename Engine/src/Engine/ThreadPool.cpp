@@ -18,6 +18,15 @@ ThreadPool::ThreadPool() : m_threads(std::thread::hardware_concurrency()-1)
     }
 }
 
+// D'tor
+ThreadPool::~ThreadPool()
+{
+	for (auto t : m_threads)
+	{
+		delete t;
+	}
+}
+
 // Get the instance of the thread pool, returns a pointer to the singleton instance
 ThreadPool* ThreadPool::getInstance()
 {

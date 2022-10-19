@@ -11,6 +11,8 @@ namespace Engine
 	class ThreadPool
 	{
 	public:
+		// D'tor
+		~ThreadPool();
 		// Prevent copying or assigning this class multiple times to keep it a singleton
 		ThreadPool(ThreadPool& other) = delete; 
 		void operator=(const ThreadPool&) = delete;
