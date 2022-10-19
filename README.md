@@ -49,15 +49,17 @@ Style guidelines are meant to keep the code readable and cosistent for all membe
  * All other names use snake case: `unordered_map`.
 	 
 ### Distinguish Private Object Data
-==========
+-----
 
 Name private data with a `m_` prefix to distinguish it from public data. `m_` stands for "member" data.
 
 ### Don't Distinguish parameter variables
+-----
 
 Parameter variables shouldn't be prefixed (such as `t_`) should follow other naming conventions in this guideline.
 
 ### Distinguish Entities and Components
+-----
 Variables, types, and memebers of these three types should be suffixed with the corresponding types.
 ```cpp
 struct TransformComponent
@@ -78,6 +80,7 @@ private void renderingSystem()
 ```
 
 ### Don't Name Anything Starting With `_`
+-----
 
 If you do, you risk colliding with names reserved for compiler and standard library implementation use:
 
@@ -85,6 +88,7 @@ http://stackoverflow.com/questions/228783/what-are-the-rules-about-using-an-unde
 
 
 ### Well-Formed Example
+-----
 
 ```cpp
 class MyClass
@@ -143,6 +147,7 @@ Other notes about commenting:
 ## Code Syntax
 
 ### {} Are Required for Blocks.
+-----
 Leaving them off can lead to semantic errors in the code.
 
 ```cpp
@@ -168,6 +173,7 @@ for (int i = 0; i < 15; ++i)
 ```
 
 ### Do use new lines on {}.
+-----
 
 ```cpp
 // Don't
@@ -183,6 +189,7 @@ private void foo()
 ```
 
 ### Keep Lines a Reasonable Length
+-----
 
 ```cpp
 // Bad Idea
@@ -207,6 +214,7 @@ It also makes it possible to have two separate files next to each other on one s
 ## Variable/Member Management
 
 ### Initialize Member Variables
+-----
 ...with the member initializer list.
 
 For POD types, the performance of an initializer list is the same as manual initialization, but for other types there is a clear performance gain, see below.
@@ -272,7 +280,7 @@ class MyClass
 
 In C++11 you can assign default values to each member (using `=` or using `{}`).
 
-#### Assigning default values with =
+### Assigning default values with =
 
 ```cpp
 // ... //
@@ -283,7 +291,7 @@ private:
 ```
 This ensures that no constructor ever "forgets" to initialize a member object.
 
-#### Assigning default values with brace initialization
+### Assigning default values with brace initialization
 
 Using brace initialization does not allow narrowing at compile-time.
 
@@ -319,11 +327,11 @@ private:
 
 Since a const member variable cannot be assigned a new value, such a class may not have a meaningful copy assignment operator.
 
-#### Use `nullptr`
+### Use `nullptr`
 
 C++11 introduces `nullptr` which is a special value denoting a null pointer. This should be used instead of `0` or `NULL` to indicate a null pointer.
 
-#### Use the Correct Integer Type for Standard Library Features
+### Use the Correct Integer Type for Standard Library Features
 
 The standard library generally uses `std::size_t` for anything related to size. The size of `size_t` is implementation defined.
 
@@ -345,6 +353,7 @@ const auto diff = s1 - s2; // diff underflows to a very large number
 ## Variable Operators & Conversions
 	
 ### Use Operator Overloads Judiciously
+-----
 
 Operator overloading was invented to enable expressive syntax. Expressive in the sense that adding two big integers looks like `a + b` and not `a.add(b)`. Another common example is `std::string`, where it is very common to concatenate two strings with `string1 + string2`.
 
@@ -363,14 +372,15 @@ Specifically, you should keep these things in mind:
 More tips regarding the implementation details of your custom operators can be found [here](http://courses.cms.caltech.edu/cs11/material/cpp/donnie/cpp-ops.html).
 
 ### Avoid Implicit Conversions
+-----
 
-#### Single Parameter Constructors
+### Single Parameter Constructors
 
 Single parameter constructors can be applied at compile time to automatically convert between types. This is handy for things like `std::string(const char *)` but should be avoided in general because they can add to accidental runtime overhead.
 
 Instead mark single parameter constructors as `explicit`, which requires them to be explicitly called.
 
-#### Conversion Operators
+### Conversion Operators
 
 Similarly to single parameter constructors, conversion operators can be called by the compiler and introduce unexpected overhead. They should also be marked as `explicit`.
 
@@ -397,26 +407,31 @@ struct S {
 ## High Level Maintenence
 
 ### Never Use `using namespace` in a Header File
+-----
 
 This causes the namespace you are `using` to be pulled into the namespace of all files that include the header file.
 It pollutes the namespace and it may lead to name collisions in the future.
 Writing `using namespace` in an implementation file is fine though.
 
 ### Always Use Namespaces
+-----
 
 There is almost never a reason to declare an identifier in the global namespace. Instead, functions and classes should exist in an appropriately named namespace or in a class inside of a namespace. Identifiers which are placed in the global namespace risk conflicting with identifiers from other libraries (mostly C, which doesn't have namespaces).
 
 ### Use .h and .cpp for Your File Extensions
+-----
 
 Ultimately this is a matter of preference, but .h and .cpp are widely recognized by various editors and tools. So the choice is pragmatic. Specifically, Visual Studio only automatically recognizes .cpp and .cxx for C++ files, and Vim doesn't necessarily recognize .cc as a C++ file.
 
 One particularly large project ([OpenStudio](https://github.com/NREL/OpenStudio)) uses .h and .cpp for user-generated files and .hxx and .cxx for tool-generated files. Both are well recognized and having the distinction is helpful.
 
 ### Never Mix Tabs and Spaces
+-----
 
 Some editors like to indent with a mixture of tabs and spaces by default. This makes the code unreadable to anyone not using the exact same tab indentation settings. Configure your editor so this does not happen.
 
 ### Never Put Code with Side Effects Inside an assert()
+-----
 
 ```cpp
 assert(registerSomeThing()); // make sure that registerSomeThing() returns true
@@ -426,11 +441,13 @@ The above code succeeds when making a debug build, but gets removed by the compi
 This is because `assert()` is a macro which expands to nothing in release mode.
 
 ### Don't Be Afraid of Templates
+-----
 
 They can help you stick to [DRY principles](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 They should be preferred to macros, because macros do not honor namespaces, etc.
 
 ### Consider the Rule of Zero
+-----
 
 The Rule of Zero states that you do not provide any of the functions that the compiler can provide (copy constructor, copy assignment operator, move constructor, move assignment operator, destructor) unless the class you are constructing does some novel form of ownership.
 
@@ -444,8 +461,9 @@ The goal is to let the compiler provide optimal versions that are automatically 
 
 <a name="3a"></a>
 ### Threading
+-----
 
-#### Adding jobs for threads
+### Adding jobs for threads
 
 1. `#include ThreadJob.h` and `#include JobQueue.h` if not already included 
 2. Make a `threadJob` object and pass it the functions and params you want it to run, but cast the function to `EntryPoint*`.  If there are no params, just give it `nullptr`.  Please also give it a name, as it's helpful for debugging.
@@ -457,7 +475,7 @@ The goal is to let the compiler provide optimal versions that are automatically 
 - Available threads are all made at runtime, so don't worry about them.
 - If you need to pass in multiple parameters, they can be condensed into a pair or tuple.  Just make sure to cast the overall object to `void*` as is the expected input type for thread job parameters.
 	 
-#### Considerations for threading
+### Considerations for threading
 
 - The threads assume that they are working in a *thread-safe environment*, **it is up to you to provide that.**
 	   
@@ -469,6 +487,7 @@ The goal is to let the compiler provide optimal versions that are automatically 
 
 <a name="3b"></a>
 ### Systems Overview 
+-----
 
 - **ThreadPool** is a singleton that holds the references to the worker threads.
 
@@ -485,6 +504,7 @@ The goal is to let the compiler provide optimal versions that are automatically 
 
 <a name="3c"></a>
 ### Future Considerations
+-----
 
 - [ ] Using conditional variables to awake threads when a job is place on the queue instead of the current sleeping/checking cycle
 
