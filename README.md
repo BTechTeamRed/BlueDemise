@@ -2,7 +2,7 @@
 
 # Table of Contents
 
-1. [ How to Build ] (#build)
+2. [ How to Build ](#build)
 
 2. [ Style Guidelines ](#styleGuide)
 	- 2a. [ Variables ](#2a)
