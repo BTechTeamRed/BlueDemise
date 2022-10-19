@@ -4,19 +4,19 @@
 
 1. [ **How to Build** ](#build)
 
-2. [ Style Guidelines ](#styleGuide)
+2. [ **Style Guidelines** ](#styleGuide)
 	- 2a. [ Variables ](#2a)
 	- 2b. [ Commenting ](#2b)
 	- 2c. [ Code Syntax ](#2c)
 	- 2d. [ Variable/Member Management ](#2d)
 	- 2e. [ Variable Operators & Conversions ](#2e)
 	- 2f. [ High Level Maintenence ](#2f)
-3. [ Threadpool Usage. ](#threads)
-	- 3a. [ Threading ] (#3a)
+3. [ **Threadpool Usage** ](#threads)
+	- 3a. [ Threading ](#3a)
 		I. [ Adding jobs for threads ](#3aI)
 		II. [ Considerations for threading ](#3aII)
-	- 3b. [ System overview ](#3c)
-	- 3c. [ Future add-ons ](#3d)
+	- 3b. [ System overview ](#3b)
+	- 3c. [ Future add-ons ](#3c)
 
 
 <a name="build"></a>
