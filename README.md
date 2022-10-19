@@ -2,7 +2,7 @@
 
 # Table of Contents
 
-1. [ How to Build ] (#building)
+1. [ How to Build ] (#build)
 
 2. [ Style Guidelines ](#styleGuide)
 	- 2a. [ Variables ](#2a)
@@ -19,7 +19,7 @@
 	- 3c. [ Future add-ons ](#3d)
 
 
-<a name="building"></a>
+<a name="build"></a>
 # 1. How to build
 1. You'll need to download the latest version of CMake https://cmake.org/download/
     (Make sure you add cmake to your PATH)
