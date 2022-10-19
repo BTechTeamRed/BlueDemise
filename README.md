@@ -1,4 +1,4 @@
-# **Team Red GameEngine**
+# ==Team Red GameEngine==
 ## How to build
 1. You'll need to download the latest version of CMake https://cmake.org/download/
     (Make sure you add cmake to your PATH)
