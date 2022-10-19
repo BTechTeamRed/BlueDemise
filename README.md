@@ -1,7 +1,7 @@
 # BlueDemise Game Engine
 
 <a name="build"></a>
-# 1. How to build
+# How to build
 1. You'll need to download the latest version of CMake https://cmake.org/download/
     (Make sure you add cmake to your PATH)
 2. Open console and navigate to the root directory of the project.
