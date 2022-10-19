@@ -30,25 +30,26 @@ namespace Engine
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
-		//Added for UI=======================================================================================
-
+		//initialize the window for UI
 		UserInterface::initialize(m_window);
 
 		const int menuHeight = 18;
 
+		//set position for the explorer UI element
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
 		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
 
+		//set position for the entities UI element
 		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
 		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
 
+		//sets the position for the three component UI elements
 		for (int i = 0; i < m_componentsPanels.size(); i++)
 		{
 			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
 			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
 		}
 
-		//===================================================================================================
 
 		createEntities();
 
@@ -77,12 +78,11 @@ namespace Engine
 	{
 		renderScene();
 
-		//Added for UI=============================================
-
+		//start the UI
 		UserInterface::startUI();
 
+		//call the show function for each UI element
 		m_mainMenu.show();
-
 		m_explorerPanel.show();
 		m_entitiesPanel.show();
 
@@ -93,7 +93,6 @@ namespace Engine
 
 		UserInterface::endUI();
 
-		//=========================================================
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();

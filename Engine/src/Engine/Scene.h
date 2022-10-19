@@ -58,12 +58,16 @@ namespace Engine
         int m_windowWidth{1900};
         int m_windowHeight{1000};
 
-        //Added for UI
+        //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
+
+        //explorer panel is the UI element that shows the file explorer
         ExplorerPanel m_explorerPanel;
+
+        //entities panel is the UI element that lists all the entities
         EntitiesPanel m_entitiesPanel;
 
-        //Added for UI
+        //creates an array of three components panels
         std::array<ComponentsPanel, 3> m_componentsPanels
         {
             "Active components",
