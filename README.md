@@ -38,8 +38,7 @@ Style guidelines are meant to keep the code readable and cosistent for all membe
 <a name="2a"></a>
 ## Variables 
 
-### Naming Conventions
------
+### Naming Conventions-----
  * prefer `CamelCase` above `snake_case`.
  * Types start with upper case: `MyClass`.
  * Functions and variables start with lower case: `myMethod`.
