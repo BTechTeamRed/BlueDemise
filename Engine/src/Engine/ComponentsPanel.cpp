@@ -1,33 +1,35 @@
 #include "ComponentsPanel.h"
 
-ComponentsPanel::ComponentsPanel(const std::string& name) : m_name(name) {}
-
-void ComponentsPanel::show()
+namespace Engine
 {
+	ComponentsPanel::ComponentsPanel(const std::string& name) : m_name(name) {}
 
-	ImGui::Begin(m_name.c_str(), nullptr,
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	void ComponentsPanel::show()
+	{
 
-	//define bounds of the window
-	ImGui::SetWindowPos(m_name.c_str(), ImVec2(m_position.x, m_position.y));
-	ImGui::SetWindowSize(m_name.c_str(), ImVec2(m_dimension.x, m_dimension.y));
+		ImGui::Begin(m_name.c_str(), nullptr,
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	//Need some .otf/.ttf font files
-	//defines the title section above the UI element
-	partition("MyriadPro_Bold_16", m_name, white);
+		//define bounds of the window
+		ImGui::SetWindowPos(m_name.c_str(), ImVec2(m_position.x, m_position.y));
+		ImGui::SetWindowSize(m_name.c_str(), ImVec2(m_dimension.x, m_dimension.y));
 
-	//sets the colour of the text to blue, uses blue defined in UserInterface
-	s_style->Colors[ImGuiCol_Text] = blue;
+		//Need some .otf/.ttf font files
+		//defines the title section above the UI element
+		partition("MyriadPro_Bold_16", m_name, white);
 
-	//displays some text in the window
-	ImGui::Text("Hello");
-	
+		//sets the colour of the text to blue, uses blue defined in UserInterface
+		s_style->Colors[ImGuiCol_Text] = blue;
 
-	ImGui::End();
+		//displays some text in the window
+		ImGui::Text("Hello");
 
 
+		ImGui::End();
+
+	}
 }

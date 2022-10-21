@@ -1,13 +1,16 @@
 #pragma once
 #include "UserInterface.h"
 
-class MainMenu : public UserInterface
+namespace Engine
 {
+	class MainMenu : public UserInterface
+	{
 
-public:
+	public:
 
-	virtual void show() override;
+		virtual void show() override;
 
-private:
+	private:
 
-};
+	};
+}

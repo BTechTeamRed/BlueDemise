@@ -1,13 +1,16 @@
 #pragma once
 #include "UserInterface.h"
 
-class EntitiesPanel : public UserInterface
+namespace Engine
 {
+	class EntitiesPanel : public UserInterface
+	{
 
-public:
+	public:
 
-	virtual void show() override;
+		virtual void show() override;
 
-private:
+	private:
 
-};
+	};
+}

@@ -2,18 +2,21 @@
 
 #include "UserInterface.h"
 
-class ComponentsPanel : public UserInterface
+namespace Engine
 {
+	class ComponentsPanel : public UserInterface
+	{
 
-public:
+	public:
 
-	//constructor takes in name of panel as a parameter
-	ComponentsPanel(const std::string& name);
+		//constructor takes in name of panel as a parameter
+		ComponentsPanel(const std::string& name);
 
-	virtual void show() override;
+		virtual void show() override;
 
-private:
+	private:
 
-	std::string m_name;
+		std::string m_name;
 
-};
+	};
+}

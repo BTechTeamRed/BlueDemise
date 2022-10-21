@@ -2,15 +2,18 @@
 
 #include "UserInterface.h"
 
-class ExplorerPanel : public UserInterface
+namespace Engine
 {
+	class ExplorerPanel : public UserInterface
+	{
 
-public:
+	public:
 
-	virtual void show() override;
+		virtual void show() override;
 
-private:
+	private:
 
 
 
-};
+	};
+}
