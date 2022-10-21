@@ -21,29 +21,46 @@ AudioPlayerSingleton* AudioPlayerSingleton::getInstance()
 // a bool if the sound should be initialized paused or play on initialization, and a bool for if
 // sound effects should be used. Sound effects need to be added after using this function using
 // the returned ISound*.  If the sound cannot be found, it returns a nullptr.
+// If useFullPath is true, the full path to the sound file can be used. Otherwise, only the sound name
+// needs to be put in with the file type. (E.g.:"GameEngine/Engine/src/Media/sound.mp3" vs "sound.mp3")
 // More information on sound effects: https://www.ambiera.com/irrklang/docu/index.html#effects
 // 
-ISound* AudioPlayerSingleton::playSound(const char* soundName, bool loop, bool startPaused, bool useSoundEffects)
+ISound* AudioPlayerSingleton::playSound(const char* soundNamePath, bool loop, bool startPaused, bool useSoundEffects, bool useFullPath)
 {
-	string filePath = "../../GameEngine/Engine/src/Media/";
-	filePath += soundName;
-	const char* fullPath = filePath.c_str();
-	ISound* theSound = engine->play2D(fullPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-	if (theSound != 0)
+	if (useFullPath)
 	{
-		return theSound;
-	}
-	else
-	{
-		string filePath2 = "../../GameEngine/Game/src/Media/";
-		filePath2 += soundName;
-		const char* fullPath2 = filePath2.c_str();
-		theSound = engine->play2D(fullPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+		ISound* theSound = engine->play2D(soundNamePath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
 		if (theSound != 0)
 		{
 			return theSound;
 		}
-		return nullptr;
+		else
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		string filePath = "../../GameEngine/Engine/src/Media/";
+		filePath += soundNamePath;
+		const char* fullPath = filePath.c_str();
+		ISound* theSound = engine->play2D(fullPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+		if (theSound != 0)
+		{
+			return theSound;
+		}
+		else
+		{
+			string filePath2 = "../../GameEngine/Game/src/Media/";
+			filePath2 += soundNamePath;
+			const char* fullPath2 = filePath2.c_str();
+			theSound = engine->play2D(fullPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+			if (theSound != 0)
+			{
+				return theSound;
+			}
+			return nullptr;
+		}
 	}
 }
 
@@ -52,29 +69,46 @@ ISound* AudioPlayerSingleton::playSound(const char* soundName, bool loop, bool s
 // a bool if the sound should loop, a bool if the sound should initialize paused,
 // and a bool if the sound should use sound effects. Sound effects need to be added after
 // using this funtion using the returned ISound*. If the sound cannot be found, it returns a nullptr.
+// If useFullPath is true, the full path to the sound file can be used. Otherwise, only the sound name
+// needs to be put in with the file type. (E.g.:"GameEngine/Engine/src/Media/sound.mp3" vs "sound.mp3")
 // More information on sound effects: https://www.ambiera.com/irrklang/docu/index.html#effects
 // 
-ISound* AudioPlayerSingleton::play3DSound(const char* soundName, vec3df sound3DPosition, bool loop, bool beginPaused, bool useSoundEffects)
+ISound* AudioPlayerSingleton::play3DSound(const char* soundNamePath, vec3df sound3DPosition, bool loop, bool beginPaused, bool useSoundEffects, bool useFullPath)
 {
-	string filePath = "../../GameEngine/Engine/src/Media/";
-	filePath += soundName;
-	const char* fullPath = filePath.c_str();
-	ISound* theSound = engine->play3D(fullPath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
-	if (theSound != 0)
+	if (useFullPath)
 	{
-		return theSound;
-	}
-	else
-	{
-		string filePath2 = "../../GameEngine/Game/src/Media/";
-		filePath2 += soundName;
-		const char* fullPath2 = filePath2.c_str();
-		ISound* theSound = engine->play3D(fullPath2, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+		ISound* theSound = engine->play3D(soundNamePath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
 		if (theSound != 0)
 		{
 			return theSound;
 		}
-		return nullptr;
+		else
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		string filePath = "../../GameEngine/Engine/src/Media/";
+		filePath += soundNamePath;
+		const char* fullPath = filePath.c_str();
+		ISound* theSound = engine->play3D(fullPath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+		if (theSound != 0)
+		{
+			return theSound;
+		}
+		else
+		{
+			string filePath2 = "../../GameEngine/Game/src/Media/";
+			filePath2 += soundNamePath;
+			const char* fullPath2 = filePath2.c_str();
+			ISound* theSound = engine->play3D(fullPath2, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+			if (theSound != 0)
+			{
+				return theSound;
+			}
+			return nullptr;
+		}
 	}
 }
 
