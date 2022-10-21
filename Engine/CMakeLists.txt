@@ -1,4 +1,4 @@
-file (GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cpp" "*.h")
+file (GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cpp" "*.h" "*.wav" "*.mp3" "*.ogg" "*.flac" "*.mod" "*.it" "*.s3d" "*.xm")
 add_library(Engine SHARED ${sources} )
 
 #preprocessor definitions
