@@ -24,9 +24,9 @@ namespace Engine
 		irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice(irrklang::ESOD_DIRECT_SOUND_8, irrklang::ESEO_MULTI_THREADED);
 
 		// Plays a simple sound in 2D, returning an irrklang::ISound to control the sound during play.
-		irrklang::ISound* playSound(const char* soundPath, bool loop = false, bool startPaused = false, bool useSoundEffects = false);
+		irrklang::ISound* playSound(const char* soundName, bool loop = false, bool startPaused = false, bool useSoundEffects = false);
 		// Plays a sound in 3D space, returning an irrklang::ISound to control the sound during play.
-		irrklang::ISound* play3DSound(const char* soundPath, irrklang::vec3df sound3DPosition, bool loop = false, bool beginPaused = false, bool useSoundEffects = false);
+		irrklang::ISound* play3DSound(const char* soundName, irrklang::vec3df sound3DPosition, bool loop = false, bool beginPaused = false, bool useSoundEffects = false);
 		// Clears memory space from a sound when finished using, taking a return of playSound() or play3DSound().
 		void dropSound(irrklang::ISound* sound);
 		// Use when finished with the sound engine (for the whole application).
