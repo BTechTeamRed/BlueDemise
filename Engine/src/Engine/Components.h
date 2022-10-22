@@ -13,10 +13,11 @@ namespace Engine
 		std::string tag;
 	};
 	
+	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
-		CameraComponent(float f, glm::mat4 proj, glm::vec2 view, float fZ, float nZ)
-			: fov(f),  projection(proj), viewport(view), farZ(fZ), nearZ(nZ) {}
+		CameraComponent(float fieldOfView, glm::mat4 projectionMatrix, glm::vec2 viewVector, float farZcoordinate, float nearZcoordinate)
+			: fov(fieldOfView),  projection(projectionMatrix), viewport(viewVector), farZ(farZcoordinate), nearZ(nearZcoordinate) {}
 
 		float fov;
 		glm::mat4 projection;
@@ -25,6 +26,7 @@ namespace Engine
 		float nearZ;
 	};
 
+	//A component containing the 'transform' of a component (position in the world).
 	struct TransformComponent 
 	{
 		TransformComponent() = default;
@@ -36,6 +38,7 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
+	//A component containing a vec4 of color data, RGBA.
 	struct ColorComponent 
 	{
 		ColorComponent() = default;
@@ -43,6 +46,16 @@ namespace Engine
 			: color(color) {}
 
 		glm::vec4 color;
+	};
+
+	//A component containing texture data
+	struct TextureComponent
+	{
+		TextureComponent() = default;
+		TextureComponent(GLuint texID)
+			: texID(texID) {}
+
+		GLuint texID;
 	};
 
 	//Not component, just container for vertex attribute data format
@@ -60,16 +73,27 @@ namespace Engine
 	};
 
 	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
+	//Contains data to communicate with the GPU about what to draw (typically per entity).
 	struct VerticesComponent 
 	{
 		VerticesComponent() = default;
 		VerticesComponent(const VerticesComponent& other) = default;
 
 		std::vector<VertexAttribute> vertexAttributes;
+
+		//
 		GLuint vaoID;
+
+		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
 		GLuint iboID;
+		
+		//Vertex buffer object ID: ID for the buffer containing the verts on the GPU
 		GLuint vboID;
+		
+		//Size of a single vertex in bytes
 		GLsizei stride;
+
+		//Num of vertices provided to GPU
 		unsigned long numIndices;
 	};
 
