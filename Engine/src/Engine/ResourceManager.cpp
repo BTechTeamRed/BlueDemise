@@ -105,7 +105,7 @@ namespace Engine
 		else
 		{
 			// This should never happen but is left in for debugging purposes.
-			GE_CORE_ERROR("[ResourceManager] The file stream broke!", fileWithPath);
+			GE_CORE_ERROR("[ResourceManager] Could not open file stream to save JSON at {0}", fileWithPath);
 		}
 	}
 	
