@@ -37,8 +37,8 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
-		//Function to save provided json data to a provided file. Will save to "Data/data.json" if file name/path are not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName = "data", std::string path = "Data/");
+		//Function to save provided json data to a provided file. Will save to "Data/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Data/");
 
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
