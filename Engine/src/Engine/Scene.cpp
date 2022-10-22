@@ -31,25 +31,7 @@ namespace Engine
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		//initialize the window for UI
-		UserInterface::initialize(m_window);
-
-		const int menuHeight = 18;
-
-		//set position for the explorer UI element
-		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
-
-		//set position for the entities UI element
-		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
-		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
-
-		//sets the position for the three component UI elements
-		for (int i = 0; i < m_componentsPanels.size(); i++)
-		{
-			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
-			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
-		}
-
+		if (!initializeUI()) return;
 
 		createEntities();
 
@@ -78,21 +60,7 @@ namespace Engine
 	{
 		renderScene();
 
-		//start the UI
-		UserInterface::startUI();
-
-		//call the show function for each UI element
-		m_mainMenu.show();
-		m_explorerPanel.show();
-		m_entitiesPanel.show();
-
-		for (auto& panel : m_componentsPanels)
-		{
-			panel.show();
-		}
-
-		UserInterface::endUI();
-
+		renderUI();
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
@@ -123,6 +91,36 @@ namespace Engine
 
 		return true;
     }
+
+	bool Scene::initializeUI()
+	{
+		//Initialize the UI using ImGui OpenGL v3.3
+		if (!UserInterface::initialize(m_window))
+		{
+			return false;
+		}
+
+		const int menuHeight = 18;
+
+		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
+		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
+
+		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
+		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, 0.5f * (m_windowHeight - menuHeight)));
+
+		for (int i = 0; i < m_componentsPanels.size(); i++)
+		{
+			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
+			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
+		}git 
+
+		return true;
+	}
+
+	void Scene::shutdownUI()
+	{
+		UserInterface::shutdown();
+	}
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene()
@@ -160,6 +158,36 @@ namespace Engine
 
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 		}
+	}
+
+	void Scene::renderUI()
+	{
+		UserInterface::startUI();
+
+		m_mainMenu.show();
+
+		m_explorerPanel.show();
+		m_entitiesPanel.show();
+
+		for (auto& panel : m_componentsPanels)
+		{
+			panel.show();
+		}
+
+		UserInterface::endUI();
+
+		//Check which entity was selected (WIP)
+		//const entt::entity id = m_entityHandles[m_entitiesPanel.getSelectedEntity()];
+		//m_componentsPanels[2].setText(std::to_string((int)id));
+		/*
+		if (m_entitiesPanel.isAddButtonClicked())
+		{
+			auto totalEntities = Entity::getTotalEntities();
+			std::string tag = "Entity_" + std::to_string(Entity::getTotalEntities() + 1);
+			Entity cameraEntity = createEntity(tag);
+			m_entitiesPanel.addEntity(tag);
+		}
+		*/
 	}
 
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.

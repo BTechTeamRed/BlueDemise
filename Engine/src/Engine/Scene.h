@@ -42,7 +42,13 @@ namespace Engine
 
     private:
         bool initializeGL();
+
+        bool initializeUI();
+        void shutdownUI();
+
         void renderScene();
+
+        void renderUI();
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();

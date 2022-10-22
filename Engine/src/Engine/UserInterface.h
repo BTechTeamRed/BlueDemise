@@ -1,9 +1,8 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
-#include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
 
@@ -20,6 +19,7 @@ namespace Engine
 		static ImVec4 red;
 		static ImVec4 green;
 		static ImVec4 blue;
+		static ImVec4 grey;
 		static ImVec4 white;
 
 		//initialize start and end functions
@@ -33,6 +33,7 @@ namespace Engine
 
 		//initialize takes in a GLFWwindow as a parameter and initializes a window to be used with ImGUI
 		static bool initialize(GLFWwindow* window);
+		static void shutdown();
 
 		//set position takes in a vec2 and is used to set the position of the window
 		void setPosition(const glm::uvec2& position);
@@ -46,13 +47,11 @@ namespace Engine
 
 		virtual void show() = 0;
 
-		void shutdown();
-
 	protected:
 
 		static ImGuiIO* s_IO;
 		static ImGuiStyle* s_style;
-		static std::map<std::string, ImFont*> s_fonts;
+		static std::unordered_map<std::string, ImFont*> s_fonts;
 
 		glm::vec2 m_position{ 0.0f, 0.0f };
 		glm::vec2 m_dimension{ 0.0f, 0.0f };

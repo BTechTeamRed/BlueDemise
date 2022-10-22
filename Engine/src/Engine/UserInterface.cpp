@@ -6,7 +6,7 @@ namespace Engine
 	ImGuiIO* UserInterface::s_IO = nullptr;
 	ImGuiStyle* UserInterface::s_style = nullptr;
 
-	std::map<std::string, ImFont*> UserInterface::s_fonts;
+	std::unordered_map<std::string, ImFont*> UserInterface::s_fonts;
 
 	//define the ImGUI vec4s for each colour
 	ImVec4 UserInterface::red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
