@@ -1,20 +1,28 @@
 #include <iostream>
 #include "gtest/gtest.h"
-
-#include "Engine/Components.h"
+#include <thread>
+#include <chrono>
+#include "Engine/DeltaTime.h"
+#include "Engine/Entity.h"
+#include "Engine/Scene.h"
+#include "Engine/ResourceManager.h"
 
 namespace BDTests
 {
-	// IndependentMethod is a test case - here, we have 2 tests for this 1 test case
-	TEST(IndependentMethod, is1equalTo0)
+	// IndependentMethod is a test case - here, we have 3 tests for this 1 test case
+	TEST(DeltaTimeTest, timeIsWorking)
 	{
-		EXPECT_EQ(1, 0);
-		EXPECT_EQ(1, 1);
+		Engine::DeltaTime dt;
+		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		EXPECT_GT(dt.getMilliseconds(), 1);
 	}
 
-	TEST(IndependentMethod, is0equalTo0) 
+	TEST(SceneTest, sceneHasEntities)
 	{
-		EXPECT_EQ(0, 0);
+		Engine::Scene scene;
+		Engine::Entity ent = scene.createEntity("ent");
+		//GTEST_EXPECT_TRUE(ent != NULL);
+		EXPECT_TRUE(&ent != nullptr);
 	}
 
 	// The fixture for testing class EngineTest. From google test primer.
