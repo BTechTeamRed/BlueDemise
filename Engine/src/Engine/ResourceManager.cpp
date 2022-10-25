@@ -47,7 +47,7 @@ namespace Engine
 		//Delete all textures
 		for (auto& texture : m_textures)
 		{
-			glDeleteTextures(1, &texture.second);
+			glDeleteTextures(1, &texture.second.texID);
 		}
 	}
 #pragma endregion
@@ -150,27 +150,28 @@ namespace Engine
 		return nullptr;
 	}
 
-	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
+	//Based on the provided filename, return the ImageData for the texture stored within a map, or load it from the system.
 	//Currently only supports 2D Textures, but can be changed using texType.
-	GLuint ResourceManager::getTexture(const std::string& name)
+	ResourceManager::ImageData ResourceManager::getTexture(const std::string& name)
 	{
 		std::lock_guard<std::mutex> lock(m_functionLock);
 	
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
 		GLuint data = NULL;
+		ImageData img;
 		auto it = m_textures.find(name);
 	
 		//If loaded, return the image. Else, load and store the image, then return it.
 		if (it != m_textures.end())
 		{
 			//Get value based on map key "name"
-			data = m_textures.find(name)->second;
+			img = m_textures.find(name)->second;
 
 			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + name + " found.");
-			return data;
+			return img;
 		}
 		
-		ImageData img = readImageData(name);
+		img = readImageData(name);
 		
 		//If image data isn't nullptr, store and return data.
 		if (img.image != nullptr)
@@ -210,21 +211,22 @@ namespace Engine
 			//Generate Mimaps (different sizes of the image)
 			glGenerateMipmap(texType);
 
+			img.texID = data;
 			//Store texture for later use.
-			m_textures.insert(std::pair<std::string, GLuint>(name, data));
+			m_textures.insert(std::pair<std::string, ImageData>(name, img));
 			
 			
 			//Unbind the texture so it isn't modified anymore.
 			glBindTexture(texType, 0);
 			
-			return data;
+			return img;
 		}
 		else 
 		{
 			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
 		}
 		
-		return NULL;
+		return img;
 	
 	}
 
@@ -304,7 +306,7 @@ namespace Engine
 	ResourceManager::ImageData ResourceManager::readImageData(const std::string& name)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
+		ResourceManager::ImageData data = { nullptr, 0, 0, 0 , 0};
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
 		auto imagePath = m_filePaths.find(name);

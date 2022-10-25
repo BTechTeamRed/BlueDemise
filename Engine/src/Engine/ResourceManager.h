@@ -27,6 +27,7 @@ namespace Engine
 		{
 			unsigned char* image;
 			int width, height, numComponents;
+			GLuint texID;
 		};
 
 		#pragma region Singleton Instance Management
@@ -56,7 +57,7 @@ namespace Engine
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
 
-		GLuint getTexture(const std::string& name);
+		ImageData getTexture(const std::string& name);
 
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
@@ -104,7 +105,7 @@ namespace Engine
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
 		//Map to store each processed texture containing an image imported from STBI
-		std::unordered_map<std::string, GLuint> m_textures{};
+		std::unordered_map<std::string, ImageData> m_textures{};
 			
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
