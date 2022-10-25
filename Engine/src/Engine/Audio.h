@@ -4,7 +4,6 @@
 
 #include "irrKlang.h"
 #include <string>
-#include <filesystem>
 
 namespace Engine 
 {
@@ -16,6 +15,8 @@ namespace Engine
 	{
 	private:
 		static AudioPlayerSingleton* m_instance;
+		static std::string m_engineMediaPath;
+		static std::string m_gameMediaPath;
 
 		AudioPlayerSingleton() = default;
 
@@ -54,7 +55,7 @@ namespace Engine
 //// use namespace irrklang to skip using "irrklang::"
 //
 //AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
-//const char *soundPath = "nameOfSound.wav"; // Accepted file types are  "*.wav" "*.ogg" "*.flac" "*.mod" "*.it" "*.s3d" "*.xm"
+//const char *soundName = "nameOfSound.wav"; // Accepted file types are  "*.wav" "*.ogg" "*.flac" "*.mod" "*.it" "*.s3d" "*.xm"
 ////irrklang::ISound* theSound = audioPlayer->playSound(soundName, true, false, false, false);
 //irrklang::vec3df audioLocation(0, 0, 0); // if using a 3d sound
 //irrklang::ISound* theSound = audioPlayer->play3DSound(soundPath, audioLocation, false, false, false, false);

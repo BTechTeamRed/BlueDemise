@@ -1,18 +1,22 @@
 #include "Audio.h"
 #include <iostream>
+#include <filesystem>
 
 using namespace std;
 using namespace irrklang;
 using namespace Engine;
 
 AudioPlayerSingleton* AudioPlayerSingleton::m_instance;
+string AudioPlayerSingleton::m_engineMediaPath;
+string AudioPlayerSingleton::m_gameMediaPath;
 
-AudioPlayerSingleton* AudioPlayerSingleton::getInstance()
+AudioPlayerSingleton* AudioPlayerSingleton::getInstance()	
 {
 	if (m_instance == nullptr)
 	{
 		m_instance = new AudioPlayerSingleton();
-		std::cout << std::filesystem::current_path();
+		m_engineMediaPath = std::filesystem::current_path().parent_path().string() + "\\Engine\\src\\Media\\";
+		m_gameMediaPath = std::filesystem::current_path().parent_path().string() + "\\Game\\src\\Media\\";
 	}
 
 	return m_instance;
@@ -26,7 +30,8 @@ AudioPlayerSingleton* AudioPlayerSingleton::getInstance()
 // needs to be put in with the file type. (E.g.:"GameEngine/Engine/src/Media/sound.wav" vs "sound.wav")
 // More information on sound effects: https://www.ambiera.com/irrklang/docu/index.html#effects
 // 
-ISound* AudioPlayerSingleton::playSound(const char* soundNamePath, bool loop, bool startPaused, bool useSoundEffects, bool useFullPath)
+ISound* AudioPlayerSingleton::playSound(const char* soundNamePath,
+	bool loop, bool startPaused, bool useSoundEffects, bool useFullPath)
 {
 	if (useFullPath)
 	{
@@ -35,43 +40,32 @@ ISound* AudioPlayerSingleton::playSound(const char* soundNamePath, bool loop, bo
 		{
 			return theSound;
 		}
-		else
-		{
-			return nullptr;
-		}
+		return nullptr;
 	}
-	else
+	string filePath = m_engineMediaPath + soundNamePath;
+	std::replace(filePath.begin(), filePath.end(), '\\', '/');
+	const char* fullPath = filePath.c_str();
+	ISound* theSound = engine->play2D(fullPath, loop,
+		startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+	if (theSound != 0)
 	{
-		string filePath = std::filesystem::current_path().parent_path().string() + "\\Engine\\src\\Media\\";
-		filePath += soundNamePath;
-		std::replace(filePath.begin(), filePath.end(), '\\', '/');
-		const char* fullPath = filePath.c_str();
-		ISound* theSound = engine->play2D(fullPath, loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-		if (theSound != 0)
+		return theSound;
+	}
+	string filePath2 = m_gameMediaPath;
+	for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+	{
+		if (dEntry.path().filename() == soundNamePath)
 		{
-			return theSound;
-		}
-		else
-		{
-			string filePath2 = std::filesystem::current_path().parent_path().string() + "\\Game\\src\\Media\\";
-			for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+			ISound* theSound2 = engine->play2D(dEntry.path().string().c_str(),
+				loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+			if (theSound2 != 0)
 			{
-				if (dEntry.path().filename() == soundNamePath)
-				{
-					ISound* theSound2 = engine->play2D(dEntry.path().string().c_str(), loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-					if (theSound2 != 0)
-					{
-						return theSound2;
-					}
-					else
-					{
-						return nullptr;
-					}
-				}
+				return theSound2;
 			}
 			return nullptr;
 		}
 	}
+	return nullptr;
 }
 
 // Plays a sound in 3D space, takes a const char* path to the sound, 
@@ -87,48 +81,38 @@ ISound* AudioPlayerSingleton::play3DSound(const char* soundNamePath, vec3df soun
 {
 	if (useFullPath)
 	{
-		ISound* theSound = engine->play3D(soundNamePath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+		ISound* theSound = engine->play3D(soundNamePath,
+			sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
 		if (theSound != 0)
 		{
 			return theSound;
 		}
-		else
-		{
-			return nullptr;
-		}
+		return nullptr;
 	}
-	else
+	string filePath = m_engineMediaPath + soundNamePath;
+	std::replace(filePath.begin(), filePath.end(), '\\', '/');
+	const char* fullPath = filePath.c_str();
+	ISound* theSound = engine->play3D(fullPath, sound3DPosition,
+		loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+	if (theSound != 0)
 	{
-		string filePath = std::filesystem::current_path().parent_path().string() + "\\Engine\\src\\Media\\";
-		filePath += soundNamePath;
-		std::replace(filePath.begin(), filePath.end(), '\\', '/');
-		const char* fullPath = filePath.c_str();
-		ISound* theSound = engine->play3D(fullPath, sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
-		if (theSound != 0)
+		return theSound;
+	}
+	string filePath2 = m_gameMediaPath;
+	for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+	{
+		if (dEntry.path().filename() == soundNamePath)
 		{
-			return theSound;
-		}
-		else
-		{
-			string filePath2 = std::filesystem::current_path().parent_path().string() + "\\Game\\src\\Media\\";
-			for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+			ISound* theSound2 = engine->play3D(dEntry.path().string().c_str(), sound3DPosition,
+				loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+			if (theSound2 != 0)
 			{
-				if (dEntry.path().filename() == soundNamePath)
-				{
-					ISound* theSound2 = engine->play3D(dEntry.path().string().c_str(), sound3DPosition, loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
-					if (theSound2 != 0)
-					{
-						return theSound2;
-					}
-					else
-					{
-						return nullptr;
-					}
-				}
+				return theSound2;
 			}
 			return nullptr;
 		}
 	}
+	return nullptr;
 }
 
 // Use on an ISound* to clear memory space when the sound is no longer needed.
