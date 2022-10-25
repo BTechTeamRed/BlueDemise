@@ -3,6 +3,8 @@
 #define _AUDIO_H_
 
 #include "irrKlang.h"
+#include <string>
+#include <filesystem>
 
 namespace Engine 
 {
@@ -52,10 +54,10 @@ namespace Engine
 //// use namespace irrklang to skip using "irrklang::"
 //
 //AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
-//const char *soundPath = "/pathToSound";
-////irrklang::ISound* theSound = audioPlayer->playSound(soundPath, true, false, false);
+//const char *soundPath = "nameOfSound.wav"; // Accepted file types are  "*.wav" "*.ogg" "*.flac" "*.mod" "*.it" "*.s3d" "*.xm"
+////irrklang::ISound* theSound = audioPlayer->playSound(soundName, true, false, false, false);
 //irrklang::vec3df audioLocation(0, 0, 0); // if using a 3d sound
-//irrklang::ISound* theSound = audioPlayer->play3DSound(soundPath, audioLocation, false, false);
+//irrklang::ISound* theSound = audioPlayer->play3DSound(soundPath, audioLocation, false, false, false, false);
 //audioPlayer->engine->setListenerPosition(audioLocation, irrklang::vec3df(0, 1, 0)); // if using a 3d sound
 //theSound->setMinDistance(5.0f);
 //
