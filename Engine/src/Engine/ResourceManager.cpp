@@ -89,6 +89,26 @@ namespace Engine
 		}
 	}
 
+	//Save provided json object to a provided filename. Defaults file directory to "Data/"
+	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be overwritten.
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path)
+	{
+		//Create a file path from the provided path, file name, and file extension.
+		std::string fileWithPath = path + fileName + "." + m_jsonFileExt;
+
+		std::ofstream fileStream(fileWithPath);	// Create a file stream and open the file
+		if (fileStream.is_open())
+		{
+			fileStream << data;					// Replace existing file content with the updated prevData
+			fileStream.close();					// Close the file stream so it doesn't hang open
+		}
+		else
+		{
+			// This should never happen but is left in for debugging purposes.
+			GE_CORE_ERROR("[ResourceManager] Could not open file stream to save JSON at {0}", fileWithPath);
+		}
+	}
+	
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
 	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
