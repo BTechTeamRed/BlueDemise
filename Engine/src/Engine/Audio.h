@@ -3,6 +3,7 @@
 #define _AUDIO_H_
 
 #include "irrKlang.h"
+#include <string>
 
 namespace Engine 
 {
@@ -14,6 +15,8 @@ namespace Engine
 	{
 	private:
 		static AudioPlayerSingleton* m_instance;
+		static std::string m_engineMediaPath;
+		static std::string m_gameMediaPath;
 
 		AudioPlayerSingleton() = default;
 
@@ -24,9 +27,9 @@ namespace Engine
 		irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice(irrklang::ESOD_DIRECT_SOUND_8, irrklang::ESEO_MULTI_THREADED);
 
 		// Plays a simple sound in 2D, returning an irrklang::ISound to control the sound during play.
-		irrklang::ISound* playSound(const char* soundPath, bool loop = false, bool startPaused = false, bool useSoundEffects = false);
+		irrklang::ISound* playSound(const char* soundNamePath, bool loop = false, bool startPaused = false, bool useSoundEffects = false, bool useFullPath = false);
 		// Plays a sound in 3D space, returning an irrklang::ISound to control the sound during play.
-		irrklang::ISound* play3DSound(const char* soundPath, irrklang::vec3df sound3DPosition, bool loop = false, bool beginPaused = false, bool useSoundEffects = false);
+		irrklang::ISound* play3DSound(const char* soundNamePath, irrklang::vec3df sound3DPosition, bool loop = false, bool beginPaused = false, bool useSoundEffects = false, bool useFullPath = false);
 		// Clears memory space from a sound when finished using, taking a return of playSound() or play3DSound().
 		void dropSound(irrklang::ISound* sound);
 		// Use when finished with the sound engine (for the whole application).
@@ -52,10 +55,10 @@ namespace Engine
 //// use namespace irrklang to skip using "irrklang::"
 //
 //AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
-//const char *soundPath = "/pathToSound";
-////irrklang::ISound* theSound = audioPlayer->playSound(soundPath, true, false, false);
+//const char *soundName = "nameOfSound.wav"; // Accepted file types are  "*.wav" "*.ogg" "*.flac" "*.mod" "*.it" "*.s3d" "*.xm"
+////irrklang::ISound* theSound = audioPlayer->playSound(soundName, true, false, false, false);
 //irrklang::vec3df audioLocation(0, 0, 0); // if using a 3d sound
-//irrklang::ISound* theSound = audioPlayer->play3DSound(soundPath, audioLocation, false, false);
+//irrklang::ISound* theSound = audioPlayer->play3DSound(soundPath, audioLocation, false, false, false, false);
 //audioPlayer->engine->setListenerPosition(audioLocation, irrklang::vec3df(0, 1, 0)); // if using a 3d sound
 //theSound->setMinDistance(5.0f);
 //
