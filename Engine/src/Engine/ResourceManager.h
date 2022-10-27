@@ -38,32 +38,32 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
+		//Function to save provided json data to a provided file. Will save to "Data/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Data/");
+
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
 
 		#pragma endregion
 
-		#pragma region Set Functions
+		#pragma region Get & Set Functions
 
 		//Function to set icon for the application.
 		void setAppIcon(GLFWwindow&);
 
-		//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
-		void saveFilePaths(const std::string& path);
-		#pragma endregion
-
-		#pragma region Get Functions
-
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
 
+<<<<<<< HEAD
 		ImageData getTexture(const std::string& name);
-
+=======
+		//Based on the provided filename, return the GLuint ID for the texture. Only supports 2D Textures.
+		GLuint getTexture(const std::string& name);
+>>>>>>> develop
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
 		#pragma endregion
-
 
 	protected:
 		#pragma region Constructors & Destructors
@@ -119,7 +119,10 @@ namespace Engine
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions
-		
+
+		//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
+		void saveFilePaths(const std::string& path);
+
 		//Add file path from provided directory_entry to the m_filePaths map.
 		void saveFilePath(std::filesystem::directory_entry path);
 		
