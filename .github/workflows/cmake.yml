@@ -34,7 +34,7 @@ jobs:
       
     - name: Build EXE
       # Build your program with the given configuration
-      run: ${{github.workspace}}/bin/Debug/Game.exe
+      run: ${{github.workspace}}\bin\Debug\Game.exe
     
    # - name: Test
       #run: |
