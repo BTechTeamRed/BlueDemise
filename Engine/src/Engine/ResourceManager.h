@@ -57,6 +57,9 @@ namespace Engine
 		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
 		ImageData getTexture(const std::string& name);
 
+		//Based on the provided spritesheet filename, return the vector of GLuints for the sprites stored within a map, or load it from the system.
+		std::vector<GLuint> getSpritesheet(const std::string& name);
+
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
 		#pragma endregion
@@ -102,7 +105,10 @@ namespace Engine
 		
 		//Map to store each processed texture containing an image imported from STBI
 		std::unordered_map<std::string, ImageData> m_textures{};
-			
+
+		//Map to store each processed texture containing an image imported from STBI
+		std::unordered_map<std::string, std::vector<GLuint>> m_spritesheetsTex{};
+		
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
 			

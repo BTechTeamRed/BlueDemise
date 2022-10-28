@@ -261,6 +261,126 @@ namespace Engine
 	
 	}
 
+	//Based on the provided spritesheet filename, return the vector of GLuints for the sprites stored within a map, or load it from the system.
+	std::vector<GLuint> ResourceManager::getSpritesheet(const std::string& name)
+	{
+
+		//int spritesPerRow = sheet.Width / cellWidth;
+		//int spritesPerColumn = sheet.Height / cellHeight;
+		int spritesPerRow = 4;
+		int spritesPerCol = 3;
+
+		//spritesTotal = framesPerRow * framesPerColumn;
+		
+		std::lock_guard<std::mutex> lock(m_functionLock);
+
+		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
+		std::vector<GLuint> data;
+		auto it = m_spritesheetsTex.find(name);
+
+		//If loaded, return the image. Else, load and store the image, then return it.
+		if (it != m_spritesheetsTex.end())
+		{
+			//Get value based on map key "name"
+			data = m_spritesheetsTex.find(name)->second;
+
+			GE_CORE_WARN("[ResourceManager] Previously loaded spritesheet " + name + " found.");
+			return data;
+		}
+
+		ImageData img = readImageData(name);
+
+		//If image data isn't nullptr, store and return data.
+		if (img.image != nullptr)
+		{
+			/*
+			const float verts[] = 
+			{
+				posX, posY,
+				posX + spriteWidth, posY,
+				posX + spriteWidth, posY + spriteHeight,
+				posX, posY + spriteHeight
+			};
+
+			const float tw = float(spriteWidth) / texWidth;
+			const float th = float(spriteHeight) / texHeight;
+			const int numPerRow = texWidth / spriteWidth;
+			const float tx = (frameIndex % numPerRow) * tw;
+			const float ty = (frameIndex / numPerRow + 1) * th;
+			const float texVerts[] = 
+			{
+				tx, ty,
+				tx + tw, ty,
+				tx + tw, ty + th,
+				tx, ty + th
+			};
+
+			// ... Bind the texture, enable the proper arrays
+
+			glVertexPointer(2, GL_FLOAT, verts);
+			glTexCoordPointer(2, GL_FLOAT, texVerts);
+			glDrawArrays(GL_TRI_STRIP, 0, 4);
+
+
+
+
+
+
+
+			//Determine the kind of texture being loaded. Currently only using GL_TEXTURE_2D
+			GLenum texType = GL_TEXTURE_2D;
+
+			// Generates an OpenGL texture object
+			glGenTextures(1, &data);
+
+			// Assigns the texture to a Texture Unit
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(texType, data);
+
+
+			// Configures the type of algorithm that is used to make the image smaller or bigger
+			glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+			glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			//Configures the way the texture repeasts
+			glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+			glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+			// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
+			// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+			// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
+
+			// Assigns the image to the OpenGL Texture object based on the number of RGB components (if 4, then alpha value is present).
+			if (img.numComponents == m_RGB)
+				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
+			else if (img.numComponents == m_RGBA)
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
+
+			//Free the image from memory
+			stbi_image_free(img.image);
+
+			//Generate Mimaps (different sizes of the image)
+			glGenerateMipmap(texType);
+
+			//Store texture for later use.
+			m_textures.insert(std::pair<std::string, GLuint>(name, data));
+
+
+			//Unbind the texture so it isn't modified anymore.
+			glBindTexture(texType, 0);
+
+			return data;*/
+		}
+		else
+		{
+			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
+		}
+
+		return data;
+
+	}
+
+
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
 	std::string ResourceManager::getShaderData(const std::string& name)
 	{

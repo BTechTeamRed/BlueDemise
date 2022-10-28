@@ -152,7 +152,10 @@ Issues:
 			//Set the color of the object
 			setColor(mvp, color.color);
 
+			glm::uint quads = 1;
+
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+			//glDrawArrays(GL_TRIANGLES, 0, vertices.numIndices * quads);
 		}
 
 
@@ -170,9 +173,9 @@ Issues:
 
 			//Set the color of the sprite
 			setColor(mvp, color.color);
-			
-			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 
+			//glDrawArrays(GL_TRIANGLES, 0, vertices.numIndices);
+			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
 
