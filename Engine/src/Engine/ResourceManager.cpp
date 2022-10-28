@@ -47,7 +47,7 @@ namespace Engine
 		//Delete all textures
 		for (auto& texture : m_textures)
 		{
-			glDeleteTextures(1, &texture.second);
+			glDeleteTextures(1, &texture.second.texID);
 		}
 	}
 #pragma endregion
@@ -60,8 +60,11 @@ namespace Engine
 		//Lock function to prevent other threads from saving files concurrently.
 		std::lock_guard<std::mutex> lock(m_functionLock);
 
+		//create an error handler in case the path is invalid.
+		std::error_code err;
+
 		//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+		for (auto entry : std::filesystem::recursive_directory_iterator(path, err))
 		{
 			//If the file is not a directory, store the path.
 			if (!std::filesystem::is_directory(entry.path()))
@@ -89,18 +92,45 @@ namespace Engine
 		}
 	}
 
+	//Save provided json object to a provided filename. Defaults file directory to "Data/"
+	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be overwritten.
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path)
+	{
+		//Create a file path from the provided path, file name, and file extension.
+		std::string fileWithPath = path + fileName + "." + m_jsonFileExt;
+
+		std::ofstream fileStream(fileWithPath);	// Create a file stream and open the file
+		if (fileStream.is_open())
+		{
+			fileStream << data;					// Replace existing file content with the updated prevData
+			fileStream.close();					// Close the file stream so it doesn't hang open
+		}
+		else
+		{
+			// This should never happen but is left in for debugging purposes.
+			GE_CORE_ERROR("[ResourceManager] Could not open file stream to save JSON at {0}", fileWithPath);
+		}
+	}
+	
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
 	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
-		GE_CORE_INFO("[ResourceManager] Icon was set to " + m_iconPath);
+		if (std::filesystem::exists(m_iconPath))
+		{
+			GE_CORE_INFO("[ResourceManager] Icon being set to " + m_iconPath);
 
-		GLFWimage images[1];
+			GLFWimage images[1];
 
-		//Create a GLFW image and load the icon into it.
-		images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
+			//Create a GLFW image and load the icon into it.
+			images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
 
-		glfwSetWindowIcon(&window, 1, images);
-		stbi_image_free(images[0].pixels);
+			glfwSetWindowIcon(&window, 1, images);
+			stbi_image_free(images[0].pixels);
+		}
+		else
+		{
+			GE_CORE_ERROR("Icon does not exists {0}", m_iconPath);
+		}
 	}
 #pragma endregion
 	
@@ -150,27 +180,28 @@ namespace Engine
 		return nullptr;
 	}
 
-	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
+	//Based on the provided filename, return the ImageData for the texture stored within a map, or load it from the system.
 	//Currently only supports 2D Textures, but can be changed using texType.
-	GLuint ResourceManager::getTexture(const std::string& name)
+	ResourceManager::ImageData ResourceManager::getTexture(const std::string& name)
 	{
 		std::lock_guard<std::mutex> lock(m_functionLock);
 	
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
 		GLuint data = NULL;
+		ImageData img;
 		auto it = m_textures.find(name);
 	
 		//If loaded, return the image. Else, load and store the image, then return it.
 		if (it != m_textures.end())
 		{
 			//Get value based on map key "name"
-			data = m_textures.find(name)->second;
+			img = m_textures.find(name)->second;
 
 			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + name + " found.");
-			return data;
+			return img;
 		}
 		
-		ImageData img = readImageData(name);
+		img = readImageData(name);
 		
 		//If image data isn't nullptr, store and return data.
 		if (img.image != nullptr)
@@ -203,7 +234,7 @@ namespace Engine
 				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
 			else if (img.numComponents == m_RGBA)
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
-			
+
 			//Free the image from memory
 			if(img.image != nullptr) 
 				stbi_image_free(img.image);
@@ -211,21 +242,22 @@ namespace Engine
 			//Generate Mimaps (different sizes of the image)
 			glGenerateMipmap(texType);
 
+			img.texID = data;
 			//Store texture for later use.
-			m_textures.insert(std::pair<std::string, GLuint>(name, data));
+			m_textures.insert(std::pair<std::string, ImageData>(name, img));
 			
 			
 			//Unbind the texture so it isn't modified anymore.
 			glBindTexture(texType, 0);
 			
-			return data;
+			return img;
 		}
 		else 
 		{
 			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
 		}
 		
-		return NULL;
+		return img;
 	
 	}
 
@@ -305,7 +337,7 @@ namespace Engine
 	ResourceManager::ImageData ResourceManager::readImageData(const std::string& name)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
+		ResourceManager::ImageData data = { nullptr, 0, 0, 0 , 0};
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
 		auto imagePath = m_filePaths.find(name);

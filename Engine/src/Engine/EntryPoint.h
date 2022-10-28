@@ -5,10 +5,13 @@ extern Engine::Application* Engine::CreateApplication();
 int main(int argc, char** argv)
 {
 	Engine::Log::Init();
-	GE_CORE_INFO("Starting Engine");
 
 	auto app = Engine::CreateApplication();
-	app->Run();
+	if (app)
+	{
+		GE_CORE_INFO("Starting Engine");
+		app->Run();
 
-	delete app;
+		delete app;
+	}
 }

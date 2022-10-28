@@ -27,6 +27,7 @@ namespace Engine
 		{
 			unsigned char* image;
 			int width, height, numComponents;
+			GLuint texID;
 		};
 
 		#pragma region Singleton Instance Management
@@ -37,32 +38,28 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
+		//Function to save provided json data to a provided file. Will save to "Data/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Data/");
+
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
 
 		#pragma endregion
 
-		#pragma region Set Functions
+		#pragma region Get & Set Functions
 
 		//Function to set icon for the application.
 		void setAppIcon(GLFWwindow&);
 
-		//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
-		void saveFilePaths(const std::string& path);
-		#pragma endregion
-
-		#pragma region Get Functions
-
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
 
-		GLuint getTexture(const std::string& name);
-
+		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
+		ImageData getTexture(const std::string& name);
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
 		#pragma endregion
-
 
 	protected:
 		#pragma region Constructors & Destructors
@@ -104,7 +101,7 @@ namespace Engine
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
 		//Map to store each processed texture containing an image imported from STBI
-		std::unordered_map<std::string, GLuint> m_textures{};
+		std::unordered_map<std::string, ImageData> m_textures{};
 			
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
@@ -118,7 +115,10 @@ namespace Engine
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions
-		
+
+		//Function to save all file paths into m_filePaths within the provided path, including subdirectories.
+		void saveFilePaths(const std::string& path);
+
 		//Add file path from provided directory_entry to the m_filePaths map.
 		void saveFilePath(std::filesystem::directory_entry path);
 		
