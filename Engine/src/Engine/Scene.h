@@ -68,12 +68,10 @@ namespace Engine
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
-			
-        // Registry is a container to hold entities
-        entt::registry m_registry;
+        
         struct GLFWwindow* m_window;
-        int m_windowWidth{480};
-        int m_windowHeight{480};
+        int m_windowWidth{1920};
+        int m_windowHeight{1080};
 
         DeltaTime m_deltaTime{0};
 
@@ -88,5 +86,12 @@ namespace Engine
         bool createdIBO { false };
 
         friend class Entity;
+
+    public:
+        // Registry is a container to hold entities
+        //Made public to allow for GLFW callbacks to access entities
+        entt::registry m_registry;
     };
+
+    void windowResizeCallback(GLFWwindow* window, int width, int height);
 }
