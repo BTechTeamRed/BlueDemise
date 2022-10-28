@@ -52,9 +52,9 @@ namespace Engine
 	struct TextureComponent
 	{
 		TextureComponent() = default;
-		TextureComponent(GLuint texID)
-			: texID(texID) {}
-
+		TextureComponent(GLuint texID, std::string texName)
+			: texID(texID), texName(texName) { }
+		std::string texName;
 		GLuint texID;
 	};
 

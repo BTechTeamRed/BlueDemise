@@ -27,6 +27,7 @@ namespace Engine
 		{
 			unsigned char* image;
 			int width, height, numComponents;
+			GLuint texID;
 		};
 
 		#pragma region Singleton Instance Management
@@ -37,8 +38,8 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
-		//Function to save provided json data to a provided file. Will save to "Data/" directory if path is not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Data/");
+		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/");
 
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
@@ -53,8 +54,8 @@ namespace Engine
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
 
-		//Based on the provided filename, return the GLuint ID for the texture. Only supports 2D Textures.
-		GLuint getTexture(const std::string& name);
+		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
+		ImageData getTexture(const std::string& name);
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
@@ -80,6 +81,9 @@ namespace Engine
 		std::mutex m_functionLock;
 
 		int m_RGB { 3 }, m_RGBA { 4 };
+
+		const std::string m_appAssetsPath{ "Assets" };
+		const std::string m_engineAssetsPath{"EngineAssets"};
 			
 		#pragma region File Extension Variables
 			
@@ -94,13 +98,14 @@ namespace Engine
 		#pragma region File Storage Variables
 						
 		//Icon related functions.
-		std::string m_iconPath { std::filesystem::current_path().parent_path().string() + "\\Engine\\BlueDemiseIcon.png" };
+		std::vector<std::string> m_iconPaths{ std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" ,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
 						
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
 		//Map to store each processed texture containing an image imported from STBI
-		std::unordered_map<std::string, GLuint> m_textures{};
+		std::unordered_map<std::string, ImageData> m_textures{};
 			
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
@@ -110,7 +115,8 @@ namespace Engine
 
 		//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
 		//This can be added to from Application/Game code for custom paths.
-		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\Data" };
+		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath };
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions
