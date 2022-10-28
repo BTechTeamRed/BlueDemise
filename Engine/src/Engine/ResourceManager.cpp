@@ -223,9 +223,10 @@ namespace Engine
 				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
 			else if (img.numComponents == m_RGBA)
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
-			
+
 			//Free the image from memory
-			stbi_image_free(img.image);
+			if(img.image != nullptr)
+				stbi_image_free(img.image);
 			
 			//Generate Mimaps (different sizes of the image)
 			glGenerateMipmap(texType);
