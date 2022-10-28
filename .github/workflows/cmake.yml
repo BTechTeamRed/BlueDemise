@@ -11,7 +11,8 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_RELEASE: Release
+  BUILD_DEBUG: Debug
 
 jobs:
   build:
@@ -23,26 +24,39 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Configure CMake
+    - name: Configure Debug CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}} -DCMAKE_BUILD_TYPE=${{env.BUILD_DEBUG}}
 
-    - name: Build CMake
+    - name: Build Debug CMake
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}} --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}} --config ${{env.BUILD_DEBUG}}
       
-    - name: Build EXE
+    - name: Run Debug EXE
       # Build your program with the given configuration
-      run: ${{github.workspace}}\bin\Release\Game.exe
+      run: ${{github.workspace}}\bin\${{env.BUILD_DEBUG}}\Game.exe
     
+    - name: Configure Release CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}} -DCMAKE_BUILD_TYPE=${{env.BUILD_RELEASE}}
+
+    - name: Build Release CMake
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}} --config ${{env.BUILD_RELEASE}}
+      
+    - name: Run Release EXE
+      # Build your program with the given configuration
+      run: ${{github.workspace}}\bin\${{env.BUILD_RELEASE}}\Game.exe
+      
    # - name: Test
       #run: |
-        #cmake -Dtest=ON ${{github.workspace}}/build
+        #cmake -Dtest=ON ${{github.workspace}}
         #make test
         
-      #working-directory: ${{github.workspace}}/build
+      #working-directory: ${{github.workspace}}
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      #run: ctest -C ${{env.BUILD_TYPE}}
+      #run: ctest -C ${{env.BUILD_DEBUG}}
       
