@@ -215,9 +215,9 @@ namespace Engine
 		// Player entity
 		// has to be above triangles to render in front, z coordinate has no effect?
 		Entity playerEntity = createEntity("player");
-		GLuint playerSprite = ResourceManager::getInstance()->getTexture("player.jpg");
+		GLuint playerSprite = ResourceManager::getInstance()->getTexture("player.png");
 		playerEntity.addComponent<TransformComponent>(
-			glm::vec3(0, 1, 0),
+			glm::vec3(0, 1, -5),
 			glm::vec3(1, 1, 1),
 			glm::vec3(0, 0, 0)
 			);
