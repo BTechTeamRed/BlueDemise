@@ -60,8 +60,11 @@ namespace Engine
 		//Lock function to prevent other threads from saving files concurrently.
 		std::lock_guard<std::mutex> lock(m_functionLock);
 
+		//create an error handler in case the path is invalid.
+		std::error_code err;
+
 		//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+		for (auto entry : std::filesystem::recursive_directory_iterator(path, err))
 		{
 			//If the file is not a directory, store the path.
 			if (!std::filesystem::is_directory(entry.path()))
@@ -112,15 +115,22 @@ namespace Engine
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
 	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
-		GE_CORE_INFO("[ResourceManager] Icon was set to " + m_iconPath);
+		if (std::filesystem::exists(m_iconPath))
+		{
+			GE_CORE_INFO("[ResourceManager] Icon being set to " + m_iconPath);
 
-		GLFWimage images[1];
+			GLFWimage images[1];
 
-		//Create a GLFW image and load the icon into it.
-		images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
+			//Create a GLFW image and load the icon into it.
+			images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
 
-		glfwSetWindowIcon(&window, 1, images);
-		stbi_image_free(images[0].pixels);
+			glfwSetWindowIcon(&window, 1, images);
+			stbi_image_free(images[0].pixels);
+		}
+		else
+		{
+			GE_CORE_ERROR("Icon does not exists {0}", m_iconPath);
+		}
 	}
 #pragma endregion
 	
@@ -223,7 +233,7 @@ namespace Engine
 				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
 			else if (img.numComponents == m_RGBA)
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
-			
+
 			//Free the image from memory
 			stbi_image_free(img.image);
 			
