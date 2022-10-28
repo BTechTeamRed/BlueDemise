@@ -37,7 +37,6 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/thirdparty/glfw3)
 
 include_directories(GameEngine ${GLFW_INCLUDE_DIR})
 
-#######
 
 # Set game as startup directory
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Game)
