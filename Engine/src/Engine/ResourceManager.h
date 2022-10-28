@@ -97,7 +97,8 @@ namespace Engine
 		#pragma region File Storage Variables
 						
 		//Icon related functions.
-		std::string m_iconPath { std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
+		std::vector<std::string> m_iconPaths{ std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" ,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
 						
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
@@ -113,7 +114,8 @@ namespace Engine
 
 		//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
 		//This can be added to from Application/Game code for custom paths.
-		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath };
+		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath };
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions

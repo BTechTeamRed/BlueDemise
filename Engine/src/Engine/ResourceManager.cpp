@@ -115,22 +115,24 @@ namespace Engine
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
 	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
-		if (std::filesystem::exists(m_iconPath))
+		for (auto path : m_iconPaths)
 		{
-			GE_CORE_INFO("[ResourceManager] Icon being set to " + m_iconPath);
+			if (std::filesystem::exists(path))
+			{
+				GE_CORE_INFO("[ResourceManager] Icon being set to {0}", path);
 
-			GLFWimage images[1];
+				GLFWimage images[1];
 
-			//Create a GLFW image and load the icon into it.
-			images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
+				//Create a GLFW image and load the icon into it.
+				images[0].pixels = stbi_load(path.c_str(), &images[0].width, &images[0].height, 0, 4);
 
-			glfwSetWindowIcon(&window, 1, images);
-			stbi_image_free(images[0].pixels);
+				glfwSetWindowIcon(&window, 1, images);
+				stbi_image_free(images[0].pixels);
+				return;
+			}
 		}
-		else
-		{
-			GE_CORE_ERROR("Icon does not exists {0}", m_iconPath);
-		}
+
+		GE_CORE_ERROR("Icon does not exists in any paths");
 	}
 #pragma endregion
 	
