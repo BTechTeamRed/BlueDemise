@@ -301,7 +301,7 @@ Issues:
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
-		if (!createdVAO);
+		if (!createdVAO)
 		{
 			createdVAO = true;
 
