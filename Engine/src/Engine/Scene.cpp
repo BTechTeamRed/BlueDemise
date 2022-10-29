@@ -30,6 +30,8 @@ Issues:
 
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_ALWAYS);
 
 		createEntities();
 
@@ -129,51 +131,38 @@ Issues:
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene(const DeltaTime& dt)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		
-		auto cameraView = getEntities<const CameraComponent>();
-		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
-			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+		const auto cameraView = getEntities<const CameraComponent>();
+		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+		const glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
+		                                camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		const glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
 		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Texture
+			if (m_registry.all_of<TextureComponent>(entity))
+			{
+				const auto texture = m_registry.get<const TextureComponent>(entity);
+				glBindTexture(GL_TEXTURE_2D, texture.texID);
+			}
+			
 			//Update the MVP
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
-
+			const glm::mat4 mvp = updateMVP(transform, vm, pm);
+		
 			//Set the color of the object
 			setColor(mvp, color.color);
-
-			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-		}
-
-
-		//Get entities that contain transform & vertices & texture components,
-		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
 		
-		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
-		for (auto [entity, transform, vertices, texture, color] : sprites.each())
-		{
-			//Get GLuint for texture, and bind texture for rendering
-			glBindTexture(GL_TEXTURE_2D, texture.texID);
-
-			//Update the mvp
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
-
-			//Set the color of the sprite
-			setColor(mvp, color.color);
-			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-
 		}
+
 	}
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.
@@ -236,19 +225,19 @@ Issues:
 		// Player entity
 		// has to be above triangles to render in front, z coordinate has no effect?
 		Entity playerEntity = createEntity("player");
-		GLuint playerSprite = ResourceManager::getInstance()->getTexture("player.png");
+		ResourceManager::ImageData playerSprite = ResourceManager::getInstance()->getTexture("player.png");
 		playerEntity.addComponent<TransformComponent>(
-			glm::vec3(0, 1, -5),
-			glm::vec3(1, 1, 1),
+			glm::vec3(50.f, 50.f, -1),
+			glm::vec3(playerSprite.height, playerSprite.width, 1),
 			glm::vec3(0, 0, 0)
 			);
-		playerEntity.addComponent<TextureComponent>(playerSprite);
+		playerEntity.addComponent<TextureComponent>(playerSprite.texID, "player.png");
 		playerEntity.addComponent<VerticesComponent>(createSprite());
 		playerEntity.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		Entity triangle = createEntity("triangle");
 		triangle.addComponent<TransformComponent>(
-			glm::vec3(960.f, 0, 0),
+			glm::vec3(0, 0, 0),
 			glm::vec3(image.height, image.width, 1),
 			glm::vec3(0, 0, 0)
 			);
@@ -258,11 +247,11 @@ Issues:
 
 		Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
-			glm::vec3(0.f, 0, 0),
+			glm::vec3(image.height-200, image.width-100, -3),
 			glm::vec3(image2.height, image2.width, 1),
 			glm::vec3(0, 0, 0)
 			);
-		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.jpg");
+		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.png");
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
