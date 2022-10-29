@@ -222,26 +222,6 @@ Issues:
 		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 
-		//Camera
-		Entity cameraEntity = createEntity("camera");
-		cameraEntity.addComponent<CameraComponent>(
-			90.f,
-			glm::mat4(1.f),
-			glm::vec2(1920, 1080),
-			100.0f,
-			0.1f
-			);
-
-		Entity triangle = createEntity("triangle");
-		triangle.addComponent<TransformComponent>(
-			glm::vec3(960.f, 0, 0),
-			glm::vec3(image.height, image.width, 1),
-			glm::vec3(0, 0, 0)
-			);
-		triangle.addComponent<TextureComponent>(image.texID, "Texture_Test.jpg");
-		triangle.addComponent<VerticesComponent>(createSprite());
-		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
-
 		Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
 			glm::vec3(0.f, 0, 0),
@@ -255,9 +235,7 @@ Issues:
 
 		//TODO: After Serialization: Bind Entities HERE ***
 
-		//Get a view of all entities with script component, instantiate them, and run their onCreate().
-		auto entities = getEntities<ScriptComponent>();
-		for (auto [entity, script] : entities.each())
+		for (auto& [entity, script] : getEntities<ScriptComponent>().each())
 		{
 			if (!script.m_instance)
 			{
@@ -274,9 +252,9 @@ Issues:
 	//Return the VBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVBO() 
 	{
-		if(!createdVBO);
+		if(!m_createdVBO);
 		{
-			createdVBO = true;
+			m_createdVBO = true;
 
 			float vertices[] = 
 			{
@@ -301,9 +279,9 @@ Issues:
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
-		if (!createdVAO)
+		if (!m_createdVAO)
 		{
-			createdVAO = true;
+			m_createdVAO = true;
 
 			glGenVertexArrays(1, &m_spriteVAO);
 			glBindVertexArray(m_spriteVAO);
@@ -315,9 +293,9 @@ Issues:
 	//Return the IBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteIBO()
 	{
-		if (!createdIBO);
+		if (!m_createdIBO);
 		{
-			createdIBO = true;
+			m_createdIBO = true;
 			
 			unsigned int indices[6] =
 			{

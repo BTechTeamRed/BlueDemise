@@ -39,6 +39,8 @@ namespace Engine
         void onRuntimeUpdate(const DeltaTime& dt);
         #pragma endregion
 
+
+
     private:
 
         #pragma region OpenGL Scene Management
@@ -68,6 +70,8 @@ namespace Engine
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
+
+        std::string m_name;
         
         struct GLFWwindow* m_window;
         int m_windowWidth{1920};
@@ -81,9 +85,9 @@ namespace Engine
         GLuint m_spriteVAO;
         GLuint m_spriteIBO;
 
-        bool createdVBO { false };
-        bool createdVAO { false };
-        bool createdIBO { false };
+        bool m_createdVBO { false };
+        bool m_createdVAO { false };
+        bool m_createdIBO { false };
 
         friend class Entity;
         friend class Serializer;
