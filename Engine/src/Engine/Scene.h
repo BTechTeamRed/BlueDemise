@@ -86,6 +86,7 @@ namespace Engine
         bool createdIBO { false };
 
         friend class Entity;
+        friend class Serializer;
 
     public:
         // Registry is a container to hold entities

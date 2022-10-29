@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Engine/Core.h"
+#include "json.h"
 
 namespace Engine
 {
@@ -21,7 +22,11 @@ namespace Engine
 	private:
 		//Deserializes out into an entity
 		//returns false if Deserialization fails.
-		bool tryDeserializeEntity(Entity& out);
+		bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity);
+
+		bool deserializeMat4(std::string& s);
+		bool deserializeVec2(std::string& s);
+		bool deserializeVec3(std::string& s);
 	};
 
 }
