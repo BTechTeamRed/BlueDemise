@@ -12,17 +12,17 @@ namespace Engine
 	class ENGINE_API Serializer
 	{
 	public:
-		//Deserializes out into a scene with json data from a file in scenePath
+		//Deserializes out into a scene with json data from a file in sceneFile
 		//returns false if Deserialization fails.
-		bool tryDeserializeScene(Scene& out, const std::string& scenePath);
+		static bool tryDeserializeScene(Scene& out, const std::string& sceneFile);
 
-		//Serializes scene into a json file in scenePath
-		void serializeScene(const Scene& scene, const std::string& scenePath);
+		//Serializes scene into a json file in sceneFile
+		static void serializeScene(const Scene& scene, const std::string& sceneFile);
 
 	private:
 		//Deserializes out into an entity
 		//returns false if Deserialization fails.
-		bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
+		static bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
 	};
 
 }

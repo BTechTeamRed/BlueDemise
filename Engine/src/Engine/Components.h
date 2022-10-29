@@ -3,8 +3,6 @@
 #include "GLFW/glfw3.h"
 #include <vector>
 
-#include "Scripts/ScriptableBehavior.h"
-
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
 ///	Components shouldn't have any methods that define any kind of behavior.
@@ -99,6 +97,8 @@ namespace Engine
 		unsigned long numIndices;
 	};
 
+	class ScriptableBehavior;
+
 	//Defines a component to create custom script actions using ScriptableBehavior
 	struct ScriptComponent
 	{
@@ -114,7 +114,5 @@ namespace Engine
 			instantiateScript = [] { return static_cast<ScriptableBehavior*>(new T()); };
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
-
-
 	};
 }

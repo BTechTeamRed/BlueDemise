@@ -25,12 +25,6 @@ Issues:
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
-		if (!initializeGL()) return;
-		loadShaders();
-
-		glfwSwapInterval(1);
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-
 		createEntities();
 
 		while (!glfwWindowShouldClose(m_window))
@@ -111,6 +105,11 @@ Issues:
 			glfwTerminate();
 			return false;
 		}
+
+		loadShaders();
+
+		glfwSwapInterval(1);
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		return true;
     }
@@ -219,7 +218,6 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 
 		Entity triangle2 = createEntity("triangle2");
@@ -232,10 +230,9 @@ Issues:
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
-
 		//TODO: After Serialization: Bind Entities HERE ***
-
-		for (auto& [entity, script] : getEntities<ScriptComponent>().each())
+		const auto scriptEntities = getEntities<ScriptComponent>();
+		for (auto& [entity, script] : scriptEntities.each())
 		{
 			if (!script.m_instance)
 			{

@@ -32,7 +32,7 @@ namespace glm
 
 	void to_json(nlohmann::json& j, const vec4& vec)
 	{
-		j = { { "r", vec.x }, { "g", vec.y }, { "b", vec.y }, { "a", vec.y } };
+		j = { { "r", vec.r }, { "g", vec.g }, { "b", vec.b }, { "a", vec.a } };
 	}
 
 	void from_json(const nlohmann::json& j, vec4& vec)
@@ -51,25 +51,31 @@ namespace glm
 
 	void from_json(const nlohmann::json& j, mat4& mat)
 	{
-		mat = mat4(j["matrix"]);
+		mat = mat4(j.at("matrix").get<float>());
 	}
 }
 
 namespace Engine
 {
-	bool Serializer::tryDeserializeScene(Scene& out, const std::string& scenePath)
+	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
-		auto data = ResourceManager::getInstance()->getJsonData(scenePath);
+		if (!out.initializeGL())
+		{
+			GE_CORE_FATAL("Failed to initialize opengl");
+			return false;
+		}
+
+		auto data = ResourceManager::getInstance()->getJsonData(sceneFile);
 		if (!(data.find("scene") != data.end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", scenePath);
+			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 			GE_CORE_FATAL("No scene found.");
 			return false;
 		}
 
 		if (!(data["scene"].find("name") != data["scene"].end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", scenePath);
+			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 			GE_CORE_FATAL("Scene does not contain the \"name\" attribute.");
 			return false;
 		}
@@ -81,7 +87,7 @@ namespace Engine
 		{
 			if (!(item.find("tag") != item.end()))
 			{
-				GE_CORE_FATAL("Unable to deserialize scene {0}", scenePath);
+				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("An entity does not contain the \"tag\" attribute");
 				return false;
 			}
@@ -89,19 +95,18 @@ namespace Engine
 			Entity entity = out.createEntity(item["tag"]);
 			if (!tryDeserializeEntity(entity, item, out))
 			{
-				GE_CORE_FATAL("Unable to deserialize scene {0}", scenePath);
+				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
 			}
-
 		}
 
 		return true;
 	}
 
-	void Serializer::serializeScene(const Scene& scene, const std::string& scenePath)
+	void Serializer::serializeScene(const Scene& scene, const std::string& sceneFile)
 	{
-
+		//TODO: Implement serialization once we have more GUI stuff
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
@@ -121,39 +126,41 @@ namespace Engine
 			//check each component type individually
 			if (name == "CameraComponent")
 			{
-				auto& camera = out.addComponent<CameraComponent>();
-				camera.fov = component["fov"].get<float>();
-				camera.projection = component["projection"].get<glm::mat4>();
-				camera.viewport = component["viewport"].get<glm::vec2>();
-				camera.farZ = component["farZ"].get<float>();
-				camera.nearZ = component["nearZ"].get<float>();
+				auto fov = component["fov"].get<float>();
+				auto projection = component["projection"].get<glm::mat4>();
+				auto viewport = component["viewport"].get<glm::vec2>();
+				auto farZ = component["farZ"].get<float>();
+				auto nearZ = component["nearZ"].get<float>();
+
+				out.addComponent<CameraComponent>(fov, projection, viewport, farZ, nearZ);
 			}
 
 			else if (name == "TransformComponent")
 			{
-				auto& transform = out.addComponent<TransformComponent>();
-				transform.position = component["position"].get<glm::vec3>();
-				transform.scale = component["scale"].get<glm::vec3>();
-				transform.rotation = component["rotation"].get<glm::vec3>();
-			}
+				auto position = component["position"].get<glm::vec3>();
+				auto scale = component["scale"].get<glm::vec3>();
+				auto rotation = component["rotation"].get<glm::vec3>();
 
+				out.addComponent<TransformComponent>(position, scale, rotation);
+			}
+		
 			else if (name == "ColorComponent")
 			{
-				auto& color = out.addComponent<ColorComponent>();
-				color.color = component["color"].get<glm::vec4>();
+				out.addComponent<ColorComponent>(component["color"].get<glm::vec4>());
 			}
-
+		
 			else if (name == "TextureComponent")
 			{
 				std::string texture = component["texName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
+
 				out.addComponent<TextureComponent>(image.texID, texture);
 			}
 
 			else if (name == "VerticesComponent")
 			{
 				//Check if vertices is of type sprite
-				if (component.find("type") != component.end())
+				if (!(component.find("type") != component.end()))
 				{
 					GE_CORE_FATAL("Unable to deserialize entity {0}", entity["tag"]);
 					GE_CORE_FATAL("A VerticesComponent does not contain the \"type\" attribute");
@@ -164,6 +171,8 @@ namespace Engine
 				{
 					out.addComponent<VerticesComponent>(scene.createSprite());
 				}
+
+				//TODO: Implement serialization for custom type vertices/polygons
 			}
 		}
 

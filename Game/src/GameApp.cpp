@@ -7,7 +7,11 @@ public:
 	GameApp()
 	{
 		Engine::Scene scene;
-		scene.onRuntimeStart();
+		if (Engine::Serializer::tryDeserializeScene(scene, "testScene.bda"))
+		{
+			scene.onRuntimeStart();
+		}
+		
 	}
 	~GameApp() {}
 };

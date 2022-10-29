@@ -21,7 +21,7 @@
         ]
       },
       {
-        "name": "triangle",
+        "tag": "triangle",
         "components": [
           {
             "name": "TransformComponent",
@@ -42,7 +42,7 @@
             }
           },
           {
-            "name": "Texturecomponent",
+            "name": "TextureComponent",
             "texName": "Texture_Test.jpg"
           },
           {
