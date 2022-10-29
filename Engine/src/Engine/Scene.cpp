@@ -209,9 +209,6 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
-		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
-
 		//Camera
 		Entity cameraEntity = createEntity("camera");
 		cameraEntity.addComponent<CameraComponent>(
@@ -227,15 +224,36 @@ Issues:
 		Entity playerEntity = createEntity("player");
 		ResourceManager::ImageData playerSprite = ResourceManager::getInstance()->getTexture("player.png");
 		playerEntity.addComponent<TransformComponent>(
-			glm::vec3(50.f, 50.f, -1),
-			glm::vec3(playerSprite.height, playerSprite.width, 1),
+			glm::vec3(960.f-(playerSprite.width/2), 540.f-playerSprite.height, 0),
+			glm::vec3(playerSprite.width, playerSprite.height, 1),
 			glm::vec3(0, 0, 0)
 			);
 		playerEntity.addComponent<TextureComponent>(playerSprite.texID, "player.png");
 		playerEntity.addComponent<VerticesComponent>(createSprite());
 		playerEntity.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
-		Entity triangle = createEntity("triangle");
+#pragma region Tile Entities
+		ResourceManager::ImageData tileSprite = ResourceManager::getInstance()->getTexture("tileBase.png");
+		float centerX = 960.f;
+		float centerY = 540.f;
+		float tileWidth = tileSprite.width;
+		float tileHeight = tileSprite.height;
+
+		// Tile 1
+		Entity tile1 = createEntity("tile1");
+		tile1.addComponent<TransformComponent>(
+			glm::vec3(centerX-tileWidth/2, centerY-tileHeight/2, 0),
+			glm::vec3(200.f, 150.f, 1),
+			glm::vec3(0, 0, 0)
+			);
+		tile1.addComponent<TextureComponent>(tileSprite.texID, "tileBase.png");
+		tile1.addComponent<VerticesComponent>(makeTileVertices());
+		tile1.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 1));
+#pragma endregion
+
+		/*Entity triangle = createEntity("triangle");
+		// Amogus 1
+		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		triangle.addComponent<TransformComponent>(
 			glm::vec3(0, 0, 0),
 			glm::vec3(image.height, image.width, 1),
@@ -246,6 +264,8 @@ Issues:
 		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		Entity triangle2 = createEntity("triangle2");
+		// Amogus 2
+		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 		triangle2.addComponent<TransformComponent>(
 			glm::vec3(image.height-200, image.width-100, -3),
 			glm::vec3(image2.height, image2.width, 1),
@@ -253,7 +273,7 @@ Issues:
 			);
 		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.png");
 		triangle2.addComponent<VerticesComponent>(createSprite());
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));*/
 
 
 		//TODO: After Serialization: Bind Entities HERE ***
@@ -371,6 +391,47 @@ Issues:
 			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
 		}
+
+		return vc;
+	}
+
+	// Make the vertex object for diamond-shaped tiles
+	VerticesComponent Scene::makeTileVertices()
+	{
+		VerticesComponent vc;
+
+		// Make a diamond shape
+		float diamondVertices[12] = {
+			0.0f, 0.75f, 0.0f,	// Top
+			1.0f, 0.0f, 0.0f,	// Right
+			0.0f, -0.75f, 0.0f,	// Bottom
+			-1.0f, 0.0f, 0.0f,	// Left
+		};
+		//vertex order
+		unsigned int indices[4] = { 0, 1, 2, 3 };
+
+		vc.vertexAttributes.push_back(VertexAttribute(0, 4, GL_FLOAT, GL_FALSE, 0));
+		vc.stride = sizeof(float) * 4;
+		vc.numIndices = 8;
+
+		glGenVertexArrays(1, &vc.vaoID);
+		glGenBuffers(1, &vc.vboID);
+		glBindBuffer(GL_ARRAY_BUFFER, vc.vboID);
+
+		//Buffer data
+		glBufferData(GL_ARRAY_BUFFER, sizeof(diamondVertices), diamondVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+
+		//Define vertex attributes
+		for (const auto attribute : vc.vertexAttributes)
+		{
+			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
+		}
+
+		glGenBuffers(1, &vc.iboID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vc.iboID);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 		return vc;
 	}
