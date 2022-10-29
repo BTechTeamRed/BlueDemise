@@ -7,11 +7,11 @@
 
 namespace Engine
 {
-    class ENGINE_API Entity;
+    class Entity;
 
     // Scene keeps a registry of Entities that are then rendered and processed as part of the game loop.
     // Also responsible for loading shaders, initializing OpenGl contexts and windows, and rendering.
-    class Scene
+    class ENGINE_API Scene
     {
     public:
 
@@ -86,6 +86,7 @@ namespace Engine
         bool createdIBO { false };
 
         friend class Entity;
+        friend class Serializer;
 
     public:
         // Registry is a container to hold entities

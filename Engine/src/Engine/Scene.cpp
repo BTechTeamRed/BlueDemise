@@ -172,7 +172,6 @@ Issues:
 			setColor(mvp, color.color);
 			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-
 		}
 	}
 
