@@ -5,6 +5,7 @@
 #include "json.h"
 #include <string>
 #include <filesystem>
+#include <set>
 
 //Written by Kevin Vilanova, KevinAlexV.
 //Class is intended to import and manage assets and resources used by the game engine.
@@ -39,7 +40,7 @@ namespace Engine
 		void operator=(const ResourceManager&) = delete;
 
 		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/");
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
 
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
@@ -88,7 +89,7 @@ namespace Engine
 		#pragma region File Extension Variables
 			
 		//Extensions for all files handled through resource manager.
-		std::string m_jsonFileExt { "json" };
+		std::set<std::string> m_jsonFileExts { "json", "bda"};
 		
 		std::vector<std::string> m_shaderFileExts { "vs", "fs" };
 			

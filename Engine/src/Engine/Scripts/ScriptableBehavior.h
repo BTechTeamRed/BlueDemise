@@ -4,12 +4,14 @@
 
 namespace Engine
 {
+	class DeltaTime;
+
 	// Polymorphic class that binds to <ScriptComponent>.
 	// classes inheriting from ScriptableBehavior essentially give entities different behavior during the Scene loop.
 	class ENGINE_API ScriptableBehavior
 	{
 	public:
-		virtual ~ScriptableBehavior() {}
+		virtual ~ScriptableBehavior() = default;
 
 		//Returns a component T if the entity has one, otherwise it returns nullptr.
 		template<typename T>
