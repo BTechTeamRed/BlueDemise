@@ -30,6 +30,15 @@ namespace Engine
 			GLuint texID;
 		};
 
+		//A struct to contain sprite sheet data (sprite dimensions, GL texture ID, etc).
+		struct SpriteSheet
+		{
+			float spriteWidth, spriteHeight, texWidthFraction, texHeightFraction;
+			int spriteSheetWidth, spriteSheetHeight, numSprites, spritesPerRow, spritesPerColumn;
+
+			GLuint texID;
+		};
+
 		#pragma region Singleton Instance Management
 
 		//Singletons should not be cloneable, this is to prevent clones.
@@ -57,8 +66,8 @@ namespace Engine
 		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
 		ImageData getTexture(const std::string& name);
 
-		//Based on the provided spritesheet filename, return the vector of GLuints for the sprites stored within a map, or load it from the system.
-		std::vector<GLuint> getSpritesheet(const std::string& name);
+		//Based on the provided spritesheet filename, return a SpriteSheet struct (with info on a spriteSheet) stored within a map, or load it from the system. Returns an empty SpriteSheet if not found. 
+		SpriteSheet getSpritesheet(const std::string& name, float spritesPerRow = 0, float spritesPerColumn = 0);
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
@@ -107,7 +116,7 @@ namespace Engine
 		std::unordered_map<std::string, ImageData> m_textures{};
 
 		//Map to store each processed texture containing an image imported from STBI
-		std::unordered_map<std::string, std::vector<GLuint>> m_spritesheetsTex{};
+		std::unordered_map<std::string, SpriteSheet> m_spritesheetsTex{};
 		
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
@@ -127,7 +136,10 @@ namespace Engine
 
 		//Add file path from provided directory_entry to the m_filePaths map.
 		void saveFilePath(std::filesystem::directory_entry path);
-		
+
+		//Generate a new texture with the provided image data, and return the ID for the texture.
+		GLuint generateTexture(ImageData& img);
+
 		//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
 		//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
 		ImageData readImageData(const std::string& name);
