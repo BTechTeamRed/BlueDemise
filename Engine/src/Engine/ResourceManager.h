@@ -5,6 +5,7 @@
 #include "json.h"
 #include <string>
 #include <filesystem>
+#include <set>
 
 //Written by Kevin Vilanova, KevinAlexV.
 //Class is intended to import and manage assets and resources used by the game engine.
@@ -47,8 +48,8 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
-		//Function to save provided json data to a provided file. Will save to "Data/" directory if path is not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Data/");
+		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
 
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
@@ -93,11 +94,14 @@ namespace Engine
 		std::mutex m_functionLock;
 
 		int m_RGB { 3 }, m_RGBA { 4 };
+
+		const std::string m_appAssetsPath{ "Assets" };
+		const std::string m_engineAssetsPath{"EngineAssets"};
 			
 		#pragma region File Extension Variables
 			
 		//Extensions for all files handled through resource manager.
-		std::string m_jsonFileExt { "json" };
+		std::set<std::string> m_jsonFileExts { "json", "bda"};
 		
 		std::vector<std::string> m_shaderFileExts { "vs", "fs" };
 			
@@ -107,7 +111,8 @@ namespace Engine
 		#pragma region File Storage Variables
 						
 		//Icon related functions.
-		std::string m_iconPath { std::filesystem::current_path().parent_path().string() + "\\Engine\\BlueDemiseIcon.png" };
+		std::vector<std::string> m_iconPaths{ std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" ,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
 						
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
@@ -126,7 +131,8 @@ namespace Engine
 
 		//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
 		//This can be added to from Application/Game code for custom paths.
-		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\Data" };
+		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath };
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions

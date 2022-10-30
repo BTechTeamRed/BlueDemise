@@ -97,7 +97,6 @@ namespace Engine
 		unsigned long numIndices;
 	};
 
-	//forward declare
 	class ScriptableBehavior;
 
 	//Defines a component to create custom script actions using ScriptableBehavior
@@ -115,7 +114,5 @@ namespace Engine
 			instantiateScript = [] { return static_cast<ScriptableBehavior*>(new T()); };
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
-
-
 	};
 }

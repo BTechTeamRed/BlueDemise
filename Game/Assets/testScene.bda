@@ -1,0 +1,65 @@
+{
+  "scene": {
+    "name": "myScene",
+    "entities": [
+      {
+        "tag": "camera",
+        "components": [
+          {
+            "name": "CameraComponent",
+            "fov": 90,
+            "projection": {
+              "matrix":  1
+            },
+              "viewport": {
+                "x": 1920,
+                "y": 1080
+              },
+              "farZ": 100,
+              "nearZ": 0.1
+            }
+        ]
+      },
+      {
+        "tag": "triangle",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960,
+              "y": 0,
+              "z": 0
+            },
+            "scale": {
+              "x": 500,
+              "y": 500,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "Texture_Test.jpg"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

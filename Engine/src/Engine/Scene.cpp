@@ -25,12 +25,6 @@ Issues:
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
-		if (!initializeGL()) return;
-		loadShaders();
-
-		glfwSwapInterval(1);
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-
 		createEntities();
 
 		while (!glfwWindowShouldClose(m_window))
@@ -112,6 +106,11 @@ Issues:
 			return false;
 		}
 
+		loadShaders();
+
+		glfwSwapInterval(1);
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
 		return true;
     }
 
@@ -173,8 +172,7 @@ Issues:
 
 			//Set the color of the sprite
 			setColor(mvp, color.color);
-
-			//glDrawArrays(GL_TRIANGLES, 0, vertices.numIndices);
+			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
@@ -223,28 +221,7 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
 		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
-
-		//Camera
-		Entity cameraEntity = createEntity("camera");
-		cameraEntity.addComponent<CameraComponent>(
-			90.f,
-			glm::mat4(1.f),
-			glm::vec2(1920, 1080),
-			100.0f,
-			0.1f
-			);
-
-		Entity triangle = createEntity("triangle");
-		triangle.addComponent<TransformComponent>(
-			glm::vec3(960.f, 0, 0),
-			glm::vec3(image.height, image.width, 1),
-			glm::vec3(0, 0, 0)
-			);
-		triangle.addComponent<TextureComponent>(image.texID, "Texture_Test.jpg");
-		triangle.addComponent<VerticesComponent>(createSprite());
-		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
@@ -256,12 +233,9 @@ Issues:
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
-
 		//TODO: After Serialization: Bind Entities HERE ***
-
-		//Get a view of all entities with script component, instantiate them, and run their onCreate().
-		auto entities = getEntities<ScriptComponent>();
-		for (auto [entity, script] : entities.each())
+		const auto scriptEntities = getEntities<ScriptComponent>();
+		for (auto& [entity, script] : scriptEntities.each())
 		{
 			if (!script.m_instance)
 			{
@@ -278,9 +252,9 @@ Issues:
 	//Return the VBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVBO() 
 	{
-		if(!createdVBO);
+		if(!m_createdVBO);
 		{
-			createdVBO = true;
+			m_createdVBO = true;
 
 			float vertices[] = 
 			{
@@ -305,9 +279,9 @@ Issues:
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
-		if (!createdVAO);
+		if (!m_createdVAO)
 		{
-			createdVAO = true;
+			m_createdVAO = true;
 
 			glGenVertexArrays(1, &m_spriteVAO);
 			glBindVertexArray(m_spriteVAO);
@@ -319,9 +293,9 @@ Issues:
 	//Return the IBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteIBO()
 	{
-		if (!createdIBO);
+		if (!m_createdIBO);
 		{
-			createdIBO = true;
+			m_createdIBO = true;
 			
 			unsigned int indices[6] =
 			{
