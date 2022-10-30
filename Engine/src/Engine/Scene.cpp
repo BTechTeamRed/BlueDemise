@@ -140,41 +140,52 @@ Issues:
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
 		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Texture
+			if (m_registry.all_of<TextureComponent>(entity))
+			{
+				const auto texture = m_registry.get<const TextureComponent>(entity);
+				glBindTexture(GL_TEXTURE_2D, texture.texID);
+			}
+
 			//Update the MVP
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
+			const glm::mat4 mvp = updateMVP(transform, vm, pm);
 
 			//Set the color of the object
 			setColor(mvp, color.color);
 
-			glm::uint quads = 1;
-
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-			//glDrawArrays(GL_TRIANGLES, 0, vertices.numIndices * quads);
 		}
-
-
-		//Get entities that contain transform & vertices & texture components,
-		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
 		
-		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
-		for (auto [entity, transform, vertices, texture, color] : sprites.each())
-		{
-			//Get GLuint for texture, and bind texture for rendering
-			glBindTexture(GL_TEXTURE_2D, texture.texID);
+		//Calculation for finding the sprite in a texture.
+			//const float tx = (frameIndex % numPerRow) * tw;
+			//const float ty = (frameIndex / numPerRow + 1) * th;
 
-			//Update the mvp
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
+			/*
+			const float verts[] =
+			{
+				posX, posY,
+				posX + spriteWidth, posY,
+				posX + spriteWidth, posY + spriteHeight,
+				posX, posY + spriteHeight
+			};
 
-			//Set the color of the sprite
-			setColor(mvp, color.color);
-			
-			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-		}
+			const float texVerts[] =
+			{
+				tx, ty,
+				tx + tw, ty,
+				tx + tw, ty + th,
+				tx, ty + th
+			};
+			//Bind proper verts to render.
+			glVertexPointer(2, GL_FLOAT, verts);
+			glTexCoordPointer(2, GL_FLOAT, texVerts);
+			glDrawArrays(GL_TRI_STRIP, 0, 4);
+			*/
 	}
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.
