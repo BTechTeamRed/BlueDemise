@@ -121,10 +121,12 @@ namespace Engine
 				return false;
 			}
 
-			auto name = component["name"].get<std::string>();
+			auto name = parseComponent(component["name"].get<std::string>());
 
 			//check each component type individually
-			if (name == "CameraComponent")
+			switch (name)
+			{
+			case CO_CameraComponent:
 			{
 				auto fov = component["fov"].get<float>();
 				auto projection = component["projection"].get<glm::mat4>();
@@ -133,31 +135,31 @@ namespace Engine
 				auto nearZ = component["nearZ"].get<float>();
 
 				out.addComponent<CameraComponent>(fov, projection, viewport, farZ, nearZ);
+				break;
 			}
-
-			else if (name == "TransformComponent")
+			case CO_TransformComponent:
 			{
 				auto position = component["position"].get<glm::vec3>();
 				auto scale = component["scale"].get<glm::vec3>();
 				auto rotation = component["rotation"].get<glm::vec3>();
 
 				out.addComponent<TransformComponent>(position, scale, rotation);
+				break;
 			}
-		
-			else if (name == "ColorComponent")
+			case CO_ColorComponent:
 			{
 				out.addComponent<ColorComponent>(component["color"].get<glm::vec4>());
+				break;
 			}
-		
-			else if (name == "TextureComponent")
+			case CO_TextureComponent:
 			{
 				std::string texture = component["texName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 
 				out.addComponent<TextureComponent>(image.texID, texture);
+				break;
 			}
-
-			else if (name == "VerticesComponent")
+			case CO_VerticesComponent:
 			{
 				//Check if vertices is of type sprite
 				if (!(component.find("type") != component.end()))
@@ -173,6 +175,13 @@ namespace Engine
 				}
 
 				//TODO: Implement serialization for custom type vertices/polygons
+				break;
+			}
+			default:
+			{
+				GE_CORE_WARN("Could not deserialize component {0}", component["name"]);
+				break;
+			}
 			}
 		}
 
