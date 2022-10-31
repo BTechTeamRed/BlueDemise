@@ -7,11 +7,11 @@
 
 namespace Engine
 {
-    class ENGINE_API Entity;
+    class Entity;
 
     // Scene keeps a registry of Entities that are then rendered and processed as part of the game loop.
     // Also responsible for loading shaders, initializing OpenGl contexts and windows, and rendering.
-    class Scene
+    class ENGINE_API Scene
     {
     public:
 
@@ -38,6 +38,8 @@ namespace Engine
         // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate(const DeltaTime& dt);
         #pragma endregion
+
+
 
     private:
 
@@ -71,6 +73,8 @@ namespace Engine
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
+
+        std::string m_name;
         
         struct GLFWwindow* m_window;
         int m_windowWidth{1920};
@@ -84,11 +88,12 @@ namespace Engine
         GLuint m_spriteVAO;
         GLuint m_spriteIBO;
 
-        bool createdVBO { false };
-        bool createdVAO { false };
-        bool createdIBO { false };
+        bool m_createdVBO { false };
+        bool m_createdVAO { false };
+        bool m_createdIBO { false };
 
         friend class Entity;
+        friend class Serializer;
 
     public:
         // Registry is a container to hold entities

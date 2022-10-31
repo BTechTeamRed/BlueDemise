@@ -25,14 +25,6 @@ Issues:
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
-		if (!initializeGL()) return;
-		loadShaders();
-
-		glfwSwapInterval(1);
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_ALWAYS);
-
 		createEntities();
 
 		while (!glfwWindowShouldClose(m_window))
@@ -114,6 +106,11 @@ Issues:
 			return false;
 		}
 
+		loadShaders();
+
+		glfwSwapInterval(1);
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
 		return true;
     }
 
@@ -131,38 +128,50 @@ Issues:
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene(const DeltaTime& dt)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-		const auto cameraView = getEntities<const CameraComponent>();
+		glClear(GL_COLOR_BUFFER_BIT);
+		
+		
+		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		const glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
-		                                camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		const glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
+			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
 		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
-			//Bind Texture
-			if (m_registry.all_of<TextureComponent>(entity))
-			{
-				const auto texture = m_registry.get<const TextureComponent>(entity);
-				glBindTexture(GL_TEXTURE_2D, texture.texID);
-			}
-			
 			//Update the MVP
-			const glm::mat4 mvp = updateMVP(transform, vm, pm);
-		
+			glm::mat4 mvp = updateMVP(transform, vm, pm);
+
 			//Set the color of the object
 			setColor(mvp, color.color);
-		
+
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 
+
+		//Get entities that contain transform & vertices & texture components,
+		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
+		
+		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
+		for (auto [entity, transform, vertices, texture, color] : sprites.each())
+		{
+			//Get GLuint for texture, and bind texture for rendering
+			glBindTexture(GL_TEXTURE_2D, texture.texID);
+
+			//Update the mvp
+			glm::mat4 mvp = updateMVP(transform, vm, pm);
+
+			//Set the color of the sprite
+			setColor(mvp, color.color);
+			
+			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+		}
 	}
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.
@@ -209,78 +218,21 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		//Camera
-		Entity cameraEntity = createEntity("camera");
-		cameraEntity.addComponent<CameraComponent>(
-			90.f,
-			glm::mat4(1.f),
-			glm::vec2(1920, 1080),
-			100.0f,
-			0.1f
-			);
-
-		// Player entity
-		// has to be above triangles to render in front, z coordinate has no effect?
-		Entity playerEntity = createEntity("player");
-		ResourceManager::ImageData playerSprite = ResourceManager::getInstance()->getTexture("player.png");
-		playerEntity.addComponent<TransformComponent>(
-			glm::vec3(960.f-(playerSprite.width/2), 540.f-playerSprite.height, 0),
-			glm::vec3(playerSprite.width, playerSprite.height, 1),
-			glm::vec3(0, 0, 0)
-			);
-		playerEntity.addComponent<TextureComponent>(playerSprite.texID, "player.png");
-		playerEntity.addComponent<VerticesComponent>(createSprite());
-		playerEntity.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
-
-#pragma region Tile Entities
-		ResourceManager::ImageData tileSprite = ResourceManager::getInstance()->getTexture("tileBase.png");
-		float centerX = 960.f;
-		float centerY = 540.f;
-		float tileWidth = tileSprite.width;
-		float tileHeight = tileSprite.height;
-
-		// Tile 1
-		Entity tile1 = createEntity("tile1");
-		tile1.addComponent<TransformComponent>(
-			glm::vec3(centerX-tileWidth/2, centerY-tileHeight/2, 0),
-			glm::vec3(200.f, 150.f, 1),
-			glm::vec3(0, 0, 0)
-			);
-		tile1.addComponent<TextureComponent>(tileSprite.texID, "tileBase.png");
-		tile1.addComponent<VerticesComponent>(makeTileVertices());
-		tile1.addComponent<ColorComponent>(glm::vec4(0, 0, 1, 1));
-#pragma endregion
-
-		/*Entity triangle = createEntity("triangle");
-		// Amogus 1
-		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
-		triangle.addComponent<TransformComponent>(
-			glm::vec3(0, 0, 0),
-			glm::vec3(image.height, image.width, 1),
-			glm::vec3(0, 0, 0)
-			);
-		triangle.addComponent<TextureComponent>(image.texID, "Texture_Test.jpg");
-		triangle.addComponent<VerticesComponent>(createSprite());
-		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 
 		Entity triangle2 = createEntity("triangle2");
-		// Amogus 2
-		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 		triangle2.addComponent<TransformComponent>(
-			glm::vec3(image.height-200, image.width-100, -3),
+			glm::vec3(0.f, 0, 0),
 			glm::vec3(image2.height, image2.width, 1),
 			glm::vec3(0, 0, 0)
 			);
-		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.png");
+		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.jpg");
 		triangle2.addComponent<VerticesComponent>(createSprite());
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));*/
-
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		//TODO: After Serialization: Bind Entities HERE ***
-
-		//Get a view of all entities with script component, instantiate them, and run their onCreate().
-		auto entities = getEntities<ScriptComponent>();
-		for (auto [entity, script] : entities.each())
+		const auto scriptEntities = getEntities<ScriptComponent>();
+		for (auto& [entity, script] : scriptEntities.each())
 		{
 			if (!script.m_instance)
 			{
@@ -297,9 +249,9 @@ Issues:
 	//Return the VBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVBO() 
 	{
-		if(!createdVBO);
+		if(!m_createdVBO);
 		{
-			createdVBO = true;
+			m_createdVBO = true;
 
 			float vertices[] = 
 			{
@@ -324,9 +276,9 @@ Issues:
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
-		if (!createdVAO)
+		if (!m_createdVAO)
 		{
-			createdVAO = true;
+			m_createdVAO = true;
 
 			glGenVertexArrays(1, &m_spriteVAO);
 			glBindVertexArray(m_spriteVAO);
@@ -338,9 +290,9 @@ Issues:
 	//Return the IBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteIBO()
 	{
-		if (!createdIBO);
+		if (!m_createdIBO);
 		{
-			createdIBO = true;
+			m_createdIBO = true;
 			
 			unsigned int indices[6] =
 			{
@@ -391,47 +343,6 @@ Issues:
 			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
 		}
-
-		return vc;
-	}
-
-	// Make the vertex object for diamond-shaped tiles
-	VerticesComponent Scene::makeTileVertices()
-	{
-		VerticesComponent vc;
-
-		// Make a diamond shape
-		float diamondVertices[12] = {
-			0.0f, 0.75f, 0.0f,	// Top
-			1.0f, 0.0f, 0.0f,	// Right
-			0.0f, -0.75f, 0.0f,	// Bottom
-			-1.0f, 0.0f, 0.0f,	// Left
-		};
-		//vertex order
-		unsigned int indices[4] = { 0, 1, 2, 3 };
-
-		vc.vertexAttributes.push_back(VertexAttribute(0, 4, GL_FLOAT, GL_FALSE, 0));
-		vc.stride = sizeof(float) * 4;
-		vc.numIndices = 8;
-
-		glGenVertexArrays(1, &vc.vaoID);
-		glGenBuffers(1, &vc.vboID);
-		glBindBuffer(GL_ARRAY_BUFFER, vc.vboID);
-
-		//Buffer data
-		glBufferData(GL_ARRAY_BUFFER, sizeof(diamondVertices), diamondVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-
-		//Define vertex attributes
-		for (const auto attribute : vc.vertexAttributes)
-		{
-			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
-		}
-
-		glGenBuffers(1, &vc.iboID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vc.iboID);
-
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 		return vc;
 	}

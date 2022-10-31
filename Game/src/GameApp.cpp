@@ -4,7 +4,15 @@
 class GameApp : public Engine::Application
 {
 public:
-	GameApp() {}
+	GameApp()
+	{
+		Engine::Scene scene;
+		if (Engine::Serializer::tryDeserializeScene(scene, "testScene.bda"))
+		{
+			scene.onRuntimeStart();
+		}
+		
+	}
 	~GameApp() {}
 };
 
