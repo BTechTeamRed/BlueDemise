@@ -58,6 +58,21 @@ namespace Engine
 		GLuint texID;
 	};
 
+	//A component containing animation data
+	struct AnimationComponent
+	{
+		AnimationComponent() = default;
+		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow)
+			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow) { }
+		std::vector<glm::vec2> texCoords;
+
+		GLuint texID;
+
+		int currentIndex, numPerRow;
+
+		float frameRate, texWidthFraction, texHeightFraction;
+	};
+
 	//Not component, just container for vertex attribute data format
 	struct VertexAttribute 
 	{
