@@ -7,6 +7,8 @@
 #include "Engine/Scene.h"
 #include "Engine/ResourceManager.h"
 
+#include "Engine/Components.h"
+
 namespace BDTests
 {
 	// IndependentMethod is a test case - here, we have 3 tests for this 1 test case
@@ -19,10 +21,6 @@ namespace BDTests
 
 	TEST(SceneTest, sceneHasEntities)
 	{
-		Engine::Scene scene;
-		Engine::Entity ent = scene.createEntity("ent");
-		//GTEST_EXPECT_TRUE(ent != NULL);
-		EXPECT_TRUE(&ent != nullptr);
 	}
 
 	// The fixture for testing class EngineTest. From google test primer.
