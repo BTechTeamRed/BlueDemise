@@ -68,7 +68,7 @@ namespace Engine
 
 		GLuint texID;
 
-		int currentIndex, numPerRow;
+		int currentIndex = 0, numPerRow;
 
 		float frameRate, texWidthFraction, texHeightFraction;
 	};

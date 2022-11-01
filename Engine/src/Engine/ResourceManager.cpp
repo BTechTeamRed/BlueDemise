@@ -249,7 +249,7 @@ namespace Engine
 
 			if (spriteWidth == 0 || spriteHeight == 0)
 			{
-				spriteWidth = spriteSheet.width / 4;
+				spriteWidth = spriteSheet.width / 3;
 				spriteHeight = spriteSheet.height / 3;
 			}
 			
@@ -267,10 +267,8 @@ namespace Engine
 
 			return data;
 		}
-		else
-		{
-			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
-		}
+
+		GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
 
 		return data;
 
@@ -310,7 +308,7 @@ namespace Engine
 			glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
 		else if (img.numComponents == m_RGBA)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
-
+		
 		//Free the image from memory
 		stbi_image_free(img.image);
 
@@ -415,8 +413,8 @@ namespace Engine
 			{
 				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 
-				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
+				//Last digit can be 1-4, and forces that many components per pixel (or STBI_rgb_alpha), see https://github.com/nothings/stb/blob/master/stb_image.h. Otherwise, 0 will force the number of components to be determined by the image.
+				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, 0);
 
 				//If image data isn't NULL, store and return data.
 				if (data.image != nullptr)
