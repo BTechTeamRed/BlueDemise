@@ -249,8 +249,8 @@ namespace Engine
 
 			if (spriteWidth == 0.f || spriteHeight == 0.f)
 			{
-				spriteWidth = spriteSheet.width / 3;
-				spriteHeight = spriteSheet.height / 3;
+				spriteWidth = spriteSheet.width / data.spritesPerRow;
+				spriteHeight = spriteSheet.height / data.spritesPerColumn;
 			}
 			
 			//Save sprite data to spriteSheet struct

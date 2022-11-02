@@ -35,7 +35,7 @@ namespace Engine
 		struct SpriteSheet
 		{
 			float spriteWidth{ 0.f }, spriteHeight{ 0.f }, texWidthFraction{ 0.f }, texHeightFraction{ 0.f };
-			int spriteSheetWidth{ 0 }, spriteSheetHeight{ 0 }, numSprites{ 0 }, spritesPerRow{ 0 }, spritesPerColumn{ 0 };
+			int spriteSheetWidth{ 0 }, spriteSheetHeight{ 0 }, numSprites{ 0 }, spritesPerRow{ 3 }, spritesPerColumn{ 3 };
 
 			GLuint texID{ 0 };
 		};
