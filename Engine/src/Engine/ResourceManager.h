@@ -26,18 +26,18 @@ namespace Engine
 		//A struct to contain all data contained within an STB image. 
 		struct ImageData
 		{
-			unsigned char* image;
-			int width, height, numComponents;
-			GLuint texID;
+			unsigned char* image{ nullptr };
+			int width{ 0 }, height{ 0 }, numComponents{ 0 };
+			GLuint texID{ 0 };
 		};
 
 		//A struct to contain sprite sheet data (sprite dimensions, GL texture ID, etc).
 		struct SpriteSheet
 		{
-			float spriteWidth, spriteHeight, texWidthFraction, texHeightFraction;
-			int spriteSheetWidth, spriteSheetHeight, numSprites, spritesPerRow, spritesPerColumn;
+			float spriteWidth{ 0.f }, spriteHeight{ 0.f }, texWidthFraction{ 0.f }, texHeightFraction{ 0.f };
+			int spriteSheetWidth{ 0 }, spriteSheetHeight{ 0 }, numSprites{ 0 }, spritesPerRow{ 0 }, spritesPerColumn{ 0 };
 
-			GLuint texID;
+			GLuint texID{ 0 };
 		};
 
 		#pragma region Singleton Instance Management
@@ -68,7 +68,7 @@ namespace Engine
 		ImageData getTexture(const std::string& name);
 
 		//Based on the provided spritesheet filename, return a SpriteSheet struct (with info on a spriteSheet) stored within a map, or load it from the system. Returns an empty SpriteSheet if not found. 
-		SpriteSheet getSpritesheet(const std::string& name, float spritesPerRow = 0, float spritesPerColumn = 0);
+		SpriteSheet getSpritesheet(const std::string& name, float spriteWidth = 0.f, float spriteHeight = 0.f);
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);

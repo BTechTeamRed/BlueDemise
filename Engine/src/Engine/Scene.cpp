@@ -156,8 +156,6 @@ Issues:
 				const auto anim = m_registry.get<const AnimationComponent>(entity);
 
 				//Calculation for finding the sprite in a texture.
-				//const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
-				//const float ty = (anim.currentIndex / anim.numPerRow + 1) * anim.texHeightFraction;
 				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
 				const float ty = (anim.currentIndex / anim.numPerRow + 1) * anim.texHeightFraction;
 

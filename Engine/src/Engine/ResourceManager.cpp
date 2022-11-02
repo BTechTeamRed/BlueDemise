@@ -226,7 +226,7 @@ namespace Engine
 	ResourceManager::SpriteSheet ResourceManager::getSpritesheet(const std::string& name, float spriteWidth, float spriteHeight)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		SpriteSheet data {0,0,0,0,0,0,0,0,0,NULL};
+		SpriteSheet data;
 
 		auto it = m_spritesheetsTex.find(name);
 
@@ -247,7 +247,7 @@ namespace Engine
 		{
 			ImageData spriteSheet = getTexture(name);
 
-			if (spriteWidth == 0 || spriteHeight == 0)
+			if (spriteWidth == 0.f || spriteHeight == 0.f)
 			{
 				spriteWidth = spriteSheet.width / 3;
 				spriteHeight = spriteSheet.height / 3;
@@ -397,7 +397,7 @@ namespace Engine
 	ResourceManager::ImageData ResourceManager::readImageData(const std::string& name)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		ResourceManager::ImageData data = { nullptr, 0, 0, 0 , 0};
+		ResourceManager::ImageData data;
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
 		auto imagePath = m_filePaths.find(name);
