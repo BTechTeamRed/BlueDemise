@@ -3,6 +3,7 @@
 #include <mutex>
 #include "GLFW/glfw3.h"
 #include "EventSystem.h"
+#include "glm/vec2.hpp"
 
 namespace Engine {
 	/// <summary>
@@ -15,15 +16,12 @@ namespace Engine {
 		InputSystem(InputSystem& other) = delete;
 		void operator=(InputSystem& other) = delete;
 
+#pragma region Public Methods
 		/// <summary>
 		/// Initialize the input system
 		/// </summary>
 		/// <param name="window">Window context</param>
 		void init(GLFWwindow* window);
-		/// <summary>
-		/// Updates the values of the maps to false once per frame
-		/// </summary>
-		void update();
 		/// <summary>
 		/// Checks for a mouse button press
 		/// </summary>
@@ -37,10 +35,27 @@ namespace Engine {
 		/// <returns>If the key has been pressed</returns>
 		bool isKeyPressed(int key);
 		/// <summary>
-		/// Set the current window for context
+		/// Set the current window for context, resets initialization to false
 		/// </summary>
 		/// <param name="window">The active window</param>
 		void setWindow(GLFWwindow* window);
+		/// <summary>
+		/// Whether the InputSystem is initialized
+		/// </summary>
+		/// <returns>State of input system</returns>
+		bool isInit();
+		/// <summary>
+		/// Getter for current position of the cursor
+		/// </summary>
+		/// <returns>The current position of the cursor if initialized</returns>
+		glm::vec2& getCursorPos();
+		/// <summary>
+		/// Grabs the singleton instance
+		/// </summary>
+		/// <returns>The instance</returns>
+		static InputSystem* getInstance();
+#pragma endregion
+#pragma region Callbacks
 		/// <summary>
 		/// Callback function registered with glfw
 		/// </summary>
@@ -58,21 +73,19 @@ namespace Engine {
 		/// <param name="action">Action of key</param>
 		/// <param name="mods">Modifier bits (shift,ctrl,etc.)</param>
 		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
 		/// <summary>
-		/// 
+		/// Callback function registered with glfw
 		/// </summary>
-		/// <returns></returns>
-		bool isInit();
-		/// <summary>
-		/// Grabs the singleton instance
-		/// </summary>
-		/// <returns>The instance</returns>
-		static InputSystem* getInstance();
+		/// <param name="window">Window context</param>
+		/// <param name="xpos">X-position of the cursor</param>
+		/// <param name="ypos">Y-position of the cursor</param>
+		void cursorCallback(GLFWwindow* window, double xpos, double ypos);
+#pragma endregion
 	private:
 		//Private c'tor for singleton
 		InputSystem();
 
+#pragma region Member Variables
 		/// <summary>
 		/// Whether the Input System is initialized
 		/// </summary>
@@ -97,5 +110,10 @@ namespace Engine {
 		/// The singleton instance
 		/// </summary>
 		static InputSystem* m_instance;
+		/// <summary>
+		/// Current position of the cursor
+		/// </summary>
+		glm::vec2 m_cursorPos;
+#pragma endregion
 	};
 }

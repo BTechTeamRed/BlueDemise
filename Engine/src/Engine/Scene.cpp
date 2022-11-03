@@ -14,6 +14,7 @@
 #include "DeltaTime.h"
 #include "Scripts/ScriptableBehavior.h"
 #include "ResourceManager.h"
+#include "InputSystem.h"
 
 namespace Engine
 {
@@ -26,6 +27,7 @@ Issues:
 	void Scene::onRuntimeStart()
 	{
 		createEntities();
+		InputSystem::getInstance()->init(m_window);
 
 		while (!glfwWindowShouldClose(m_window))
 		{
@@ -50,7 +52,7 @@ Issues:
 	}
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
-	{
+	{	
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
@@ -93,8 +95,8 @@ Issues:
 
 
 		//Setup a callback to update the viewport size when the window is resized
-		glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
-		glfwSetWindowSizeCallback(m_window, windowResizeCallback);
+		//glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
+		//glfwSetWindowSizeCallback(m_window, windowResizeCallback);
 
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon(*m_window);
