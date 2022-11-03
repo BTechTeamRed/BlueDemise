@@ -11,18 +11,15 @@ namespace Engine {
 	class InputSystem
 	{
 	public:
-		/// <summary>
-		/// Enumeration of mouse button keys
-		/// </summary>
-		enum MouseButton
-		{
-			MOUSE1, MOUSE2, MOUSE3, MOUSE4, MOUSE5
-		};
-
 		//Delete copy c'tor and assignment opertor for singleton pattern
 		InputSystem(InputSystem& other) = delete;
 		void operator=(InputSystem& other) = delete;
 
+		/// <summary>
+		/// Initialize the input system
+		/// </summary>
+		/// <param name="window">Window context</param>
+		void init(GLFWwindow* window);
 		/// <summary>
 		/// Updates the values of the maps to false once per frame
 		/// </summary>
@@ -32,19 +29,41 @@ namespace Engine {
 		/// </summary>
 		/// <param name="button">Mouse button to check</param>
 		/// <returns>If the button has been pressed</returns>
-		bool isButtonPressed(MouseButton button);
+		bool isButtonPressed(int button);
 		/// <summary>
 		/// Checks for a key press
 		/// </summary>
 		/// <param name="key">Key to check</param>
 		/// <returns>If the key has been pressed</returns>
-		bool isKeyPressed(char key);
+		bool isKeyPressed(int key);
 		/// <summary>
 		/// Set the current window for context
 		/// </summary>
 		/// <param name="window">The active window</param>
 		void setWindow(GLFWwindow* window);
+		/// <summary>
+		/// Callback function registered with glfw
+		/// </summary>
+		/// <param name="window">Window context</param>
+		/// <param name="button">Active button</param>
+		/// <param name="action">Action of button</param>
+		/// <param name="mods">Modifier bits (shift,ctrl,etc.)</param>
+		void mouseCallback(GLFWwindow* window, int button, int action, int mods);
+		/// <summary>
+		/// Callback function registered with glfw
+		/// </summary>
+		/// <param name="window">Window context</param>
+		/// <param name="key">Active key</param>
+		/// <param name="scancode">Platform specific scancode</param>
+		/// <param name="action">Action of key</param>
+		/// <param name="mods">Modifier bits (shift,ctrl,etc.)</param>
+		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		bool isInit();
 		/// <summary>
 		/// Grabs the singleton instance
 		/// </summary>
@@ -55,13 +74,17 @@ namespace Engine {
 		InputSystem();
 
 		/// <summary>
+		/// Whether the Input System is initialized
+		/// </summary>
+		bool m_isInit;
+		/// <summary>
 		/// Map of keys and whether they have been pressed in the frame
 		/// </summary>
-		std::map<char, bool> m_keyMap;
+		std::map<int, bool> m_keyMap;
 		/// <summary>
 		/// Map of mouse buttons and whether they have been pressed
 		/// </summary>
-		std::map<MouseButton, bool> m_mouseMap;
+		std::map<int, bool> m_mouseMap;
 		/// <summary>
 		/// Current active window context
 		/// </summary>
