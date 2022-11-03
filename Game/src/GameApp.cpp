@@ -7,7 +7,7 @@ public:
 	GameApp()
 	{
 		Engine::Scene scene;
-		if (Engine::Serializer::tryDeserializeScene(scene, "testScene.bda"))
+		if (Engine::Serializer::tryDeserializeScene(scene, "level1.bda"))
 		{
 			scene.onRuntimeStart();
 		}

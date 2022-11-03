@@ -220,15 +220,15 @@ Issues:
     {
 		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
 
-		Entity triangle2 = createEntity("triangle2");
-		triangle2.addComponent<TransformComponent>(
-			glm::vec3(0.f, 0, 0),
-			glm::vec3(image2.height, image2.width, 1),
-			glm::vec3(0, 0, 0)
-			);
-		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.jpg");
-		triangle2.addComponent<VerticesComponent>(createSprite());
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		//Entity triangle2 = createEntity("triangle2");
+		//triangle2.addComponent<TransformComponent>(
+		//	glm::vec3(0.f, 0, 0),
+		//	glm::vec3(image2.height, image2.width, 1),
+		//	glm::vec3(0, 0, 0)
+		//	);
+		//triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.jpg");
+		//triangle2.addComponent<VerticesComponent>(createSprite());
+		//triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		//TODO: After Serialization: Bind Entities HERE ***
 		const auto scriptEntities = getEntities<ScriptComponent>();
