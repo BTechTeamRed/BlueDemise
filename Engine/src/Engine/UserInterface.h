@@ -18,7 +18,6 @@ namespace Engine
 		//initializes ImGUI vec4s to be used for colours
 		static ImVec4 red;
 		static ImVec4 green;
-		static ImVec4 darkGreen;
 		static ImVec4 blue;
 		static ImVec4 grey;
 		static ImVec4 white;
@@ -37,7 +36,6 @@ namespace Engine
 		static void shutdown();
 
 		//set position takes in a vec2 and is used to set the position of the window
-		void setIsVisible(bool flag);
 		void setPosition(const glm::uvec2& position);
 		void setDimension(const glm::uvec2& dimension);
 		void setButtonDimension(const glm::uvec2& dimension);
@@ -47,18 +45,13 @@ namespace Engine
 		//partition defines the title section of the UI element
 		void partition(const std::string& fontTag, const std::string& title = "", const ImVec4& color = white);
 
-		virtual void update() {}
 		virtual void show() = 0;
 
 	protected:
 
 		static ImGuiIO* s_IO;
 		static ImGuiStyle* s_style;
-
-		//Changed to unordered_map for efficiency
 		static std::unordered_map<std::string, ImFont*> s_fonts;
-
-		bool m_isVisible{ false };
 
 		glm::vec2 m_position{ 0.0f, 0.0f };
 		glm::vec2 m_dimension{ 0.0f, 0.0f };

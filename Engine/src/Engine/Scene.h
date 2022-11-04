@@ -7,13 +7,10 @@
 
 //Added for UI
 #include <array>
-#include <unordered_map>
 #include "ExplorerPanel.h"
-#include "HierarchyPanel.h"
+#include "EntitiesPanel.h"
 #include "ComponentsPanel.h"
-#include "InspectorPanel.h"
 #include "MainMenu.h"
-#include "TagDialog.h"
 
 namespace Engine
 {
@@ -89,13 +86,8 @@ namespace Engine
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
-        struct GLFWwindow* m_UIwindow;
         int m_windowWidth{1900};
         int m_windowHeight{1000};
-
-
-        //Added this to keep track of the entities created
-		std::unordered_map<std::string, entt::entity> m_entityHandles;
 
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
@@ -104,20 +96,7 @@ namespace Engine
         ExplorerPanel m_explorerPanel;
 
         //entities panel is the UI element that lists all the entities
-        HierarchyPanel m_hierarchyPanel;
-
-        //inspector panel is the UI element that lists all the components for each entity
-		InspectorPanel m_inspectorPanel;
-
-		//dialog box to allow user to input the tag name for an entity
-		TagDialog m_tagDialog;
-
-        enum ComponentPanels
-		{
-			ActiveComponents,
-			Attributes,
-			Components
-		};
+        EntitiesPanel m_entitiesPanel;
 
         DeltaTime m_deltaTime{0};
         //creates an array of three components panels

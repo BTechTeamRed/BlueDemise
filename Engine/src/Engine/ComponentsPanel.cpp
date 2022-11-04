@@ -4,23 +4,9 @@ namespace Engine
 {
 	ComponentsPanel::ComponentsPanel(const std::string& name) : m_name(name) {}
 
-	bool ComponentsPanel::isAddButtonClicked() const
-	{
-		return m_isAddButtonClicked;
-	}
-
-	const std::string& ComponentsPanel::getSelectedComponent() const
-	{
-		return m_selectedComponent;
-	}
-
-	void ComponentsPanel::addComponent(const std::string& component)
-	{
-		m_components.push_back(component);
-	}
-
 	void ComponentsPanel::show()
 	{
+
 		ImGui::Begin(m_name.c_str(), nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -37,26 +23,13 @@ namespace Engine
 		partition("MyriadPro_Bold_16", m_name, white);
 
 		//sets the colour of the text to blue, uses blue defined in UserInterface
-		s_style->Colors[ImGuiCol_Text] = green;
+		s_style->Colors[ImGuiCol_Text] = blue;
 
-		m_isAddButtonClicked = false;
+		//displays some text in the window
+		ImGui::Text("Hello");
 
-		for (const auto& component : m_components)
-		{
-			if (ImGui::TreeNode(component.c_str()))
-			{
-				m_selectedComponent = component;
-				ImGui::TreePop();
-			}
-		}
-
-		setSpacing(3);
-
-		if (ImGui::Button("Add component to selected entity", ImVec2(250, 25)))
-		{
-			m_isAddButtonClicked = true;
-		}
 
 		ImGui::End();
+
 	}
 }

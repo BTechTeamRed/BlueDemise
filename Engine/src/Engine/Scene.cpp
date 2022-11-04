@@ -62,21 +62,8 @@ namespace Engine
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}		
-
-
-		//We have two distinct windows to manage now - one for the main scene and the UI window
-		//For each window we change the GL context, render to the window, then swap buffers
-		
-		//Main window
-		glfwMakeContextCurrent(m_window);
 		renderScene(dt);
-		glfwSwapBuffers(m_window);
-		glfwPollEvents();
-
-		//UI window
-		glfwMakeContextCurrent(m_UIwindow);
 		renderUI();
-		glfwSwapBuffers(m_UIwindow);
 
 		//Execute onLateUpdate().
 		for (auto [entity, script] : entities.each())
@@ -84,6 +71,7 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onLateUpdate(dt);//don't update if entity is disabled
 		}
 
+		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
 #pragma endregion
@@ -102,14 +90,6 @@ namespace Engine
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
-			glfwTerminate();
-			return false;
-		}
-
-		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		if (m_UIwindow == nullptr)
-		{
-			GE_CORE_ERROR("Failed to create GLFW window (UI)");
 			glfwTerminate();
 			return false;
 		}
@@ -137,35 +117,19 @@ namespace Engine
 			return false;
 		}
 
-		const auto menuHeight = 18;
-		const auto panelWidth = 0.2f * m_windowWidth;
-		const auto halfWindowHeight = 0.5f * (m_windowHeight - menuHeight);
-
-		m_tagDialog.setPosition(glm::uvec2(0.5f * m_windowWidth, 0.5f * m_windowHeight));
+		const int menuHeight = 18;
 
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(panelWidth, m_windowHeight - menuHeight));
+		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
 
-		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth - 1, menuHeight));
-		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, m_windowHeight - menuHeight));
+		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
+		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, 0.5f * (m_windowHeight - menuHeight)));
 
-		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 2 - 2, menuHeight));
-		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, m_windowHeight - menuHeight));
-
-		m_componentsPanels[Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight));
-		m_componentsPanels[Components].setDimension(glm::uvec2(panelWidth, m_windowHeight - menuHeight));
-
-		m_componentsPanels[Components].addComponent("Transform");
-		m_componentsPanels[Components].addComponent("Camera");
-		m_componentsPanels[Components].addComponent("Color");
-
-		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
-		m_componentsPanels[Attributes].setDimension(glm::uvec2(panelWidth, 0.5f * (m_windowHeight - menuHeight)));
-
-		m_componentsPanels[ActiveComponents].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
-		m_componentsPanels[ActiveComponents].setDimension(glm::uvec2(panelWidth, 0.5f * (m_windowHeight - menuHeight)));
-
-		m_inspectorPanel.setRegistry(&m_registry);
+		for (int i = 0; i < m_componentsPanels.size(); i++)
+		{
+			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
+			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
+		}
 
 		return true;
 	}
@@ -184,6 +148,7 @@ namespace Engine
 		glViewport(m_windowWidth * 0.2f, m_windowHeight * 0.25f, m_windowWidth * 0.6f, (m_windowHeight * 0.75f) - 18);
 
 		glClear(GL_COLOR_BUFFER_BIT);
+		
 		
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
@@ -254,99 +219,27 @@ namespace Engine
 		m_mainMenu.show();
 
 		m_explorerPanel.show();
-		m_hierarchyPanel.show();
-		m_inspectorPanel.show();
+		m_entitiesPanel.show();
 
 		for (auto& panel : m_componentsPanels)
 		{
 			panel.show();
 		}
 
-		m_tagDialog.update();
-		m_tagDialog.show();
-
 		UserInterface::endUI();
 
-		//We look inside our own local entity map to search for
-		//the entity the user clicked on in the Inspector panel 
-		m_inspectorPanel.setSelectedEntity(m_entityHandles[m_hierarchyPanel.getSelectedEntity()]);
-
-		if (m_hierarchyPanel.isAddButtonClicked())
+		//Check which entity was selected (WIP)
+		//const entt::entity id = m_entityHandles[m_entitiesPanel.getSelectedEntity()];
+		//m_componentsPanels[2].setText(std::to_string((int)id));
+		/*
+		if (m_entitiesPanel.isAddButtonClicked())
 		{
-			m_tagDialog.setIsVisible(true);
-		}
-
-		if (m_tagDialog.getButtonState().okay)
-		{
-			auto tag = m_tagDialog.getTag();
 			auto totalEntities = Entity::getTotalEntities();
-			Entity entity = createEntity(tag);
-			m_entityHandles[tag] = entity.getHandle();
-			m_hierarchyPanel.addEntity(tag);
+			std::string tag = "Entity_" + std::to_string(Entity::getTotalEntities() + 1);
+			Entity cameraEntity = createEntity(tag);
+			m_entitiesPanel.addEntity(tag);
 		}
-
-		if (m_tagDialog.getButtonState().cancel)
-		{
-			auto tag = "Entity_" + std::to_string(Entity::getTotalEntities() + 1);
-			Entity entity = createEntity(tag);
-			m_entityHandles[tag] = entity.getHandle();
-			m_hierarchyPanel.addEntity(tag);
-		}
-
-		if (m_componentsPanels[2].isAddButtonClicked())
-		{
-			//Check which component was selected to be added to entity
-			auto component = m_componentsPanels[2].getSelectedComponent();
-
-			//Get the handle on the selected entity to add the component to
-			auto handle = m_entityHandles[m_hierarchyPanel.getSelectedEntity()];
-
-			if (component == "Camera")
-			{
-				auto camera = m_registry.any_of<CameraComponent>(handle);
-
-				//Only add this component if there isn't already one attached
-				if (!camera)
-				{
-					m_registry.emplace<CameraComponent>(
-						handle,
-						90.f,
-						glm::mat4(1.f),
-						glm::vec2(4.8, 4.8),
-						100.0f,
-						0.1f
-						);
-				}
-			}
-
-			if (component == "Transform")
-			{
-				auto transform = m_registry.any_of<TransformComponent>(handle);
-
-				//Only add this component if there isn't already one attached
-				if (!transform)
-				{
-					m_registry.emplace<TransformComponent>(
-						handle,
-						glm::vec3(0, 0, 0),
-						glm::vec3(1, 1, 1),
-						glm::vec3(0, 0, 0));
-				}
-			}
-
-			if (component == "Color")
-			{
-				auto color = m_registry.any_of<ColorComponent>(handle);
-
-				//Only add this component if there isn't already one attached
-				if (!color)
-				{
-					m_registry.emplace<ColorComponent>(
-						handle,
-						glm::vec4(1, 1, 1, 1.0f));
-				}
-			}
-		}
+		*/
 	}
 
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
@@ -388,8 +281,6 @@ namespace Engine
 			0.1f
 			);
 
-		m_entityHandles["Camera"] = cameraEntity.getHandle();
-
 		Entity triangle = createEntity("triangle");
 		triangle.addComponent<TransformComponent>(
 			glm::vec3(0, 0, 0),
@@ -410,10 +301,6 @@ namespace Engine
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
-		m_entityHandles["Triangle"] = triangle.getHandle();
-
-		m_hierarchyPanel.addEntity("Camera");
-		m_hierarchyPanel.addEntity("Triangle");
 
 		//TODO: After Serialization: Bind Entities HERE ***
 

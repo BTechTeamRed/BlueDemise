@@ -4,6 +4,7 @@ namespace Engine
 {
 	void ExplorerPanel::show()
 	{
+
 		ImGui::Begin("ExplorerPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -17,7 +18,7 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Explorer", grey);
+		partition("MyriadPro_Bold_16", "Explorer", white);
 
 		//sets the text colour to be green
 		s_style->Colors[ImGuiCol_Text] = green;

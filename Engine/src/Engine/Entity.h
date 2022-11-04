@@ -18,9 +18,6 @@ namespace Engine
 		Entity(const Entity& other) = default;
 		inline entt::entity getHandle() { return m_entityHandle; }
 		const std::string& getName() { return getComponent<TagComponent>().tag; }
-
-		static int s_totalEntities;
-		static int getTotalEntities();
 		
 #pragma region Entity Component Management	
 		

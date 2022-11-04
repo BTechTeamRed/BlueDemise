@@ -1,10 +1,9 @@
 #pragma once
-
 #include "UserInterface.h"
 
 namespace Engine
 {
-	class ExplorerPanel : public UserInterface
+	class EntitiesPanel : public UserInterface
 	{
 
 	public:
@@ -12,8 +11,6 @@ namespace Engine
 		virtual void show() override;
 
 	private:
-
-
 
 	};
 }
