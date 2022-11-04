@@ -86,6 +86,7 @@ namespace Engine
         // Registry is a container to hold entities
         entt::registry m_registry;
         struct GLFWwindow* m_window;
+        struct GLFWwindow* m_UIwindow;
         int m_windowWidth{1900};
         int m_windowHeight{1000};
 

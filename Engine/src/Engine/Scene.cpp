@@ -62,8 +62,20 @@ namespace Engine
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}		
+		
+		//We have two distinct windows to manage now - one for the main scene and the UI window
+		//For each window we change the GL context, render to the window, then swap buffers
+
+		//Main window
+		glfwMakeContextCurrent(m_window);
 		renderScene(dt);
+		glfwSwapBuffers(m_window);
+		glfwPollEvents();
+
+		//UI window
+		glfwMakeContextCurrent(m_UIwindow);
 		renderUI();
+		glfwSwapBuffers(m_UIwindow);
 
 		//Execute onLateUpdate().
 		for (auto [entity, script] : entities.each())
@@ -71,7 +83,6 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onLateUpdate(dt);//don't update if entity is disabled
 		}
 
-		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
 #pragma endregion
@@ -90,6 +101,14 @@ namespace Engine
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
+			glfwTerminate();
+			return false;
+		}
+
+		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
+		if (m_UIwindow == nullptr)
+		{
+			GE_CORE_ERROR("Failed to create GLFW window (UI)");
 			glfwTerminate();
 			return false;
 		}
