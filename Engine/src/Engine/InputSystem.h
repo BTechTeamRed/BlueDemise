@@ -84,7 +84,7 @@ namespace Engine
 #pragma endregion
 	private:
 		//Private c'tor for singleton
-		InputSystem() :m_window(nullptr), m_isInit(false);
+		InputSystem() : m_window(nullptr), m_isInit(false) {}
 
 #pragma region Member Variables
 		/// <summary>
