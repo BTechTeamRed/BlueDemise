@@ -2,7 +2,6 @@
 #include <map>
 #include <mutex>
 #include "GLFW/glfw3.h"
-#include "EventSystem.h"
 #include "glm/vec2.hpp"
 
 namespace Engine {
