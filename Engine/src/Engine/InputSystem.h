@@ -1,8 +1,9 @@
 #pragma once
 #include <map>
 #include <mutex>
-#include "GLFW/glfw3.h"
 #include "glm/vec2.hpp"
+
+struct GLFWwindow;
 
 namespace Engine 
 {
@@ -83,7 +84,7 @@ namespace Engine
 #pragma endregion
 	private:
 		//Private c'tor for singleton
-		InputSystem();
+		InputSystem() :m_window(nullptr), m_isInit(false);
 
 #pragma region Member Variables
 		/// <summary>

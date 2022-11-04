@@ -1,14 +1,11 @@
 #include "Engine/InputSystem.h"
+#include "GLFW/glfw3.h"
 
 using namespace Engine;
 
 InputSystem* InputSystem::m_instance = nullptr;
 std::mutex InputSystem::m_instanceMutex;
 
-InputSystem::InputSystem():m_window(nullptr), m_isInit(false)
-{
-	//Moved map initialization to the init function
-}
 
 InputSystem* InputSystem::getInstance()
 {
