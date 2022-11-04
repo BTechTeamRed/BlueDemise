@@ -131,8 +131,7 @@ Issues:
 	void Scene::renderScene(const DeltaTime& dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		
+
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
@@ -142,36 +141,49 @@ Issues:
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
-		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
+		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Texture
+			if (m_registry.all_of<TextureComponent>(entity))
+			{
+				const auto texture = m_registry.get<const TextureComponent>(entity);
+				glBindTexture(GL_TEXTURE_2D, texture.texID);
+			}
+
+			if(m_registry.all_of<AnimationComponent>(entity))
+			{
+				const auto anim = m_registry.get<const AnimationComponent>(entity);
+
+				//Calculation for finding the sprite in a texture.
+				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
+				const float ty = (anim.currentIndex / anim.numPerRow + 1) * anim.texHeightFraction;
+
+				//bind VBO
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+					0.f, 0.f, 0.f,  tx, ty,														// top left
+					1.f, 0.f, 0.f,  tx + anim.texWidthFraction, ty,								// top right
+					1.f, 1.f, 0.f,  tx + anim.texWidthFraction, ty + anim.texHeightFraction,	// bottom right
+					0.f, 1.f, 0.f,  tx, ty + anim.texHeightFraction								// bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+				glBindTexture(GL_TEXTURE_2D, anim.texID);
+				
+			}
+
 			//Update the MVP
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
+			const glm::mat4 mvp = updateMVP(transform, vm, pm);
 
 			//Set the color of the object
 			setColor(mvp, color.color);
 
-			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-		}
-
-
-		//Get entities that contain transform & vertices & texture components,
-		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
-		
-		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
-		for (auto [entity, transform, vertices, texture, color] : sprites.each())
-		{
-			//Get GLuint for texture, and bind texture for rendering
-			glBindTexture(GL_TEXTURE_2D, texture.texID);
-
-			//Update the mvp
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
-
-			//Set the color of the sprite
-			setColor(mvp, color.color);
-			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
@@ -189,7 +201,6 @@ Issues:
 
 		//Calculate MVP
 		glm::mat4 mvp = projection * view * mvm;
-	
 	
 		return mvp;
 	}
@@ -220,16 +231,17 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		ResourceManager::ImageData image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
+		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
+		ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
 
 		Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
 			glm::vec3(0.f, 0, 0),
-			glm::vec3(image2.height, image2.width, 1),
+			glm::vec3(image.height, image.width, 1),
 			glm::vec3(0, 0, 0)
 			);
-		triangle2.addComponent<TextureComponent>(image2.texID, "Texture_Test.jpg");
 		triangle2.addComponent<VerticesComponent>(createSprite());
+		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow);
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		//TODO: After Serialization: Bind Entities HERE ***
@@ -259,22 +271,22 @@ Issues:
 			{
 				// positions  // texture coords (UV coords)
 
+				0.f, 0.f, 0.f,  0.f, 0.f,  // top left
 				1.f, 0.f, 0.f,  1.f, 0.f,  // top right
-				1.f, 1.f, 0.f,    1.f, 1.f,  // bottom right
-				0.f, 1.f, 0.f,   0.f, 1.f,  // bottom left
-				
+				1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+				0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
 			};
 			
 			
 			glGenBuffers(1, &m_spriteVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
 
 		return m_spriteVBO;
 	}
-	
+
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
@@ -326,7 +338,7 @@ Issues:
 	VerticesComponent Scene::createSprite()
 	{
 		VerticesComponent vc;
-		//Each vertex has one attribute, which is 2 floats to represent position
+		
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		

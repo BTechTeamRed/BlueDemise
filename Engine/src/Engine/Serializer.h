@@ -28,6 +28,7 @@ namespace Engine
 			CO_TransformComponent,
 			CO_ColorComponent,
 			CO_TextureComponent,
+			CO_AnimationComponent,
 			CO_VerticesComponent
 		};
 
@@ -42,6 +43,7 @@ namespace Engine
 			if (component == "ColorComponent") return CO_ColorComponent;
 			if (component == "TextureComponent") return CO_TextureComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
+			if (component == "AnimationComponent") return CO_AnimationComponent;
 			return CO_Invalid;
 		}
 	};

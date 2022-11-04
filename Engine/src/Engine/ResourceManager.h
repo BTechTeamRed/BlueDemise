@@ -26,9 +26,18 @@ namespace Engine
 		//A struct to contain all data contained within an STB image. 
 		struct ImageData
 		{
-			unsigned char* image;
-			int width, height, numComponents;
-			GLuint texID;
+			unsigned char* image{ nullptr };
+			int width{ 0 }, height{ 0 }, numComponents{ 0 };
+			GLuint texID{ 0 };
+		};
+
+		//A struct to contain sprite sheet data (sprite dimensions, GL texture ID, etc).
+		struct SpriteSheet
+		{
+			float spriteWidth{ 0.f }, spriteHeight{ 0.f }, texWidthFraction{ 0.f }, texHeightFraction{ 0.f };
+			int spriteSheetWidth{ 0 }, spriteSheetHeight{ 0 }, numSprites{ 0 }, spritesPerRow{ 3 }, spritesPerColumn{ 3 };
+
+			GLuint texID{ 0 };
 		};
 
 		#pragma region Singleton Instance Management
@@ -57,6 +66,9 @@ namespace Engine
 
 		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
 		ImageData getTexture(const std::string& name);
+
+		//Based on the provided spritesheet filename, return a SpriteSheet struct (with info on a spriteSheet) stored within a map, or load it from the system. Returns an empty SpriteSheet if not found. 
+		SpriteSheet getSpritesheet(const std::string& name, float spriteWidth = 0.f, float spriteHeight = 0.f);
 
 		//Function to return a shader (formatted as a string with newlines to seperate GSLS code) from the hashmap based on a provided name. Returns an empty string if no shader is found.
 		std::string getShaderData(const std::string& name);
@@ -105,9 +117,12 @@ namespace Engine
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
-		//Map to store each processed texture containing an image imported from STBI
+		//Map to store each processed texture containing the texture ID and the texture data.
 		std::unordered_map<std::string, ImageData> m_textures{};
-			
+
+		//Map to store each processed spritesheet containing data on the sheet itself, and the respective texture ID.
+		std::unordered_map<std::string, SpriteSheet> m_spritesheetsTex{};
+		
 		//A map to store Json files, utilizing the json library.
 		std::unordered_map<std::string, nlohmann::json> m_jsons{};
 			
@@ -127,7 +142,10 @@ namespace Engine
 
 		//Add file path from provided directory_entry to the m_filePaths map.
 		void saveFilePath(std::filesystem::directory_entry path);
-		
+
+		//Generate a new texture with the provided image data, and return the ID for the texture.
+		GLuint generateTexture(ImageData& img);
+
 		//Function to return an image (formatted as a pointer to an unsigned char) from the hashmap based on a provided name. Returns a nullptr if no image is found.
 		//NOTE: After using the image, you MUST use stbi_image_free(); in order to free the memory of the image.
 		ImageData readImageData(const std::string& name);
