@@ -11,7 +11,9 @@ namespace Engine
 	//define the ImGUI vec4s for each colour
 	ImVec4 UserInterface::red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 	ImVec4 UserInterface::green = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
+	ImVec4 UserInterface::darkGreen = ImVec4(0.0f, 0.75f, 0.0f, 1.0f);
 	ImVec4 UserInterface::blue = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+	ImVec4 UserInterface::grey = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
 	ImVec4 UserInterface::white = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//initializes UI that can be used with provided GLFWwindow
@@ -25,6 +27,7 @@ namespace Engine
 		//https://www.unknowncheats.me/forum/c-and-c-/189635-imgui-style-settings.html
 		s_style = &ImGui::GetStyle();
 
+		//This is intended for loading and managing fonts later on//This is intended for loading and managing fonts later on
 		s_IO = &ImGui::GetIO();
 
 		return true;
@@ -32,7 +35,9 @@ namespace Engine
 
 	void UserInterface::shutdown()
 	{
-
+		ImGui_ImplGlfw_Shutdown();
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui::DestroyContext();
 	}
 
 	//creates new ImGUI frame (window)
@@ -62,6 +67,12 @@ namespace Engine
 		s_fonts[tag] = font;
 
 		return true;
+	}
+
+	//sets the visibility flag so when we call show() it will appear or hide based on flag
+	void UserInterface::setIsVisible(bool flag)
+	{
+		m_isVisible = flag;
 	}
 
 	//sets the position of a UI element
@@ -95,9 +106,9 @@ namespace Engine
 	{
 		s_style->Colors[ImGuiCol_Text] = color;
 
-		ImGui::PushFont(s_fonts[fontTag]);
+		//ImGui::PushFont(s_fonts[fontTag]);
 		ImGui::Text(title.c_str());
-		ImGui::PopFont();
+		//ImGui::PopFont();
 
 		ImGui::Separator();
 		setSpacing(1);
