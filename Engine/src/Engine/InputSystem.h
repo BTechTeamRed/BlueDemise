@@ -4,7 +4,8 @@
 #include "GLFW/glfw3.h"
 #include "glm/vec2.hpp"
 
-namespace Engine {
+namespace Engine 
+{
 	/// <summary>
 	/// Provides a wrapper for GLFW input
 	/// </summary>
