@@ -174,7 +174,14 @@ namespace Engine
 					out.addComponent<VerticesComponent>(scene.createSprite());
 				}
 
-				//TODO: Implement serialization for custom type vertices/polygons
+				break;
+			}
+			case CO_AnimationComponent:
+			{
+				std::string texture = component["texName"];
+				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
+
+				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction, spritesheet.texHeightFraction, spritesheet.spritesPerRow);
 				break;
 			}
 			default:
