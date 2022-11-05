@@ -76,38 +76,48 @@ Issues:
 #pragma endregion
 
 #pragma region Input Functions
-	void Scene::checkForSelection()
+	// Checks if the mouse is clicking on an object and saves the selection
+	// If the right mouse button is clicking it "deselects" by flipping a bool flag (m_entityIsSelected).
+	void Scene::checkForSelection() // Temporary code for selection for demonstration purposes
 	{
-		float mouseX = InputSystem::getInstance()->getCursorPos().x;
-		float mouseY = InputSystem::getInstance()->getCursorPos().y;
-		const auto entities = getEntities<TransformComponent, ColorComponent>();
-		if (!(entities.begin() == entities.end()))
+		if (InputSystem::getInstance()->isButtonPressed(0))
 		{
-			if (InputSystem::getInstance()->isButtonPressed(0))
+			float mouseX = InputSystem::getInstance()->getCursorPos().x;
+			float mouseY = InputSystem::getInstance()->getCursorPos().y;
+			const auto entities = getEntities<TransformComponent>();
+			if (!(entities.begin() == entities.end()))
 			{
-				for (auto& [entity, tScript, cScript] : entities.each())
+				for (auto& [entity, tScript] : entities.each())
 				{
 					if (mouseX > tScript.position.x && mouseY > tScript.position.y
 						&& mouseX < (tScript.position.x + tScript.scale.x)
 						&& mouseY < (tScript.position.y + tScript.scale.y))
 					{
-
-						m_selectedEntity = &Entity{ entity, this };
-						m_selectedEntity->getComponent<ColorComponent>().color.r += 50; // Temp to show selection
+						m_selectedEntityHandle = entity;
+						m_entityIsSelected = true;
+						m_entityHasBeenSelectedPreviously = true;
 					}
 				}
 			}
 		}
+		if (InputSystem::getInstance()->isButtonPressed(1))
+		{
+			if(m_entityIsSelected)
+			{
+				m_entityIsSelected = false;
+			}
+		}
 	}
 
-	//std::cout << "{" << InputSystem::getInstance()->getCursorPos().x << ", " << InputSystem::getInstance()->getCursorPos().y << "}\n";
-	//std::cout << "{" << tScript.position.x << ", " << tScript.position.y << ", " << tScript.position.z << "}\n";
-	//std::cout << "{" << tScript.scale.x << ", " << tScript.scale.y << ", " << tScript.scale.z << "}\n";
-
-	// returns the m_selectedEntity, a default Entity if nothing is selected.
-	Entity* Scene::getSelectedEntity()
+	// Returns the last entity to be selected,
+	// a nullptr if nothing has ever been selected in the scene.
+	Entity* Scene::getLastSelectedEntity()
 	{
-		return m_selectedEntity;
+		if (m_entityHasBeenSelectedPreviously)
+		{
+			return &Entity(m_selectedEntityHandle, this);
+		}
+		return nullptr;
 	}
 #pragma endregion
 

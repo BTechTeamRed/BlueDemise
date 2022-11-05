@@ -40,8 +40,13 @@ namespace Engine
         #pragma endregion
 
         #pragma region Input Functions
+        // Checks if the mouse is clicking on an object and saves the selection
+        // If the right mouse button is clicking it "deselects" by flipping a bool flag (m_entityIsSelected).
         void checkForSelection();
-        Entity* getSelectedEntity();
+
+        // Returns the last entity to be selected,
+        // a nullptr if nothing has ever been selected in the scene.
+        Entity* getLastSelectedEntity();
         #pragma endregion
 
 
@@ -96,7 +101,9 @@ namespace Engine
         friend class Entity;
         friend class Serializer;
 
-        Entity *m_selectedEntity = nullptr;
+        entt::entity m_selectedEntityHandle; // The handle for the Entity that is selected
+        bool m_entityIsSelected = false; // A flag saying if an Entity is selected
+        bool m_entityHasBeenSelectedPreviously = false; // A flag saying if an Entity has been selected in the scene before
 
     public:
         // Registry is a container to hold entities
