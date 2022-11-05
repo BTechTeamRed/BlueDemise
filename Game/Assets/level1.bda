@@ -43,7 +43,7 @@
           },
           {
             "name": "TextureComponent",
-            "texName": "bear.jpg"
+            "texName": "player.png"
           },
           {
             "name": "VerticesComponent",

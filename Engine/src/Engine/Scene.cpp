@@ -90,8 +90,6 @@ Issues:
 
 		glfwMakeContextCurrent(m_window);
 
-
-
 		//Setup a callback to update the viewport size when the window is resized
 		glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
 		glfwSetWindowSizeCallback(m_window, windowResizeCallback);
@@ -110,6 +108,10 @@ Issues:
 
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		//Enable transparency
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		return true;
     }

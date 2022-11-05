@@ -355,7 +355,8 @@ namespace Engine
 				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 
 				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
+				//STBI_default = 0, loads as many components (1-4) as the image has
+				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_default);
 
 				//If image data isn't NULL, store and return data.
 				if (data.image != nullptr)
