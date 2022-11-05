@@ -62,6 +62,9 @@ namespace Engine
 		{
 			return !(*this == other);
 		}
+
+		//Returns true if entity is null
+		operator bool() const { return m_entityHandle != entt::null; }
 #pragma endregion
 	};
 }

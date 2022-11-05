@@ -11,11 +11,11 @@
             "projection": {
               "matrix":  1
             },
-              "viewport": {
-                "x": 1920,
-                "y": 1080
-              },
-              "farZ": 100,
+            "viewport": {
+              "x": 1920,
+              "y": 1080
+            },
+            "farZ": 100,
               "nearZ": 0.1
             }
         ]

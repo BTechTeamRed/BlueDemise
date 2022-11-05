@@ -1,7 +1,10 @@
 #include "Serializer.h"
 
+#include <iostream>
+
 #include "Engine/Entity.h"
 #include "Engine/Log.h"
+#include "Engine/Scene.h"
 #include "Engine/ResourceManager.h"
 
 namespace glm
@@ -104,9 +107,46 @@ namespace Engine
 		return true;
 	}
 
-	void Serializer::serializeScene(const Scene& scene, const std::string& sceneFile)
+	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
+		scene->m_registry.each([&](entt::entity entityHandle)
+			{
+				Entity entity = Entity{ entityHandle, scene };
+				if (!entity) return;
+
+				serializeEntity(entity, sceneFile);
+			});
 		//TODO: Implement serialization once we have more GUI stuff
+	}
+
+	void Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
+	{
+		if (!entity.hasComponent<TagComponent>())
+		{
+			GE_CORE_ERROR("An entity was created without a tag component");
+		}
+
+		nlohmann::json components = nlohmann::json::array();
+
+		if (entity.hasComponent<CameraComponent>())
+		{
+			auto c = entity.getComponent<CameraComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_CameraComponent);
+			j["fov"] = c.fov;
+			j["projection"] = c.projection;
+			j["viewport"] = c.viewport;
+			j["farZ"] = c.farZ;
+			j["nearZ"] = c.nearZ;
+
+			components.push_back(j);
+		}
+
+		nlohmann::json entityJson;
+		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
+		entityJson["components"] = components;
+
+		std::cout << entityJson << std::endl;
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)

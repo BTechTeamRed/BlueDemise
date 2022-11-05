@@ -14,6 +14,7 @@
 #include "DeltaTime.h"
 #include "Scripts/ScriptableBehavior.h"
 #include "ResourceManager.h"
+#include "Serializer.h"
 
 namespace Engine
 {
@@ -26,6 +27,8 @@ Issues:
 	void Scene::onRuntimeStart()
 	{
 		createEntities();
+
+		Serializer::serializeScene(this, "testScene.bda");
 
 		while (!glfwWindowShouldClose(m_window))
 		{
