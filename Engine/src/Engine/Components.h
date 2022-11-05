@@ -52,10 +52,25 @@ namespace Engine
 	struct TextureComponent
 	{
 		TextureComponent() = default;
-		TextureComponent(GLuint texID)
-			: texID(texID) {}
+		TextureComponent(GLuint texID, std::string texName)
+			: texID(texID), texName(texName) { }
+		std::string texName;
+		GLuint texID;
+	};
+
+	//A component containing animation data
+	struct AnimationComponent
+	{
+		AnimationComponent() = default;
+		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow)
+			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow) { }
+		std::vector<glm::vec2> texCoords;
 
 		GLuint texID;
+
+		int currentIndex = 0, numPerRow;
+
+		float frameRate, texWidthFraction, texHeightFraction;
 	};
 
 	//Not component, just container for vertex attribute data format
@@ -97,7 +112,6 @@ namespace Engine
 		unsigned long numIndices;
 	};
 
-	//forward declare
 	class ScriptableBehavior;
 
 	//Defines a component to create custom script actions using ScriptableBehavior
@@ -115,7 +129,5 @@ namespace Engine
 			instantiateScript = [] { return static_cast<ScriptableBehavior*>(new T()); };
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
-
-
 	};
 }

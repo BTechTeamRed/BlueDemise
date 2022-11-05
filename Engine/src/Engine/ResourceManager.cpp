@@ -47,7 +47,7 @@ namespace Engine
 		//Delete all textures
 		for (auto& texture : m_textures)
 		{
-			glDeleteTextures(1, &texture.second);
+			glDeleteTextures(1, &texture.second.texID);
 		}
 	}
 #pragma endregion
@@ -60,8 +60,11 @@ namespace Engine
 		//Lock function to prevent other threads from saving files concurrently.
 		std::lock_guard<std::mutex> lock(m_functionLock);
 
+		//create an error handler in case the path is invalid.
+		std::error_code err;
+
 		//Using a recursive iterator, check each path under the root paths (m_sourcePaths) and add the file path to m_filePaths.
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+		for (auto entry : std::filesystem::recursive_directory_iterator(path, err))
 		{
 			//If the file is not a directory, store the path.
 			if (!std::filesystem::is_directory(entry.path()))
@@ -89,12 +92,12 @@ namespace Engine
 		}
 	}
 
-	//Save provided json object to a provided filename. Defaults file directory to "Data/"
+	//Save provided json object to a provided filename. Defaults file directory to m_appAssetsPath
 	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be overwritten.
-	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path)
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path, std::string extension)
 	{
 		//Create a file path from the provided path, file name, and file extension.
-		std::string fileWithPath = path + fileName + "." + m_jsonFileExt;
+		std::string fileWithPath = path + fileName + "." + extension;
 
 		std::ofstream fileStream(fileWithPath);	// Create a file stream and open the file
 		if (fileStream.is_open())
@@ -112,15 +115,24 @@ namespace Engine
 	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
 	void ResourceManager::setAppIcon(GLFWwindow& window)
 	{
-		GE_CORE_INFO("[ResourceManager] Icon was set to " + m_iconPath);
+		for (auto path : m_iconPaths)
+		{
+			if (std::filesystem::exists(path))
+			{
+				GE_CORE_INFO("[ResourceManager] Icon being set to {0}", path);
 
-		GLFWimage images[1];
+				GLFWimage images[1];
 
-		//Create a GLFW image and load the icon into it.
-		images[0].pixels = stbi_load(m_iconPath.c_str(), &images[0].width, &images[0].height, 0, 4);
+				//Create a GLFW image and load the icon into it.
+				images[0].pixels = stbi_load(path.c_str(), &images[0].width, &images[0].height, 0, 4);
 
-		glfwSetWindowIcon(&window, 1, images);
-		stbi_image_free(images[0].pixels);
+				glfwSetWindowIcon(&window, 1, images);
+				stbi_image_free(images[0].pixels);
+				return;
+			}
+		}
+
+		GE_CORE_ERROR("Icon does not exists in any paths");
 	}
 #pragma endregion
 	
@@ -155,7 +167,7 @@ namespace Engine
 			std::string extension = path.substr(path.find_last_of('.') + 1);
 			
 			//Ensure the file is a json file
-			if (extension == m_jsonFileExt)
+			if (m_jsonFileExts.find(extension) != m_jsonFileExts.end())
 			{
 				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 				
@@ -170,82 +182,143 @@ namespace Engine
 		return nullptr;
 	}
 
-	//Based on the provided filename, return the GLuint ID for the texture stored within a map, or load it from the system.
+	//Based on the provided filename, return the ImageData for the texture stored within a map, or load it from the system.
 	//Currently only supports 2D Textures, but can be changed using texType.
-	GLuint ResourceManager::getTexture(const std::string& name)
+	ResourceManager::ImageData ResourceManager::getTexture(const std::string& name)
 	{
-		std::lock_guard<std::mutex> lock(m_functionLock);
-	
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
 		GLuint data = NULL;
+		ImageData img;
 		auto it = m_textures.find(name);
 	
-		//If loaded, return the image. Else, load and store the image, then return it.
+		//If loaded, return the image. Else, load and store the texture, then return it.
 		if (it != m_textures.end())
 		{
-			//Get value based on map key "name"
-			data = m_textures.find(name)->second;
+			//Get value from map based on "name"
+			img = m_textures.find(name)->second;
 
 			GE_CORE_WARN("[ResourceManager] Previously loaded texture " + name + " found.");
-			return data;
+			return img;
 		}
 		
-		ImageData img = readImageData(name);
+		img = readImageData(name);
 		
 		//If image data isn't nullptr, store and return data.
 		if (img.image != nullptr)
 		{
-			//Determine the kind of texture being loaded. Currently only using GL_TEXTURE_2D
-			GLenum texType = GL_TEXTURE_2D;
-
-			// Generates an OpenGL texture object
-			glGenTextures(1, &data);
-			
-			// Assigns the texture to a Texture Unit
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(texType, data);
-
-			
-			// Configures the type of algorithm that is used to make the image smaller or bigger
-			glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-			glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-			//Configures the way the texture repeasts
-			glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-			glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-			
-			// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
-			// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-			// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
-			
-			// Assigns the image to the OpenGL Texture object based on the number of RGB components (if 4, then alpha value is present).
-			if (img.numComponents == m_RGB)
-				glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
-			else if (img.numComponents == m_RGBA)
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
-			
-			//Free the image from memory
-			stbi_image_free(img.image);
-			
-			//Generate Mimaps (different sizes of the image)
-			glGenerateMipmap(texType);
+			img.texID = generateTexture(img);
 
 			//Store texture for later use.
-			m_textures.insert(std::pair<std::string, GLuint>(name, data));
+			m_textures.insert(std::pair<std::string, ImageData>(name, img));
 			
-			
-			//Unbind the texture so it isn't modified anymore.
-			glBindTexture(texType, 0);
-			
-			return data;
+			return img;
 		}
 		else 
 		{
 			GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
 		}
 		
-		return NULL;
+		return img;
 	
+	}
+
+	//Based on the provided spritesheet filename, return the vector of GLuints for the sprites stored within a map, or load it from the system.
+	ResourceManager::SpriteSheet ResourceManager::getSpritesheet(const std::string& name, float spriteWidth, float spriteHeight)
+	{
+		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
+		SpriteSheet data;
+
+		auto it = m_spritesheetsTex.find(name);
+
+		//If loaded, return the spritesheet. Else, load and store the image, then return it.
+		if (it != m_spritesheetsTex.end())
+		{
+			//Get value based on map key "name"
+			SpriteSheet data = m_spritesheetsTex.find(name)->second;
+
+			GE_CORE_WARN("[ResourceManager] Previously loaded spritesheet " + name + " found.");
+			return data;
+		}
+
+		ImageData img = readImageData(name);
+
+		//If image data isn't nullptr, store and return data.
+		if (img.image != nullptr)
+		{
+			ImageData spriteSheet = getTexture(name);
+
+			if (spriteWidth == 0.f || spriteHeight == 0.f)
+			{
+				spriteWidth = spriteSheet.width / data.spritesPerRow;
+				spriteHeight = spriteSheet.height / data.spritesPerColumn;
+			}
+			
+			//Save sprite data to spriteSheet struct
+			data.spritesPerRow = spriteSheet.width / spriteWidth;
+			data.spritesPerColumn = spriteSheet.height / spriteHeight;
+			data.spriteWidth = spriteWidth;
+			data.spriteHeight = spriteHeight;
+			data.texWidthFraction = float(spriteWidth) / spriteSheet.width;
+			data.texHeightFraction = float(spriteHeight) / spriteSheet.height;
+			data.numSprites = data.spritesPerRow * data.spritesPerColumn;
+			data.spriteSheetHeight = spriteSheet.height;
+			data.spriteSheetWidth = spriteSheet.width;
+			data.texID = spriteSheet.texID;
+
+			return data;
+		}
+
+		GE_CORE_ERROR("[ResourceManager] " + name + " texture could not be created. Image = nullptr");
+
+		return data;
+
+	}
+
+	//Generate 2D texture and return GLuint for new texture, based on provided image data. Will release STBImage from memeory before return.
+	//This function assumes the texture is new, and not a duplicate of an already loaded texture.
+	GLuint ResourceManager::generateTexture(ImageData& img)
+	{
+		GLuint data;
+
+		//Determine the kind of texture being loaded. Currently only using GL_TEXTURE_2D
+		GLenum texType = GL_TEXTURE_2D;
+
+		// Generates an OpenGL texture object
+		glGenTextures(1, &data);
+
+		// Assigns the texture to a Texture Unit
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(texType, data);
+
+
+		// Configures the type of algorithm that is used to make the image smaller or bigger
+		glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		//Configures the way the texture repeasts
+		glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+		glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
+		// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
+		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
+
+		// Assigns the image to the OpenGL Texture object based on the number of RGB components (if 4, then alpha value is present).
+		if (img.numComponents == m_RGB)
+			glTexImage2D(texType, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.image);
+		else if (img.numComponents == m_RGBA)
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.width, img.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.image);
+		
+		//Free the image from memory
+		stbi_image_free(img.image);
+
+		//Generate Mimaps (different sizes of the image)
+		glGenerateMipmap(texType);
+
+		//Unbind the texture so it isn't modified anymore.
+		glBindTexture(texType, 0);
+
+		return data;
 	}
 
 	//Based on the provided filename, return the shader source from a map, or load it from the system.
@@ -324,7 +397,7 @@ namespace Engine
 	ResourceManager::ImageData ResourceManager::readImageData(const std::string& name)
 	{
 		//Initilaze the return value, and create a map iterator to check if the data is already loaded.
-		ResourceManager::ImageData data = { nullptr, 0, 0, 0 };
+		ResourceManager::ImageData data;
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
 		auto imagePath = m_filePaths.find(name);
@@ -340,8 +413,8 @@ namespace Engine
 			{
 				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 
-				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_rgb);
+				//Last digit can be 1-4, and forces that many components per pixel (or STBI_rgb_alpha), see https://github.com/nothings/stb/blob/master/stb_image.h. Otherwise, 0 will force the number of components to be determined by the image.
+				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, 0);
 
 				//If image data isn't NULL, store and return data.
 				if (data.image != nullptr)

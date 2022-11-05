@@ -17,15 +17,14 @@
 
 namespace Engine
 {
+/*
+Issues:
+- Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
+*/
 	
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
-		if (!initializeGL()) return;
-		loadShaders();
-
-		glfwSwapInterval(1);
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		//initialize the window for UI
 		if (!initializeUI()) return;
@@ -115,6 +114,12 @@ namespace Engine
 
 		glfwMakeContextCurrent(m_window);
 
+
+
+		//Setup a callback to update the viewport size when the window is resized
+		glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
+		glfwSetWindowSizeCallback(m_window, windowResizeCallback);
+
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon(*m_window);
 
@@ -124,6 +129,11 @@ namespace Engine
 			glfwTerminate();
 			return false;
 		}
+
+		loadShaders();
+
+		glfwSwapInterval(1);
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
 
 		return true;
     }
@@ -151,6 +161,7 @@ namespace Engine
 		}
 
 		return true;
+
 	}
 
 	void Scene::shutdownUI()
@@ -158,58 +169,77 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
+	//Callback to update window size when it changes
+	//TODO: Handle screen resizing
+	void windowResizeCallback(GLFWwindow* window, int width, int height)
+	{
+		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
+		auto cameraView = scene->getEntities<const CameraComponent>();
+		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
+		camera.viewport.x = width;
+		camera.viewport.y = height;*/
+	}
+
+	
+
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene(const DeltaTime& dt)
 	{
-		//Added to put triangle view in top/middle of screen
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-		glScissor(m_windowWidth * 0.2f, m_windowHeight * 0.25f, m_windowWidth * 0.6f, (m_windowHeight * 0.75f) - 18);
-		glViewport(m_windowWidth * 0.2f, m_windowHeight * 0.25f, m_windowWidth * 0.6f, (m_windowHeight * 0.75f) - 18);
-
 		glClear(GL_COLOR_BUFFER_BIT);
-		
-		
+
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(-camera.viewport.x / 2, camera.viewport.x / 2,
-			-camera.viewport.y / 2, camera.viewport.y / 2, camera.nearZ, camera.farZ);
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
+			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
-		//For each updatable solidObj entity (with transform, vertices, and color components), draw them.
+		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Texture
+			if (m_registry.all_of<TextureComponent>(entity))
+			{
+				const auto texture = m_registry.get<const TextureComponent>(entity);
+				glBindTexture(GL_TEXTURE_2D, texture.texID);
+			}
+
+			if(m_registry.all_of<AnimationComponent>(entity))
+			{
+				const auto anim = m_registry.get<const AnimationComponent>(entity);
+
+				//Calculation for finding the sprite in a texture.
+				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
+				const float ty = (anim.currentIndex / anim.numPerRow + 1) * anim.texHeightFraction;
+
+				//bind VBO
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+					0.f, 0.f, 0.f,  tx, ty,														// top left
+					1.f, 0.f, 0.f,  tx + anim.texWidthFraction, ty,								// top right
+					1.f, 1.f, 0.f,  tx + anim.texWidthFraction, ty + anim.texHeightFraction,	// bottom right
+					0.f, 1.f, 0.f,  tx, ty + anim.texHeightFraction								// bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+				glBindTexture(GL_TEXTURE_2D, anim.texID);
+				
+			}
+
 			//Update the MVP
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
+			const glm::mat4 mvp = updateMVP(transform, vm, pm);
 
 			//Set the color of the object
 			setColor(mvp, color.color);
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-		}
-
-
-		//Get entities that contain transform & vertices & texture components,
-		auto sprites = getEntities<const TransformComponent, const VerticesComponent, const TextureComponent, const ColorComponent>();
-		
-		//For each updatable sprite entity (with transform, vertices, and color components), draw them.
-		for (auto [entity, transform, vertices, texture, color] : sprites.each())
-		{
-			//Get GLuint for texture, and bind texture for rendering
-			glBindTexture(GL_TEXTURE_2D, texture.texID);
-
-			//Update the mvp
-			glm::mat4 mvp = updateMVP(transform, vm, pm);
-
-			//Set the color of the sprite
-			setColor(mvp, color.color);
-			
-			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-
 		}
 	}
 
@@ -226,7 +256,6 @@ namespace Engine
 
 		//Calculate MVP
 		glm::mat4 mvp = projection * view * mvm;
-	
 	
 		return mvp;
 	}
@@ -287,45 +316,22 @@ namespace Engine
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
-		GLuint image = ResourceManager::getInstance()->getTexture("Texture_Test.jpg");
-		GLuint image2 = ResourceManager::getInstance()->getTexture("Texture_Test.png");
-
-		//Camera
-		Entity cameraEntity = createEntity("camera");
-		cameraEntity.addComponent<CameraComponent>(
-			90.f,
-			glm::mat4(1.f),
-			glm::vec2(4.8, 4.8),
-			100.0f,
-			0.1f
-			);
-
-		Entity triangle = createEntity("triangle");
-		triangle.addComponent<TransformComponent>(
-			glm::vec3(0, 0, 0),
-			glm::vec3(1, 1, 1),
-			glm::vec3(0, 0, 0)
-			);
-		triangle.addComponent<TextureComponent>(image);
-		triangle.addComponent<VerticesComponent>(createSprite());
-		triangle.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
+		ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
 
 		Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
-			glm::vec3(2.f, 0, 0),
-			glm::vec3(1, 1, 1),
+			glm::vec3(0.f, 0, 0),
+			glm::vec3(image.height, image.width, 1),
 			glm::vec3(0, 0, 0)
 			);
-		triangle2.addComponent<TextureComponent>(image2);
 		triangle2.addComponent<VerticesComponent>(createSprite());
+		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow);
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
-
 		//TODO: After Serialization: Bind Entities HERE ***
-
-		//Get a view of all entities with script component, instantiate them, and run their onCreate().
-		auto entities = getEntities<ScriptComponent>();
-		for (auto [entity, script] : entities.each())
+		const auto scriptEntities = getEntities<ScriptComponent>();
+		for (auto& [entity, script] : scriptEntities.each())
 		{
 			if (!script.m_instance)
 			{
@@ -342,41 +348,36 @@ namespace Engine
 	//Return the VBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVBO() 
 	{
-		if(!createdVBO);
+		if(!m_createdVBO);
 		{
-			createdVBO = true;
+			m_createdVBO = true;
 
 			float vertices[] = 
 			{
 				// positions  // texture coords (UV coords)
-				-1.f, -1.f, 0.f,  0.f, 1.f,  // top right
-				1.f, 1.f, 0.f,    1.f, 0.f,  // bottom right
-				1.f, -1.f, 0.f,   1.f, 1.f,  // bottom left
-				-1.f, 1.f, 0.f,   0.f, 0.f,  // top left 
-			};
 
-			unsigned int indices[6] = 
-			{ 
-				0, 1, 2, //first triangle
-				0, 1, 3  //second triangle
+				0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+				1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+				1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+				0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
 			};
 			
 			
 			glGenBuffers(1, &m_spriteVBO);
 			glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
 
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
 
 		return m_spriteVBO;
 	}
-	
+
 	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteVAO()
 	{
-		if (!createdVAO);
+		if (!m_createdVAO)
 		{
-			createdVAO = true;
+			m_createdVAO = true;
 
 			glGenVertexArrays(1, &m_spriteVAO);
 			glBindVertexArray(m_spriteVAO);
@@ -388,14 +389,14 @@ namespace Engine
 	//Return the IBO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getSpriteIBO()
 	{
-		if (!createdIBO);
+		if (!m_createdIBO);
 		{
-			createdIBO = true;
+			m_createdIBO = true;
 			
 			unsigned int indices[6] =
 			{
 				0, 1, 2, //first triangle
-				0, 1, 3  //second triangle
+				2, 3, 0,  //second triangle
 			};
 
 			glGenBuffers(1, &m_spriteIBO);
@@ -422,7 +423,7 @@ namespace Engine
 	VerticesComponent Scene::createSprite()
 	{
 		VerticesComponent vc;
-		//Each vertex has one attribute, which is 2 floats to represent position
+		
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 		

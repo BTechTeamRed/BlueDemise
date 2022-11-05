@@ -7,7 +7,7 @@
 namespace Engine
 {
 	// Wrapper class for ENTT entity
-	class Entity
+	class ENGINE_API Entity
 	{
 	private:
 		Scene* m_scene = nullptr;
