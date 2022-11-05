@@ -109,21 +109,24 @@ namespace Engine
 
 	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
+		nlohmann::json sceneJson;
 		scene->m_registry.each([&](entt::entity entityHandle)
 			{
 				Entity entity = Entity{ entityHandle, scene };
 				if (!entity) return;
+				nlohmann::json entityJson;
+				
 
 				serializeEntity(entity, sceneFile);
 			});
 		//TODO: Implement serialization once we have more GUI stuff
 	}
 
-	void Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
+	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
 	{
 		if (!entity.hasComponent<TagComponent>())
 		{
-			GE_CORE_ERROR("An entity was created without a tag component");
+			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
 		}
 
 		nlohmann::json components = nlohmann::json::array();
@@ -142,11 +145,70 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<TransformComponent>())
+		{
+			auto c = entity.getComponent<TransformComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TransformComponent);
+			j["position"] = c.position;
+			j["scale"] = c.scale;
+			j["rotation"] = c.rotation;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<ColorComponent>())
+		{
+			auto c = entity.getComponent<ColorComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ColorComponent);
+			j["color"] = c.color;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<TextureComponent>())
+		{
+			auto c = entity.getComponent<TextureComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TextureComponent);
+			j["texName"] = c.texName;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<AnimationComponent>())
+		{
+			auto c = entity.getComponent<AnimationComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_AnimationComponent);
+			j["numPerRow"] = c.numPerRow;
+			j["frameRate"] = c.frameRate;
+			j["texWidthFraction"] = c.texWidthFraction;
+			j["texHeightFraction"] = c.texHeightFraction;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<VerticesComponent>())
+		{
+			auto c = entity.getComponent<VerticesComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_VerticesComponent);
+			j["type"] = "sprite" ? c.isSprite : "polygon";
+
+			//TODO: Serialize vertex if polygon once we know what that looks like.	
+
+			components.push_back(j);
+		}
+
+		//add all components and tag to json
 		nlohmann::json entityJson;
-		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
 		entityJson["components"] = components;
+		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
 
 		std::cout << entityJson << std::endl;
+		return entityJson;
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
