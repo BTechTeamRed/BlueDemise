@@ -39,6 +39,10 @@ namespace Engine
         void onRuntimeUpdate(const DeltaTime& dt);
         #pragma endregion
 
+        #pragma region Input Functions
+        void checkForSelection();
+        Entity* getSelectedEntity();
+        #pragma endregion
 
 
     private:
@@ -91,6 +95,8 @@ namespace Engine
 
         friend class Entity;
         friend class Serializer;
+
+        Entity *m_selectedEntity = nullptr;
 
     public:
         // Registry is a container to hold entities
