@@ -14,6 +14,9 @@
 #include "DeltaTime.h"
 #include "Scripts/ScriptableBehavior.h"
 #include "ResourceManager.h"
+#include "InputSystem.h"
+#include <iostream>
+#include <typeinfo>
 
 namespace Engine
 {
@@ -26,6 +29,7 @@ Issues:
 	void Scene::onRuntimeStart()
 	{
 		createEntities();
+		InputSystem::getInstance()->init(m_window);
 
 		while (!glfwWindowShouldClose(m_window))
 		{
@@ -50,7 +54,7 @@ Issues:
 	}
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
-	{
+	{	
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
@@ -67,6 +71,53 @@ Issues:
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
+		checkForSelection();
+	}
+#pragma endregion
+
+#pragma region Input Functions
+	// Checks if the mouse is clicking on an object and saves the selection
+	// If the right mouse button is clicking it "deselects" by flipping a bool flag (m_entityIsSelected).
+	void Scene::checkForSelection() // Temporary code for selection for demonstration purposes
+	{
+		if (InputSystem::getInstance()->isButtonPressed(0))
+		{
+			float mouseX = InputSystem::getInstance()->getCursorPos().x;
+			float mouseY = InputSystem::getInstance()->getCursorPos().y;
+			const auto entities = getEntities<TransformComponent>();
+			if (!(entities.begin() == entities.end()))
+			{
+				for (auto& [entity, tScript] : entities.each())
+				{
+					if (mouseX > tScript.position.x && mouseY > tScript.position.y
+						&& mouseX < (tScript.position.x + tScript.scale.x)
+						&& mouseY < (tScript.position.y + tScript.scale.y))
+					{
+						m_selectedEntityHandle = entity;
+						m_entityIsSelected = true;
+						m_entityHasBeenSelectedPreviously = true;
+					}
+				}
+			}
+		}
+		if (InputSystem::getInstance()->isButtonPressed(1))
+		{
+			if(m_entityIsSelected)
+			{
+				m_entityIsSelected = false;
+			}
+		}
+	}
+
+	// Returns the last entity to be selected,
+	// a nullptr if nothing has ever been selected in the scene.
+	Entity* Scene::getLastSelectedEntity()
+	{
+		if (m_entityHasBeenSelectedPreviously)
+		{
+			return &Entity(m_selectedEntityHandle, this);
+		}
+		return nullptr;
 	}
 #pragma endregion
 
@@ -93,8 +144,8 @@ Issues:
 
 
 		//Setup a callback to update the viewport size when the window is resized
-		glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
-		glfwSetWindowSizeCallback(m_window, windowResizeCallback);
+		//glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
+		//glfwSetWindowSizeCallback(m_window, windowResizeCallback);
 
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon(*m_window);
