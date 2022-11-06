@@ -110,16 +110,20 @@ namespace Engine
 	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
 		nlohmann::json sceneJson;
+		nlohmann::json entitiesJson;
 		scene->m_registry.each([&](entt::entity entityHandle)
-			{
-				Entity entity = Entity{ entityHandle, scene };
-				if (!entity) return;
-				nlohmann::json entityJson;
-				
+		{
+			Entity entity = Entity{ entityHandle, scene };
+			if (!entity) return;
 
-				serializeEntity(entity, sceneFile);
-			});
-		//TODO: Implement serialization once we have more GUI stuff
+			entitiesJson.push_back(serializeEntity(entity, sceneFile));
+		});
+		sceneJson["scene"]["entities"] = entitiesJson;
+		sceneJson["scene"]["name"] = scene->m_name;
+
+
+		std::cout << sceneJson << std::endl;
+		//TODO: Bind serialization to GUI event once we have one.
 	}
 
 	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
@@ -186,6 +190,7 @@ namespace Engine
 			j["frameRate"] = c.frameRate;
 			j["texWidthFraction"] = c.texWidthFraction;
 			j["texHeightFraction"] = c.texHeightFraction;
+			j["texName"] = c.texName;
 
 			components.push_back(j);
 		}
@@ -195,7 +200,7 @@ namespace Engine
 			auto c = entity.getComponent<VerticesComponent>();
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_VerticesComponent);
-			j["type"] = "sprite" ? c.isSprite : "polygon";
+			j["type"] = c.isSprite ? "sprite" : "polygon";
 
 			//TODO: Serialize vertex if polygon once we know what that looks like.	
 
@@ -207,7 +212,6 @@ namespace Engine
 		entityJson["components"] = components;
 		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
 
-		std::cout << entityJson << std::endl;
 		return entityJson;
 	}
 

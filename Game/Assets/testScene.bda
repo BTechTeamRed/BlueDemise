@@ -1,45 +1,78 @@
 {
   "scene": {
-    "name": "myScene",
     "entities": [
       {
-        "tag": "camera",
-        "components": [
-          {
-            "name": "CameraComponent",
-            "fov": 90,
-            "projection": {
-              "matrix":  1
-            },
-            "viewport": {
-              "x": 1920,
-              "y": 1080
-            },
-            "farZ": 100,
-              "nearZ": 0.1
-            }
-        ]
-      },
-      {
-        "tag": "triangle",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960,
-              "y": 0,
-              "z": 0
-            },
-            "scale": {
-              "x": 500,
-              "y": 500,
-              "z": 1
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 288.0,
+              "y": 288.0,
+              "z": 1.0
             }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "ColorComponent"
+          },
+          {
+            "frameRate": 0.0,
+            "name": "AnimationComponent",
+            "numPerRow": 3,
+            "texHeightFraction": 0.3333333432674408,
+            "texWidthFraction": 0.3333333432674408,
+            "texName": "SpriteSheet.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
+        "tag": "triangle2"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 500.0,
+              "y": 500.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "ColorComponent"
           },
           {
             "name": "TextureComponent",
@@ -48,18 +81,29 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
+          }
+        ],
+        "tag": "triangle"
+      },
+      {
+        "components": [
           {
-            "name": "ColorComponent",
-            "color": {
-              "r": 1,
-              "g": 1,
-              "b": 1,
-              "a": 1
+            "farZ": 100.0,
+            "fov": 90.0,
+            "name": "CameraComponent",
+            "nearZ": 0.10000000149011612,
+            "projection": {
+              "matrix": 1.0
+            },
+            "viewport": {
+              "x": 1920.0,
+              "y": 1080.0
             }
           }
-        ]
+        ],
+        "tag": "camera"
       }
-    ]
+    ],
+    "name": "myScene"
   }
 }

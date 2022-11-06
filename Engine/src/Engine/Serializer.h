@@ -36,7 +36,7 @@ namespace Engine
 		static bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
 
 		//Serializes scene into a json file in sceneFile
-		static nlohmann:json serializeEntity(Entity& entity, const std::string& sceneFile);
+		static nlohmann::json serializeEntity(Entity& entity, const std::string& sceneFile);
 
 		[[nodiscard]] static Components parseComponent(const std::string& component) 
 		{
@@ -44,8 +44,8 @@ namespace Engine
 			if (component == "TransformComponent") return CO_TransformComponent;
 			if (component == "ColorComponent") return CO_ColorComponent;
 			if (component == "TextureComponent") return CO_TextureComponent;
-			if (component == "VerticesComponent") return CO_VerticesComponent;
 			if (component == "AnimationComponent") return CO_AnimationComponent;
+			if (component == "VerticesComponent") return CO_VerticesComponent;
 			return CO_Invalid;
 		}
 
@@ -55,8 +55,8 @@ namespace Engine
 			if (component == CO_TransformComponent) return"TransformComponent";
 			if (component == CO_ColorComponent) return"ColorComponent";
 			if (component == CO_TextureComponent) return"TextureComponent";
-			if (component == CO_AnimationComponent) return"VerticesComponent";
-			if (component == CO_VerticesComponent) return"AnimationComponent";
+			if (component == CO_AnimationComponent) return"AnimationComponent";
+			if (component == CO_VerticesComponent) return"VerticesComponent";
 
 			return "";
 		}

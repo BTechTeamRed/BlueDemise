@@ -67,6 +67,7 @@ namespace Engine
 		std::vector<glm::vec2> texCoords;
 
 		GLuint texID;
+		std::string texName;
 
 		int currentIndex = 0;
 		int numPerRow;
