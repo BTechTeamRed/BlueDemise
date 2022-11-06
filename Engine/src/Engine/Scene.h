@@ -5,6 +5,13 @@
 #include "DeltaTime.h"
 #include "Engine/Core.h"
 
+//Added for UI
+#include <array>
+#include "ExplorerPanel.h"
+#include "EntitiesPanel.h"
+#include "ComponentsPanel.h"
+#include "MainMenu.h"
+
 namespace Engine
 {
     class Entity;
@@ -52,6 +59,13 @@ namespace Engine
 
         void runEntityScripts(const DeltaTime& dt);
 
+        bool initializeUI();
+        void shutdownUI();
+
+        void renderScene();
+
+        void renderUI();
+
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
         #pragma endregion
@@ -74,10 +88,27 @@ namespace Engine
         std::string m_name;
         
         struct GLFWwindow* m_window;
+        struct GLFWwindow* m_UIwindow;
         int m_windowWidth{1920};
         int m_windowHeight{1080};
 
+        //main menu is the UI element that shows the game
+        MainMenu m_mainMenu;
+
+        //explorer panel is the UI element that shows the file explorer
+        ExplorerPanel m_explorerPanel;
+
+        //entities panel is the UI element that lists all the entities
+        EntitiesPanel m_entitiesPanel;
+
         DeltaTime m_deltaTime{0};
+        //creates an array of three components panels
+        std::array<ComponentsPanel, 3> m_componentsPanels
+        {
+            "Active components",
+            "Attributes",
+            "Components"
+        };
 
 		//GL IDs for various objects. 
         GLuint m_programId;

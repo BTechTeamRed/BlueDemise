@@ -26,6 +26,10 @@ Issues:
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
+
+		//initialize the window for UI
+		if (!initializeUI()) return;
+
 		createEntities();
 		InputSystem::getInstance()->init(m_window);
 
@@ -59,7 +63,20 @@ Issues:
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}		
+		
+		//We have two distinct windows to manage now - one for the main scene and the UI window
+		//For each window we change the GL context, render to the window, then swap buffers
+
+		//Main window
+		glfwMakeContextCurrent(m_window);
 		renderScene(dt);
+		glfwSwapBuffers(m_window);
+		glfwPollEvents();
+
+		//UI window
+		glfwMakeContextCurrent(m_UIwindow);
+		renderUI();
+		glfwSwapBuffers(m_UIwindow);
 
 		//Execute onLateUpdate().
 		for (auto [entity, script] : entities.each())
@@ -67,7 +84,6 @@ Issues:
 			if (script.m_instance->m_enabled) script.m_instance->onLateUpdate(dt);//don't update if entity is disabled
 		}
 
-		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
 #pragma endregion
@@ -86,6 +102,14 @@ Issues:
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
+			glfwTerminate();
+			return false;
+		}
+
+		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
+		if (m_UIwindow == nullptr)
+		{
+			GE_CORE_ERROR("Failed to create GLFW window (UI)");
 			glfwTerminate();
 			return false;
 		}
@@ -116,6 +140,37 @@ Issues:
 		return true;
     }
 
+	bool Scene::initializeUI()
+	{
+		//Initialize the UI using ImGui OpenGL v3.3
+		if (!UserInterface::initialize(m_window))
+		{
+			return false;
+		}
+
+		const int menuHeight = 18;
+
+		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
+		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
+
+		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
+		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, 0.5f * (m_windowHeight - menuHeight)));
+
+		for (int i = 0; i < m_componentsPanels.size(); i++)
+		{
+			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
+			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
+		}
+
+		return true;
+
+	}
+
+	void Scene::shutdownUI()
+	{
+		UserInterface::shutdown();
+	}
+
 	//Callback to update window size when it changes
 	//TODO: Handle screen resizing
 	void windowResizeCallback(GLFWwindow* window, int width, int height)
@@ -126,6 +181,8 @@ Issues:
 		camera.viewport.x = width;
 		camera.viewport.y = height;*/
 	}
+
+	
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene(const DeltaTime& dt)
@@ -203,6 +260,36 @@ Issues:
 		glm::mat4 mvp = projection * view * mvm;
 	
 		return mvp;
+	}
+
+	void Scene::renderUI()
+	{
+		UserInterface::startUI();
+
+		m_mainMenu.show();
+
+		m_explorerPanel.show();
+		m_entitiesPanel.show();
+
+		for (auto& panel : m_componentsPanels)
+		{
+			panel.show();
+		}
+
+		UserInterface::endUI();
+
+		//Check which entity was selected (WIP)
+		//const entt::entity id = m_entityHandles[m_entitiesPanel.getSelectedEntity()];
+		//m_componentsPanels[2].setText(std::to_string((int)id));
+		/*
+		if (m_entitiesPanel.isAddButtonClicked())
+		{
+			auto totalEntities = Entity::getTotalEntities();
+			std::string tag = "Entity_" + std::to_string(Entity::getTotalEntities() + 1);
+			Entity cameraEntity = createEntity(tag);
+			m_entitiesPanel.addEntity(tag);
+		}
+		*/
 	}
 
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
