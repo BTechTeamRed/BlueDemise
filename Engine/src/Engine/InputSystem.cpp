@@ -9,7 +9,7 @@ std::mutex InputSystem::m_instanceMutex;
 
 InputSystem* InputSystem::getInstance()
 {
-	std::unique_lock<std::mutex> lock;
+	std::lock_guard<std::mutex> lock(m_instanceMutex);
 
 	if (!m_instance)
 	{
