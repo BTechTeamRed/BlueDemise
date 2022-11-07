@@ -60,7 +60,7 @@ Issues:
 		for (auto [entity, script] : entities.each())
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
-		}		
+		}
 		renderScene(dt);
 
 		//Execute onLateUpdate().
@@ -198,13 +198,13 @@ Issues:
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
 			//Bind Verts
-			if (m_registry.all_of<VerticesComponent>(entity))
-			{
-				const auto verts = m_registry.get<const VerticesComponent>(entity);
+			//if (m_registry.all_of<VerticesComponent>(entity))
+			//{
+			//	const auto verts = m_registry.get<const VerticesComponent>(entity);
 
-				//Buffer new data into VBO
-				glBindBuffer(GL_ARRAY_BUFFER, verts.vboID);
-			}
+			//	//Buffer new data into VBO
+			//	glBindBuffer(GL_ARRAY_BUFFER, verts.vboID);
+			//}
 
 			//Bind Texture
 			if (m_registry.all_of<TextureComponent>(entity))
@@ -215,7 +215,14 @@ Issues:
 
 			if(m_registry.all_of<AnimationComponent>(entity))
 			{
-				const auto anim = m_registry.get<const AnimationComponent>(entity);
+				glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
+				auto& anim = m_registry.get<AnimationComponent>(entity);
+				anim.deltaTime += dt;
+				if (anim.deltaTime > 0.3) {
+					anim.deltaTime = 0;
+					anim.currentIndex++;
+					if(anim.currentIndex > 8) anim.currentIndex = 0;
+				}
 
 				//Calculation for finding the sprite in a texture.
 				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
@@ -235,6 +242,21 @@ Issues:
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
+			}
+			else {
+				glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+
+					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 			}
 
 			//Update the MVP
