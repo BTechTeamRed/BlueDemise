@@ -118,6 +118,14 @@ Issues:
 						Entity other = { entity, this };
 						if (other.getComponent<TagComponent>().tag != "player")
 						{
+							// Change the color of the selected entity
+							//other.getComponent<ColorComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+							other.getComponent<ColorComponent>().color.x += 0.01f;
+							other.getComponent<ColorComponent>().color.y += 0.01f;
+							other.getComponent<ColorComponent>().color.z -= 0.01f;
+							
+							// Move to the tile the player clicked on
 							auto c = player->getComponent<ScriptComponent>();
 							auto script = static_cast<MovementScript*>(c.m_instance);
 							script->m_move = true;
