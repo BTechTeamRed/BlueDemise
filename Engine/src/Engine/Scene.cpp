@@ -197,6 +197,15 @@ Issues:
 		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Verts
+			if (m_registry.all_of<VerticesComponent>(entity))
+			{
+				const auto verts = m_registry.get<const VerticesComponent>(entity);
+
+				//Buffer new data into VBO
+				glBindBuffer(GL_ARRAY_BUFFER, verts.vboID);
+			}
+
 			//Bind Texture
 			if (m_registry.all_of<TextureComponent>(entity))
 			{
@@ -226,7 +235,6 @@ Issues:
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
-				
 			}
 
 			//Update the MVP
