@@ -111,7 +111,13 @@ Issues:
 
 						//do the thing
 						Entity other = { entity, this };
-						player->getComponent<TransformComponent>().position = other.getComponent<TransformComponent>().position;
+						if (other.getComponent<TagComponent>().tag != "player")
+						{
+							// Move player to tile
+							auto tilePosition = other.getComponent<TransformComponent>().position;
+							player->getComponent<TransformComponent>().position.x = tilePosition.x + 36;
+							player->getComponent<TransformComponent>().position.y = tilePosition.y - 103;
+						}
 					}
 				}
 			}
