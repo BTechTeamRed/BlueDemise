@@ -80,11 +80,23 @@ Issues:
 	// If the right mouse button is clicking it "deselects" by flipping a bool flag (m_entityIsSelected).
 	void Scene::checkForSelection() // Temporary code for selection for demonstration purposes
 	{
+		const auto entities = getEntities<TransformComponent>();
+		for (auto& [entity, tScript] : entities.each())
+		{
+			if (!player && m_registry.get<TagComponent>(entity).tag == "player") // REMOVE AFTER DEMO
+			{
+				player = new Entity(entity, this);
+			}
+		}
+
 		if (InputSystem::getInstance()->isButtonPressed(0))
 		{
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
-			const auto entities = getEntities<TransformComponent>();
+
+
+
+
 			if (!(entities.begin() == entities.end()))
 			{
 				for (auto& [entity, tScript] : entities.each())
@@ -96,6 +108,10 @@ Issues:
 						m_selectedEntityHandle = entity;
 						m_entityIsSelected = true;
 						m_entityHasBeenSelectedPreviously = true;
+
+						//do the thing
+						Entity other = { entity, this };
+						player->getComponent<TransformComponent>().position = other.getComponent<TransformComponent>().position;
 					}
 				}
 			}
@@ -315,7 +331,8 @@ Issues:
 		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
 		ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
 
-		Entity triangle2 = createEntity("triangle2");
+		// Hard-coded entity for testing, will appear on every scene if not commented out
+		/*Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
 			glm::vec3(0.f, 0, 0),
 			glm::vec3(image.height, image.width, 1),
@@ -323,7 +340,7 @@ Issues:
 			);
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow);
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));*/
 
 		//TODO: After Serialization: Bind Entities HERE ***
 		const auto scriptEntities = getEntities<ScriptComponent>();

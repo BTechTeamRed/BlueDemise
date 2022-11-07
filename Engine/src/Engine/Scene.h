@@ -101,6 +101,8 @@ namespace Engine
         bool m_createdVAO { false };
         bool m_createdIBO { false };
 
+        Entity* player = nullptr;
+
         friend class Entity;
         friend class Serializer;
 
