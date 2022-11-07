@@ -49,7 +49,6 @@ namespace Engine
         Entity* getLastSelectedEntity();
         #pragma endregion
 
-
     private:
 
         #pragma region OpenGL Scene Management

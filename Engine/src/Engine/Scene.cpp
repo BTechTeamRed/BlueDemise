@@ -18,6 +18,8 @@
 #include <iostream>
 #include <typeinfo>
 
+#include "Scripts/MovementScript.h"
+
 namespace Engine
 {
 /*
@@ -54,7 +56,8 @@ Issues:
 	}
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
-	{	
+	{
+		checkForSelection();
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
@@ -71,7 +74,7 @@ Issues:
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-		checkForSelection();
+
 	}
 #pragma endregion
 
@@ -86,6 +89,10 @@ Issues:
 			if (!player && m_registry.get<TagComponent>(entity).tag == "player") // REMOVE AFTER DEMO
 			{
 				player = new Entity(entity, this);
+				player->addComponent<ScriptComponent>().linkBehavior<MovementScript>();
+				auto& script = player->getComponent<ScriptComponent>();
+				script.m_instance = script.instantiateScript();
+				script.m_instance->m_entity = player;
 			}
 		}
 
@@ -93,8 +100,6 @@ Issues:
 		{
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
-
-
 
 
 			if (!(entities.begin() == entities.end()))
@@ -111,7 +116,15 @@ Issues:
 
 						//do the thing
 						Entity other = { entity, this };
-						player->getComponent<TransformComponent>().position = other.getComponent<TransformComponent>().position;
+
+						if (other.getComponent<TagComponent>().tag != "player")
+						{
+							auto c = player->getComponent<ScriptComponent>();
+							auto script = static_cast<MovementScript*>(c.m_instance);
+							script->m_move = true;
+							script->m_moveX = other.getComponent<TransformComponent>().position.x;
+							script->m_moveY = other.getComponent<TransformComponent>().position.y;
+						}
 					}
 				}
 			}
@@ -349,7 +362,7 @@ Issues:
 			if (!script.m_instance)
 			{
 				script.m_instance = script.instantiateScript();
-				script.m_instance->m_entity = Entity{ entity, this };
+				script.m_instance->m_entity = new Entity{ entity, this };
 				script.m_instance->onCreate();
 			}
 		}
