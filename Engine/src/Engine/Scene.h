@@ -71,6 +71,9 @@ namespace Engine
 
 		//Create quad for sprites
         VerticesComponent createSprite();
+
+        //Create diamond for tiles
+		VerticesComponent makeTileVertices();
 		
 		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
 		GLuint getSpriteVBO();
