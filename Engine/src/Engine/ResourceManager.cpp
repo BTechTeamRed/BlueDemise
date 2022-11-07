@@ -413,14 +413,8 @@ namespace Engine
 			{
 				GE_CORE_INFO("[ResourceManager] " + name + " found.");
 
-<<<<<<< HEAD
 				//Last digit can be 1-4, and forces that many components per pixel (or STBI_rgb_alpha), see https://github.com/nothings/stb/blob/master/stb_image.h. Otherwise, 0 will force the number of components to be determined by the image.
 				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, 0);
-=======
-				//Last digit can be 1-4, and forces that many components per pixel, see https://github.com/nothings/stb/blob/master/stb_image.h
-				//STBI_default = 0, loads as many components (1-4) as the image has
-				data.image = stbi_load(path.c_str(), &data.width, &data.height, &data.numComponents, STBI_default);
->>>>>>> GameImplementation
 
 				//If image data isn't NULL, store and return data.
 				if (data.image != nullptr)
