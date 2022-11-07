@@ -118,10 +118,11 @@ Issues:
 						Entity other = { entity, this };
 						if (other.getComponent<TagComponent>().tag != "player")
 						{
-							// Move player to tile
-							auto tilePosition = other.getComponent<TransformComponent>().position;
-							player->getComponent<TransformComponent>().position.x = tilePosition.x + 36;
-							player->getComponent<TransformComponent>().position.y = tilePosition.y - 103;
+							auto c = player->getComponent<ScriptComponent>();
+							auto script = static_cast<MovementScript*>(c.m_instance);
+							script->m_move = true;
+							script->m_moveX = other.getComponent<TransformComponent>().position.x;
+							script->m_moveY = other.getComponent<TransformComponent>().position.y;
 						}
 					}
 				}
