@@ -215,7 +215,8 @@ Issues:
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				auto& anim = m_registry.get<AnimationComponent>(entity);
 				anim.deltaTime += dt;
-				if (anim.deltaTime > 0.3) {
+				if (anim.deltaTime > 0.3)
+				{
 					anim.deltaTime = 0;
 					anim.currentIndex++;
 					if (anim.currentIndex > 8) anim.currentIndex = 0;
@@ -240,7 +241,8 @@ Issues:
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
 			}
-			else {
+			else 
+			{
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				float vertices[] =
 				{
@@ -380,13 +382,13 @@ Issues:
 #pragma region Renderable Entities
 	
 	//Return the VBO for sprites. If it doesn't exist, create it.
-	GLuint Scene::getVBO(std::string message) 
+	GLuint Scene::getVBO(RenderableType type) 
 	{
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		if (message == "sprite") 
+		if (type == RenderableType::SPRITE) 
 		{
 			float vertices[] = 
 			{
@@ -398,7 +400,7 @@ Issues:
 			};
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-		else if (message == "rectangle") 
+		else if (type == RenderableType::RECTANGLE) 
 		{
 			float vertices[] = 
 			{
@@ -427,13 +429,13 @@ Issues:
 	}
 
 	//Return the IBO for sprites. If it doesn't exist, create it.
-	GLuint Scene::getIBO(std::string message)
+	GLuint Scene::getIBO(RenderableType type)
 	{
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		if (message == "rectangle") {
+		if (type == RenderableType::RECTANGLE) {
 			unsigned int indices[6] =
 			{
 				0, 1, 2,  //first triangle
@@ -458,7 +460,7 @@ Issues:
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
 
-	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.
+	//Placeholder functio, can be replaced by serialized objects.
 	VerticesComponent Scene::createSprite()
 	{
 		VerticesComponent vc;
@@ -468,23 +470,25 @@ Issues:
 		vc.numIndices = 6;
 
 		vc.vaoID = getVAO();
-		vc.vboID = getVBO("sprite");
-		vc.iboID = getIBO("rectangle");
+		vc.vboID = getVBO();
+		vc.iboID = getIBO();
 
 		setupVertexAttribPtr(vc);
 
 		return vc;
 	}
 
-	VerticesComponent Scene::createRectangle() {
+	//Placeholder functio, can be replaced by serialized objects.
+	VerticesComponent Scene::createRectangle()
+	{
 		VerticesComponent vc;
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.stride = sizeof(float) * 5;
 		vc.numIndices = 6;
 
 		vc.vaoID = getVAO();
-		vc.vboID = getVBO("rectangle");
-		vc.iboID = getIBO("rectangle");
+		vc.vboID = getVBO(RenderableType::RECTANGLE);
+		vc.iboID = getIBO();
 
 		setupVertexAttribPtr(vc);
 

@@ -80,11 +80,15 @@ namespace Engine
         VerticesComponent createRectangle();
         void setupVertexAttribPtr(VerticesComponent& vc);
 		
-		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
-
-		GLuint getVBO(std::string message = "sprite");
+		//Functions to create specific OpenGL buffers. Returns the ID of said buffers.
+        enum RenderableType
+        {
+            SPRITE,
+            RECTANGLE
+        };
+		GLuint getVBO(RenderableType = RenderableType::SPRITE);
         GLuint getVAO();
-        GLuint getIBO(std::string message = "rectangle");
+        GLuint getIBO(RenderableType = RenderableType::RECTANGLE);
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
