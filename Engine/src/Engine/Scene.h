@@ -49,7 +49,6 @@ namespace Engine
         Entity* getLastSelectedEntity();
         #pragma endregion
 
-
     private:
 
         #pragma region OpenGL Scene Management
@@ -71,6 +70,9 @@ namespace Engine
 
 		//Create quad for sprites
         VerticesComponent createSprite();
+
+        //Create diamond for tiles
+		VerticesComponent makeTileVertices();
 		
 		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
 		GLuint getSpriteVBO();
@@ -97,6 +99,8 @@ namespace Engine
         bool m_createdVBO { false };
         bool m_createdVAO { false };
         bool m_createdIBO { false };
+
+        Entity* player = nullptr;
 
         friend class Entity;
         friend class Serializer;

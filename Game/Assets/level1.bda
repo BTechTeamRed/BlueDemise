@@ -1,0 +1,425 @@
+{
+  "scene": {
+    "name": "level1",
+    "entities": [
+      {
+        "tag": "camera",
+        "components": [
+          {
+            "name": "CameraComponent",
+            "fov": 90,
+            "projection": {
+              "matrix":  1
+            },
+              "viewport": {
+                "x": 1920,
+                "y": 1080
+              },
+              "farZ": 100,
+              "nearZ": 0.1
+          }
+        ]
+      },
+      {
+        "tag": "player",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 896,
+              "y": 412,
+              "z": 1
+            },
+            "scale": {
+              "x": 128,
+              "y": 128,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "player.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile1",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760,
+              "y": 565,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile2",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 660,
+              "y": 515,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile3",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 560,
+              "y": 465,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile4",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960,
+              "y": 565,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile5",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860,
+              "y": 515,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile6",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760,
+              "y": 465,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile7",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1160,
+              "y": 565,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile8",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1060,
+              "y": 515,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      },
+      {
+        "tag": "tile9",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960,
+              "y": 465,
+              "z": 0
+            },
+            "scale": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "TextureComponent",
+            "texName": "tileBase2.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ColorComponent",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 1,
+              "a": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

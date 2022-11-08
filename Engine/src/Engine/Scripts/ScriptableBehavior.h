@@ -17,8 +17,7 @@ namespace Engine
 		template<typename T>
 		T& getComponent()
 		{
-			if (m_entity.hasComponent<T>()) return nullptr;
-			return m_entity.getComponent<T>();
+			return m_entity->getComponent<T>();
 		}
 
 	protected:
@@ -42,8 +41,8 @@ namespace Engine
 		void enable() { m_enabled = true; this->onEnable(); }
 		void disable() { m_enabled = false; this->onDisable(); }
 
-		const std::string& toString() { return m_entity.getName(); }
-		const std::string& getName() { return m_entity.getName(); }
+		const std::string& toString() { return m_entity->getName(); }
+		const std::string& getName() { return m_entity->getName(); }
 
 		//TODO add event functionality
 	   
@@ -51,7 +50,7 @@ namespace Engine
 		//A disabled entity will not execute onUpdate() or onLateUpdate();
 		bool m_enabled{true};
 
-		Entity m_entity;
+		Entity* m_entity;
 		friend class Scene;
 	};
 }

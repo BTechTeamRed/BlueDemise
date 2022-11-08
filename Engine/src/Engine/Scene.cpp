@@ -18,6 +18,8 @@
 #include <iostream>
 #include <typeinfo>
 
+#include "Scripts/MovementScript.h"
+
 namespace Engine
 {
 /*
@@ -54,13 +56,14 @@ Issues:
 	}
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
-	{	
+	{
+		checkForSelection();
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
-		}		
+		}
 		renderScene(dt);
 
 		//Execute onLateUpdate().
@@ -71,7 +74,7 @@ Issues:
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-		checkForSelection();
+
 	}
 #pragma endregion
 
@@ -80,11 +83,25 @@ Issues:
 	// If the right mouse button is clicking it "deselects" by flipping a bool flag (m_entityIsSelected).
 	void Scene::checkForSelection() // Temporary code for selection for demonstration purposes
 	{
+		const auto entities = getEntities<TransformComponent>();
+		for (auto& [entity, tScript] : entities.each())
+		{
+			if (!player && m_registry.get<TagComponent>(entity).tag == "player") // REMOVE AFTER DEMO
+			{
+				player = new Entity(entity, this);
+				player->addComponent<ScriptComponent>().linkBehavior<MovementScript>();
+				auto& script = player->getComponent<ScriptComponent>();
+				script.m_instance = script.instantiateScript();
+				script.m_instance->m_entity = player;
+			}
+		}
+
 		if (InputSystem::getInstance()->isButtonPressed(0))
 		{
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
-			const auto entities = getEntities<TransformComponent>();
+
+
 			if (!(entities.begin() == entities.end()))
 			{
 				for (auto& [entity, tScript] : entities.each())
@@ -96,6 +113,25 @@ Issues:
 						m_selectedEntityHandle = entity;
 						m_entityIsSelected = true;
 						m_entityHasBeenSelectedPreviously = true;
+
+						//do the thing
+						Entity other = { entity, this };
+						if (other.getComponent<TagComponent>().tag != "player")
+						{
+							// Change the color of the selected entity
+							//other.getComponent<ColorComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+							other.getComponent<ColorComponent>().color.x += 0.01f;
+							other.getComponent<ColorComponent>().color.y += 0.01f;
+							other.getComponent<ColorComponent>().color.z -= 0.01f;
+							
+							// Move to the tile the player clicked on
+							auto c = player->getComponent<ScriptComponent>();
+							auto script = static_cast<MovementScript*>(c.m_instance);
+							script->m_move = true;
+							script->m_moveX = other.getComponent<TransformComponent>().position.x;
+							script->m_moveY = other.getComponent<TransformComponent>().position.y;
+						}
 					}
 				}
 			}
@@ -141,8 +177,6 @@ Issues:
 
 		glfwMakeContextCurrent(m_window);
 
-
-
 		//Setup a callback to update the viewport size when the window is resized
 		//glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
 		//glfwSetWindowSizeCallback(m_window, windowResizeCallback);
@@ -161,6 +195,10 @@ Issues:
 
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		//Enable transparency
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		return true;
     }
@@ -195,6 +233,15 @@ Issues:
 		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
+			//Bind Verts
+			//if (m_registry.all_of<VerticesComponent>(entity))
+			//{
+			//	const auto verts = m_registry.get<const VerticesComponent>(entity);
+
+			//	//Buffer new data into VBO
+			//	glBindBuffer(GL_ARRAY_BUFFER, verts.vboID);
+			//}
+
 			//Bind Texture
 			if (m_registry.all_of<TextureComponent>(entity))
 			{
@@ -204,7 +251,14 @@ Issues:
 
 			if(m_registry.all_of<AnimationComponent>(entity))
 			{
-				const auto anim = m_registry.get<const AnimationComponent>(entity);
+				glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
+				auto& anim = m_registry.get<AnimationComponent>(entity);
+				anim.deltaTime += dt;
+				if (anim.deltaTime > 0.3) {
+					anim.deltaTime = 0;
+					anim.currentIndex++;
+					if(anim.currentIndex > 8) anim.currentIndex = 0;
+				}
 
 				//Calculation for finding the sprite in a texture.
 				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
@@ -224,7 +278,21 @@ Issues:
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
-				
+			}
+			else {
+				glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+
+					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 			}
 
 			//Update the MVP
@@ -283,7 +351,8 @@ Issues:
 		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
 		ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
 
-		Entity triangle2 = createEntity("triangle2");
+		// Hard-coded entity for testing, will appear on every scene if not commented out
+		/*Entity triangle2 = createEntity("triangle2");
 		triangle2.addComponent<TransformComponent>(
 			glm::vec3(0.f, 0, 0),
 			glm::vec3(image.height, image.width, 1),
@@ -291,7 +360,7 @@ Issues:
 			);
 		triangle2.addComponent<VerticesComponent>(createSprite());
 		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow);
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));*/
 
 		//TODO: After Serialization: Bind Entities HERE ***
 		const auto scriptEntities = getEntities<ScriptComponent>();
@@ -300,7 +369,7 @@ Issues:
 			if (!script.m_instance)
 			{
 				script.m_instance = script.instantiateScript();
-				script.m_instance->m_entity = Entity{ entity, this };
+				script.m_instance->m_entity = new Entity{ entity, this };
 				script.m_instance->onCreate();
 			}
 		}
