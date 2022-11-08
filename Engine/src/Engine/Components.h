@@ -67,10 +67,14 @@ namespace Engine
 		std::vector<glm::vec2> texCoords;
 
 		GLuint texID;
+		std::string texName;
 
-		int currentIndex = 0, numPerRow;
+		int currentIndex = 0;
+		int numPerRow;
 
-		float frameRate, texWidthFraction, texHeightFraction;
+		float frameRate;
+		float texWidthFraction;
+		float texHeightFraction;
 	};
 
 	//Not component, just container for vertex attribute data format
@@ -110,6 +114,8 @@ namespace Engine
 
 		//Num of vertices provided to GPU
 		unsigned long numIndices;
+
+		bool isSprite;
 	};
 
 	class ScriptableBehavior;
