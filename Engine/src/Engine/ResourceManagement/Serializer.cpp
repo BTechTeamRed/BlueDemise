@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "Engine/Entity.h"
-#include "Engine/Log.h"
-#include "Engine/Scene.h"
-#include "Engine/ResourceManager.h"
+#include "Engine/SceneBuilder/Entity.h"
+#include "Engine/Utilities/Log.h"
+#include "Engine/SceneBuilder/Scene.h"
+#include "Engine/ResourceManagement/ResourceManager.h"
 
 namespace glm
 {

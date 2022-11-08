@@ -1,4 +1,4 @@
-#include "ComponentsPanel.h"
+#include "Engine/EngineUI/ComponentsPanel.h"
 
 namespace Engine
 {

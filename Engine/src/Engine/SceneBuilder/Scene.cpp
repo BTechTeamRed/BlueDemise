@@ -1,19 +1,19 @@
 #include "glad/glad.h"
-#include "Scene.h"
+#include "Engine/SceneBuilder/Scene.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Log.h"
+#include "Engine/Utilities/Log.h"
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
 #include "Entity.h"
-#include "ShaderGenerator.h"
+#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include "Components.h"
-#include "DeltaTime.h"
-#include "Scripts/ScriptableBehavior.h"
-#include "ResourceManager.h"
+#include <Engine/Utilities/DeltaTime.h>
+#include "Engine/Scripts/ScriptableBehavior.h"
+#include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
 
 namespace Engine

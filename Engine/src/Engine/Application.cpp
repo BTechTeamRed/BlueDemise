@@ -1,6 +1,6 @@
 //THREADING TESTING APPLICATION.CPP CODE
 #include "Application.h"
-#include "Scene.h"
+#include "Engine/SceneBuilder/Scene.h"
 
 namespace Engine
 {

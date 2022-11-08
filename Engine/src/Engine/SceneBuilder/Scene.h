@@ -2,15 +2,15 @@
 
 #include "entt.h"
 #include "Components.h"
-#include "DeltaTime.h"
+#include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Core.h"
 
 //Added for UI
 #include <array>
-#include "ExplorerPanel.h"
-#include "EntitiesPanel.h"
-#include "ComponentsPanel.h"
-#include "MainMenu.h"
+#include "Engine/EngineUI/ExplorerPanel.h"
+#include "Engine/EngineUI/EntitiesPanel.h"
+#include "Engine/EngineUI/ComponentsPanel.h"
+#include "Engine/EngineUI/MainMenu.h"
 
 namespace Engine
 {
