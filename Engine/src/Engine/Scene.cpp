@@ -143,7 +143,7 @@ Issues:
 	bool Scene::initializeUI()
 	{
 		//Initialize the UI using ImGui OpenGL v3.3
-		if (!UserInterface::initialize(m_window))
+		if (!UserInterface::initialize(m_UIwindow))
 		{
 			return false;
 		}
@@ -386,8 +386,10 @@ Issues:
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		if (message == "sprite") {
-			float vertices[] = {
+		if (message == "sprite") 
+		{
+			float vertices[] = 
+			{
 				// positions  // texture coords (UV coords)
 				0.f, 0.f, 0.f,  0.f, 0.f,  // top left
 				1.f, 0.f, 0.f,  1.f, 0.f,  // top right
@@ -396,8 +398,10 @@ Issues:
 			};
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-		else if (message == "rectangle") {
-			float vertices[] = {
+		else if (message == "rectangle") 
+		{
+			float vertices[] = 
+			{
 				// positions 
 				0.f, 0.f, 0.f,  // top left
 				1.f, 0.f, 0.f,  // top right
@@ -406,8 +410,9 @@ Issues:
 			};
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-		else {
-			GE_CORE_ERROR("A vbo was declared with incorrect vertex data...");
+		else 
+		{
+			GE_CORE_ERROR("A vbo was declared with incorrect vertex data.");
 		}
 		return vbo;
 	}
