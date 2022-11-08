@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "DeltaTime.h"
 #include "Engine/Core.h"
+#include <string>
 
 //Added for UI
 #include <array>
@@ -76,11 +77,14 @@ namespace Engine
 
 		//Create quad for sprites
         VerticesComponent createSprite();
+        VerticesComponent createRectangle();
+        void setupVertexAttribPtr(VerticesComponent& vc);
 		
 		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
-		GLuint getSpriteVBO();
-        GLuint getSpriteVAO();
-        GLuint getSpriteIBO();
+
+		GLuint getVBO(std::string message = "sprite");
+        GLuint getVAO();
+        GLuint getIBO(std::string message = "rectangle");
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
@@ -112,13 +116,6 @@ namespace Engine
 
 		//GL IDs for various objects. 
         GLuint m_programId;
-        GLuint m_spriteVBO;
-        GLuint m_spriteVAO;
-        GLuint m_spriteIBO;
-
-        bool m_createdVBO { false };
-        bool m_createdVAO { false };
-        bool m_createdIBO { false };
 
         friend class Entity;
         friend class Serializer;
