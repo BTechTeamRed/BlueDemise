@@ -116,7 +116,8 @@ Issues:
 
 						//do the thing
 						Entity other = { entity, this };
-						if (other.getComponent<TagComponent>().tag != "player")
+						if (other.getComponent<TagComponent>().tag != "player" && 
+							other.getComponent<TagComponent>().tag != "obstacle")
 						{
 							// Change the color of the selected entity
 							//other.getComponent<ColorComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
