@@ -191,8 +191,7 @@ Issues:
 
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
-			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 
@@ -215,7 +214,8 @@ Issues:
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				auto& anim = m_registry.get<AnimationComponent>(entity);
 				anim.deltaTime += dt;
-				if (anim.deltaTime > 0.3) {
+				if (anim.deltaTime > 0.3) 
+				{
 					anim.deltaTime = 0;
 					anim.currentIndex++;
 					if (anim.currentIndex > 8) anim.currentIndex = 0;
@@ -240,7 +240,8 @@ Issues:
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
 			}
-			else {
+			else 
+			{
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				float vertices[] =
 				{
@@ -433,7 +434,8 @@ Issues:
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		if (message == "rectangle") {
+		if (message == "rectangle") 
+		{
 			unsigned int indices[6] =
 			{
 				0, 1, 2,  //first triangle
@@ -441,7 +443,8 @@ Issues:
 			};
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 		}
-		else {
+		else 
+		{
 			GE_CORE_ERROR("An ibo was declared with incorrect index data...");
 		}
 		return ibo;
@@ -476,7 +479,8 @@ Issues:
 		return vc;
 	}
 
-	VerticesComponent Scene::createRectangle() {
+	VerticesComponent Scene::createRectangle() 
+	{
 		VerticesComponent vc;
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.stride = sizeof(float) * 5;
