@@ -191,8 +191,7 @@ Issues:
 
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
-			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 
@@ -443,7 +442,8 @@ Issues:
 			};
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 		}
-		else {
+		else 
+		{
 			GE_CORE_ERROR("An ibo was declared with incorrect index data...");
 		}
 		return ibo;
@@ -478,7 +478,7 @@ Issues:
 		return vc;
 	}
 
-	//Placeholder functio, can be replaced by serialized objects.
+	//Placeholder function, can be replaced by serialized objects.
 	VerticesComponent Scene::createRectangle()
 	{
 		VerticesComponent vc;
