@@ -1,7 +1,10 @@
 #include "Serializer.h"
 
+#include <iostream>
+
 #include "Engine/Entity.h"
 #include "Engine/Log.h"
+#include "Engine/Scene.h"
 #include "Engine/ResourceManager.h"
 
 namespace glm
@@ -104,9 +107,112 @@ namespace Engine
 		return true;
 	}
 
-	void Serializer::serializeScene(const Scene& scene, const std::string& sceneFile)
+	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
-		//TODO: Implement serialization once we have more GUI stuff
+		nlohmann::json sceneJson;
+		nlohmann::json entitiesJson;
+		scene->m_registry.each([&](entt::entity entityHandle)
+		{
+			Entity entity = Entity{ entityHandle, scene };
+			if (!entity) return;
+
+			entitiesJson.push_back(serializeEntity(entity, sceneFile));
+		});
+		sceneJson["scene"]["entities"] = entitiesJson;
+		sceneJson["scene"]["name"] = scene->m_name;
+
+
+		std::cout << sceneJson << std::endl;
+		//TODO: Bind serialization to GUI event once we have one.
+	}
+
+	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
+	{
+		if (!entity.hasComponent<TagComponent>())
+		{
+			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
+		}
+
+		nlohmann::json components = nlohmann::json::array();
+
+		if (entity.hasComponent<CameraComponent>())
+		{
+			auto c = entity.getComponent<CameraComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_CameraComponent);
+			j["fov"] = c.fov;
+			j["projection"] = c.projection;
+			j["viewport"] = c.viewport;
+			j["farZ"] = c.farZ;
+			j["nearZ"] = c.nearZ;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<TransformComponent>())
+		{
+			auto c = entity.getComponent<TransformComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TransformComponent);
+			j["position"] = c.position;
+			j["scale"] = c.scale;
+			j["rotation"] = c.rotation;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<ColorComponent>())
+		{
+			auto c = entity.getComponent<ColorComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ColorComponent);
+			j["color"] = c.color;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<TextureComponent>())
+		{
+			auto c = entity.getComponent<TextureComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TextureComponent);
+			j["texName"] = c.texName;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<AnimationComponent>())
+		{
+			auto c = entity.getComponent<AnimationComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_AnimationComponent);
+			j["numPerRow"] = c.numPerRow;
+			j["frameRate"] = c.frameRate;
+			j["texWidthFraction"] = c.texWidthFraction;
+			j["texHeightFraction"] = c.texHeightFraction;
+			j["texName"] = c.texName;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<VerticesComponent>())
+		{
+			auto c = entity.getComponent<VerticesComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_VerticesComponent);
+			j["type"] = c.isSprite ? "sprite" : "polygon";
+
+			//TODO: Serialize vertex if polygon once we know what that looks like.	
+
+			components.push_back(j);
+		}
+
+		//add all components and tag to json
+		nlohmann::json entityJson;
+		entityJson["components"] = components;
+		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
+
+		return entityJson;
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
