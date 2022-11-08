@@ -70,7 +70,7 @@ namespace Engine
 
 		int currentIndex = 0, numPerRow;
 
-		float frameRate, texWidthFraction, texHeightFraction;
+		float frameRate, texWidthFraction, texHeightFraction, deltaTime;
 	};
 
 	//Not component, just container for vertex attribute data format

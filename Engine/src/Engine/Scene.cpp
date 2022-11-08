@@ -210,9 +210,16 @@ Issues:
 				glBindTexture(GL_TEXTURE_2D, texture.texID);
 			}
 
-			if(m_registry.all_of<AnimationComponent>(entity))
+			if (m_registry.all_of<AnimationComponent>(entity))
 			{
-				const auto anim = m_registry.get<const AnimationComponent>(entity);
+				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+				auto& anim = m_registry.get<AnimationComponent>(entity);
+				anim.deltaTime += dt;
+				if (anim.deltaTime > 0.3) {
+					anim.deltaTime = 0;
+					anim.currentIndex++;
+					if (anim.currentIndex > 8) anim.currentIndex = 0;
+				}
 
 				//Calculation for finding the sprite in a texture.
 				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
@@ -232,7 +239,21 @@ Issues:
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
-				
+			}
+			else {
+				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+
+					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 			}
 
 			//Update the MVP
@@ -240,8 +261,9 @@ Issues:
 
 			//Set the color of the object
 			setColor(mvp, color.color);
-
+			
 			glBindVertexArray(vertices.vaoID);
+
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
