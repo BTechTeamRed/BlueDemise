@@ -1,10 +1,12 @@
 #pragma once
 #include <map>
 #include <mutex>
-#include "GLFW/glfw3.h"
 #include "glm/vec2.hpp"
 
-namespace Engine {
+struct GLFWwindow;
+
+namespace Engine 
+{
 	/// <summary>
 	/// Provides a wrapper for GLFW input
 	/// </summary>
@@ -82,7 +84,7 @@ namespace Engine {
 #pragma endregion
 	private:
 		//Private c'tor for singleton
-		InputSystem();
+		InputSystem() : m_window(nullptr), m_isInit(false) {}
 
 #pragma region Member Variables
 		/// <summary>

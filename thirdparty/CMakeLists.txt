@@ -11,6 +11,9 @@ add_library(irrKlang INTERFACE)
 add_library(stb INTERFACE)
 add_library(json INTERFACE)
 
+file(GLOB IMGUI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
+add_library(imgui STATIC ${IMGUI_SOURCES})
+
 # state that anybody linking to us needs to include the current source dir
 # to find third party libs, while we don't.
 target_include_directories(spdlog
@@ -46,4 +49,8 @@ target_include_directories(stb
 target_include_directories(json
                            INTERFACE
                             ${CMAKE_CURRENT_SOURCE_DIR}/json
-			)
+                           )
+target_include_directories(imgui
+                           PUBLIC
+                            ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+                           )
