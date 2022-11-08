@@ -143,7 +143,7 @@ Issues:
 	bool Scene::initializeUI()
 	{
 		//Initialize the UI using ImGui OpenGL v3.3
-		if (!UserInterface::initialize(m_window))
+		if (!UserInterface::initialize(m_UIwindow))
 		{
 			return false;
 		}
