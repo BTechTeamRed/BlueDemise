@@ -17,8 +17,7 @@ namespace Engine
 		static bool tryDeserializeScene(Scene& out, const std::string& sceneFile);
 
 		//Serializes scene into a json file in sceneFile
-		static void serializeScene(const Scene& scene, const std::string& sceneFile);
-
+		static void serializeScene(Scene* scene, const std::string& sceneFile);
 	private:
 
 		enum Components
@@ -28,6 +27,7 @@ namespace Engine
 			CO_TransformComponent,
 			CO_ColorComponent,
 			CO_TextureComponent,
+			CO_AnimationComponent,
 			CO_VerticesComponent
 		};
 
@@ -35,14 +35,30 @@ namespace Engine
 		//returns false if Deserialization fails.
 		static bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
 
+		//Serializes scene into a json file in sceneFile
+		static nlohmann::json serializeEntity(Entity& entity, const std::string& sceneFile);
+
 		[[nodiscard]] static Components parseComponent(const std::string& component) 
 		{
 			if (component == "CameraComponent") return CO_CameraComponent;
 			if (component == "TransformComponent") return CO_TransformComponent;
 			if (component == "ColorComponent") return CO_ColorComponent;
 			if (component == "TextureComponent") return CO_TextureComponent;
+			if (component == "AnimationComponent") return CO_AnimationComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
 			return CO_Invalid;
+		}
+
+		[[nodiscard]] static std::string parseComponentToString(const Components component)
+		{
+			if (component == CO_CameraComponent) return"CameraComponent";
+			if (component == CO_TransformComponent) return"TransformComponent";
+			if (component == CO_ColorComponent) return"ColorComponent";
+			if (component == CO_TextureComponent) return"TextureComponent";
+			if (component == CO_AnimationComponent) return"AnimationComponent";
+			if (component == CO_VerticesComponent) return"VerticesComponent";
+
+			return "";
 		}
 	};
 
