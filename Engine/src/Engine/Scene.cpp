@@ -61,6 +61,14 @@ Issues:
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
 		{
+			//initialize the script instance and run OnCreate();
+			if (!script.m_instance)
+			{
+				script.m_instance = script.instantiateScript();
+				script.m_instance->m_entity = Entity{ entity, this };
+				script.m_instance->onCreate();
+			}
+
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}		
 		
@@ -315,21 +323,6 @@ Issues:
 		return entity;
 	}
 
-	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
-	void Scene::createEntities()
-    {
-		//TODO: After Serialization: Bind Entities HERE ***
-		const auto scriptEntities = getEntities<ScriptComponent>();
-		for (auto& [entity, script] : scriptEntities.each())
-		{
-			if (!script.m_instance)
-			{
-				script.m_instance = script.instantiateScript();
-				script.m_instance->m_entity = Entity{ entity, this };
-				script.m_instance->onCreate();
-			}
-		}
-    }
 #pragma endregion
 
 #pragma region Renderable Entities
