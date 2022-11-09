@@ -214,10 +214,8 @@ Issues:
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				auto& anim = m_registry.get<AnimationComponent>(entity);
 				anim.deltaTime += dt;
-				
-				double updateTime = 0.3;
 
-				if (anim.deltaTime > updateTime)
+				if (anim.deltaTime > anim.animationSpeed)
 				{
 					anim.deltaTime = 0;
 					anim.currentIndex++;
@@ -390,7 +388,7 @@ Issues:
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		if (type == SPRITE) 
+		if (type == RT_Sprite)
 		{
 			float vertices[] = 
 			{
@@ -402,7 +400,7 @@ Issues:
 			};
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-		else if (type == RECTANGLE) 
+		else if (type == RT_Rectangle)
 		{
 			float vertices[] = 
 			{
@@ -437,7 +435,7 @@ Issues:
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		if (type == RenderableType::RECTANGLE) {
+		if (type == RT_Rectangle) {
 			unsigned int indices[6] =
 			{
 				0, 1, 2,  //first triangle
@@ -490,7 +488,7 @@ Issues:
 		vc.numIndices = m_quadIndices;
 
 		vc.vaoID = getVAO();
-		vc.vboID = getVBO(RenderableType::RECTANGLE);
+		vc.vboID = getVBO(RT_Rectangle);
 		vc.iboID = getIBO();
 
 		setupVertexAttribPtr(vc);

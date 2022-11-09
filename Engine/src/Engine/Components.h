@@ -73,6 +73,8 @@ namespace Engine
 		int currentIndex = 0;
 		int numPerRow;
 		int spritesOnSheet;
+		
+		double animationSpeed = 0.3;
 
 		float deltaTime;
 		float frameRate;

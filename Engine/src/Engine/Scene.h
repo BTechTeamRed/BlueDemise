@@ -86,12 +86,12 @@ namespace Engine
 		//Functions to create specific OpenGL buffers. Returns the ID of said buffers.
         enum RenderableType
         {
-            SPRITE,
-            RECTANGLE
+            RT_Sprite,
+            RT_Rectangle
         };
-		GLuint getVBO(RenderableType = SPRITE);
+		GLuint getVBO(RenderableType = RT_Sprite);
         GLuint getVAO();
-        GLuint getIBO(RenderableType = RECTANGLE);
+        GLuint getIBO(RenderableType = RT_Rectangle);
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
