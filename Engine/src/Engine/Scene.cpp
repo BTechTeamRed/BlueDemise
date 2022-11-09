@@ -22,7 +22,7 @@ namespace Engine
 Issues:
 - Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
 */
-	
+
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
@@ -191,8 +191,7 @@ Issues:
 
 		auto cameraView = getEntities<const CameraComponent>();
 		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, 
-			camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 
@@ -210,9 +209,18 @@ Issues:
 				glBindTexture(GL_TEXTURE_2D, texture.texID);
 			}
 
-			if(m_registry.all_of<AnimationComponent>(entity))
+			if (m_registry.all_of<AnimationComponent>(entity))
 			{
-				const auto anim = m_registry.get<const AnimationComponent>(entity);
+				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+				auto& anim = m_registry.get<AnimationComponent>(entity);
+				anim.deltaTime += dt;
+
+				if (anim.deltaTime > anim.animationSpeed)
+				{
+					anim.deltaTime = 0;
+					anim.currentIndex++;
+					if (anim.currentIndex > anim.spritesOnSheet) anim.currentIndex = 0;
+				}
 
 				//Calculation for finding the sprite in a texture.
 				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
@@ -232,7 +240,22 @@ Issues:
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 				glBindTexture(GL_TEXTURE_2D, anim.texID);
-				
+			}
+			else 
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+				float vertices[] =
+				{
+					// positions  // texture coords (UV coords)
+
+					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 			}
 
 			//Update the MVP
@@ -240,6 +263,8 @@ Issues:
 
 			//Set the color of the object
 			setColor(mvp, color.color);
+			
+			glBindVertexArray(vertices.vaoID);
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
@@ -318,6 +343,28 @@ Issues:
 	// Creates entities that are to be used in the scene. Replace with serialized entities as per the .h todo.
 	void Scene::createEntities()
     {
+		ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
+		ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
+
+		Entity triangle2 = createEntity("triangle2");
+		triangle2.addComponent<TransformComponent>(
+			glm::vec3(0.f, 0, 0),
+			glm::vec3(image.height, image.width, 1),
+			glm::vec3(0, 0, 0)
+			);
+		triangle2.addComponent<VerticesComponent>(createSprite());
+		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow, spriteSheet.numSprites);
+		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
+
+		Entity rectangle = createEntity("rect");
+		rectangle.addComponent<TransformComponent>(
+			glm::vec3(350, 350, 0),
+			glm::vec3(100, 100, 1),
+			glm::vec3(0, 0, 0)
+			);
+		rectangle.addComponent<VerticesComponent>(createRectangle());
+		rectangle.addComponent<ColorComponent>(glm::vec4(1, 0, 0, 1));
+
 		//TODO: After Serialization: Bind Entities HERE ***
 		const auto scriptEntities = getEntities<ScriptComponent>();
 		for (auto& [entity, script] : scriptEntities.each())
@@ -335,66 +382,72 @@ Issues:
 #pragma region Renderable Entities
 	
 	//Return the VBO for sprites. If it doesn't exist, create it.
-	GLuint Scene::getSpriteVBO() 
+	GLuint Scene::getVBO(RenderableType type) 
 	{
-		if(!m_createdVBO);
-		{
-			m_createdVBO = true;
+		GLuint vbo;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+		if (type == RT_Sprite)
+		{
 			float vertices[] = 
 			{
 				// positions  // texture coords (UV coords)
-
 				0.f, 0.f, 0.f,  0.f, 0.f,  // top left
 				1.f, 0.f, 0.f,  1.f, 0.f,  // top right
 				1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
 				0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
 			};
-			
-			
-			glGenBuffers(1, &m_spriteVBO);
-			glBindBuffer(GL_ARRAY_BUFFER, m_spriteVBO);
-
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-
-		return m_spriteVBO;
+		else if (type == RT_Rectangle)
+		{
+			float vertices[] = 
+			{
+				// positions 
+				0.f, 0.f, 0.f,  // top left
+				1.f, 0.f, 0.f,  // top right
+				1.f, 1.f, 0.f,  // bottom right
+				0.f, 1.f, 0.f   // bottom left
+			};
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+		}
+		else 
+		{
+			GE_CORE_ERROR("A vbo was declared with incorrect vertex data.");
+		}
+		return vbo;
 	}
 
 	//Return the VAO for sprites. If it doesn't exist, create it.
-	GLuint Scene::getSpriteVAO()
+	GLuint Scene::getVAO()
 	{
-		if (!m_createdVAO)
-		{
-			m_createdVAO = true;
-
-			glGenVertexArrays(1, &m_spriteVAO);
-			glBindVertexArray(m_spriteVAO);
-		}
-		
-		return m_spriteVAO;
+		GLuint vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		return vao;
 	}
 
 	//Return the IBO for sprites. If it doesn't exist, create it.
-	GLuint Scene::getSpriteIBO()
+	GLuint Scene::getIBO(RenderableType type)
 	{
-		if (!m_createdIBO);
-		{
-			m_createdIBO = true;
-			
+		GLuint ibo;
+		glGenBuffers(1, &ibo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+		if (type == RT_Rectangle) {
 			unsigned int indices[6] =
 			{
-				0, 1, 2, //first triangle
+				0, 1, 2,  //first triangle
 				2, 3, 0,  //second triangle
 			};
-
-			glGenBuffers(1, &m_spriteIBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_spriteIBO);
-
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 		}
-
-		return m_spriteIBO;
+		else 
+		{
+			GE_CORE_ERROR("An ibo was declared with incorrect index data...");
+		}
+		return ibo;
 	}
 
 	//Set the color of the current drawable object. This would need to be run per entity/renderable.
@@ -408,31 +461,52 @@ Issues:
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
 
-	//Placeholder function since we don't have serialized objects. This just creates a triangle VerticesComponents to be rendered in the scene.
+	//Placeholder functio, can be replaced by serialized objects.
 	VerticesComponent Scene::createSprite()
 	{
 		VerticesComponent vc;
-		
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
-		
-		//TODO: Update vertexAttributes for UV
-		vc.stride = sizeof(float) * 5;
-		vc.numIndices = 6;
+		vc.stride = sizeof(float) * m_quadTexCoordinates;
+		vc.numIndices = m_quadIndices;
 
-		vc.vaoID = getSpriteVAO();
-		vc.vboID = getSpriteVBO();
-		vc.iboID = getSpriteIBO();
+		vc.vaoID = getVAO();
+		vc.vboID = getVBO();
+		vc.iboID = getIBO();
 
-		//Define vertex attributes
-		for (int i = 0; i < vc.vertexAttributes.size(); i++) 
+		setupVertexAttribPtr(vc);
+
+		return vc;
+	}
+
+	//Placeholder function, can be replaced by serialized objects.
+	VerticesComponent Scene::createRectangle()
+	{
+		VerticesComponent vc;
+		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
+		vc.stride = sizeof(float) * m_quadTexCoordinates;
+		vc.numIndices = m_quadIndices;
+
+		vc.vaoID = getVAO();
+		vc.vboID = getVBO(RT_Rectangle);
+		vc.iboID = getIBO();
+
+		setupVertexAttribPtr(vc);
+
+		return vc;
+	}
+
+	//Define vertex attributes
+	void Scene::setupVertexAttribPtr(VerticesComponent& vc)
+	{
+		for (int i = 0; i < vc.vertexAttributes.size(); i++)
 		{
 			const auto attribute = vc.vertexAttributes[i];
 			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
 		}
 
-		return vc;
+		glBindVertexArray(0);
 	}
 	
 #pragma endregion
