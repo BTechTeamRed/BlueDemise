@@ -33,7 +33,7 @@ for script in scriptNames:
 
 d['includes'] = includes
 d['compareScripts'] = scriptCompares
-with open("scriptSerializerTemplate.cpp", 'r') as ftemp:
+with open("..\\Scripts\\scriptSerializerTemplate.cpp", 'r') as ftemp:
     templateString = ftemp.read()
 with open("..\\Engine\\src\\Engine\\ResourceManagement\\ScriptSerializer.cpp", 'w') as f:
     f.write(templateString.format(**d))

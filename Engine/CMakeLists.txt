@@ -9,6 +9,18 @@ target_link_libraries(Engine spdlog glfw OpenGL::GL glm glad entt imgui ${irrKla
 target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 
 ####################
+#Script Reflection##
+####################
+find_package( PythonInterp 2.7 REQUIRED )
+find_package( PythonLibs 2.7 REQUIRED )
+
+add_custom_command(TARGET Engine PRE_BUILD
+ COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Scripts/ReflectScripts.py
+ COMMENT "Generating script files"
+ BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/src/Engine/ResourceManagement/ScriptSerializer.cpp
+)
+
+####################
 #Copy pre-built dlls
 ####################
 add_custom_command(TARGET Engine POST_BUILD
