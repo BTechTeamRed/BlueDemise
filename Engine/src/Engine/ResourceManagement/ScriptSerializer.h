@@ -1,6 +1,8 @@
 #include "Engine/Core.h"
 #include <string>
 
+#include "Engine/SceneBuilder/Entity.h"
+
 class Entity;
 
 namespace Engine

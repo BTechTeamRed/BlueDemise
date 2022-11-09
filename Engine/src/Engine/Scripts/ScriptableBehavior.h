@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core.h"
 #include "Engine/SceneBuilder/Entity.h"
+#include "Engine/SceneBuilder/Components.h" //include facilitates use of component in child scripts
 
 namespace Engine
 {

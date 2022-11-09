@@ -1,4 +1,5 @@
 #include <string>
+#include "ScriptSerializer.h"
 {includes}
 
 namespace Engine 

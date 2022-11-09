@@ -6,6 +6,8 @@
 #include "Engine/Utilities/Log.h"
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
+#include "Engine/ResourceManagement/ScriptSerializer.h"
+#include "Engine/Scripts/ScriptableBehavior.h"
 
 namespace glm
 {
@@ -112,12 +114,13 @@ namespace Engine
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
 		scene->m_registry.each([&](entt::entity entityHandle)
-		{
-			Entity entity = Entity{ entityHandle, scene };
-			if (!entity) return;
+			{
+				Entity entity = Entity{ entityHandle, scene };
+				if (!entity) return;
 
-			entitiesJson.push_back(serializeEntity(entity, sceneFile));
-		});
+				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+			});
+
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
@@ -191,7 +194,6 @@ namespace Engine
 			j["texWidthFraction"] = c.texWidthFraction;
 			j["texHeightFraction"] = c.texHeightFraction;
 			j["texName"] = c.texName;
-			j["numSprites"] = c.spritesOnSheet;
 
 			components.push_back(j);
 		}
@@ -204,6 +206,16 @@ namespace Engine
 			j["type"] = c.isSprite ? "sprite" : "polygon";
 
 			//TODO: Serialize vertex if polygon once we know what that looks like.	
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<ScriptComponent>())
+		{
+			auto c = entity.getComponent<ScriptComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ScriptComponent);
+			j["scriptName"] = c.m_instance->getScriptName();
 
 			components.push_back(j);
 		}
@@ -288,7 +300,14 @@ namespace Engine
 				std::string texture = component["texName"];
 				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
 
-				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction, spritesheet.texHeightFraction, spritesheet.spritesPerRow, spritesheet.numSprites);
+				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction,
+					spritesheet.texHeightFraction, spritesheet.spritesPerRow, spritesheet.numSprites);
+				break;
+			}
+			case CO_ScriptComponent:
+			{
+				std::string scriptName = component["scriptName"];
+				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
 				break;
 			}
 			default:
