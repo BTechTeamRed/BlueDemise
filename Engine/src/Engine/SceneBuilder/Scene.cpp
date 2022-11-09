@@ -15,7 +15,8 @@
 #include "Engine/Scripts/ScriptableBehavior.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
-//#include "MoveRightScript.h"
+
+const float DT_THRESHOLD = 10;
 
 namespace Engine
 {
@@ -31,24 +32,13 @@ namespace Engine
 		//initialize the window for UI
 		if (!initializeUI()) return;
 
-		 ResourceManager::ImageData image = ResourceManager::getInstance()->getTexture("SpriteSheet.png");
-		 ResourceManager::SpriteSheet spriteSheet = ResourceManager::getInstance()->getSpritesheet("SpriteSheet.png");
-		 Entity triangle2 = createEntity("triangle2");
-		 triangle2.addComponent<TransformComponent>(
-		 	glm::vec3(0.f, 0, 0),
-		 	glm::vec3(image.height, image.width, 1),
-		 	glm::vec3(0, 0, 0)
-		 	);
-		 triangle2.addComponent<VerticesComponent>(createSprite());
-		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow, spriteSheet.numSprites);
-		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
-		//triangle2.addComponent<ScriptComponent>().linkBehavior<Game::MoveRightScript>();
-
 		InputSystem::getInstance()->init(m_window);
+
 
 		while (!glfwWindowShouldClose(m_window))
 		{
 			m_deltaTime.updateDeltaTime();
+			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
 			onRuntimeUpdate(m_deltaTime);
 		}
 

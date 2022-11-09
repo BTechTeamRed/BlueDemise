@@ -1,11 +1,13 @@
 #include "Engine/Scripts/ScriptableBehavior.h"
 
-namespace Game
+namespace Engine
 {
-	class ENGINE_API MoveRightScript : public Engine::ScriptableBehavior
+	class MoveRightScript : public Engine::ScriptableBehavior
 	{
+	protected:
 		virtual void onUpdate(const Engine::DeltaTime& dt) override;
 
+	public:
 		virtual std::string getScriptName() override { return "MoveRightScript"; }
 	};
 }

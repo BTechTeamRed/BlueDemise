@@ -1,10 +1,5 @@
 add_executable(Game src/GameApp.cpp)
 target_link_libraries(Game Engine spdlog)
-add_library(bdScripts INTERFACE)
-target_include_directories(bdScripts
-                           INTERFACE
-                            ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Scripts
-                           )
 
 ################
 ##POST Process##

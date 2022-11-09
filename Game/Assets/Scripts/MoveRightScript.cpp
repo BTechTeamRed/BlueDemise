@@ -1,7 +1,6 @@
 #include "MoveRightScript.h"
 
-
-namespace Game
+namespace Engine
 {
 	void MoveRightScript::onUpdate(const Engine::DeltaTime& dt)
 	{

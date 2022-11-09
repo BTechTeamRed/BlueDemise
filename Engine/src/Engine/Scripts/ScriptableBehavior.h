@@ -2,6 +2,7 @@
 #include "Engine/Core.h"
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/SceneBuilder/Components.h" //include facilitates use of component in child scripts
+#include "Engine/Utilities/Log.h"
 
 namespace Engine
 {
@@ -18,7 +19,6 @@ namespace Engine
 		template<typename T>
 		T& getComponent()
 		{
-			if (m_entity.hasComponent<T>()) return nullptr;
 			return m_entity.getComponent<T>();
 		}
 
