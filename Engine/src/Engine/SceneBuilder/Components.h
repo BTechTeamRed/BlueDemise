@@ -62,8 +62,9 @@ namespace Engine
 	struct AnimationComponent
 	{
 		AnimationComponent() = default;
-		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow)
-			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow) { }
+		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow, int spritesOnSheet)
+			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet) { }
+		
 		std::vector<glm::vec2> texCoords;
 
 		GLuint texID;
@@ -71,7 +72,11 @@ namespace Engine
 
 		int currentIndex = 0;
 		int numPerRow;
+		int spritesOnSheet;
+		
+		double animationSpeed = 0.3;
 
+		float deltaTime;
 		float frameRate;
 		float texWidthFraction;
 		float texHeightFraction;

@@ -4,6 +4,7 @@
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Core.h"
+#include <string>
 
 //Added for UI
 #include <array>
@@ -47,7 +48,6 @@ namespace Engine
         #pragma endregion
 
 
-
     private:
 
         #pragma region OpenGL Scene Management
@@ -76,11 +76,22 @@ namespace Engine
 
 		//Create quad for sprites
         VerticesComponent createSprite();
+        VerticesComponent createRectangle();
+        void setupVertexAttribPtr(VerticesComponent& vc);
 		
-		//Functions to create sprite specific OpenGL buffers. Returns the ID of said buffers.
-		GLuint getSpriteVBO();
-        GLuint getSpriteVAO();
-        GLuint getSpriteIBO();
+        int m_quadTexCoordinates = 5;
+		int m_quadCoordinates = 3;
+        int m_quadIndices = 6;
+
+		//Functions to create specific OpenGL buffers. Returns the ID of said buffers.
+        enum RenderableType
+        {
+            RT_Sprite,
+            RT_Rectangle
+        };
+		GLuint getVBO(RenderableType = RT_Sprite);
+        GLuint getVAO();
+        GLuint getIBO(RenderableType = RT_Rectangle);
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
@@ -102,6 +113,7 @@ namespace Engine
         EntitiesPanel m_entitiesPanel;
 
         DeltaTime m_deltaTime{0};
+        
         //creates an array of three components panels
         std::array<ComponentsPanel, 3> m_componentsPanels
         {
@@ -112,13 +124,6 @@ namespace Engine
 
 		//GL IDs for various objects. 
         GLuint m_programId;
-        GLuint m_spriteVBO;
-        GLuint m_spriteVAO;
-        GLuint m_spriteIBO;
-
-        bool m_createdVBO { false };
-        bool m_createdVAO { false };
-        bool m_createdIBO { false };
 
         friend class Entity;
         friend class Serializer;

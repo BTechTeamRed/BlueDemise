@@ -191,6 +191,7 @@ namespace Engine
 			j["texWidthFraction"] = c.texWidthFraction;
 			j["texHeightFraction"] = c.texHeightFraction;
 			j["texName"] = c.texName;
+			j["numSprites"] = c.spritesOnSheet;
 
 			components.push_back(j);
 		}
@@ -287,7 +288,7 @@ namespace Engine
 				std::string texture = component["texName"];
 				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
 
-				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction, spritesheet.texHeightFraction, spritesheet.spritesPerRow);
+				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction, spritesheet.texHeightFraction, spritesheet.spritesPerRow, spritesheet.numSprites);
 				break;
 			}
 			default:
