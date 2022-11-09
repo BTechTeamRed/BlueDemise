@@ -48,7 +48,6 @@ namespace Engine
         #pragma endregion
 
 
-
     private:
 
         #pragma region OpenGL Scene Management
@@ -80,15 +79,19 @@ namespace Engine
         VerticesComponent createRectangle();
         void setupVertexAttribPtr(VerticesComponent& vc);
 		
+        int m_quadTexCoordinates = 5;
+		int m_quadCoordinates = 3;
+        int m_quadIndices = 6;
+
 		//Functions to create specific OpenGL buffers. Returns the ID of said buffers.
         enum RenderableType
         {
             SPRITE,
             RECTANGLE
         };
-		GLuint getVBO(RenderableType = RenderableType::SPRITE);
+		GLuint getVBO(RenderableType = SPRITE);
         GLuint getVAO();
-        GLuint getIBO(RenderableType = RenderableType::RECTANGLE);
+        GLuint getIBO(RenderableType = RECTANGLE);
 
         //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
         void setColor(glm::mat4 mvp, glm::vec4 color);
@@ -110,6 +113,7 @@ namespace Engine
         EntitiesPanel m_entitiesPanel;
 
         DeltaTime m_deltaTime{0};
+        
         //creates an array of three components panels
         std::array<ComponentsPanel, 3> m_componentsPanels
         {

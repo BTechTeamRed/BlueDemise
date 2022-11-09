@@ -214,11 +214,14 @@ Issues:
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				auto& anim = m_registry.get<AnimationComponent>(entity);
 				anim.deltaTime += dt;
-				if (anim.deltaTime > 0.3)
+				
+				double updateTime = 0.3;
+
+				if (anim.deltaTime > updateTime)
 				{
 					anim.deltaTime = 0;
 					anim.currentIndex++;
-					if (anim.currentIndex > 8) anim.currentIndex = 0;
+					if (anim.currentIndex > anim.spritesOnSheet) anim.currentIndex = 0;
 				}
 
 				//Calculation for finding the sprite in a texture.
@@ -352,7 +355,7 @@ Issues:
 			glm::vec3(0, 0, 0)
 			);
 		triangle2.addComponent<VerticesComponent>(createSprite());
-		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow);
+		triangle2.addComponent<AnimationComponent>(spriteSheet.texID, 0.f, spriteSheet.texWidthFraction, spriteSheet.texHeightFraction, spriteSheet.spritesPerRow, spriteSheet.numSprites);
 		triangle2.addComponent<ColorComponent>(glm::vec4(1, 1, 1, 1));
 
 		Entity rectangle = createEntity("rect");
@@ -387,7 +390,7 @@ Issues:
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-		if (type == RenderableType::SPRITE) 
+		if (type == SPRITE) 
 		{
 			float vertices[] = 
 			{
@@ -399,7 +402,7 @@ Issues:
 			};
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		}
-		else if (type == RenderableType::RECTANGLE) 
+		else if (type == RECTANGLE) 
 		{
 			float vertices[] = 
 			{
@@ -466,8 +469,8 @@ Issues:
 		VerticesComponent vc;
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
-		vc.stride = sizeof(float) * 5;
-		vc.numIndices = 6;
+		vc.stride = sizeof(float) * m_quadTexCoordinates;
+		vc.numIndices = m_quadIndices;
 
 		vc.vaoID = getVAO();
 		vc.vboID = getVBO();
@@ -483,8 +486,8 @@ Issues:
 	{
 		VerticesComponent vc;
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		vc.stride = sizeof(float) * 5;
-		vc.numIndices = 6;
+		vc.stride = sizeof(float) * m_quadTexCoordinates;
+		vc.numIndices = m_quadIndices;
 
 		vc.vaoID = getVAO();
 		vc.vboID = getVBO(RenderableType::RECTANGLE);
