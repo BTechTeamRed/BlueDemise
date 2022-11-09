@@ -1,4 +1,4 @@
-#include "Engine/InputSystem.h"
+#include "Engine/SceneBuilder/InputSystem.h"
 #include "GLFW/glfw3.h"
 
 using namespace Engine;
