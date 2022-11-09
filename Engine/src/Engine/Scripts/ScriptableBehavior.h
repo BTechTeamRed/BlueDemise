@@ -21,6 +21,11 @@ namespace Engine
 			return m_entity.getComponent<T>();
 		}
 
+		//This function should return the name of the script header without the extension.
+		//Failing to override this function will lead to errors in script serialization.
+		//i.e. "MoveScript.h" should override this function to return "MoveScript".
+		virtual std::string getScriptName() = 0;
+
 	protected:
 		//gets called once after Entities are serialized and created, in Scene::createEntities().
 		virtual void onCreate() {}

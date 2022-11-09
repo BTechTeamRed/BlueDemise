@@ -6,6 +6,8 @@
 #include "Engine/Log.h"
 #include "Engine/Scene.h"
 #include "Engine/ResourceManager.h"
+#include "Engine/ScriptSerializer.h"
+#include "Engine/Scripts/ScriptableBehavior.h"
 
 namespace glm
 {
@@ -118,6 +120,7 @@ namespace Engine
 
 			entitiesJson.push_back(serializeEntity(entity, sceneFile));
 		});
+
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
@@ -207,6 +210,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<ScriptComponent>())
+		{
+			auto c = entity.getComponent<ScriptComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ScriptComponent);
+			j["scriptName"] =  c.m_instance->getScriptName();
+
+			components.push_back(j);
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -288,6 +301,12 @@ namespace Engine
 				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
 
 				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction, spritesheet.texHeightFraction, spritesheet.spritesPerRow);
+				break;
+			}
+			case CO_ScriptComponent:
+			{
+				std::string scriptName = component["scriptName"];
+				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
 				break;
 			}
 			default:
