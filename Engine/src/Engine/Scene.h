@@ -8,9 +8,11 @@
 //Added for UI
 #include <array>
 #include "ExplorerPanel.h"
-#include "EntitiesPanel.h"
+#include "HierarchyPanel.h"
 #include "ComponentsPanel.h"
 #include "MainMenu.h"
+#include "InspectorPanel.h"
+#include "TagDialog.h"
 
 namespace Engine
 {
@@ -45,8 +47,6 @@ namespace Engine
         // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate(const DeltaTime& dt);
         #pragma endregion
-
-
 
     private:
 
@@ -92,6 +92,10 @@ namespace Engine
         int m_windowWidth{1920};
         int m_windowHeight{1080};
 
+        //Added this to keep track of the entities created
+        std::unordered_map<std::string, entt::entity> m_entityHandles;
+
+
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
 
@@ -99,7 +103,20 @@ namespace Engine
         ExplorerPanel m_explorerPanel;
 
         //entities panel is the UI element that lists all the entities
-        EntitiesPanel m_entitiesPanel;
+        HierarchyPanel m_hierarchyPanel;
+
+        //inspector panel is the UI element that lists all the components for each entity
+        InspectorPanel m_inspectorPanel;
+
+        //dialog box to allow user to input the tag name for an entity
+        TagDialog m_tagDialog;
+
+        enum ComponentPanels
+        {
+            ActiveComponents,
+            Attributes,
+            Components
+        };
 
         DeltaTime m_deltaTime{0};
         //creates an array of three components panels

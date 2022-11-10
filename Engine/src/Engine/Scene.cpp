@@ -15,6 +15,7 @@
 #include "Scripts/ScriptableBehavior.h"
 #include "ResourceManager.h"
 #include "InputSystem.h"
+#include "Serializer.h"
 
 namespace Engine
 {
@@ -26,7 +27,6 @@ Issues:
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
-
 		//initialize the window for UI
 		if (!initializeUI()) return;
 
@@ -66,6 +66,7 @@ Issues:
 		
 		//We have two distinct windows to manage now - one for the main scene and the UI window
 		//For each window we change the GL context, render to the window, then swap buffers
+
 
 		//Main window
 		glfwMakeContextCurrent(m_window);
@@ -116,8 +117,6 @@ Issues:
 
 		glfwMakeContextCurrent(m_window);
 
-
-
 		//Setup a callback to update the viewport size when the window is resized
 		//glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
 		//glfwSetWindowSizeCallback(m_window, windowResizeCallback);
@@ -148,19 +147,55 @@ Issues:
 			return false;
 		}
 
+		//Load custom fonts - we must load a different for each size we require
+		//We are using MyriadPro currently as the Freedom font does not display numeric values
+		if (!UserInterface::loadFont("Assets/MyriadPro_bold.otf", 12, "Freedom_12"))
+		{
+			//Error loading font
+		}
+
+		if (!UserInterface::loadFont("Assets/MyriadPro_bold.otf", 18, "Freedom_18"))
+		{
+			//Error loading font
+		}
+
+		//if (!UserInterface::loadFont("Assets/MyriadPro.otf", 12, "MyriadPro"))
+		//{
+		//	//Error loading font
+		//}
+
 		const int menuHeight = 18;
+		const auto panelWidth = 0.2f * m_windowWidth;
+		const auto halfWindowHeight = 0.5f * (m_windowHeight - menuHeight);
+
+		m_tagDialog.setPosition(glm::uvec2(0.5f * m_windowWidth, 0.5f * m_windowHeight));
 
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight - menuHeight));
+		m_explorerPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_entitiesPanel.setPosition(glm::uvec2(m_windowWidth - (m_windowWidth * 0.2f), menuHeight));
-		m_entitiesPanel.setDimension(glm::uvec2(m_windowWidth * 0.2f, 0.5f * (m_windowHeight - menuHeight)));
+		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth - 1, menuHeight));
+		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		for (int i = 0; i < m_componentsPanels.size(); i++)
-		{
-			m_componentsPanels[i].setPosition(glm::uvec2(m_windowWidth * 0.2f + (i * m_windowWidth * 0.2f), m_windowHeight - (m_windowHeight * 0.25f)));
-			m_componentsPanels[i].setDimension(glm::uvec2(m_windowWidth * 0.2f, m_windowHeight * 0.25f));
-		}
+		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 2 - 2, menuHeight));
+		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+
+		m_componentsPanels[Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight));
+		m_componentsPanels[Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+
+		//TODO - Does this need to be read from a .json file?
+		m_componentsPanels[Components].addComponent("Transform");
+		m_componentsPanels[Components].addComponent("Camera");
+		m_componentsPanels[Components].addComponent("Color");
+		m_componentsPanels[Components].addComponent("Animation");
+		m_componentsPanels[Components].addComponent("Texture");
+
+		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
+		m_componentsPanels[Attributes].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+
+		m_componentsPanels[ActiveComponents].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
+		m_componentsPanels[ActiveComponents].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+
+		m_inspectorPanel.setRegistry(&m_registry);
 
 		return true;
 
@@ -264,32 +299,148 @@ Issues:
 
 	void Scene::renderUI()
 	{
+		//This is required to make sure the UI window framebuffer is cleared
+		glClear(GL_COLOR_BUFFER_BIT);
+
 		UserInterface::startUI();
 
 		m_mainMenu.show();
 
 		m_explorerPanel.show();
-		m_entitiesPanel.show();
+		m_hierarchyPanel.show();
+		m_inspectorPanel.show();
 
 		for (auto& panel : m_componentsPanels)
 		{
 			panel.show();
 		}
 
+		m_tagDialog.update();
+		m_tagDialog.show();
+
 		UserInterface::endUI();
 
-		//Check which entity was selected (WIP)
-		//const entt::entity id = m_entityHandles[m_entitiesPanel.getSelectedEntity()];
-		//m_componentsPanels[2].setText(std::to_string((int)id));
-		/*
-		if (m_entitiesPanel.isAddButtonClicked())
+		//UI handlers===========================================================
+
+		if (m_mainMenu.getIsSaveItemClicked())
 		{
-			auto totalEntities = Entity::getTotalEntities();
-			std::string tag = "Entity_" + std::to_string(Entity::getTotalEntities() + 1);
-			Entity cameraEntity = createEntity(tag);
-			m_entitiesPanel.addEntity(tag);
+			//Save entities and components to a JSON file
+			Engine::Serializer::serializeScene(this, "testScene");
 		}
-		*/
+
+		//We look inside our own local entity map to search for
+		//the entity the user clicked on in the Inspector panel 
+		m_inspectorPanel.setSelectedEntity(m_entityHandles[m_hierarchyPanel.getSelectedEntity()]);
+
+		if (m_hierarchyPanel.isAddButtonClicked())
+		{
+			m_tagDialog.setIsVisible(true);
+		}
+
+		//If we click on OKAY when labelling the new entity and no name has been set it will be called ENTITY
+		//Otherwise we label it based on the name input in the tag dialog box
+		if (m_tagDialog.getButtonState().okay)
+		{
+			auto tag = m_tagDialog.getTag();
+
+			if (tag.empty())
+			{
+				tag = "<Entity_" + std::to_string(Entity::getTotalEntities() + 1) + ">";
+			}
+
+			Entity entity = createEntity(tag);
+		}
+
+		if (m_tagDialog.getButtonState().cancel)
+		{
+			//Do nothing if we cancel
+		}
+
+		if (m_componentsPanels[2].isAddButtonClicked())
+		{
+			//Check which component was selected to be added to entity
+			auto component = m_componentsPanels[2].getSelectedComponent();
+
+			//Get the handle on the selected entity to add the component to
+			auto handle = m_entityHandles[m_hierarchyPanel.getSelectedEntity()];
+
+			if (component == "Camera")
+			{
+				auto camera = m_registry.any_of<CameraComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!camera)
+				{
+					m_registry.emplace<CameraComponent>(
+						handle,
+						90.f,
+						glm::mat4(1.f),
+						glm::vec2(4.8, 4.8),
+						100.0f,
+						0.1f
+						);
+				}
+			}
+
+			if (component == "Transform")
+			{
+				auto transform = m_registry.any_of<TransformComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!transform)
+				{
+					m_registry.emplace<TransformComponent>(
+						handle,
+						glm::vec3(0, 0, 0),
+						glm::vec3(1, 1, 1),
+						glm::vec3(0, 0, 0));
+				}
+			}
+
+			if (component == "Color")
+			{
+				auto color = m_registry.any_of<ColorComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!color)
+				{
+					m_registry.emplace<ColorComponent>(
+						handle,
+						glm::vec4(1, 1, 1, 1.0f));
+				}
+			}
+
+			if (component == "Texture")
+			{
+				auto texture = m_registry.any_of<TextureComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!texture)
+				{
+					m_registry.emplace<TextureComponent>(
+						handle,
+						0,
+						"<Texture>");
+				}
+			}
+
+			if (component == "Animation")
+			{
+				auto animation = m_registry.any_of<AnimationComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!animation)
+				{
+					m_registry.emplace<AnimationComponent>(
+						handle,
+						0,
+						1.0f,
+						1.0f,
+						1.0f,
+						1);
+				}
+			}
+		}
 	}
 
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
@@ -312,6 +463,8 @@ Issues:
 	{
 		Entity entity(m_registry.create(), this);
 		entity.addComponent<TagComponent>(tag);
+		m_entityHandles[tag] = entity.getHandle();
+		m_hierarchyPanel.addEntity(tag);
 		return entity;
 	}
 
