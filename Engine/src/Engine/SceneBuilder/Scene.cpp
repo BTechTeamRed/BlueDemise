@@ -32,6 +32,50 @@ Issues:
 			if (!initializeUI()) return;
 		}*/
 
+
+		// framebuffer configuration
+		// -------------------------
+		glGenFramebuffers(1, &m_fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+		// create a color attachment texture
+		glGenTextures(1, &textureColorbuffer);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+		// create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+		unsigned int rbo;
+		glGenRenderbuffers(1, &rbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080); // use a single renderbuffer object for both a depth AND stencil buffer.
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
+		// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+	// positions   // texCoords
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	-1.0f, -1.0f,  0.0f, 0.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
+
+	-1.0f,  1.0f,  0.0f, 1.0f,
+	 1.0f, -1.0f,  1.0f, 0.0f,
+	 1.0f,  1.0f,  1.0f, 1.0f
+		};
+
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+
 		ImGui::CreateContext();
 		ImGui_ImplOpenGL3_Init("#version 330");
 		ImGui_ImplGlfw_InitForOpenGL(m_window, true);
@@ -74,13 +118,11 @@ Issues:
 		//For each window we change the GL context, render to the window, then swap buffers
 
 		//Main window
-		//glfwMakeContextCurrent(m_window);
-		
-		renderScene(dt);
-
-		glGenFramebuffers(1, &m_fbo);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+		// //glfwMakeContextCurrent(m_window);
+		//
+		// glGenFramebuffers(1, &m_fbo);
+		//
+		// glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
 		/*glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, 1920, 1080, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 
@@ -89,23 +131,23 @@ Issues:
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_fbo, 0);*/
 		
-		unsigned int textureColorbuffer;
-		glGenTextures(1, &textureColorbuffer);
-		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// attach it to currently bound framebuffer object
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-
-		GLuint rbo;
-
-		glGenRenderbuffers(1, &rbo);
-		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+		// unsigned int textureColorbuffer;
+		// glGenTextures(1, &textureColorbuffer);
+		// glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// glBindTexture(GL_TEXTURE_2D, 0);
+		//
+		// // attach it to currently bound framebuffer object
+		// glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+		//
+		// GLuint rbo;
+		//
+		// glGenRenderbuffers(1, &rbo);
+		// glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+		// glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
+		// glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
 		/*if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -114,7 +156,22 @@ Issues:
 			glDeleteFramebuffers(1, &fbo);
 		}*/
 
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
+		glEnable(GL_DEPTH_TEST);
+
+		renderScene(dt);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		//screenShader.use();
+		glBindVertexArray(quadVAO);
+		glDisable(GL_DEPTH_TEST);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		//glfwSwapBuffers(m_window);
 		//glfwPollEvents();
@@ -354,14 +411,12 @@ Issues:
 		ImGui::NewFrame();
 
 		ImGui::Begin("Game");
-
-		ImGui::SetWindowPos("Game", ImVec2(0, 0));
-		ImGui::SetWindowSize("Game", ImVec2(1920, 1080));
-
-
-		ImGui::GetWindowDrawList()->AddImage(
-			(void*)m_fbo, ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + 1920, ImGui::GetCursorScreenPos().y + 1080 / 2), ImVec2(0, 1), ImVec2(1, 0));
+		{
+			ImGui::BeginChild("GameRenderer");
+			ImVec2 wsize = ImGui::GetWindowSize();
+			ImGui::Image((ImTextureID)m_fbo, wsize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::EndChild();
+		}
 
 		ImGui::End();
 
