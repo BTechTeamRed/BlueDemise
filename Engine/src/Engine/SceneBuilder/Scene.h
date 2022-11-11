@@ -24,6 +24,10 @@ namespace Engine
     public:
 
         #pragma region Entity Management
+
+        unsigned int m_fbo;
+
+
         // Function to create an entity and add it to the scene
         // Takes in a tag as a string for input
         Entity createEntity(std::string tag);
@@ -102,6 +106,9 @@ namespace Engine
         struct GLFWwindow* m_UIwindow;
         int m_windowWidth{1920};
         int m_windowHeight{1080};
+
+        //flag, if true: ui is rendered, if false: no ui is rendered
+        bool showUI = true;
 
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;

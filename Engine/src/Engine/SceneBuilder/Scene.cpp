@@ -28,7 +28,13 @@ Issues:
 	{
 
 		//initialize the window for UI
-		if (!initializeUI()) return;
+		/*if (showUI) {
+			if (!initializeUI()) return;
+		}*/
+
+		ImGui::CreateContext();
+		ImGui_ImplOpenGL3_Init("#version 330");
+		ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 
 		createEntities();
 		InputSystem::getInstance()->init(m_window);
@@ -68,15 +74,64 @@ Issues:
 		//For each window we change the GL context, render to the window, then swap buffers
 
 		//Main window
-		glfwMakeContextCurrent(m_window);
+		//glfwMakeContextCurrent(m_window);
+		
 		renderScene(dt);
-		glfwSwapBuffers(m_window);
-		glfwPollEvents();
+
+		glGenFramebuffers(1, &m_fbo);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+
+		/*glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, 1920, 1080, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_fbo, 0);*/
+		
+		unsigned int textureColorbuffer;
+		glGenTextures(1, &textureColorbuffer);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		// attach it to currently bound framebuffer object
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+		GLuint rbo;
+
+		glGenRenderbuffers(1, &rbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+		/*if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+			glDeleteFramebuffers(1, &fbo);
+		}*/
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		//glfwSwapBuffers(m_window);
+		//glfwPollEvents();
+
+
+
+		//need to create a frame buffer object and add a texture of the rendered game to it
+		
+
+		
 
 		//UI window
-		glfwMakeContextCurrent(m_UIwindow);
-		renderUI();
-		glfwSwapBuffers(m_UIwindow);
+		if (showUI) {
+			glfwMakeContextCurrent(m_window);
+			renderUI();
+			glfwSwapBuffers(m_window);
+		}
 
 		//Execute onLateUpdate().
 		for (auto [entity, script] : entities.each())
@@ -106,13 +161,15 @@ Issues:
 			return false;
 		}
 
-		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		if (m_UIwindow == nullptr)
-		{
-			GE_CORE_ERROR("Failed to create GLFW window (UI)");
-			glfwTerminate();
-			return false;
-		}
+		//if (showUI) {
+		//	m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
+		//	if (m_UIwindow == nullptr)
+		//	{
+		//		GE_CORE_ERROR("Failed to create GLFW window (UI)");
+		//		glfwTerminate();
+		//		return false;
+		//	}
+		//}
 
 		glfwMakeContextCurrent(m_window);
 
@@ -143,10 +200,10 @@ Issues:
 	bool Scene::initializeUI()
 	{
 		//Initialize the UI using ImGui OpenGL v3.3
-		if (!UserInterface::initialize(m_UIwindow))
+		/*if (!UserInterface::initialize(m_window))
 		{
 			return false;
-		}
+		}*/
 
 		const int menuHeight = 18;
 
@@ -289,9 +346,30 @@ Issues:
 
 	void Scene::renderUI()
 	{
-		UserInterface::startUI();
+		//UserInterface::startUI();
 
-		m_mainMenu.show();
+
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Game");
+
+		ImGui::SetWindowPos("Game", ImVec2(0, 0));
+		ImGui::SetWindowSize("Game", ImVec2(1920, 1080));
+
+
+		ImGui::GetWindowDrawList()->AddImage(
+			(void*)m_fbo, ImVec2(ImGui::GetCursorScreenPos()),
+			ImVec2(ImGui::GetCursorScreenPos().x + 1920, ImGui::GetCursorScreenPos().y + 1080 / 2), ImVec2(0, 1), ImVec2(1, 0));
+
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		
+
+		/*m_mainMenu.show();
 
 		m_explorerPanel.show();
 		m_entitiesPanel.show();
@@ -299,9 +377,9 @@ Issues:
 		for (auto& panel : m_componentsPanels)
 		{
 			panel.show();
-		}
+		}*/
 
-		UserInterface::endUI();
+		//UserInterface::endUI();
 
 		//Check which entity was selected (WIP)
 		//const entt::entity id = m_entityHandles[m_entitiesPanel.getSelectedEntity()];
