@@ -194,6 +194,7 @@ namespace Engine
 			j["texWidthFraction"] = c.texWidthFraction;
 			j["texHeightFraction"] = c.texHeightFraction;
 			j["texName"] = c.texName;
+			j["numSprites"] = c.spritesOnSheet;
 
 			components.push_back(j);
 		}
