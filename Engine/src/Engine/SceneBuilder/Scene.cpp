@@ -32,7 +32,7 @@ Issues:
 			if (!initializeUI()) return;
 		}*/
 
-
+		glEnable(GL_DEPTH_TEST);
 		// framebuffer configuration
 		// -------------------------
 		glGenFramebuffers(1, &m_fbo);
@@ -53,6 +53,7 @@ Issues:
 		// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
 		float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 	// positions   // texCoords
@@ -81,7 +82,7 @@ Issues:
 		ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 
 		createEntities();
-		InputSystem::getInstance()->init(m_window);
+		//InputSystem::getInstance()->init(m_window);
 
 		while (!glfwWindowShouldClose(m_window))
 		{
@@ -161,13 +162,15 @@ Issues:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
 		glEnable(GL_DEPTH_TEST);
 
+		glUseProgram(m_programId);
+
 		renderScene(dt);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//screenShader.use();
+		glUseProgram(m_programId2);
 		glBindVertexArray(quadVAO);
 		glDisable(GL_DEPTH_TEST);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
@@ -247,6 +250,7 @@ Issues:
 		}
 
 		loadShaders();
+		m_programId2 = loadShaders2();
 
 		glfwSwapInterval(1);
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
@@ -409,17 +413,17 @@ Issues:
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
+		
 		ImGui::Begin("Game");
 		{
 			ImGui::BeginChild("GameRenderer");
 			ImVec2 wsize = ImGui::GetWindowSize();
-			ImGui::Image((ImTextureID)m_fbo, wsize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)m_fbo, ImVec2(1920,1080), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::EndChild();
 		}
-
+		
 		ImGui::End();
-
+		
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
@@ -461,6 +465,17 @@ Issues:
 		
 		m_programId = shaderGenerator.getProgramId();
 		glUseProgram(m_programId);
+	}
+
+	GLuint Scene::loadShaders2()
+	{
+
+		std::string vertexData = ResourceManager::getInstance()->getShaderData("framebuffer.vs");
+		std::string fragmentData = ResourceManager::getInstance()->getShaderData("framebuffer.fs");
+
+		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
+
+		return shaderGenerator.getProgramId();
 	}
 #pragma endregion
 	
