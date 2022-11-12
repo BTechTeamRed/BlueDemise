@@ -2,12 +2,12 @@
 #include "gtest/gtest.h"
 #include <thread>
 #include <chrono>
-#include "Engine/DeltaTime.h"
-#include "Engine/Entity.h"
-#include "Engine/Scene.h"
-#include "Engine/ResourceManager.h"
-#include "Engine/Components.h"
-#include "Engine/Serializer.h"
+#include <Engine/SceneBuilder/Scene.h>
+#include "Engine/Utilities/DeltaTime.h"
+#include "Engine/SceneBuilder/Entity.h"
+#include "Engine/ResourceManagement/ResourceManager.h"
+#include "Engine/SceneBuilder/Components.h"
+#include "Engine/ResourceManagement/Serializer.h"
 
 namespace BDTests
 {
