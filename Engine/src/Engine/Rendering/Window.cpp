@@ -24,11 +24,25 @@ namespace Engine {
 	void Window::resize(int width, int height)
 	{
 		float newAspectRatio = width / height;
-		if()
+		glViewport(0, 0, width, height); //Adjust for letterboxing
+	}
+
+	glm::vec3 Window::screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector)
+	{
+		float frustumWidth = m_camera->getComponent<CameraComponent>().frustumWidth;
+		float aspectRatio = m_camera->getComponent<CameraComponent>().aspectRatio;
+		return glm::vec3(screenSpaceVector.x / m_windowWidth * frustumWidth, screenSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio, 1);
+	}
+	glm::vec2 Window::worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector)
+	{
+		float frustumWidth = m_camera->getComponent<CameraComponent>().frustumWidth;
+		float aspectRatio = m_camera->getComponent<CameraComponent>().aspectRatio;
+		return glm::vec2(worldSpaceVector.x / m_windowWidth * frustumWidth, worldSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio);
 	}
 
 	glm::mat4 Window::getProjectionMatrix() const
 	{
-		return m_camera->getComponent<CameraComponent>().projection;
+		glm::vec3 cameraPos = m_camera->getComponent<TransformComponent>().position;
+		return m_camera->getComponent<CameraComponent>().projection * glm::translate(glm::mat4(1), cameraPos);
 	}
 }

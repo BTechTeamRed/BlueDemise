@@ -39,6 +39,15 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
+	struct FixedScreenTransformComponent {
+		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
+			: position(position), scale(scale)
+		{
+		}
+		glm::vec2 position;
+		glm::vec2 scale;
+	};
+
 	//A component containing a vec4 of color data, RGBA.
 	struct ColorComponent 
 	{

@@ -44,8 +44,6 @@ void Scene::renderScene(const DeltaTime& dt)
 
 	auto cameraView = getEntities<const CameraComponent>();
 	const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-	glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-	glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 
 	//Render all entities
