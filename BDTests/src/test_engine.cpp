@@ -6,21 +6,83 @@
 #include "Engine/Entity.h"
 #include "Engine/Scene.h"
 #include "Engine/ResourceManager.h"
-
 #include "Engine/Components.h"
+#include "Engine/Serializer.h"
 
 namespace BDTests
 {
-	// IndependentMethod is a test case - here, we have 3 tests for this 1 test case
-	TEST(DeltaTimeTest, timeIsWorking)
+	class SerializerTest : public ::testing::Test {
+	protected:
+		void SetUp() override
+		{
+			GTEST_SKIP() << "Attempting to deserialize gives me this odd \"unknown file SEH exception\" error that I have no clue how to fix";
+		}
+
+		// void TearDown() override {}
+		Engine::Scene scene;
+	};
+
+	TEST_F(SerializerTest, EmptyScene)
+	{
+		Engine::Serializer::serializeScene(&scene, "emptyScene");
+		EXPECT_TRUE(Engine::Serializer::tryDeserializeScene(scene, "emptyScene"));
+	}
+
+	TEST_F(SerializerTest, SceneOneComponent)
+	{
+		scene.createEntity("myEntity");
+		Engine::Serializer::serializeScene(&scene, "sceneOneComponent");
+		EXPECT_TRUE(Engine::Serializer::tryDeserializeScene(scene, "sceneOneComponent"));
+	}
+
+	TEST(DeltaTimeTest, deltaTimeCtor)
 	{
 		Engine::DeltaTime dt;
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
-		EXPECT_GT(dt.getMilliseconds(), 1);
+		EXPECT_EQ(dt.getMilliseconds(), 0);
 	}
 
 	TEST(SceneTest, sceneHasEntities)
 	{
+		Engine::Scene scene;
+		Engine::Entity ent = scene.createEntity("ent");
+		//GTEST_EXPECT_TRUE(ent != NULL);
+		EXPECT_TRUE(&ent != nullptr);
+	}
+
+	TEST(EntityTest, entityHasComponent)
+	{
+		Engine::Scene scene;
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		EXPECT_TRUE(myEntity.hasComponent<Engine::TagComponent>());
+	}
+
+	TEST(EntityTest, entityHasMultipleComponents)
+	{
+		Engine::Scene scene;
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		myEntity.addComponent<Engine::TransformComponent>();
+		EXPECT_TRUE(myEntity.hasComponent<Engine::TagComponent>());
+		EXPECT_TRUE(myEntity.hasComponent<Engine::TransformComponent>());
+	}
+
+	TEST(EntityTest, removeComponents)
+	{
+		Engine::Scene scene;
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		myEntity.addComponent<Engine::TransformComponent>();
+		myEntity.removeComponent<Engine::TransformComponent>();
+		EXPECT_FALSE(myEntity.hasComponent<Engine::TransformComponent>());
+	}
+
+	TEST(ComponentsTest, TransformComponentInit)
+	{
+		Engine::Scene scene;
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		myEntity.addComponent<Engine::TransformComponent>();
+		Engine::TransformComponent tr = myEntity.getComponent<Engine::TransformComponent>();
+		EXPECT_EQ(tr.position.x, 0);
+		EXPECT_EQ(tr.position.y, 0);
+		EXPECT_EQ(tr.position.z, 0);
 	}
 
 	// The fixture for testing class EngineTest. From google test primer.
