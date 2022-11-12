@@ -26,6 +26,8 @@ namespace Engine
         #pragma region Entity Management
 
         unsigned int m_fbo;
+        unsigned int textureColorbuffer;
+        unsigned int quadVAO, quadVBO;
 
 
         // Function to create an entity and add it to the scene
@@ -72,6 +74,7 @@ namespace Engine
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
+        GLuint loadShaders2();
         #pragma endregion
 		
 
@@ -131,6 +134,7 @@ namespace Engine
 
 		//GL IDs for various objects. 
         GLuint m_programId;
+        GLuint m_programId2;
 
         friend class Entity;
         friend class Serializer;
