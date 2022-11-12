@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Log.h"
+#include "Engine/Core.h"
+#include "Engine/Utilities/Log.h"
 #include "json.h"
 #include <string>
 #include <filesystem>

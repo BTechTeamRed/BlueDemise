@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entt.h"
-#include "Scene.h"
+#include "Engine/SceneBuilder/Scene.h"
 #include "Components.h"
 
 namespace Engine
