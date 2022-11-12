@@ -8,23 +8,7 @@ bool Scene::initializeGL()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-	if (m_window == nullptr)
-	{
-		GE_CORE_ERROR("Failed to create GLFW window");
-		glfwTerminate();
-		return false;
-	}
-
-	m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-	if (m_UIwindow == nullptr)
-	{
-		GE_CORE_ERROR("Failed to create GLFW window (UI)");
-		glfwTerminate();
-		return false;
-	}
-
-	glfwMakeContextCurrent(m_window);
+	
 
 
 
@@ -50,16 +34,8 @@ bool Scene::initializeGL()
 	return true;
 }
 
-//Callback to update window size when it changes
-//TODO: Handle screen resizing
-void windowResizeCallback(GLFWwindow* window, int width, int height)
-{
-	/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
-	auto cameraView = scene->getEntities<const CameraComponent>();
-	auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
-	camera.viewport.x = width;
-	camera.viewport.y = height;*/
-}
+
+
 
 //clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 void Scene::renderScene(const DeltaTime& dt)
@@ -136,7 +112,7 @@ void Scene::renderScene(const DeltaTime& dt)
 		}
 
 		//Update the MVP
-		const glm::mat4 mvp = updateMVP(transform, vm, pm);
+		const glm::mat4 mvp = updateMVP(transform);
 
 		//Set the color of the object
 		setColor(mvp, color.color);
@@ -145,6 +121,23 @@ void Scene::renderScene(const DeltaTime& dt)
 
 		glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 	}
+}
+
+//Update an MVP matrix, with the MVP generated in the function and returned.
+glm::mat4 Renderer::updateMVP(TransformComponent transform)
+{
+	//Setup model view matrix
+	glm::mat4 mvm = glm::mat4(1.f);
+	mvm = glm::translate(mvm, transform.position);
+	mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
+	mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
+	mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
+	mvm = glm::scale(mvm, transform.scale);
+
+	//Calculate MVP
+	glm::mat4 mvp = m_window.getProjectionMatrix() * mvm;
+
+	return mvp;
 }
 
 //loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
