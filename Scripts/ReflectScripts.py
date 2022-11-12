@@ -1,14 +1,15 @@
 import os
 import shutil
+import sys
 
 #Gather all scripts
-txtfiles = os.listdir('..\\Game\\Assets\\Scripts')
+txtfiles = os.listdir(f'{sys.argv[1]}\\Game\\Assets\\Scripts')
 headers = []
 scriptNames = []
 
 #Get all script names
 for file in txtfiles:
-    shutil.copy(f'..\\Game\\Assets\\Scripts\\{file}', '..\\Engine\\src\\Engine\\Scripts')
+    shutil.copy(f'{sys.argv[1]}\\Game\\Assets\\Scripts\\{file}', f'{sys.argv[1]}\\Engine\\src\\Engine\\Scripts')
     if file.endswith(".h"):
         headers.append(file)
 
@@ -33,7 +34,7 @@ for script in scriptNames:
 
 d['includes'] = includes
 d['compareScripts'] = scriptCompares
-with open("..\\Scripts\\scriptSerializerTemplate.cpp", 'r') as ftemp:
+with open(f"{sys.argv[1]}\\Scripts\\scriptSerializerTemplate.cpp", 'r') as ftemp:
     templateString = ftemp.read()
-with open("..\\Engine\\src\\Engine\\ResourceManagement\\ScriptSerializer.cpp", 'w') as f:
+with open(f"{sys.argv[1]}\\Engine\\src\\Engine\\ResourceManagement\\ScriptSerializer.cpp", 'w') as f:
     f.write(templateString.format(**d))

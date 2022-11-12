@@ -23,6 +23,12 @@ add_subdirectory(thirdparty)
 # Add gtests
 # Add libs with predefined CmakeLists
 
+###########
+##SCRIPTS##
+###########
+execute_process(COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Scripts/ReflectScripts.py ${PROJECT_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+
 add_subdirectory(Engine)
 add_subdirectory(Game)
 #######
