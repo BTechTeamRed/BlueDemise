@@ -15,30 +15,35 @@ namespace BDTests
 	protected:
 		void SetUp() override
 		{
-			GTEST_SKIP() << "Attempting to deserialize gives me this odd \"unknown file SEH exception\" error that I have no clue how to fix";
+			// GTEST_SKIP() << "Attempting to deserialize gives me this odd \"unknown file SEH exception\" error that I have no clue how to fix";
 		}
 
 		// void TearDown() override {}
 		Engine::Scene scene;
 	};
 
-	TEST_F(SerializerTest, EmptyScene)
+	TEST_F(SerializerTest, emptyScene)
 	{
-		Engine::Serializer::serializeScene(&scene, "emptyScene");
-		EXPECT_TRUE(Engine::Serializer::tryDeserializeScene(scene, "emptyScene"));
+		std::string serializedJson = Engine::Serializer::serializeScene(&scene, "emptyScene");
+		std::string output = R"({"scene":{"entities":null,"name":""}})";
+		EXPECT_EQ(serializedJson, output);
 	}
 
-	TEST_F(SerializerTest, SceneOneComponent)
+	TEST_F(SerializerTest, oneEntityScene)
 	{
-		scene.createEntity("myEntity");
-		Engine::Serializer::serializeScene(&scene, "sceneOneComponent");
-		EXPECT_TRUE(Engine::Serializer::tryDeserializeScene(scene, "sceneOneComponent"));
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		std::string serializedJson = Engine::Serializer::serializeScene(&scene, "sceneOneComponent");
+		std::string output = "{\"scene\":{\"entities\":[{\"components\":[],\"tag\":\"myEntity\"}],\"name\":\"\"}}";
+		EXPECT_EQ(serializedJson, output);
 	}
 
-	TEST(DeltaTimeTest, deltaTimeCtor)
+	TEST_F(SerializerTest, oneEntityWithComponentScene)
 	{
-		Engine::DeltaTime dt;
-		EXPECT_EQ(dt.getMilliseconds(), 0);
+		Engine::Entity myEntity = scene.createEntity("myEntity");
+		myEntity.addComponent<Engine::TransformComponent>();
+		std::string serializedJson = Engine::Serializer::serializeScene(&scene, "sceneOneComponent");
+		std::string output = "{\"scene\":{\"entities\":[{\"components\":[{\"name\":\"TransformComponent\",\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"rotation\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"scale\":{\"x\":0.0,\"y\":0.0,\"z\":0.0}}],\"tag\":\"myEntity\"}],\"name\":\"\"}}";
+		EXPECT_EQ(serializedJson, output);
 	}
 
 	TEST(SceneTest, sceneHasEntities)
@@ -83,6 +88,17 @@ namespace BDTests
 		EXPECT_EQ(tr.position.x, 0);
 		EXPECT_EQ(tr.position.y, 0);
 		EXPECT_EQ(tr.position.z, 0);
+	}
+
+	TEST(DeltaTimeTest, deltaTimeCtor)
+	{
+		Engine::DeltaTime dt;
+		EXPECT_EQ(dt.getMilliseconds(), 0);
+	}
+
+	int main(int argc, char** argv) {
+		::testing::InitGoogleTest(&argc, argv);
+		return RUN_ALL_TESTS();
 	}
 
 	// The fixture for testing class EngineTest. From google test primer.
