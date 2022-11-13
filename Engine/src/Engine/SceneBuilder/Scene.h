@@ -69,10 +69,6 @@ namespace Engine
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
         #pragma endregion
-		
-
-        //TODO: Replace with serialized objects once that's added in
-        void createEntities();
 
 		//Create quad for sprites
         VerticesComponent createSprite();

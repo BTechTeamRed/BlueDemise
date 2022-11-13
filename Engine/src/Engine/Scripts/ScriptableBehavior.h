@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Core.h"
 #include "Engine/SceneBuilder/Entity.h"
+#include "Engine/SceneBuilder/Components.h" //include facilitates use of component in child scripts
+#include "Engine/Utilities/Log.h"
 
 namespace Engine
 {
@@ -17,9 +19,13 @@ namespace Engine
 		template<typename T>
 		T& getComponent()
 		{
-			if (m_entity.hasComponent<T>()) return nullptr;
 			return m_entity.getComponent<T>();
 		}
+
+		//This function should return the name of the script header without the extension.
+		//Failing to override this function will lead to errors in script serialization.
+		//i.e. "MoveScript.h" should override this function to return "MoveScript".
+		virtual std::string getScriptName() = 0;
 
 	protected:
 		//gets called once after Entities are serialized and created, in Scene::createEntities().
