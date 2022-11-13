@@ -11,8 +11,8 @@ target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 ####################
 #Script Reflection##
 ####################
-find_package( PythonInterp 2.7 REQUIRED )
-find_package( PythonLibs 2.7 REQUIRED )
+
+find_package (Python COMPONENTS Interpreter Development REQUIRED)
 
 execute_process(COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Scripts/ReflectScripts.py ${PROJECT_SOURCE_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
