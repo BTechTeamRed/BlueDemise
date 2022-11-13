@@ -12,6 +12,9 @@
 #include "Engine/EngineUI/EntitiesPanel.h"
 #include "Engine/EngineUI/ComponentsPanel.h"
 #include "Engine/EngineUI/MainMenu.h"
+#include "Engine/InspectorPanel.h"
+#include "Engine/TagDialog.h"
+#include "Engine/HierarchyPanel.h"
 
 namespace Engine
 {
@@ -110,6 +113,10 @@ namespace Engine
         int m_windowWidth{1920};
         int m_windowHeight{1080};
 
+        //Added this to keep track of the entities created
+        std::unordered_map<std::string, entt::entity> m_entityHandles;
+
+
         //flag, if true: ui is rendered, if false: no ui is rendered
         bool showUI = true;
 
@@ -120,7 +127,20 @@ namespace Engine
         ExplorerPanel m_explorerPanel;
 
         //entities panel is the UI element that lists all the entities
-        EntitiesPanel m_entitiesPanel;
+        HierarchyPanel m_hierarchyPanel;
+
+        //inspector panel is the UI element that lists all the components for each entity
+        InspectorPanel m_inspectorPanel;
+
+        //dialog box to allow user to input the tag name for an entity
+        TagDialog m_tagDialog;
+
+        enum ComponentPanels
+        {
+            ActiveComponents,
+            Attributes,
+            Components
+        };
 
         DeltaTime m_deltaTime{0};
         
