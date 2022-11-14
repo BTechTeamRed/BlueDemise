@@ -21,7 +21,7 @@ namespace Engine
 
 		void setSelectedEntity(entt::entity entityHandle);
 
-		virtual void show(unsigned int fbo = 0) override;
+		virtual void show();
 
 	private:
 

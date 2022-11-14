@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	void ExplorerPanel::show(unsigned int fbo)
+	void ExplorerPanel::show()
 	{
 
 		ImGui::Begin("ExplorerPanel", nullptr,

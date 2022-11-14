@@ -50,7 +50,7 @@ namespace Engine
 		void partition(const std::string& fontTag, const std::string& title = "", const ImVec4& color = white);
 
 		virtual void update() {}
-		virtual void show(unsigned int fbo = 0) = 0;
+		virtual void show(unsigned int fbo = 0) {}
 
 	protected:
 

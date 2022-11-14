@@ -13,9 +13,9 @@
 #include "Engine/EngineUI/ComponentsPanel.h"
 #include "Engine/EngineUI/MainMenu.h"
 #include "Engine/EngineUI/GamePanel.h"
-#include "Engine/InspectorPanel.h"
-#include "Engine/TagDialog.h"
-#include "Engine/HierarchyPanel.h"
+#include "Engine/EngineUI/InspectorPanel.h"
+#include "Engine/EngineUI/TagDialog.h"
+#include "Engine/EngineUI/HierarchyPanel.h"
 
 namespace Engine
 {

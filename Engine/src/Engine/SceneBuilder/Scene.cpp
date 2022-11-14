@@ -79,10 +79,6 @@ namespace Engine
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 
-		/*ImGui::CreateContext();
-		ImGui_ImplOpenGL3_Init("#version 330");
-		ImGui_ImplGlfw_InitForOpenGL(m_window, true);*/
-
 		//createEntities();
 		//InputSystem::getInstance()->init(m_window);
 
@@ -127,10 +123,6 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 
-		//We have two distinct windows to manage now - one for the main scene and the UI window
-		//For each window we change the GL context, render to the window, then swap buffers
-
-
 		//Main window
 		// //glfwMakeContextCurrent(m_window);
 		//
@@ -138,37 +130,6 @@ namespace Engine
 		//
 		// glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
-		/*glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, 1920, 1080, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_fbo, 0);*/
-		
-		// unsigned int textureColorbuffer;
-		// glGenTextures(1, &textureColorbuffer);
-		// glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		// glBindTexture(GL_TEXTURE_2D, 0);
-		//
-		// // attach it to currently bound framebuffer object
-		// glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-		//
-		// GLuint rbo;
-		//
-		// glGenRenderbuffers(1, &rbo);
-		// glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-		// glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
-		// glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-		/*if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
-			glDeleteFramebuffers(1, &fbo);
-		}*/
 
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -191,13 +152,6 @@ namespace Engine
 
 		//glfwSwapBuffers(m_window);
 		//glfwPollEvents();
-
-
-
-		//need to create a frame buffer object and add a texture of the rendered game to it
-		
-
-		
 
 		//UI window
 		if (showUI) {
@@ -234,15 +188,6 @@ namespace Engine
 			return false;
 		}
 
-		//if (showUI) {
-		//	m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		//	if (m_UIwindow == nullptr)
-		//	{
-		//		GE_CORE_ERROR("Failed to create GLFW window (UI)");
-		//		glfwTerminate();
-		//		return false;
-		//	}
-		//}
 
 		glfwMakeContextCurrent(m_window);
 
@@ -462,28 +407,6 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		UserInterface::startUI();
-
-
-		/*ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();*/
-		
-		/*ImGui::Begin("Game");
-		{
-			ImGui::BeginChild("GameRenderer");
-			ImVec2 wsize = ImGui::GetWindowSize();
-			ImGui::Image((ImTextureID)m_fbo, ImVec2(1920,1080), ImVec2(0, 1), ImVec2(1, 0));
-			ImGui::EndChild();
-		}
-		
-		m_tagDialog.update();
-		m_tagDialog.show();
-
-		ImGui::End();
-		
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
-		
 
 		m_mainMenu.show();
 

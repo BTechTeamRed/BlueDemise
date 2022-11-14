@@ -19,7 +19,7 @@ namespace Engine
 		m_components.push_back(component);
 	}
 
-	void ComponentsPanel::show(unsigned int fbo)
+	void ComponentsPanel::show()
 	{
 
 		ImGui::Begin(m_name.c_str(), nullptr,

@@ -20,7 +20,7 @@ namespace Engine
 
 		void addComponent(const std::string& component);
 
-		virtual void show(unsigned int fbo = 0) override;
+		virtual void show();
 
 	private:
 
