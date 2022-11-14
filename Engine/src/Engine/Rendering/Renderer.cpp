@@ -10,10 +10,6 @@ namespace Engine
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		renderMaterials();
-		renderAnimations();
-		
-	
 		auto cameraView = scene.getEntities<const CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
@@ -44,13 +40,16 @@ void Scene::renderScene(const DeltaTime& dt)
 	glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 		//Perhaps make a 'renderable' component that contains a list of all entites that can be rendered. Should this be in scene or renderer? ******************
-
+		prepareMaterials();
+		prepareAnimations();
+		
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		const auto solidObj = scene.getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto renderables = scene.getEntities<const MaterialComponent>();
+		const auto animations = scene.getEntities<const AnimationComponent>();
 
 		//For each updatable entity (with transform, vertices, and color components), draw them.
-		for (auto [entity, transform, vertices, color] : solidObj.each())
+		for (auto [material] : solidObj.each())
 		{
 			//Bind Texture
 			if (scene.m_registry.all_of<TextureComponent>(entity))
@@ -97,12 +96,28 @@ void Scene::renderScene(const DeltaTime& dt)
 	}
 
 
-	void renderMaterials()
+	void prepareMaterials(auto material)
 	{
-	
+		//Bind shader
+		glUseProgram(material.shaderID);
+
+		//Bind VAO
+		glBindVertexArray(material.vaoID);
+
+		//Bind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, material.vboID);
+
+		//Bind EBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, material.eboID);
+
+		//Set vertex attributes
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
 	}
 
-	void renderAnimations()
+	void prepareAnimations()
 	{
 
 
