@@ -83,7 +83,8 @@ namespace Engine
 	bool ShaderNorms::queueStride(int stride)
 	{
 		bool changed = false;
-		if (stride != curStride) {
+		if (stride != curStride)
+		{
 			curStride = stride;
 			changed = true;
 		}
