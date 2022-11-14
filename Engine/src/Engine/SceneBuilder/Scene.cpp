@@ -486,6 +486,8 @@ Issues:
 			panel.show();
 		}
 
+		m_tagDialog.update();
+		m_tagDialog.show();
 
 		UserInterface::endUI();
 
