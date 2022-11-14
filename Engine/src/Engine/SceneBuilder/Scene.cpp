@@ -9,11 +9,9 @@
 #include "glm/ext/matrix_transform.hpp"
 
 #include "Entity.h"
-#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Scripts/ScriptableBehavior.h"
-#include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
 
 const float DT_THRESHOLD = 10;
@@ -55,7 +53,6 @@ namespace Engine
 			glDeleteVertexArrays(1, &vertices.vaoID);
 			glDeleteBuffers(1, &vertices.vboID);
 		}
-		glDeleteProgram(m_programId);
 	}
 
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
@@ -331,13 +328,8 @@ namespace Engine
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
-
-		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
-		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
-
-		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
-
-		m_programId = shaderGenerator.getProgramId();
+		shaderNorms = new ShaderNorms("TextureFill");
+		m_programId = shaderNorms->getDefaultShader();
 		glUseProgram(m_programId);
 	}
 #pragma endregion

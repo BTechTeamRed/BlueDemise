@@ -4,6 +4,7 @@
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Core.h"
+#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include <string>
 
 //Added for UI
@@ -120,6 +121,7 @@ namespace Engine
 
 		//GL IDs for various objects. 
         GLuint m_programId;
+        ShaderNorms* shaderNorms{ nullptr };
 
         friend class Entity;
         friend class Serializer;

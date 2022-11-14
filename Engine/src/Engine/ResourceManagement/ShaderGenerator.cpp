@@ -23,11 +23,6 @@ namespace Engine
 		glDeleteShader(fragmentShader);
 	}
 
-	ShaderGenerator::~ShaderGenerator()
-	{
-		glDeleteProgram(m_programId);
-	}
-
 	int ShaderGenerator::getProgramId() const
 	{
 		return m_programId;
@@ -59,5 +54,31 @@ namespace Engine
 			return false;
 		}
 		return true;
+	}
+
+	ShaderNorms::ShaderNorms(string defaultShader) : m_defaultShader(defaultShader) {
+		addShader(defaultShader);
+	}
+
+	ShaderNorms::~ShaderNorms() {
+		for (auto [key, value] : m_shaders) {
+			glDeleteProgram(value);
+		}
+	}
+
+	void ShaderNorms::addShader(string shaderName) {
+		m_shaders.insert(pair(shaderName, ShaderGenerator(
+			ResourceManager::getInstance()->getShaderData(shaderName + ".vs").c_str(),
+			ResourceManager::getInstance()->getShaderData(shaderName + ".fs").c_str()
+		).getProgramId()));
+		GE_CORE_INFO(shaderName +" ADDED.");
+	}
+
+	GLuint ShaderNorms::getShader(string shaderName) {
+		return m_shaders.at(shaderName);
+	}
+
+	GLuint ShaderNorms::getDefaultShader() {
+		return getShader(m_defaultShader);
 	}
 }
