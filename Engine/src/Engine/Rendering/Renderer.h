@@ -11,6 +11,7 @@ namespace Engine
 	{
 	public:
 		void renderScene(const DeltaTime& dt, Scene scene);
+		Renderer();
 	private:
 		Window m_Window;
 		

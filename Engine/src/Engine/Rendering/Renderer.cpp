@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "Engine/SceneBuilder/Scene.h"
-
+#include <Engine/SceneBuilder/InputSystem.h>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Engine
@@ -14,8 +14,14 @@ namespace Engine
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
-	camera.viewport.y = height;*/
+		camera.viewport.y = height;*/
 }
+
+	Renderer::Renderer()
+	{
+		//Adds the callback to the inputsystem for when the window is resized
+		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_Window.resize(x, y); });
+	}
 
 //clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 void Scene::renderScene(const DeltaTime& dt)
