@@ -80,10 +80,6 @@ namespace Engine
         void loadShaders();
         GLuint loadShaders2();
         #pragma endregion
-		
-
-        //TODO: Replace with serialized objects once that's added in
-        void createEntities();
 
 		//Create quad for sprites
         VerticesComponent createSprite();
