@@ -1,12 +1,18 @@
 #pragma once
+#include <Engine/Utilities/DeltaTime.h>
+#include <Engine/Core.h>
+#include <Engine/Rendering/Window.h>
 
-#include "Window.h"
+namespace Engine
+{
+	class Scene;
 
-namespace Engine {
-	class Renderer
+	class ENGINE_API Renderer
 	{
-		glm::mat4 updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
+	public:
+		void renderScene(const DeltaTime& dt, Scene scene);
 	private:
-		Window m_window;
+		Window m_Window;
+		
 	};
 }

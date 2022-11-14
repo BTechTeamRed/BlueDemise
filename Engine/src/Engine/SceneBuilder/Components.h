@@ -49,21 +49,13 @@ namespace Engine
 	};
 
 	//A component containing a vec4 of color data, RGBA.
-	struct ColorComponent 
+	struct MaterialComponent
 	{
-		ColorComponent() = default;
-		ColorComponent(glm::vec4 color)
-			: color(color) {}
-
+		MaterialComponent() = default;
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName)
+			: color(color), texID(texID), texName(texName) {}
+		
 		glm::vec4 color;
-	};
-
-	//A component containing texture data
-	struct TextureComponent
-	{
-		TextureComponent() = default;
-		TextureComponent(GLuint texID, std::string texName)
-			: texID(texID), texName(texName) { }
 		std::string texName;
 		GLuint texID;
 	};

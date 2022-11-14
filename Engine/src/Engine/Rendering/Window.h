@@ -22,25 +22,19 @@ namespace Engine {
 
 		void resize(int width, int height);
 
+		//Converts a vector in screenspace pixel units to worldspace units
 		glm::vec3 screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector);
+
+		//Converts a worldspace vector to screenspace pixel units
 		glm::vec2 worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector);
 
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;
 
+		//Get's the projection matrix of the camera
+		float getAspectRatio() const;
 
 		friend Renderer;
 	};
-
-	//Callback to update window size when it changes
-//TODO: Handle screen resizing
-	void windowResizeCallback(GLFWwindow* window, int width, int height)
-	{
-		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
-		auto cameraView = scene->getEntities<const CameraComponent>();
-		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
-		camera.viewport.x = width;
-		camera.viewport.y = height;*/
-	}
 }
 

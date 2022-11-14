@@ -23,8 +23,10 @@ namespace Engine {
 
 	void Window::resize(int width, int height)
 	{
-		float newAspectRatio = width / height;
-		glViewport(0, 0, width, height); //Adjust for letterboxing
+		//Adjust height to maintain current aspect ratio
+		int newHeight = height * getAspectRatio(); 
+		int letterboxHeight = height - newHeight;
+		glViewport(0, letterboxHeight / 2, width, newHeight);
 	}
 
 	glm::vec3 Window::screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector)
@@ -44,5 +46,9 @@ namespace Engine {
 	{
 		glm::vec3 cameraPos = m_camera->getComponent<TransformComponent>().position;
 		return m_camera->getComponent<CameraComponent>().projection * glm::translate(glm::mat4(1), cameraPos);
+	}
+	float Window::getAspectRatio() const
+	{
+		return m_camera->getComponent<CameraComponent>().aspectRatio;
 	}
 }

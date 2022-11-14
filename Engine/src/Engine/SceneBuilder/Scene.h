@@ -58,21 +58,7 @@ namespace Engine
         glm::mat4 updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
 
         void runEntityScripts(const DeltaTime& dt);
-
-        bool initializeUI();
-        void shutdownUI();
-
-        void renderScene();
-
-        void renderUI();
-
-        //TODO: shader wrapper so switching out between different shaders is easier
-        void loadShaders();
         #pragma endregion
-		
-
-        //TODO: Replace with serialized objects once that's added in
-        void createEntities();
 
 		//Create quad for sprites
         VerticesComponent createSprite();
