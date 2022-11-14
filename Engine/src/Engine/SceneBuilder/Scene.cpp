@@ -266,6 +266,19 @@ namespace Engine
 				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 			}
 
+			//load shader according to vertices component (given shader is not already loaded)
+			if (shaderNorms != nullptr && shaderNorms->queueStride(vertices.stride))
+			{
+				if (vertices.stride == m_quadTexCoordinates)
+				{
+					m_programId = shaderNorms->getDefaultShader();
+				}
+				else if (vertices.stride == m_quadCoordinates)
+				{
+					m_programId = shaderNorms->getShader("FillColor");
+				}
+			}
+
 			//Update the MVP
 			const glm::mat4 mvp = updateMVP(transform, vm, pm);
 
@@ -328,7 +341,8 @@ namespace Engine
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
-		shaderNorms = new ShaderNorms("TextureFill");
+		shaderNorms = new ShaderNorms();
+		shaderNorms->queueStride(m_quadTexCoordinates);//notifies shader manager of default stride
 		m_programId = shaderNorms->getDefaultShader();
 		glUseProgram(m_programId);
 	}
@@ -449,7 +463,7 @@ namespace Engine
 	{
 		VerticesComponent vc;
 		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		vc.stride = sizeof(float) * m_quadTexCoordinates;
+		vc.stride = sizeof(float) * m_quadCoordinates;
 		vc.numIndices = m_quadIndices;
 
 		vc.vaoID = getVAO();

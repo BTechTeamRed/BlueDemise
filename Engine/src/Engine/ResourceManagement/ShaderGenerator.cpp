@@ -56,17 +56,22 @@ namespace Engine
 		return true;
 	}
 
-	ShaderNorms::ShaderNorms(string defaultShader) : m_defaultShader(defaultShader) {
-		addShader(defaultShader);
+	ShaderNorms::ShaderNorms() : m_defaultShader("TextureFill")
+	{
+		addShader(m_defaultShader);
+		addShader("ColorFill");
 	}
 
-	ShaderNorms::~ShaderNorms() {
-		for (auto [key, value] : m_shaders) {
+	ShaderNorms::~ShaderNorms()
+	{
+		for (auto [key, value] : m_shaders)
+		{
 			glDeleteProgram(value);
 		}
 	}
 
-	void ShaderNorms::addShader(string shaderName) {
+	void ShaderNorms::addShader(string shaderName)
+	{
 		m_shaders.insert(pair(shaderName, ShaderGenerator(
 			ResourceManager::getInstance()->getShaderData(shaderName + ".vs").c_str(),
 			ResourceManager::getInstance()->getShaderData(shaderName + ".fs").c_str()
@@ -74,11 +79,25 @@ namespace Engine
 		GE_CORE_INFO(shaderName +" ADDED.");
 	}
 
-	GLuint ShaderNorms::getShader(string shaderName) {
+	//true if a new stride amount is introduced so that GL doesn't reload the same shader
+	bool ShaderNorms::queueStride(int stride)
+	{
+		bool changed = false;
+		if (stride != curStride) {
+			curStride = stride;
+			changed = true;
+		}
+
+		return changed;
+	}
+
+	GLuint ShaderNorms::getShader(string shaderName)
+	{
 		return m_shaders.at(shaderName);
 	}
 
-	GLuint ShaderNorms::getDefaultShader() {
+	GLuint ShaderNorms::getDefaultShader()
+	{
 		return getShader(m_defaultShader);
 	}
 }

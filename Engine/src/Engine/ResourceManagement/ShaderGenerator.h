@@ -28,15 +28,17 @@ namespace Engine
 
 	class ShaderNorms {
 	public:
-		ShaderNorms(string);
+		ShaderNorms();
 		~ShaderNorms();
 		void addShader(string);
+		bool queueStride(int);
 		GLuint getShader(string);
 		GLuint getDefaultShader();
 
 	private:
 		map<string, GLuint> m_shaders;
 		string m_defaultShader;
+		int curStride{ -1 };
 	};
 }
 
