@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	void EntitiesPanel::show()
+	void EntitiesPanel::show(unsigned int fbo)
 	{
 
 		ImGui::Begin("EntitiesPanel", nullptr,

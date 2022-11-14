@@ -16,7 +16,7 @@ namespace Engine
 
 		void addEntity(const std::string entity);
 
-		virtual void show() override;
+		virtual void show(unsigned int fbo = 0) override;
 
 	private:
 

@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class EntitiesPanel : public UserInterface
+	class GamePanel : public UserInterface
 	{
 
 	public:

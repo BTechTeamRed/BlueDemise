@@ -13,7 +13,7 @@ namespace Engine
 			return m_isSaveItemClicked;
 		}
 
-		virtual void show() override;
+		virtual void show(unsigned int fbo = 0) override;
 
 	private:
 

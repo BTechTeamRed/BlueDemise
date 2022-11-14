@@ -31,7 +31,7 @@ namespace Engine
 		}
 	}
 
-	void TagDialog::show()
+	void TagDialog::show(unsigned int fbo)
 	{
 		if (m_isVisible)
 		{

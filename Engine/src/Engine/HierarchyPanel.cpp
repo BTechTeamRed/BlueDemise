@@ -17,7 +17,7 @@ namespace Engine
 		m_entities.push_back(entity);
 	}
 
-	void HierarchyPanel::show()
+	void HierarchyPanel::show(unsigned int fbo)
 	{
 		ImGui::Begin("HierarchyPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |

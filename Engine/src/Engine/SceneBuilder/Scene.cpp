@@ -28,9 +28,9 @@ Issues:
 	void Scene::onRuntimeStart()
 	{
 		//initialize the window for UI
-		/*if (showUI) {
+		if (showUI) {
 			if (!initializeUI()) return;
-		}*/
+		}
 
 		glEnable(GL_DEPTH_TEST);
 		// framebuffer configuration
@@ -77,9 +77,9 @@ Issues:
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 
-		ImGui::CreateContext();
+		/*ImGui::CreateContext();
 		ImGui_ImplOpenGL3_Init("#version 330");
-		ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+		ImGui_ImplGlfw_InitForOpenGL(m_window, true);*/
 
 		createEntities();
 		//InputSystem::getInstance()->init(m_window);
@@ -260,10 +260,10 @@ Issues:
 	bool Scene::initializeUI()
 	{
 		//Initialize the UI using ImGui OpenGL v3.3
-		/*if (!UserInterface::initialize(m_window))
+		if (!UserInterface::initialize(m_window))
 		{
 			return false;
-		}*/
+		}
 
 		//Load custom fonts - we must load a different for each size we require
 		//We are using MyriadPro currently as the Freedom font does not display numeric values
@@ -289,16 +289,20 @@ Issues:
 		m_tagDialog.setPosition(glm::uvec2(0.5f * m_windowWidth, 0.5f * m_windowHeight));
 
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_explorerPanel.setDimension(glm::uvec2(panelWidth, m_windowHeight));
 
-		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth - 1, menuHeight));
+		m_gamePanel.setPosition(glm::uvec2(panelWidth + 3, menuHeight));
+		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3, halfWindowHeight));
+
+		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
 		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 2 - 2, menuHeight));
+		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, halfWindowHeight + menuHeight));
 		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight));
+		m_componentsPanels[Components].setPosition(glm::uvec2(panelWidth * 3 - 1, menuHeight));
 		m_componentsPanels[Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+
 
 		//TODO - Does this need to be read from a .json file?
 		m_componentsPanels[Components].addComponent("Transform");
@@ -307,10 +311,10 @@ Issues:
 		m_componentsPanels[Components].addComponent("Animation");
 		m_componentsPanels[Components].addComponent("Texture");
 
-		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
+		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
 		m_componentsPanels[Attributes].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[ActiveComponents].setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
+		m_componentsPanels[ActiveComponents].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
 		m_componentsPanels[ActiveComponents].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		m_inspectorPanel.setRegistry(&m_registry);
@@ -445,14 +449,14 @@ Issues:
 		//This is required to make sure the UI window framebuffer is cleared
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//UserInterface::startUI();
+		UserInterface::startUI();
 
 
-		ImGui_ImplOpenGL3_NewFrame();
+		/*ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		ImGui::NewFrame();*/
 		
-		ImGui::Begin("Game");
+		/*ImGui::Begin("Game");
 		{
 			ImGui::BeginChild("GameRenderer");
 			ImVec2 wsize = ImGui::GetWindowSize();
@@ -466,10 +470,12 @@ Issues:
 		ImGui::End();
 		
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 		
 
-		/*m_mainMenu.show();
+		m_mainMenu.show();
+
+		m_gamePanel.show(m_fbo);
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
@@ -478,10 +484,10 @@ Issues:
 		for (auto& panel : m_componentsPanels)
 		{
 			panel.show();
-		}*/
+		}
 
 
-		//UserInterface::endUI();
+		UserInterface::endUI();
 
 		//UI handlers===========================================================
 

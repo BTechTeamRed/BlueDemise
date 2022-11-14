@@ -12,6 +12,7 @@
 #include "Engine/EngineUI/EntitiesPanel.h"
 #include "Engine/EngineUI/ComponentsPanel.h"
 #include "Engine/EngineUI/MainMenu.h"
+#include "Engine/EngineUI/GamePanel.h"
 #include "Engine/InspectorPanel.h"
 #include "Engine/TagDialog.h"
 #include "Engine/HierarchyPanel.h"
@@ -131,6 +132,9 @@ namespace Engine
 
         //inspector panel is the UI element that lists all the components for each entity
         InspectorPanel m_inspectorPanel;
+
+        //game panel is the UI element that shows the render of the game
+        GamePanel m_gamePanel;
 
         //dialog box to allow user to input the tag name for an entity
         TagDialog m_tagDialog;

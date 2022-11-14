@@ -13,7 +13,7 @@ namespace Engine
 		m_entityHandle = entityHandle;
 	}
 
-	void InspectorPanel::show()
+	void InspectorPanel::show(unsigned int fbo)
 	{
 		ImGui::Begin("InspectorPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |

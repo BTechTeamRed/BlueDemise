@@ -2,12 +2,12 @@
 
 namespace Engine
 {
-	void MainMenu::show()
+	void MainMenu::show(unsigned int fbo)
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
 			//sets the font colour to be white
-			s_style->Colors[ImGuiCol_Text] = white;
+			//s_style->Colors[ImGuiCol_Text] = white;
 
 			m_isSaveItemClicked = false;
 

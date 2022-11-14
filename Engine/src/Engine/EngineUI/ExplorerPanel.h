@@ -11,7 +11,7 @@ namespace Engine
 
 		virtual ~ExplorerPanel() {}
 
-		virtual void show() override;
+		virtual void show(unsigned int fbo = 0) override;
 
 	private:
 
