@@ -1,34 +1,41 @@
 #include "Renderer.h"
 #include "Engine/SceneBuilder/Scene.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Engine
 {
-
+	//From scene, we should grab all the entities within that scene object and render each one.
 	void Renderer::renderScene(const DeltaTime& dt, Scene scene)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		auto cameraView = getEntities<const CameraComponent>();
-		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+		renderMaterials();
+		renderAnimations();
+		
+	
+		auto cameraView = scene.getEntities<const CameraComponent>();
+		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
+		//Perhaps make a 'renderable' component that contains a list of all entites that can be rendered. Should this be in scene or renderer? ******************
 
 		//Render all entities
 		//Get entities that contain transform & vertices & color components,
-		const auto solidObj = getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
+		const auto solidObj = scene.getEntities<const TransformComponent, const VerticesComponent, const ColorComponent>();
 
 		//For each updatable entity (with transform, vertices, and color components), draw them.
 		for (auto [entity, transform, vertices, color] : solidObj.each())
 		{
 			//Bind Texture
-			if (m_registry.all_of<TextureComponent>(entity))
+			if (scene.m_registry.all_of<TextureComponent>(entity))
 			{
-				const auto texture = m_registry.get<const TextureComponent>(entity);
+				const auto texture = scene.m_registry.get<const TextureComponent>(entity);
 				glBindTexture(GL_TEXTURE_2D, texture.texID);
 			}
 
-			if (m_registry.all_of<AnimationComponent>(entity))
+			if (scene.m_registry.all_of<AnimationComponent>(entity))
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 				auto& anim = m_registry.get<AnimationComponent>(entity);
@@ -90,6 +97,17 @@ namespace Engine
 	}
 
 
+	void renderMaterials()
+	{
+	
+	}
+
+	void renderAnimations()
+	{
+
+
+	}
+	
 	/*
 
 	//Insitialize OpenGL, returning true if successful. Window based on GLFW.

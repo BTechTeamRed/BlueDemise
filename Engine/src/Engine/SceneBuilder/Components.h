@@ -37,23 +37,15 @@ namespace Engine
 		glm::vec3 scale;
 		glm::vec3 rotation;
 	};
-
-	//A component containing a vec4 of color data, RGBA.
-	struct ColorComponent 
+	
+	//Material component that would contain texture, color and shader data for an object. Essentially the 'renderable' object
+	struct MaterialComponent
 	{
-		ColorComponent() = default;
-		ColorComponent(glm::vec4 color)
-			: color(color) {}
-
+		MaterialComponent() = default;
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName)
+			: color(color), texID(texID), texName(texName) {}
+		
 		glm::vec4 color;
-	};
-
-	//A component containing texture data
-	struct TextureComponent
-	{
-		TextureComponent() = default;
-		TextureComponent(GLuint texID, std::string texName)
-			: texID(texID), texName(texName) { }
 		std::string texName;
 		GLuint texID;
 	};
