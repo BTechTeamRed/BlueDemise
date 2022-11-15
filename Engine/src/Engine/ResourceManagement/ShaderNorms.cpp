@@ -12,7 +12,7 @@ namespace Engine {
 	{
 		addShader(DEFAULT_SHADER_NAME);
 		addShader(ShaderName::SN_COLOR_FILL);
-		assignsNewStride(stride);
+		assignsNewStride(defaultStride);
 	}
 
 	ShaderNorms::~ShaderNorms()
