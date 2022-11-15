@@ -17,6 +17,7 @@
 namespace Engine
 {
     class Entity;
+    class ShaderNorms;
 
     // Scene keeps a registry of Entities that are then rendered and processed as part of the game loop.
     // Also responsible for loading shaders, initializing OpenGl contexts and windows, and rendering.
@@ -119,9 +120,12 @@ namespace Engine
             "Components"
         };
 
+        #pragma region Shader Management
 		//GL IDs for various objects. 
         GLuint m_programId;
+        //Shader manager
         ShaderNorms* shaderNorms{ nullptr };
+        #pragma endregion
 
         friend class Entity;
         friend class Serializer;
