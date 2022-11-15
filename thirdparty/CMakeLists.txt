@@ -10,6 +10,7 @@ find_library(irrKlang
 add_library(irrKlang INTERFACE)
 add_library(stb INTERFACE)
 add_library(json INTERFACE)
+add_library(freetype INTERFACE)
 
 file(GLOB IMGUI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
 add_library(imgui STATIC ${IMGUI_SOURCES})
@@ -49,6 +50,10 @@ target_include_directories(stb
 target_include_directories(json
                            INTERFACE
                             ${CMAKE_CURRENT_SOURCE_DIR}/json
+                           )
+target_include_directories(freetype
+                           INTERFACE
+                            ${CMAKE_CURRENT_SOURCE_DIR}/freetype
                            )
 target_include_directories(imgui
                            PUBLIC
