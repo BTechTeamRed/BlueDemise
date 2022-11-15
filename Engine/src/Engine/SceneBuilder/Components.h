@@ -18,6 +18,7 @@ namespace Engine
 	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
+		CameraComponent() = default;
 		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
 			: projection(glm::mat4(1.f)), frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) {}
 		glm::mat4 projection = glm::ortho(0.f, frustumWidth, aspectRatio*frustumWidth, 0.f, nearZ, farZ);

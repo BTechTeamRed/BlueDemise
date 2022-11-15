@@ -10,15 +10,17 @@ namespace Engine
 	class ENGINE_API Renderer
 	{
 	public:
-		void renderScene(const DeltaTime& dt, Scene scene);
+		void renderScene(const DeltaTime& dt, Scene& scene);
+		void initializeScene(Scene& scene);
+		void initializeUI(Scene& scene);
+		void drawEntities(Scene& scene);
+		glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
 	private:
 		void setColor(glm::mat4 mvp, glm::vec4 color);
 		Renderer();
-		Window m_Window;
+		Window m_window;
 		
 		int m_maxBindableTextures = 32;
-		glm::mat4 m_projectionMatrix;
-		glm::mat4 m_viewMatrix;
 
 		//GL IDs for various objects. 
 		GLuint m_programId;

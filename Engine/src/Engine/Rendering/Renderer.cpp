@@ -5,60 +5,64 @@
 #include <Engine/SceneBuilder/InputSystem.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "glad/glad.h"
+#include "Engine/Utilities/Log.h"
 
 
 namespace Engine
 {
+
+	//When constructing a renderer, initialize the window and the renderer
+	//When a scene is swapped, we need to change the camera. Renderer should be treated as a singleton
+	Renderer::Renderer()
+	{
+		//Adds the callback to the inputsystem for when the window is resized
+		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
+
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		m_window.initialize();
+		
+		//Setting the icon
+		//ResourceManager::getInstance()->setAppIcon(*m_window);
+
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			GE_CORE_ERROR("Failed to initialize GLAD");
+			glfwTerminate();
+
+			throw std::runtime_error("Failed to initialize GLAD");
+		}
+		
+		glfwSwapInterval(1);
+
+		//Sets the color of the 'clear' command. This is a dark grey
+		glClearColor(0.1f, 0.1f, 0.1f, 1);
+	}
+
+	//Initialize the Scene. Assigns camera to window for 
+	void Renderer::initializeScene(Scene& scene)
+	{
+		auto cameraView = scene.getEntities<CameraComponent>();
+		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
+
+		m_window.m_camera = camera;
+	}
+
 	//From scene, we should grab all the entities within that scene object and render each one.
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		auto cameraView = scene.getEntities<const CameraComponent>();
-		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
-
-		projectionMatrix = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		viewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
-
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
-		camera.viewport.y = height;*/
-	}
-
-	Renderer::Renderer()
-	{
-		//Adds the callback to the inputsystem for when the window is resized
-		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_Window.resize(x, y); });
-	}
-
-	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-	void Scene::renderScene(const DeltaTime& dt)
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		auto cameraView = getEntities<const CameraComponent>();
-		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
-		camera.viewport.y = height;
 		
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		auto cameraView = getEntities<const CameraComponent>();
-		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
-
-
-		//Render all entities
-
 		//Render all entities with vertices, and associated components.
-		prepareEntities(scene);
+		drawEntities(scene);
 	}
 
-	void prepareEntities(Scene& scene)
+	void Renderer::drawEntities(Scene& scene)
 	{
-
+		
 		//Get entities that contain transform & vertices & color components,
 		const auto renderables = scene.getEntities<const VerticesComponent>();
 
@@ -78,7 +82,7 @@ namespace Engine
 			}
 			
 			//Obtain MVP from Window class
-			//const glm::mat4 mvp = updateMVP(transform, m_projectionMatrix, m_viewMatrix);
+			const glm::mat4 mvp = updateMVP(transform, m_window.getViewMatrix(), m_window.getProjectionMatrix());
 			
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
@@ -108,8 +112,6 @@ namespace Engine
 			
 			glBindVertexArray(vertices.vaoID);
 
-			//Update the MVP
-			const glm::mat4 mvp = updateMVP(transform, vm, pm);
 			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
@@ -127,7 +129,7 @@ namespace Engine
 	}
 	
 	//Update an MVP matrix, with the MVP generated in the function and returned.
-	glm::mat4 Scene::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection)
+	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection)
 	{
 		//Setup model view matrix
 		glm::mat4 mvm = glm::mat4(1.f);
@@ -143,148 +145,8 @@ namespace Engine
 		return mvp;
 	}
 
-	
-	
-	/*
-	//Insitialize OpenGL, returning true if successful. Window based on GLFW.
-	bool Scene::initializeGL()
-	{
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-		m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		if (m_window == nullptr)
-		{
-			GE_CORE_ERROR("Failed to create GLFW window");
-			glfwTerminate();
-			return false;
-		}
-
-		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		if (m_UIwindow == nullptr)
-		{
-			GE_CORE_ERROR("Failed to create GLFW window (UI)");
-			glfwTerminate();
-			return false;
-		}
-
-		glfwMakeContextCurrent(m_window);
-
-
-
-		//Setup a callback to update the viewport size when the window is resized
-		//glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
-		//glfwSetWindowSizeCallback(m_window, windowResizeCallback);
-
-		//Setting the icon
-		ResourceManager::getInstance()->setAppIcon(*m_window);
-
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			GE_CORE_ERROR("Failed to initialize GLAD");
-			glfwTerminate();
-			return false;
-		}
-
-		loadShaders();
-
-		glfwSwapInterval(1);
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-
-		return true;
-	}
-
-	//Callback to update window size when it changes
-	//TODO: Handle screen resizing
-	void windowResizeCallback(GLFWwindow* window, int width, int height)
-	{
-		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
-		auto cameraView = scene->getEntities<const CameraComponent>();
-		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
-		camera.viewport.x = width;
-		camera.viewport.y = height;
-	}
-				{
-					// positions  // texture coords (UV coords)
-
-					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
-					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
-					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
-					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
-				};
-
-				//Buffer new data into VBO
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-			}
-
-		//Update the MVP
-		const glm::mat4 mvp = updateMVP(transform, vm, pm);
-
-			//Set the color of the object
-			setColor(mvp, color.color);
-
-			glBindVertexArray(vertices.vaoID);
-
-		glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
-	}
-}
-
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-
-	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
-	void Scene::loadShaders()
-	{
-
-		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
-		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
-
-		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
-
-		m_programId = shaderGenerator.getProgramId();
-		glUseProgram(m_programId);
-	}
-
-
-	#pragma region Renderable Entities
-	
-
-	//Placeholder functio, can be replaced by serialized objects.
-	VerticesComponent Scene::createSprite()
-	{
-		VerticesComponent vc;
-		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		vc.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
-		vc.stride = sizeof(float) * m_quadTexCoordinates;
-		vc.numIndices = m_quadIndices;
-
-		vc.vaoID = getVAO();
-		vc.vboID = getVBO();
-		vc.iboID = getIBO();
-
-		setupVertexAttribPtr(vc);
-
-		return vc;
-	}
-
-	//Placeholder function, can be replaced by serialized objects.
-	VerticesComponent Scene::createRectangle()
-	{
-		VerticesComponent vc;
-		vc.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		vc.stride = sizeof(float) * m_quadTexCoordinates;
-		vc.numIndices = m_quadIndices;
-
-		vc.vaoID = getVAO();
-		vc.vboID = getVBO(RT_Rectangle);
-		vc.iboID = getIBO();
-
-		setupVertexAttribPtr(vc);
-
-		return vc;
-	}
-
+	/*
 	//Define vertex attributes
 	void Scene::setupVertexAttribPtr(VerticesComponent& vc)
 	{
@@ -296,8 +158,8 @@ namespace Engine
 		}
 
 		glBindVertexArray(0);
-	}
+	}*/
 
 	#pragma endregion
-	*/
+	
 }

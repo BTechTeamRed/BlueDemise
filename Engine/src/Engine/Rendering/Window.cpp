@@ -2,19 +2,16 @@
 #include "Engine/Utilities/Log.h"
 
 namespace Engine {
-	Window::Window()
+	
+	//Construct window class with a default camera component, which should be adjusted later upon scene initialization
+	Window::Window() : m_camera{ CameraComponent{} }
 	{
+
+		//Create window with GLFW, and name of "BlueDemise"
 		m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
-			glfwTerminate();
-		}
-
-		m_UIwindow = glfwCreateWindow(m_windowWidth, m_windowHeight, "User Interface", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
-		if (m_UIwindow == nullptr)
-		{
-			GE_CORE_ERROR("Failed to create GLFW window (UI)");
 			glfwTerminate();
 		}
 
@@ -31,24 +28,34 @@ namespace Engine {
 
 	glm::vec3 Window::screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector)
 	{
-		float frustumWidth = m_camera->getComponent<CameraComponent>().frustumWidth;
-		float aspectRatio = m_camera->getComponent<CameraComponent>().aspectRatio;
+		float frustumWidth = m_camera.frustumWidth;
+		float aspectRatio = m_camera.aspectRatio;
 		return glm::vec3(screenSpaceVector.x / m_windowWidth * frustumWidth, screenSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio, 1);
 	}
 	glm::vec2 Window::worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector)
 	{
-		float frustumWidth = m_camera->getComponent<CameraComponent>().frustumWidth;
-		float aspectRatio = m_camera->getComponent<CameraComponent>().aspectRatio;
+		float frustumWidth = m_camera.frustumWidth;
+		float aspectRatio = m_camera.aspectRatio;
 		return glm::vec2(worldSpaceVector.x / m_windowWidth * frustumWidth, worldSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio);
+	}
+
+	//get position of camera in world space. Returns the view matrix
+	glm::mat4 Window::getViewMatrix() const
+	{
+		//Change this to use camera's proper transform component. Perhaps we can pass it as an argument? **********************
+		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
+		return m_camera.projection * glm::translate(glm::mat4(1), cameraPos);
 	}
 
 	glm::mat4 Window::getProjectionMatrix() const
 	{
-		glm::vec3 cameraPos = m_camera->getComponent<TransformComponent>().position;
-		return m_camera->getComponent<CameraComponent>().projection * glm::translate(glm::mat4(1), cameraPos);
+		//Viewport was a vec2. Not sure what the implementation is here.
+		return glm::ortho(0.f, m_camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 	}
+
 	float Window::getAspectRatio() const
 	{
-		return m_camera->getComponent<CameraComponent>().aspectRatio;
+		return m_camera.aspectRatio;
 	}
+	
 }

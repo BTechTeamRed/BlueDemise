@@ -11,7 +11,6 @@ namespace Engine {
 	class Window
 	{
 	private:
-		std::unique_ptr<Entity> m_camera;
 		int m_windowWidth{ 1920 };
 		int m_windowHeight{ 1080 };
 		struct GLFWwindow* m_window;
@@ -19,6 +18,8 @@ namespace Engine {
 
 	public:
 		Window();
+
+		void initialize();
 
 		void resize(int width, int height);
 
@@ -30,10 +31,15 @@ namespace Engine {
 
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;
+		
+		//Get's the view matrix of the camera
+		glm::mat4 getViewMatrix() const;
 
 		//Get's the projection matrix of the camera
 		float getAspectRatio() const;
 
+		CameraComponent& m_camera;
+		
 		friend Renderer;
 	};
 }
