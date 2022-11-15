@@ -10,7 +10,14 @@ namespace Engine
 	{
 	public:
 		void renderScene(const DeltaTime& dt, Scene scene);
-	//private:
+	private:
+		void setColor(glm::mat4 mvp, glm::vec4 color);
 		
+		int m_maxBindableTextures = 32;
+		glm::mat4 m_projectionMatrix;
+		glm::mat4 m_viewMatrix;
+
+		//GL IDs for various objects. 
+		GLuint m_programId;
 	};
 }

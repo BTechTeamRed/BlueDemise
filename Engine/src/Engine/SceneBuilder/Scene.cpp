@@ -18,10 +18,6 @@
 
 namespace Engine
 {
-/*
-Issues:
-- Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
-*/
 
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
@@ -86,27 +82,6 @@ Issues:
 
 		glfwPollEvents();
 	}
-#pragma endregion
-
-#pragma region OpenGL Scene management
-
-	//Update an MVP matrix, with the MVP generated in the function and returned.
-	glm::mat4 Scene::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection)
-	{
-		//Setup model view matrix
-		glm::mat4 mvm = glm::mat4(1.f);
-		mvm = glm::translate(mvm, transform.position);
-		mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
-		mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
-		mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
-		mvm = glm::scale(mvm, transform.scale);
-
-		//Calculate MVP
-		glm::mat4 mvp = projection * view * mvm;
-	
-		return mvp;
-	}
-
 #pragma endregion
 	
 #pragma region Entity Creation

@@ -42,12 +42,13 @@ namespace Engine
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
-		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName)
-			: color(color), texID(texID), texName(texName) {}
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+			: color(color), texID(texID), texName(texName), shaderID(shaderID) {}
 		
-		glm::vec4 color;
+		glm::vec4 color{ 0.f,0.f,0.f,0.f };
 		std::string texName;
 		GLuint texID;
+		GLuint shaderID;
 	};
 
 	//A component containing animation data

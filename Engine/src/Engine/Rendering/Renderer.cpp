@@ -1,130 +1,116 @@
 #include "Renderer.h"
 #include "Engine/SceneBuilder/Scene.h"
-
+#include "Engine/SceneBuilder/Components.h"
+#include "Engine/SceneBuilder/Entity.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "glad/glad.h"
+
 
 namespace Engine
 {
 	//From scene, we should grab all the entities within that scene object and render each one.
-	void Renderer::renderScene(const DeltaTime& dt, Scene scene)
+	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		auto cameraView = scene.getEntities<const CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
-		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
-		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+		projectionMatrix = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		viewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
-		//Perhaps make a 'renderable' component that contains a list of all entites that can be rendered. Should this be in scene or renderer? ******************
-		prepareMaterials();
-		prepareAnimations();
-		
 		//Render all entities
+
+		//Render all entities with vertices, and associated components.
+		prepareEntities(scene);
+	}
+
+	void prepareEntities(Scene& scene)
+	{
+
 		//Get entities that contain transform & vertices & color components,
-		const auto renderables = scene.getEntities<const MaterialComponent>();
-		const auto animations = scene.getEntities<const AnimationComponent>();
+		const auto renderables = scene.getEntities<const VerticesComponent>();
 
-		//For each updatable entity (with transform, vertices, and color components), draw them.
-		for (auto [material] : solidObj.each())
+		int currentBoundTextures = 0;
+		
+		for (auto [entity, vertices] : renderables.each())
 		{
+			TransformComponent transform = TransformComponent();
+			GLuint shaderProgram;
+			glm::vec4 color{0.f,0.f,0.f,0.f};
+
 			//Bind Texture
-			if (scene.m_registry.all_of<TextureComponent>(entity))
+			if (scene.m_registry.all_of<TransformComponent>(entity))
 			{
-				const auto texture = scene.m_registry.get<const TextureComponent>(entity);
-				glBindTexture(GL_TEXTURE_2D, texture.texID);
+				const auto transform = scene.m_registry.get<const TransformComponent>(entity);
+				
 			}
-
-			if (scene.m_registry.all_of<AnimationComponent>(entity))
+			
+			//Obtain MVP from Window class
+			//const glm::mat4 mvp = updateMVP(transform, m_projectionMatrix, m_viewMatrix);
+			
+			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
-				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
-				auto& anim = m_registry.get<AnimationComponent>(entity);
-				anim.deltaTime += dt;
-
-				if (anim.deltaTime > anim.animationSpeed)
+				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+				
+				if (material.texID != 0)
 				{
-					anim.deltaTime = 0;
-					anim.currentIndex++;
-					if (anim.currentIndex > anim.spritesOnSheet) anim.currentIndex = 0;
+					//glActiveTexture(GL_TEXTURE0 + currentBoundTextures); // Texture unit X
+					//GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is max number of binded texts(?)
+					glBindTexture(GL_TEXTURE_2D, material.texID);
+					currentBoundTextures++;
 				}
-
-				//Calculation for finding the sprite in a texture.
-				const float tx = (anim.currentIndex % anim.numPerRow) * anim.texWidthFraction;
-				const float ty = (anim.currentIndex / anim.numPerRow + 1) * anim.texHeightFraction;
-
-				//bind VBO
-				float vertices[] =
-				{
-					// positions  // texture coords (UV coords)
-					0.f, 0.f, 0.f,  tx, ty,														// top left
-					1.f, 0.f, 0.f,  tx + anim.texWidthFraction, ty,								// top right
-					1.f, 1.f, 0.f,  tx + anim.texWidthFraction, ty + anim.texHeightFraction,	// bottom right
-					0.f, 1.f, 0.f,  tx, ty + anim.texHeightFraction								// bottom left
-				};
-
-				//Buffer new data into VBO
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-
-				glBindTexture(GL_TEXTURE_2D, anim.texID);
+			
+				//Change color and shaderProgram to material components color and shader.
+				color = material.color;
+				shaderProgram = material.shaderID;
 			}
-			else
-			{
-				glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
-				float vertices[] =
-				{
-					// positions  // texture coords (UV coords)
-
-					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
-					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
-					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
-					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
-				};
-
-				//Buffer new data into VBO
-				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-			}
-
-			//Update the MVP
-			const glm::mat4 mvp = updateMVP(transform, vm, pm);
-
+			
 			//Set the color of the object
-			setColor(mvp, color.color);
+			setColor(mvp, color);
 
+			//Bind shader
+			glUseProgram(shaderProgram);
+
+
+			glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+			
 			glBindVertexArray(vertices.vaoID);
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
 
-
-	void prepareMaterials(auto material)
+	//Set the color of the current drawable object. This would need to be run per entity/renderable.
+	void Renderer::setColor(glm::mat4 mvp, glm::vec4 color)
 	{
-		//Bind shader
-		glUseProgram(material.shaderID);
+		GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
+		GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
 
-		//Bind VAO
-		glBindVertexArray(material.vaoID);
-
-		//Bind VBO
-		glBindBuffer(GL_ARRAY_BUFFER, material.vboID);
-
-		//Bind EBO
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, material.eboID);
-
-		//Set vertex attributes
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-	}
-
-	void prepareAnimations()
-	{
-
-
+		//Sets color of shader
+		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
 	
-	/*
+	//Update an MVP matrix, with the MVP generated in the function and returned.
+	glm::mat4 Scene::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection)
+	{
+		//Setup model view matrix
+		glm::mat4 mvm = glm::mat4(1.f);
+		mvm = glm::translate(mvm, transform.position);
+		mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
+		mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
+		mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
+		mvm = glm::scale(mvm, transform.scale);
 
+		//Calculate MVP
+		glm::mat4 mvp = projection * view * mvm;
+
+		return mvp;
+	}
+
+	
+	
+	/*
 	//Insitialize OpenGL, returning true if successful. Window based on GLFW.
 	bool Scene::initializeGL()
 	{
@@ -203,16 +189,7 @@ namespace Engine
 
 
 	#pragma region Renderable Entities
-	//Set the color of the current drawable object. This would need to be run per entity/renderable.
-	void Scene::setColor(glm::mat4 mvp, glm::vec4 color)
-	{
-		GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
-		GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
-
-		//Sets color of shader
-		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
-		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
-	}
+	
 
 	//Placeholder functio, can be replaced by serialized objects.
 	VerticesComponent Scene::createSprite()
