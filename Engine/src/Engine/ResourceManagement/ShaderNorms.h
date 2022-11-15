@@ -25,7 +25,7 @@ namespace Engine {
 
 	private:
 		std::map<ShaderName, GLuint> m_shaders;
-		int m_curStride{ -1 };
+		int m_currentStride{ -1 };
 		std::string getShaderNameString(ShaderName shaderName);
 	};
 }

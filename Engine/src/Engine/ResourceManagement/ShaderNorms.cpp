@@ -37,9 +37,9 @@ namespace Engine {
 	bool ShaderNorms::assignsNewStride(int stride)
 	{
 		bool changed = false;
-		if (stride != m_curStride)
+		if (stride != m_currentStride)
 		{
-			m_curStride = stride;
+			m_currentStride = stride;
 			changed = true;
 		}
 
