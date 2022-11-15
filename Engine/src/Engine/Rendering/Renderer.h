@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/Utilities/DeltaTime.h>
-#include "Engine/Core.h"
+#include <Engine/Core.h>
+#include <Engine/Rendering/Window.h>
 
 namespace Engine
 {
@@ -12,6 +13,8 @@ namespace Engine
 		void renderScene(const DeltaTime& dt, Scene scene);
 	private:
 		void setColor(glm::mat4 mvp, glm::vec4 color);
+		Renderer();
+		Window m_Window;
 		
 		int m_maxBindableTextures = 32;
 		glm::mat4 m_projectionMatrix;

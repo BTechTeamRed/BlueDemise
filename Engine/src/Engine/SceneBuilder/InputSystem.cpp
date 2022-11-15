@@ -61,6 +61,13 @@ void InputSystem::init(GLFWwindow* window)
 			static_cast<InputSystem*>(glfwGetWindowUserPointer(window))->cursorCallback(window, x, y);
 		};
 		glfwSetCursorPosCallback(window, cursorFunc);
+
+		//Window Resize callback
+		auto resizeFunc = [](GLFWwindow* window, int x, int y)
+		{
+			static_cast<InputSystem*>(glfwGetWindowUserPointer(window))->resizeCallback(x, y);
+		};
+		glfwSetWindowSizeCallback(window, resizeFunc);
 		m_isInit = true;
 	}
 }
@@ -80,6 +87,10 @@ bool InputSystem::isKeyPressed(int key)
 glm::vec2& InputSystem::getCursorPos()
 {
 	return m_isInit ? m_cursorPos : glm::vec2(0, 0);
+}
+
+void Engine::InputSystem::setResizeCallback(std::function<void(int, int)> callback)
+{
 }
 
 void InputSystem::setWindow(GLFWwindow* window)

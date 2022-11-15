@@ -1,5 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
 #include <vector>
 
@@ -16,12 +18,11 @@ namespace Engine
 	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
-		CameraComponent(float fieldOfView, glm::mat4 projectionMatrix, glm::vec2 viewVector, float farZcoordinate, float nearZcoordinate)
-			: fov(fieldOfView),  projection(projectionMatrix), viewport(viewVector), farZ(farZcoordinate), nearZ(nearZcoordinate) {}
-
-		float fov;
-		glm::mat4 projection;
-		glm::vec2 viewport;
+		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
+			: projection(glm::mat4(1.f)), frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) {}
+		glm::mat4 projection = glm::ortho(0.f, frustumWidth, aspectRatio*frustumWidth, 0.f, nearZ, farZ);
+		float frustumWidth;
+		float aspectRatio;
 		float farZ;
 		float nearZ;
 	};
@@ -37,8 +38,17 @@ namespace Engine
 		glm::vec3 scale;
 		glm::vec3 rotation;
 	};
-	
-	//Material component that would contain texture, color and shader data for an object. Essentially the 'renderable' object
+
+	struct FixedScreenTransformComponent {
+		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
+			: position(position), scale(scale)
+		{
+		}
+		glm::vec2 position;
+		glm::vec2 scale;
+	};
+
+	//A component containing a vec4 of color data, RGBA.
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;

@@ -2,6 +2,7 @@
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/SceneBuilder/Components.h"
 #include "Engine/SceneBuilder/Entity.h"
+#include <Engine/SceneBuilder/InputSystem.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "glad/glad.h"
 
@@ -15,8 +16,39 @@ namespace Engine
 
 		auto cameraView = scene.getEntities<const CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
+
 		projectionMatrix = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
 		viewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+		camera.viewport.y = height;*/
+	}
+
+	Renderer::Renderer()
+	{
+		//Adds the callback to the inputsystem for when the window is resized
+		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_Window.resize(x, y); });
+	}
+
+	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
+	void Scene::renderScene(const DeltaTime& dt)
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		auto cameraView = getEntities<const CameraComponent>();
+		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+		camera.viewport.y = height;
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		auto cameraView = getEntities<const CameraComponent>();
+		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+		glm::mat4 pm = glm::ortho(0.f, camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+
 
 		//Render all entities
 
@@ -76,6 +108,9 @@ namespace Engine
 			
 			glBindVertexArray(vertices.vaoID);
 
+			//Update the MVP
+			const glm::mat4 mvp = updateMVP(transform, vm, pm);
+			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
@@ -171,6 +206,30 @@ namespace Engine
 		camera.viewport.x = width;
 		camera.viewport.y = height;
 	}
+				{
+					// positions  // texture coords (UV coords)
+
+					0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+					1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+					1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+					0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+				};
+
+				//Buffer new data into VBO
+				glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+			}
+
+		//Update the MVP
+		const glm::mat4 mvp = updateMVP(transform, vm, pm);
+
+			//Set the color of the object
+			setColor(mvp, color.color);
+
+			glBindVertexArray(vertices.vaoID);
+
+		glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+	}
+}
 
 	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 
