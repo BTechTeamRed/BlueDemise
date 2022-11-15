@@ -2,7 +2,7 @@
 #ifndef SHADERGENERATOR_H
 #define SHADERGENERATOR_H
 
-#include "Engine/ResourceManagement/ResourceManager.h"
+#include <Engine/ResourceManagement/ResourceManager.h>
 
 namespace Engine
 {
