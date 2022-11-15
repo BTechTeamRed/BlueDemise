@@ -8,7 +8,7 @@ namespace Engine {
 	const ShaderNorms::ShaderName ShaderNorms::DEFAULT_SHADER_NAME
 		= ShaderNorms::ShaderName::SN_TEXTURE_FILL;
 
-	ShaderNorms::ShaderNorms(int stride)
+	ShaderNorms::ShaderNorms(int defaultStride)
 	{
 		addShader(DEFAULT_SHADER_NAME);
 		addShader(ShaderName::SN_COLOR_FILL);
