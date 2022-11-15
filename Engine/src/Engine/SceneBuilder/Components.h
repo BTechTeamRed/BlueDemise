@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "GLFW/glfw3.h"
 #include <vector>
+#include "../Physics/AABB.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -13,6 +14,22 @@ namespace Engine
 		std::string tag;
 	};
 	
+	//A component used for collision detection in the physics system
+	struct PhysicsComponent
+	{
+		PhysicsComponent(glm::vec3& dimensions, glm::vec3& position)
+			: boundingBox(new AABB(dimensions, position)) {}
+		~PhysicsComponent()
+		{
+			if (boundingBox)
+			{
+				delete boundingBox;
+			}
+		}
+
+		AABB* boundingBox;
+	};
+
 	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
