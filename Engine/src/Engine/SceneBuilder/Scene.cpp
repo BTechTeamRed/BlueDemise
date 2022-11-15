@@ -21,16 +21,15 @@ const float DT_THRESHOLD = 10;
 
 namespace Engine
 {
-	/*
-	Issues:
-	- Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
-	*/
-
+	
+	//Issues:
+	//- Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
 		//initialize the window for UI
-		if (showUI) {
+		if (showUI) 
+		{
 			if (!initializeUI()) return;
 		}
 
@@ -151,21 +150,23 @@ namespace Engine
 
 		//Load custom fonts - we must load a different for each size we require
 		//We are using MyriadPro currently as the Freedom font does not display numeric values
-		if (!UserInterface::loadFont("Assets/MyriadPro_bold.otf", 12, "Freedom_12"))
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "Freedom_12"))
 		{
 			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
-		if (!UserInterface::loadFont("Assets/MyriadPro_bold.otf", 18, "Freedom_18"))
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
 		{
 			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
-		//if (!UserInterface::loadFont("Assets/MyriadPro.otf", 12, "MyriadPro"))
-		//{
-		//	//Error loading font
-		//}
-
+//		//if (!UserInterface::loadFont("MyriadPro.otf", 12, "MyriadPro"))
+//		//{
+//		//	//Error loading font
+//		//}
+//
 		const int menuHeight = 18;
 		const auto panelWidth = 0.2f * m_windowWidth;
 		const auto halfWindowHeight = 0.5f * (m_windowHeight - menuHeight);
@@ -188,11 +189,11 @@ namespace Engine
 		m_componentsPanels[Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 
-		//TODO - Does this need to be read from a .json file?
+//		//TODO - Does this need to be read from a .json file?
 		m_componentsPanels[Components].addComponent("Transform");
 		m_componentsPanels[Components].addComponent("Camera");
 		m_componentsPanels[Components].addComponent("Color");
-		//m_componentsPanels[Components].addComponent("Animation");
+		m_componentsPanels[Components].addComponent("Animation");
 		m_componentsPanels[Components].addComponent("Texture");
 
 		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
@@ -202,7 +203,7 @@ namespace Engine
 		m_componentsPanels[ActiveComponents].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		m_inspectorPanel.setRegistry(&m_registry);
-
+//
 		return true;
 
 	}
@@ -212,20 +213,20 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
-	//Callback to update window size when it changes
-	//TODO: Handle screen resizing
-	void windowResizeCallback(GLFWwindow* window, int width, int height)
-	{
-		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
-		auto cameraView = scene->getEntities<const CameraComponent>();
-		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
-		camera.viewport.x = width;
-		camera.viewport.y = height;*/
-	}
-
-
-
-	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
+//	//Callback to update window size when it changes
+//	//TODO: Handle screen resizing
+//	void windowResizeCallback(GLFWwindow* window, int width, int height)
+//	{
+//		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
+//		auto cameraView = scene->getEntities<const CameraComponent>();
+//		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
+//		camera.viewport.x = width;
+//		camera.viewport.y = height;*/
+//	}
+//
+//
+//
+//	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
 	void Scene::renderScene(const DeltaTime& dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -550,7 +551,7 @@ namespace Engine
 		return vbo;
 	}
 
-	//Return the VAO for sprites. If it doesn't exist, create it.
+//	//Return the VAO for sprites. If it doesn't exist, create it.
 	GLuint Scene::getVAO()
 	{
 		GLuint vao;

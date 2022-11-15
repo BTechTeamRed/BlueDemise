@@ -8,6 +8,7 @@
 #include "GLFW/glfw3.h"
 #include <fstream>
 #include <iostream>
+#include "Engine/Utilities/Log.h"
 
 namespace Engine
 {
@@ -180,6 +181,26 @@ namespace Engine
 
 		GE_CORE_INFO("[ResourceManager] " + name + " not found.");
 		return nullptr;
+	}
+
+	//A function to get font file path
+	std::string ResourceManager::getFont(const std::string& name)
+	{
+		std::string path;
+		GE_CORE_INFO("Font name is: {0}", name);
+
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		auto fontPath = m_filePaths.find(name);
+
+		//If json path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the json.
+		if (fontPath != m_filePaths.end())
+		{
+			path = m_filePaths[name];
+		}
+
+		GE_CORE_INFO("Font path is: {0}", path);
+
+		return path;
 	}
 
 	//Based on the provided filename, return the ImageData for the texture stored within a map, or load it from the system.

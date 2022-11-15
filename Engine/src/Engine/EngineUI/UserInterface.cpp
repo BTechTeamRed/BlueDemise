@@ -1,4 +1,5 @@
 #include "UserInterface.h"
+#include "Engine/ResourceManagement/ResourceManager.h"
 
 namespace Engine
 {
@@ -60,7 +61,7 @@ namespace Engine
 	//loads a font, returns true if the font is loaded correctly
 	bool UserInterface::loadFont(const std::string& fontFilename, float fontSize, const std::string& tag)
 	{
-		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF(fontFilename.c_str(), fontSize);
+		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF(ResourceManager::getInstance()->getFont(fontFilename).c_str(), fontSize);
 
 		if (!font)
 		{
@@ -103,9 +104,6 @@ namespace Engine
 			ImGui::Spacing();
 		}
 	}
-
-
-
 
 	//creates a heading section above the UI element
 	void UserInterface::partition(const std::string& fontTag, const std::string& title, const ImVec4& color)
