@@ -29,8 +29,8 @@ namespace Engine
 
         #pragma region Entity Management
 
-        unsigned int m_fbo;
-        unsigned int textureColorbuffer;
+        //unsigned int m_fbo;
+        //unsigned int textureColorbuffer;
         unsigned int quadVAO, quadVBO;
 
 
