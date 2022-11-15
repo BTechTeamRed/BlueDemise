@@ -267,15 +267,17 @@ namespace Engine
 			}
 
 			//load shader according to vertices component (given shader is not already loaded)
-			if (shaderNorms != nullptr && shaderNorms->queueStride(vertices.stride))
+			if (shaderNorms != nullptr && shaderNorms->assignsNewStride(vertices.stride))
 			{
 				if (vertices.stride == m_quadTexCoordinates)
 				{
-					m_programId = shaderNorms->getDefaultShader();
+					m_programId = shaderNorms->getShader();
+					glUseProgram(m_programId);
 				}
 				else if (vertices.stride == m_quadCoordinates)
 				{
-					m_programId = shaderNorms->getShader("FillColor");
+					m_programId = shaderNorms->getShader(ShaderNorms::ShaderName::SN_COLOR_FILL);
+					glUseProgram(m_programId);
 				}
 			}
 
@@ -341,9 +343,8 @@ namespace Engine
 	//loads and generates shaders to be used in scene. Replace with shader wrappers as per the .h todo.
 	void Scene::loadShaders()
 	{
-		shaderNorms = new ShaderNorms();
-		shaderNorms->queueStride(m_quadTexCoordinates);//notifies shader manager of default stride
-		m_programId = shaderNorms->getDefaultShader();
+		shaderNorms = new ShaderNorms(m_quadTexCoordinates);//notifies shader manager of default stride
+		m_programId = shaderNorms->getShader();
 		glUseProgram(m_programId);
 	}
 #pragma endregion

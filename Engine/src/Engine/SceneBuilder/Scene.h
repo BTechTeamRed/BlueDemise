@@ -4,7 +4,7 @@
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Core.h"
-#include <Engine/ResourceManagement/ShaderGenerator.h>
+#include <Engine/ResourceManagement/ShaderNorms.h>
 #include <string>
 
 //Added for UI

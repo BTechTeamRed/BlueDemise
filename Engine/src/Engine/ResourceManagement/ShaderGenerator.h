@@ -3,14 +3,9 @@
 #define SHADERGENERATOR_H
 
 #include "Engine/ResourceManagement/ResourceManager.h"
-#include <string>
-#include <map>
-
-using namespace std;
 
 namespace Engine
 {
-	typedef unsigned int GLuint;
 	typedef unsigned int GLenum;
 
 	// Generates shaders that are then used for OpenGL programs 
@@ -24,21 +19,6 @@ namespace Engine
 		int m_programId;
 		int genShader(const char* source, GLenum shaderType);
 		bool requestStatus(GLuint shaderObj, GLenum status);
-	};
-
-	class ShaderNorms {
-	public:
-		ShaderNorms();
-		~ShaderNorms();
-		void addShader(string);
-		bool queueStride(int);
-		GLuint getShader(string);
-		GLuint getDefaultShader();
-
-	private:
-		map<string, GLuint> m_shaders;
-		string m_defaultShader;
-		int curStride{ -1 };
 	};
 }
 
