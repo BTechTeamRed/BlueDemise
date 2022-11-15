@@ -10,7 +10,8 @@
 
 namespace Engine
 {
-
+	Renderer* Renderer::m_pinstance{ nullptr };
+	
 	//When constructing a renderer, initialize the window and the renderer
 	//When a scene is swapped, we need to change the camera. Renderer should be treated as a singleton
 	Renderer::Renderer()
@@ -42,6 +43,20 @@ namespace Engine
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 	}
 
+	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
+	Renderer* Renderer::getInstance()
+	{
+		//To ensure this is thread safe, lock this function until it returns a value.
+		//std::lock_guard<std::mutex> lock(m_mutex);
+
+		if (m_pinstance == nullptr)
+		{
+			m_pinstance = new Renderer();
+		}
+
+		return m_pinstance;
+	}
+
 	//Initialize the Scene. Assigns camera to window for 
 	void Renderer::initializeScene(Scene& scene)
 	{
@@ -49,6 +64,12 @@ namespace Engine
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 
 		m_window.m_camera = camera;
+	}
+
+	//For when the scene must be stopped, perform cleanup
+	void Renderer::stopScene(Scene& scene) 
+	{
+		glDeleteProgram(m_programId);
 	}
 
 	//From scene, we should grab all the entities within that scene object and render each one.

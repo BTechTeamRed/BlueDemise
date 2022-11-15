@@ -15,19 +15,20 @@
 #include "Engine/Scripts/ScriptableBehavior.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
+#include "Engine/Rendering/Renderer.h"
 
 namespace Engine
 {
 
 #pragma region Runtime Functions
+	
+	//Initialize inputsystem, renderer and loop update until the window should be closed. 
+	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
-
-		//initialize the window for UI
-		if (!initializeUI()) return;
-
-		createEntities();
 		InputSystem::getInstance()->init(m_window);
+
+		Renderer::getInstance()->initializeScene(*this);
 
 		while (!glfwWindowShouldClose(m_window))
 		{
@@ -37,7 +38,8 @@ namespace Engine
 
 		onRuntimeStop();
 	}
-
+	
+	//Upon the scenes conclusion, terminate vertices objects, and call stopScene.
 	void Scene::onRuntimeStop()
 	{
 		glfwTerminate();
@@ -48,9 +50,11 @@ namespace Engine
 			glDeleteVertexArrays(1, &vertices.vaoID);
 			glDeleteBuffers(1, &vertices.vboID);
 		}
-		glDeleteProgram(m_programId);
+
+		Renderer::getInstance()->stopScene(*this);
 	}
 
+	//Per scene update loop, add scripts to entities if enabled and render the scene.
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{	
 		//get a view on entities with a script Component, and execute their onUpdate.
@@ -65,14 +69,11 @@ namespace Engine
 
 		//Main window
 		glfwMakeContextCurrent(m_window);
-		renderScene(dt);
+		
+		Renderer::getInstance()->renderScene(dt, *this);
+				
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
-
-		//UI window
-		glfwMakeContextCurrent(m_UIwindow);
-		renderUI();
-		glfwSwapBuffers(m_UIwindow);
 
 		//Execute onLateUpdate().
 		for (auto [entity, script] : entities.each())

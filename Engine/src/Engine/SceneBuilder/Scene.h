@@ -49,45 +49,7 @@ namespace Engine
 
 
     private:
-
-        #pragma region OpenGL Scene Management
-        bool initializeGL();
-        void renderScene(const DeltaTime& dt);
-		
-        //Update an MVP matrix, with the MVP generated in the function and returned.
-        glm::mat4 updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
-
-        void runEntityScripts(const DeltaTime& dt);
-        #pragma endregion
-
-		//Create quad for sprites
-        VerticesComponent createSprite();
-        VerticesComponent createRectangle();
-        void setupVertexAttribPtr(VerticesComponent& vc);
-		
-        int m_quadTexCoordinates = 5;
-		int m_quadCoordinates = 3;
-        int m_quadIndices = 6;
-
-		//Functions to create specific OpenGL buffers. Returns the ID of said buffers.
-        enum RenderableType
-        {
-            RT_Sprite,
-            RT_Rectangle
-        };
-		GLuint getVBO(RenderableType = RT_Sprite);
-        GLuint getVAO();
-        GLuint getIBO(RenderableType = RT_Rectangle);
-
-        //Set the color of the current drawable object. This would need to be run per entity/renderable. Requires the MVP and a vec4 color.
-        void setColor(glm::mat4 mvp, glm::vec4 color);
-
         std::string m_name;
-        
-        struct GLFWwindow* m_window;
-        struct GLFWwindow* m_UIwindow;
-        int m_windowWidth{1920};
-        int m_windowHeight{1080};
 
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
