@@ -20,17 +20,15 @@
 namespace Engine
 {
 
-#pragma region Runtime Functions
+#pragma region Scene Management
 	
 	//Initialize inputsystem, renderer and loop update until the window should be closed. 
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
-		InputSystem::getInstance()->init(m_window);
-
 		Renderer::getInstance()->initializeScene(*this);
 
-		while (!glfwWindowShouldClose(m_window))
+		while (!m_closeScene)
 		{
 			m_deltaTime.updateDeltaTime();
 			onRuntimeUpdate(m_deltaTime);
@@ -42,8 +40,6 @@ namespace Engine
 	//Upon the scenes conclusion, terminate vertices objects, and call stopScene.
 	void Scene::onRuntimeStop()
 	{
-		glfwTerminate();
-	
 		const auto view = getEntities<const VerticesComponent>();
 		for (auto [entity, vertices] : view.each())
 		{
@@ -62,17 +58,14 @@ namespace Engine
 		for (auto [entity, script] : entities.each())
 		{
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
-		}		
-		
-		//We have two distinct windows to manage now - one for the main scene and the UI window
-		//For each window we change the GL context, render to the window, then swap buffers
+		}
 
 		//Main window
-		glfwMakeContextCurrent(m_window);
+		//glfwMakeContextCurrent(m_window);
 		
 		Renderer::getInstance()->renderScene(dt, *this);
 				
-		glfwSwapBuffers(m_window);
+		//glfwSwapBuffers(m_window);
 		glfwPollEvents();
 
 		//Execute onLateUpdate().
@@ -83,6 +76,7 @@ namespace Engine
 
 		glfwPollEvents();
 	}
+	
 #pragma endregion
 	
 #pragma region Entity Creation

@@ -22,8 +22,10 @@ namespace Engine
     class ENGINE_API Scene
     {
     public:
+        bool m_closeScene = false;
 
         #pragma region Entity Management
+		
         // Function to create an entity and add it to the scene
         // Takes in a tag as a string for input
         Entity createEntity(std::string tag);

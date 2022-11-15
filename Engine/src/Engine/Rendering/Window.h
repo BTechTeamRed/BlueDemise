@@ -23,6 +23,8 @@ namespace Engine {
 
 		void resize(int width, int height);
 
+		GLFWwindow* getWindow() const { return m_window; }
+		
 		//Converts a vector in screenspace pixel units to worldspace units
 		glm::vec3 screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector);
 

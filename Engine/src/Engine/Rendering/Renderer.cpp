@@ -60,6 +60,8 @@ namespace Engine
 	//Initialize the Scene. Assigns camera to window for 
 	void Renderer::initializeScene(Scene& scene)
 	{
+		InputSystem::getInstance()->init(m_window.getWindow());
+		
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 
@@ -69,6 +71,8 @@ namespace Engine
 	//For when the scene must be stopped, perform cleanup
 	void Renderer::stopScene(Scene& scene) 
 	{
+		glfwTerminate();
+		
 		glDeleteProgram(m_programId);
 	}
 
@@ -79,6 +83,11 @@ namespace Engine
 		
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
+
+		if (glfwWindowShouldClose(m_window.getWindow())) 
+		{
+			scene.m_closeScene = false;
+		}
 	}
 
 	void Renderer::drawEntities(Scene& scene)
@@ -99,7 +108,6 @@ namespace Engine
 			if (scene.m_registry.all_of<TransformComponent>(entity))
 			{
 				const auto transform = scene.m_registry.get<const TransformComponent>(entity);
-				
 			}
 			
 			//Obtain MVP from Window class
@@ -109,13 +117,7 @@ namespace Engine
 			{
 				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
 				
-				if (material.texID != 0)
-				{
-					//glActiveTexture(GL_TEXTURE0 + currentBoundTextures); // Texture unit X
-					//GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is max number of binded texts(?)
-					glBindTexture(GL_TEXTURE_2D, material.texID);
-					currentBoundTextures++;
-				}
+				if (setTexture(material.texID, currentBoundTextures)){currentBoundTextures++;}
 			
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
@@ -128,16 +130,24 @@ namespace Engine
 			//Bind shader
 			glUseProgram(shaderProgram);
 
-
 			glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 			
 			glBindVertexArray(vertices.vaoID);
-
 			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
 
+	//Bind the texture to texture ID, and perform any other checks and binding 
+	bool Renderer::setTexture(GLuint textureID, int currentBoundTextures)
+	{
+		if (textureID == 0){ return false; }
+		
+		glActiveTexture(GL_TEXTURE0 + currentBoundTextures);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		return true;
+	}
+	
 	//Set the color of the current drawable object. This would need to be run per entity/renderable.
 	void Renderer::setColor(glm::mat4 mvp, glm::vec4 color)
 	{

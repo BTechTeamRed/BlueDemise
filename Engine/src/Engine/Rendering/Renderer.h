@@ -32,11 +32,13 @@ namespace Engine
 
 	private:
 		//static lock m_mutex is the lock to be used for static functions. Otherwise, m_functionlock should be utilized.
-		static std::mutex m_mutex;
+		//static std::mutex m_mutex;
 
-		void setColor(glm::mat4 mvp, glm::vec4 color);
 		Renderer();
 		~Renderer() {};
+		
+		void setColor(glm::mat4 mvp, glm::vec4 color);
+		bool setTexture(GLuint textureID, int currentBoundTextures);
 		
 		Window m_window;
 		

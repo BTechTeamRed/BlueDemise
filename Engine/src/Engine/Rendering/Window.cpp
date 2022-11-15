@@ -6,7 +6,6 @@ namespace Engine {
 	//Construct window class with a default camera component, which should be adjusted later upon scene initialization
 	Window::Window() : m_camera{ CameraComponent{} }
 	{
-
 		//Create window with GLFW, and name of "BlueDemise"
 		m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
 		if (m_window == nullptr)
@@ -50,7 +49,7 @@ namespace Engine {
 	glm::mat4 Window::getProjectionMatrix() const
 	{
 		//Viewport was a vec2. Not sure what the implementation is here.
-		return glm::ortho(0.f, m_camera.viewport.x, camera.viewport.y, 0.f, camera.nearZ, camera.farZ);
+		return glm::ortho(0.f, (float)m_windowWidth, (float)m_windowHeight, 0.f, m_camera.nearZ, m_camera.farZ);
 	}
 
 	float Window::getAspectRatio() const
