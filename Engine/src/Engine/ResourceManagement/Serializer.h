@@ -53,7 +53,7 @@ namespace Engine
 		{
 			if (component == CO_CameraComponent) return"CameraComponent";
 			if (component == CO_TransformComponent) return"TransformComponent";
-			if (component == CO_MaterialComponent) return"ColorComponent";
+			if (component == CO_MaterialComponent) return"MaterialComponent";
 			if (component == CO_AnimationComponent) return"AnimationComponent";
 			if (component == CO_VerticesComponent) return"VerticesComponent";
 			if (component == CO_ScriptComponent) return"ScriptComponent";

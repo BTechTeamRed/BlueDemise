@@ -18,19 +18,28 @@ namespace Engine
 	//When a scene is swapped, we need to change the camera. Renderer should be treated as a singleton
 	Renderer::Renderer()
 	{
-		//Adds the callback to the inputsystem for when the window is resized
-		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
-
+		//Initialize GLFW
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		
+		
+		//Initialize the window and associated functions, and make the window the current context
+		if(!m_window.initialize())
+		{
+			GE_CORE_ERROR("Failed to initialize window");
+			glfwTerminate();
+			exit(0);
+		}
 
-		//m_window.initialize();
+		//Adds the callback to the inputsystem for when the window is resized
+		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
 		
 		//Setting the icon
 		//ResourceManager::getInstance()->setAppIcon(*m_window);
 
+		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");

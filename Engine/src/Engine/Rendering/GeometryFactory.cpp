@@ -74,9 +74,9 @@ namespace Engine
 		m_sprite.stride = sizeof(float) * stride;
 		m_sprite.numIndices = sizeof(indices) / sizeof(indices[0]);
 
-		m_sprite.vaoID = GeometryFactory::getInstance()->getSpriteVAO();
-		m_sprite.vboID = GeometryFactory::getInstance()->getSpriteVBO();
-		m_sprite.iboID = GeometryFactory::getInstance()->getSpriteIBO();
+		m_sprite.vaoID = m_spriteVAO;
+		m_sprite.vboID = m_spriteVBO;
+		m_sprite.iboID = m_spriteIBO;
 	}
 
 	GLuint& GeometryFactory::getSpriteVBO()

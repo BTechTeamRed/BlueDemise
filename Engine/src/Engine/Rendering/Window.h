@@ -18,6 +18,8 @@ namespace Engine {
 	public:
 		Window();
 	
+		bool initialize();
+
 		void resize(int width, int height);
 
 		GLFWwindow* getWindow() const { return m_window; }

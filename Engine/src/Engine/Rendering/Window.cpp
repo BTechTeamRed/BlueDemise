@@ -6,15 +6,22 @@ namespace Engine {
 	//Construct window class with a default camera component, which should be adjusted later upon scene initialization
 	Window::Window()
 	{
+		
+	}
+
+	bool Window::initialize() 
+	{
 		//Create window with GLFW, and name of "BlueDemise"
 		m_window = glfwCreateWindow(m_windowWidth, m_windowHeight, "BlueDemise", nullptr, nullptr); //switch to unique ptr with deleter for RAII?
 		if (m_window == nullptr)
 		{
 			GE_CORE_ERROR("Failed to create GLFW window");
 			glfwTerminate();
+			return false;
 		}
 
 		glfwMakeContextCurrent(m_window);
+		return true;
 	}
 
 	void Window::resize(int width, int height)
