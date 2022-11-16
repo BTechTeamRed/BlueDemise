@@ -27,7 +27,8 @@ namespace Engine
 			CO_TransformComponent,
 			CO_MaterialComponent,
 			CO_AnimationComponent,
-			CO_VerticesComponent
+			CO_VerticesComponent,
+			CO_ScriptComponent
 		};
 
 		//Deserializes out into an entity
@@ -44,6 +45,7 @@ namespace Engine
 			if (component == "MaterialComponent") return CO_MaterialComponent;
 			if (component == "AnimationComponent") return CO_AnimationComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
+			if (component == "ScriptComponent") return CO_ScriptComponent;
 			return CO_Invalid;
 		}
 
@@ -54,6 +56,7 @@ namespace Engine
 			if (component == CO_MaterialComponent) return"ColorComponent";
 			if (component == CO_AnimationComponent) return"AnimationComponent";
 			if (component == CO_VerticesComponent) return"VerticesComponent";
+			if (component == CO_ScriptComponent) return"ScriptComponent";
 
 			return "";
 		}

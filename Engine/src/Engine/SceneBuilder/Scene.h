@@ -51,6 +51,9 @@ namespace Engine
 
 
     private:
+
+        void runEntityScripts(const DeltaTime& dt);
+
         std::string m_name;
 
         //main menu is the UI element that shows the game

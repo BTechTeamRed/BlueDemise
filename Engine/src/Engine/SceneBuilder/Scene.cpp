@@ -18,6 +18,8 @@
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Renderer.h"
 
+const float DT_THRESHOLD = 10;
+
 namespace Engine
 {
 
@@ -32,6 +34,7 @@ namespace Engine
 		while (!m_closeScene)
 		{
 			m_deltaTime.updateDeltaTime();
+			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
 			onRuntimeUpdate(m_deltaTime);
 		}
 
@@ -53,11 +56,19 @@ namespace Engine
 
 	//Per scene update loop, add scripts to entities if enabled and render the scene.
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
-	{	
+	{
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
 		{
+			//initialize the script instance and run OnCreate();
+			if (!script.m_instance)
+			{
+				script.m_instance = script.instantiateScript();
+				script.m_instance->m_entity = Entity{ entity, this };
+				script.m_instance->onCreate();
+			}
+
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 
@@ -79,7 +90,7 @@ namespace Engine
 	}
 	
 #pragma endregion
-	
+
 #pragma region Entity Creation
 	//Create an entity from the m_registry with the provided tag component, and return the entity.
 	Entity Scene::createEntity(std::string tag)
@@ -89,5 +100,3 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
-
-}

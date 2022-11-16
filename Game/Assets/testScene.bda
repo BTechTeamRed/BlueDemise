@@ -41,6 +41,10 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "MoveRightScript"
           }
         ],
         "tag": "triangle2"
