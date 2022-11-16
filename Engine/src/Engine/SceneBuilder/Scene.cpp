@@ -152,20 +152,18 @@ namespace Engine
 		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "Freedom_12"))
 		{
 			//Error loading font
-			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
 		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
 		{
 			//Error loading font
-			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
-//		//if (!UserInterface::loadFont("MyriadPro.otf", 12, "MyriadPro"))
-//		//{
-//		//	//Error loading font
-//		//}
-//
+		//if (!UserInterface::loadFont("Assets/MyriadPro.otf", 12, "MyriadPro"))
+		//{
+		//	//Error loading font
+		//}
+
 		const int menuHeight = 18;
 		const auto panelWidth = 0.2f * m_windowWidth;
 		const auto halfWindowHeight = 0.5f * (m_windowHeight - menuHeight);
@@ -184,25 +182,32 @@ namespace Engine
 		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, halfWindowHeight + menuHeight));
 		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[Components].setPosition(glm::uvec2(panelWidth * 3 - 1, menuHeight));
-		m_componentsPanels[Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 1, menuHeight));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 
-//		//TODO - Does this need to be read from a .json file?
-		m_componentsPanels[Components].addComponent("Transform");
-		m_componentsPanels[Components].addComponent("Camera");
-		m_componentsPanels[Components].addComponent("Color");
-		m_componentsPanels[Components].addComponent("Animation");
-		m_componentsPanels[Components].addComponent("Texture");
+		//TODO - Does this need to be read from a .json file?
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Transform");
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Camera");
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Color");
+		//m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Animation");
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Texture");
 
-		m_componentsPanels[Attributes].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
-		m_componentsPanels[Attributes].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[ActiveComponents].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
-		m_componentsPanels[ActiveComponents].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight + 0.5f * (m_windowHeight - menuHeight)));
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		m_inspectorPanel.setRegistry(&m_registry);
-//
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+
 		return true;
 
 	}
