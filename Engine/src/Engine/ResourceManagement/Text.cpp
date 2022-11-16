@@ -11,9 +11,6 @@ namespace Engine
 		Text();
 		~Text();
 
-		//freetype initialize 
-		init();
-
 	private:
 		FT_Face face;
 		FT_Library ft;
@@ -35,7 +32,6 @@ namespace Engine
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		//In this for loop, iterate through all 128 characters in the ASCll set
-		//
 		for (unsight char i = 0; i < 128; i++)
 		{
 			//load character glyph
@@ -78,6 +74,6 @@ namespace Engine
 		Characters.insert(std::pair<char, Character>(c, character));
 	}
 
-	FT_Done_Face();
-	FT_Done_FreeType();
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
 }
