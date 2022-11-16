@@ -33,9 +33,6 @@ namespace Engine {
 
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;
-		
-		//Get's the view matrix of the camera
-		glm::mat4 getViewMatrix() const;
 
 		//Get's the projection matrix of the camera
 		float getAspectRatio() const;

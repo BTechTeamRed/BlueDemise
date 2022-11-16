@@ -38,18 +38,12 @@ namespace Engine {
 		return glm::vec2(worldSpaceVector.x / m_windowWidth * frustumWidth, worldSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio);
 	}
 
-	//get position of camera in world space. Returns the view matrix
-	glm::mat4 Window::getViewMatrix() const
+	//get position of camera in world space. Returns the projection matrix
+	glm::mat4 Window::getProjectionMatrix() const
 	{
 		//Change this to use camera's proper transform component. Perhaps we can pass it as an argument? **********************
 		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
 		return m_camera.projection * glm::translate(glm::mat4(1), cameraPos);
-	}
-
-	glm::mat4 Window::getProjectionMatrix() const
-	{
-		//Viewport was a vec2. Not sure what the implementation is here.
-		return glm::ortho(0.f, (float)m_windowWidth, (float)m_windowHeight, 0.f, m_camera.nearZ, m_camera.farZ);
 	}
 
 	float Window::getAspectRatio() const

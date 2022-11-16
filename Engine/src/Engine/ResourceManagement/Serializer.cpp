@@ -5,10 +5,12 @@
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/Utilities/Log.h"
 #include "Engine/SceneBuilder/Scene.h"
+#include "Engine/Rendering/Renderer.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 
 namespace glm
 {
+	#pragma region Json Serialization
 	//templates from nlohmann. Serializes/deserializes custom types
 	void to_json(nlohmann::json& j, const vec2& vec)
 	{
@@ -56,13 +58,14 @@ namespace glm
 	{
 		mat = mat4(j.at("matrix").get<float>());
 	}
+	#pragma endregion
 }
 
 namespace Engine
 {
 	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
-		if (!out.initializeGL())
+		if (!Renderer::getInstance())
 		{
 			GE_CORE_FATAL("Failed to initialize opengl");
 			return false;
@@ -140,9 +143,8 @@ namespace Engine
 			auto c = entity.getComponent<CameraComponent>();
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_CameraComponent);
-			j["fov"] = c.fov;
-			j["projection"] = c.projection;
-			j["viewport"] = c.viewport;
+			j["aspectRatio"] = c.aspectRatio;
+			j["frustumWidth"] = c.frustumWidth;
 			j["farZ"] = c.farZ;
 			j["nearZ"] = c.nearZ;
 
@@ -161,21 +163,12 @@ namespace Engine
 			components.push_back(j);
 		}
 
-		if (entity.hasComponent<ColorComponent>())
+		if (entity.hasComponent<MaterialComponent>())
 		{
-			auto c = entity.getComponent<ColorComponent>();
+			auto c = entity.getComponent<MaterialComponent>();
 			nlohmann::json j;
-			j["name"] = parseComponentToString(CO_ColorComponent);
+			j["name"] = parseComponentToString(CO_MaterialComponent);
 			j["color"] = c.color;
-
-			components.push_back(j);
-		}
-
-		if (entity.hasComponent<TextureComponent>())
-		{
-			auto c = entity.getComponent<TextureComponent>();
-			nlohmann::json j;
-			j["name"] = parseComponentToString(CO_TextureComponent);
 			j["texName"] = c.texName;
 
 			components.push_back(j);
@@ -235,13 +228,12 @@ namespace Engine
 			{
 			case CO_CameraComponent:
 			{
-				auto fov = component["fov"].get<float>();
-				auto projection = component["projection"].get<glm::mat4>();
-				auto viewport = component["viewport"].get<glm::vec2>();
+				auto frustumWidth = component["frustumWidth"].get<float>();
+				auto aspectRatio = component["aspectRatio"].get<float>();
 				auto farZ = component["farZ"].get<float>();
 				auto nearZ = component["nearZ"].get<float>();
-
-				out.addComponent<CameraComponent>(fov, projection, viewport, farZ, nearZ);
+				
+				out.addComponent<CameraComponent>(frustumWidth, aspectRatio, farZ, nearZ);
 				break;
 			}
 			case CO_TransformComponent:
@@ -253,17 +245,14 @@ namespace Engine
 				out.addComponent<TransformComponent>(position, scale, rotation);
 				break;
 			}
-			case CO_ColorComponent:
+			case CO_MaterialComponent:
 			{
-				out.addComponent<ColorComponent>(component["color"].get<glm::vec4>());
-				break;
-			}
-			case CO_TextureComponent:
-			{
+				
 				std::string texture = component["texName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
-
-				out.addComponent<TextureComponent>(image.texID, texture);
+				
+				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
 				break;
 			}
 			case CO_VerticesComponent:

@@ -15,6 +15,7 @@
 #include "Engine/Scripts/ScriptableBehavior.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
+#include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Renderer.h"
 
 namespace Engine
@@ -88,4 +89,5 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
+
 }

@@ -17,7 +17,7 @@ namespace Engine
 		void initializeUI(Scene& scene);
 		void drawEntities(Scene& scene);
 		
-		glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection);
+		glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection);
 
 		#pragma region Singleton Instance Management
 		//Singletons should not be cloneable, this is to prevent clones.

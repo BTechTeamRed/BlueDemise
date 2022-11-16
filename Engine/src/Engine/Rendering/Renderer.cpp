@@ -1,6 +1,5 @@
 #include "Renderer.h"
 #include "Engine/SceneBuilder/Scene.h"
-#include "Engine/SceneBuilder/Components.h"
 #include "Engine/SceneBuilder/Entity.h"
 #include <Engine/SceneBuilder/InputSystem.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -111,7 +110,7 @@ namespace Engine
 			}
 			
 			//Obtain MVP from Window class
-			const glm::mat4 mvp = updateMVP(transform, m_window.getViewMatrix(), m_window.getProjectionMatrix());
+			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 			
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
@@ -160,7 +159,7 @@ namespace Engine
 	}
 	
 	//Update an MVP matrix, with the MVP generated in the function and returned.
-	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 view, glm::mat4 projection)
+	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)
 	{
 		//Setup model view matrix
 		glm::mat4 mvm = glm::mat4(1.f);
@@ -171,7 +170,7 @@ namespace Engine
 		mvm = glm::scale(mvm, transform.scale);
 
 		//Calculate MVP
-		glm::mat4 mvp = projection * view * mvm;
+		glm::mat4 mvp = projection * mvm;
 
 		return mvp;
 	}
