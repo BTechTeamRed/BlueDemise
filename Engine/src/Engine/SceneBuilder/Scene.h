@@ -123,8 +123,6 @@ namespace Engine
         #pragma region Shader Management
 		//GL IDs for various objects. 
         GLuint m_programId;
-        //Shader manager
-        ShaderNorms* shaderNorms{ nullptr };
         #pragma endregion
 
         friend class Entity;
