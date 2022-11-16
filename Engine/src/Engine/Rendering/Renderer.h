@@ -14,7 +14,6 @@ namespace Engine
 		void initializeScene(Scene& scene);
 		void stopScene(Scene& scene);
 		
-		void initializeUI(Scene& scene);
 		void drawEntities(Scene& scene);
 		
 		glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection);

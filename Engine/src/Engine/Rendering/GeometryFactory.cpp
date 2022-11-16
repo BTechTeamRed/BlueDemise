@@ -1,6 +1,12 @@
+
+#include "glad/glad.h"
 #include "GeometryFactory.h"
 
-namespace Engine {
+namespace Engine 
+{
+
+	GeometryFactory* GeometryFactory::m_instance{ nullptr };
+	
 	GeometryFactory* GeometryFactory::getInstance()
 	{
 		if (!m_instance)

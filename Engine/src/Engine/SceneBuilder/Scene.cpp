@@ -24,7 +24,7 @@ namespace Engine
 {
 
 #pragma region Scene Management
-	
+
 	//Initialize inputsystem, renderer and loop update until the window should be closed. 
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
@@ -40,7 +40,7 @@ namespace Engine
 
 		onRuntimeStop();
 	}
-	
+
 	//Upon the scenes conclusion, terminate vertices objects, and call stopScene.
 	void Scene::onRuntimeStop()
 	{
@@ -74,9 +74,9 @@ namespace Engine
 
 		//Main window
 		//glfwMakeContextCurrent(m_window);
-		
+
 		Renderer::getInstance()->renderScene(dt, *this);
-				
+
 		//glfwSwapBuffers(m_window);
 		glfwPollEvents();
 
@@ -88,7 +88,7 @@ namespace Engine
 
 		glfwPollEvents();
 	}
-	
+
 #pragma endregion
 
 #pragma region Entity Creation
@@ -100,3 +100,4 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
+}

@@ -26,7 +26,7 @@ namespace Engine
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		m_window.initialize();
+		//m_window.initialize();
 		
 		//Setting the icon
 		//ResourceManager::getInstance()->setAppIcon(*m_window);
@@ -37,6 +37,8 @@ namespace Engine
 			glfwTerminate();
 
 			throw std::runtime_error("Failed to initialize GLAD");
+			
+			exit(0);
 		}
 		
 		glfwSwapInterval(1);
@@ -177,22 +179,6 @@ namespace Engine
 
 		return mvp;
 	}
-
-	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
-	/*
-	//Define vertex attributes
-	void Scene::setupVertexAttribPtr(VerticesComponent& vc)
-	{
-		for (int i = 0; i < vc.vertexAttributes.size(); i++)
-		{
-			const auto attribute = vc.vertexAttributes[i];
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, vc.stride, (const void*)attribute.pointer);
-		}
-
-		glBindVertexArray(0);
-	}*/
-
 	#pragma endregion
 	
 }

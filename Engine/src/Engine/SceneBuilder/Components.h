@@ -4,6 +4,8 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
 #include <vector>
+#include <string>
+#include <functional>
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.

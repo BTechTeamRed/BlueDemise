@@ -14,13 +14,10 @@ namespace Engine {
 		int m_windowWidth{ 1920 };
 		int m_windowHeight{ 1080 };
 		struct GLFWwindow* m_window;
-		struct GLFWwindow* m_UIwindow;
 
 	public:
 		Window();
-
-		void initialize();
-
+	
 		void resize(int width, int height);
 
 		GLFWwindow* getWindow() const { return m_window; }
@@ -37,7 +34,8 @@ namespace Engine {
 		//Get's the projection matrix of the camera
 		float getAspectRatio() const;
 
-		CameraComponent& m_camera;
+		//Camera component is initialized with default component. This should be updated ASAP
+		CameraComponent& m_camera{ CameraComponent{} };
 		
 		friend Renderer;
 	};
