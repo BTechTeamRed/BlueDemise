@@ -10,11 +10,9 @@ namespace Engine
 	class ENGINE_API Entity
 	{
 	private:
-		static int s_totalEntities;
 		Scene* m_scene = nullptr;
 		entt::entity m_entityHandle = entt::null;
 	public:
-		static int getTotalEntities();
 
 		Entity() = default;
 		Entity(entt::entity entityHandle, Scene* scene);

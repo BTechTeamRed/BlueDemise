@@ -375,7 +375,7 @@ namespace Engine
 
 			if (tag.empty())
 			{
-				tag = "<Entity_" + std::to_string(Entity::getTotalEntities() + 1) + ">";
+				tag = "<Entity_" + std::to_string(m_registry.size() + 1) + ">";
 			}
 
 			Entity entity = createEntity(tag);
