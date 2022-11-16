@@ -6,6 +6,7 @@
 #include "Engine/Utilities/Log.h"
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/GeometryFactory.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 
 namespace glm
@@ -267,7 +268,7 @@ namespace Engine
 
 				if (component["type"] == "sprite")
 				{
-					out.addComponent<VerticesComponent>(scene.createSprite());
+					out.addComponent<VerticesComponent>(GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Sprite));
 				}
 
 				break;

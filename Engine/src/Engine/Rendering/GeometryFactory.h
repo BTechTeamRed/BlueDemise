@@ -12,23 +12,33 @@ namespace Engine {
 	class GeometryFactory
 	{
 	public:
+		enum Geometry
+		{
+			RT_Sprite
+		};
 	private:
 		/// The singleton instance
 		static GeometryFactory* m_instance;
+		VerticesComponent m_sprite;
 
-		//Buffers specialized for the sprites
-		VertexBuffer m_spriteVBO;
-		IndexBuffer m_spriteIBO;
-		VertexArray m_spriteVAO;
+		//Buffers specialized for the sprites. These would eventually be changed into the classes per buffer (VertexBuffer,IndexBuffer,VertexArray)
+		GLuint m_spriteVBO;
+		GLuint m_spriteIBO;
+		GLuint m_spriteVAO;
 	public:
 		//Gets the singleton instance
 		static GeometryFactory* getInstance();
+		VerticesComponent getVerticesComponent(Geometry geometry);
 		//Gets a reference to the sprite Vertex Buffer
-		VertexBuffer& getSpriteVBO();
+		GLuint& getSpriteVBO();
 		//Gets a reference to the sprite Index Buffer
-		IndexBuffer& getSpriteIBO();
+		GLuint& getSpriteIBO();
 		//Gets a reference to the sprite Vertex Array
-		VertexArray& getSpriteVAO();
+		GLuint& getSpriteVAO();
+
+		GLuint getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, std::vector<VertexAttribute> vertexAttributes);
+		GLuint getVAO();
+		GLuint getIBO(unsigned int* indices, VertexArray& vao);
 	private:
 		GeometryFactory();
 
