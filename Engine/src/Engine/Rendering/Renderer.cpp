@@ -1,9 +1,12 @@
+#include "glad/glad.h"
+
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Renderer.h"
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/SceneBuilder/Entity.h"
-#include <Engine/SceneBuilder/InputSystem.h>
-#include <glm/gtc/type_ptr.hpp>
-#include "glad/glad.h"
+#include "Engine/SceneBuilder/InputSystem.h"
+
 #include "Engine/Utilities/Log.h"
 
 

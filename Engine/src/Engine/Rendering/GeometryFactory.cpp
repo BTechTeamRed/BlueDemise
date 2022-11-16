@@ -117,7 +117,7 @@ namespace Engine {
 	}
 
 	//Return the IBO for sprites. If it doesn't exist, create it.
-	GLuint GeometryFactory::getIBO(unsigned int* indices, GLuint vao)
+	GLuint GeometryFactory::getIBO(unsigned int* indices, GLuint& vao)
 	{
 		GLuint ibo;
 		glGenBuffers(1, &ibo);

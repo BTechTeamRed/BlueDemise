@@ -83,6 +83,4 @@ namespace Engine
         //Made public to allow for GLFW callbacks to access entities
         entt::registry m_registry;
     };
-
-    void windowResizeCallback(GLFWwindow* window, int width, int height);
 }

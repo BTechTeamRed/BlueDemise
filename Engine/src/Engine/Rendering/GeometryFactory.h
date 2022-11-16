@@ -38,7 +38,7 @@ namespace Engine {
 
 		GLuint getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, std::vector<VertexAttribute> vertexAttributes);
 		GLuint getVAO();
-		GLuint getIBO(unsigned int* indices, VertexArray& vao);
+		GLuint getIBO(unsigned int* indices, GLuint& vao);
 	private:
 		GeometryFactory();
 
