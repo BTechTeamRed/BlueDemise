@@ -360,7 +360,7 @@ namespace Engine
 
 		//We look inside our own local entity map to search for
 		//the entity the user clicked on in the Inspector panel 
-		m_inspectorPanel.setSelectedEntity(m_entityHandles[m_hierarchyPanel.getSelectedEntity()]);
+		m_inspectorPanel.setSelectedEntity(m_hierarchyPanel.getSelectedEntity());
 
 		if (m_hierarchyPanel.isAddButtonClicked())
 		{
@@ -392,7 +392,7 @@ namespace Engine
 			auto component = m_componentsPanels[2].getSelectedComponent();
 
 			//Get the handle on the selected entity to add the component to
-			auto handle = m_entityHandles[m_hierarchyPanel.getSelectedEntity()];
+			auto handle = m_hierarchyPanel.getSelectedEntity();
 
 			if (component == "Camera")
 			{
@@ -504,8 +504,7 @@ namespace Engine
 	{
 		Entity entity(m_registry.create(), this);
 		entity.addComponent<TagComponent>(tag);
-		m_entityHandles[tag] = entity.getHandle();
-		m_hierarchyPanel.addEntity(tag);
+		m_hierarchyPanel.addEntity(tag, entity.getHandle());
 		return entity;
 	}
 #pragma endregion

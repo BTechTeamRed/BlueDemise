@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/EngineUI/UserInterface.h"
+#include "entt.h"
 
 namespace Engine
 {
@@ -12,11 +13,11 @@ namespace Engine
 
 		bool isAddButtonClicked() const;
 
-		const std::string& getSelectedEntity() const;
+		entt::entity getSelectedEntity() const;
 
 		void setFont(const std::string& font);
 
-		void addEntity(const std::string entity);
+		void addEntity(const std::string& entityTag, entt::entity entity);
 
 		virtual void show();
 
@@ -26,9 +27,9 @@ namespace Engine
 
 		std::string m_font;
 
-		std::string m_selectedEntity;
+		entt::entity m_selectedEntity{ 0 };
 
-		std::vector<std::string> m_entities;
+		std::unordered_map<std::string, entt::entity> m_entities;
 
 	};
 }
