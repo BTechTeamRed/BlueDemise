@@ -9,6 +9,13 @@ namespace Engine
 
 	public:
 
+		enum class PanelType
+		{
+			ActiveComponents,
+			Attributes,
+			Components
+		};
+
 		//constructor takes in name of panel as a parameter
 		ComponentsPanel(const std::string& name);
 

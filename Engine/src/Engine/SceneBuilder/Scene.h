@@ -135,13 +135,6 @@ namespace Engine
         //dialog box to allow user to input the tag name for an entity
         TagDialog m_tagDialog;
 
-        enum ComponentPanels
-        {
-            ActiveComponents,
-            Attributes,
-            Components
-        };
-
         DeltaTime m_deltaTime{0};
         
         //creates an array of three components panels
