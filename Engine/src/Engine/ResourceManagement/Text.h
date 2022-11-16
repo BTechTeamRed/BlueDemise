@@ -17,8 +17,6 @@
 #include <map>
 #include <string>
 
-GLuint textureID[Max_NO_TEXTURES];
-
 namespace Engine
 {
 	struct Character
@@ -41,5 +39,8 @@ namespace Engine
 
 	//draw the texture to the screen
 	//void print(const Character& ft_text, float x, float y, const char* fmt);
-	/*std::map<GLchar, Character> Characters;*/
+
+	//generate a texture and store its relevant data into a Character struct 
+	//that we add to the Characters map, all data require to render for later use
+	std::map<GLchar, Character> Characters;
 }

@@ -78,4 +78,6 @@ namespace Engine
 		Characters.insert(std::pair<char, Character>(c, character));
 	}
 
+	FT_Done_Face();
+	FT_Done_FreeType();
 }
