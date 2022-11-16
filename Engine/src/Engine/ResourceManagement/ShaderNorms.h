@@ -2,7 +2,6 @@
 #ifndef SHADERNORMS_H
 #define SHADERNORMS_H
 
-#include "Engine/ResourceManagement/ResourceManager.h"
 #include <string>
 #include <map>
 

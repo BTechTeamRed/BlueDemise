@@ -12,6 +12,7 @@
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Scripts/ScriptableBehavior.h"
+#include <Engine/ResourceManagement/ResourceManager.h>
 #include "InputSystem.h"
 
 const float DT_THRESHOLD = 10;
