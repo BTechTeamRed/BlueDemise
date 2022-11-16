@@ -152,11 +152,13 @@ namespace Engine
 		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "Freedom_12"))
 		{
 			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
 		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
 		{
 			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
 		//if (!UserInterface::loadFont("Assets/MyriadPro.otf", 12, "MyriadPro"))
@@ -200,14 +202,7 @@ namespace Engine
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		m_inspectorPanel.setRegistry(&m_registry);
-
-		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
-		{
-			//Error loading font
-			GE_CORE_ERROR("Failed to load custom fonts");
-		}
-
-
+		
 		return true;
 
 	}
