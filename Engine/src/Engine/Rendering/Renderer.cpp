@@ -7,6 +7,9 @@
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/SceneBuilder/InputSystem.h"
 
+#include "Engine/ResourceManagement/ResourceManager.h"
+#include "Engine/ResourceManagement/ShaderGenerator.h"
+
 #include "Engine/Utilities/Log.h"
 
 
@@ -113,8 +116,8 @@ namespace Engine
 		
 		for (auto [entity, vertices] : renderables.each())
 		{
-			TransformComponent transform = TransformComponent();
-			GLuint shaderProgram;
+			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {0.f,0.f,0.f} , glm::vec3 {0.f,0.f,0.f} };
+			GLuint shaderProgram = loadShaders();
 			glm::vec4 color{0.f,0.f,0.f,0.f};
 
 			//Bind Texture
@@ -145,7 +148,7 @@ namespace Engine
 
 			glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 			
-			glBindVertexArray(vertices.vaoID);
+			//glBindVertexArray(vertices.vaoID);
 			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
@@ -171,6 +174,19 @@ namespace Engine
 		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
+	
+	GLuint Renderer::loadShaders()
+	{
+
+		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
+		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
+
+		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
+
+		return shaderGenerator.getProgramId();
+	}
+
+
 	
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)

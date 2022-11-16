@@ -16,7 +16,7 @@ namespace Engine {
 		struct GLFWwindow* m_window;
 
 	public:
-		Window();
+		Window() {};
 	
 		bool initialize();
 

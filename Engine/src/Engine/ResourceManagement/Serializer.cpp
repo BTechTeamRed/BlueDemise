@@ -68,6 +68,7 @@ namespace Engine
 {
 	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
+		
 		if (!Renderer::getInstance())
 		{
 			GE_CORE_FATAL("Failed to initialize opengl");
@@ -102,11 +103,14 @@ namespace Engine
 			}
 
 			Entity entity = out.createEntity(item["tag"]);
+			
 			if (!tryDeserializeEntity(entity, item, out))
 			{
+				
 				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
+			
 			}
 		}
 		
@@ -225,6 +229,7 @@ namespace Engine
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
 	{
+		
 		//Loop through all components and deserialize each
 		for (const auto& component : entity["components"])
 		{

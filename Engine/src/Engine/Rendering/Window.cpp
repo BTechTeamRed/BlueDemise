@@ -1,14 +1,8 @@
 #include "Window.h"
 #include "Engine/Utilities/Log.h"
 
-namespace Engine {
-	
-	//Construct window class with a default camera component, which should be adjusted later upon scene initialization
-	Window::Window()
-	{
-		
-	}
-
+namespace Engine 
+{
 	bool Window::initialize() 
 	{
 		//Create window with GLFW, and name of "BlueDemise"
