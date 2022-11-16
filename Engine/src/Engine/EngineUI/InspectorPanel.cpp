@@ -13,6 +13,11 @@ namespace Engine
 		m_entityHandle = entityHandle;
 	}
 
+	void InspectorPanel::setFont(const std::string& font)
+	{
+		m_font = font;
+	}
+
 	void InspectorPanel::show()
 	{
 		ImGui::Begin("InspectorPanel", nullptr,
@@ -39,7 +44,7 @@ namespace Engine
 				auto* tag = &(m_registry->get<TagComponent>(m_entityHandle));
 				
 				//For now we use "font" as a font tag, which is ignored anyway
-				partition("Freedom_18", "Inspector - " + tag->tag, green);
+				partition(m_font, "Inspector - " + tag->tag, green);
 
 				//We must set color back to default
 				s_style->Colors[ImGuiCol_Text] = grey;
@@ -51,7 +56,7 @@ namespace Engine
 			{
 				auto* transform = &(m_registry->get<TransformComponent>(m_entityHandle));
 				
-				partition("Freedom_18", "Transform", darkGreen);
+				partition(m_font, "Transform", darkGreen);
 				
 				ImGui::SliderFloat3("Position", &transform->position.x, -25.0f, 25.0f, "%.2f");
 				ImGui::SliderFloat3("Scale", &transform->scale.x, -25.0f, 25.0f, "%.2f");
@@ -64,7 +69,7 @@ namespace Engine
 			{
 				auto* camera = &(m_registry->get<CameraComponent>(m_entityHandle));
 
-				partition("Freedom_18", "Camera", darkGreen);
+				partition(m_font, "Camera", darkGreen);
 
 				//Not sure what the min/max values should be
 				ImGui::SliderFloat("FOV", &camera->fov, 45.0f, 90.0f, "%.2f");
@@ -79,7 +84,7 @@ namespace Engine
 			{
 				auto* color = &(m_registry->get<ColorComponent>(m_entityHandle));
 
-				partition("Freedom_18", "Color", darkGreen);
+				partition(m_font, "Color", darkGreen);
 
 				ImGui::SliderFloat4("Color", &color->color.r, 0.0f, 1.0f, "%.2f");
 
@@ -90,7 +95,7 @@ namespace Engine
 			{
 				auto* texture = &(m_registry->get<TextureComponent>(m_entityHandle));
 
-				partition("Freedom_18", "Texture", darkGreen);
+				partition(m_font, "Texture", darkGreen);
 
 				std::string id = "ID: " + std::to_string(texture->texID);
 				std::string name = "Name: " + texture->texName;
@@ -105,7 +110,7 @@ namespace Engine
 			{
 				auto* animation = &(m_registry->get<AnimationComponent>(m_entityHandle));
 
-				partition("Freedom_18", "Animation", darkGreen);
+				partition(m_font, "Animation", darkGreen);
 
 				std::string id = "ID: " + std::to_string(animation->texID);
 				std::string name = "Name: " + animation->texName;

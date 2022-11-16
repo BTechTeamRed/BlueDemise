@@ -12,6 +12,11 @@ namespace Engine
 		return m_selectedEntity;
 	}
 
+	void HierarchyPanel::setFont(const std::string& font)
+	{
+		m_font = font;
+	}
+
 	void HierarchyPanel::addEntity(const std::string entity)
 	{
 		m_entities.push_back(entity);
@@ -36,7 +41,7 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Entities", grey);
+		partition(m_font, "Entities", grey);
 
 		//sets the text colour to be red
 		s_style->Colors[ImGuiCol_Text] = red;

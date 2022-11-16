@@ -14,6 +14,8 @@ namespace Engine
 
 		const std::string& getSelectedEntity() const;
 
+		void setFont(const std::string& font);
+
 		void addEntity(const std::string entity);
 
 		virtual void show();
@@ -21,6 +23,8 @@ namespace Engine
 	private:
 
 		bool m_isAddButtonClicked{ false };
+
+		std::string m_font;
 
 		std::string m_selectedEntity;
 
