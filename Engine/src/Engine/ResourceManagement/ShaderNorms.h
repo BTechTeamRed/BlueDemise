@@ -22,7 +22,6 @@ namespace Engine
 		static const ShaderName DEFAULT_SHADER_NAME;
 
 		//requires the stride of the default shader's vertices component
-		ShaderNorms();
 		~ShaderNorms();
 		ShaderNorms(ShaderNorms &other) = delete;
 		void operator=(const ShaderNorms&) = delete;
@@ -37,6 +36,7 @@ namespace Engine
 		GLuint getShader(ShaderName = DEFAULT_SHADER_NAME);
 
 	private:
+		ShaderNorms();
 		static ShaderNorms* m_singleton;
 		std::map<ShaderName, GLuint> m_shaders;
 		//used to detect any change in stride
