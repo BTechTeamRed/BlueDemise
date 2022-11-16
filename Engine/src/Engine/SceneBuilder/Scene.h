@@ -110,9 +110,6 @@ namespace Engine
         int m_windowWidth{1920};
         int m_windowHeight{1080};
 
-        //Added this to keep track of the entities created
-        std::unordered_map<std::string, entt::entity> m_entityHandles;
-
         //TODO: convert showUI flag from local to build flag
         //flag, if true: ui is rendered, if false: no ui is rendered
         bool showUI = true;
@@ -134,13 +131,6 @@ namespace Engine
 
         //dialog box to allow user to input the tag name for an entity
         TagDialog m_tagDialog;
-
-        enum ComponentPanels
-        {
-            ActiveComponents,
-            Attributes,
-            Components
-        };
 
         DeltaTime m_deltaTime{0};
         

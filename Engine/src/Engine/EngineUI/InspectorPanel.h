@@ -19,12 +19,15 @@ namespace Engine
 
 		void setRegistry(entt::registry* registry);
 
+		void setFont(const std::string& font);
+
 		void setSelectedEntity(entt::entity entityHandle);
 
 		virtual void show();
 
 	private:
 
+		std::string m_font;
 		entt::entity m_entityHandle {0};
 		entt::registry* m_registry {nullptr};
 

@@ -7,14 +7,19 @@ namespace Engine
 		return m_isAddButtonClicked;
 	}
 
-	const std::string& HierarchyPanel::getSelectedEntity() const
+	entt::entity HierarchyPanel::getSelectedEntity() const
 	{
 		return m_selectedEntity;
 	}
 
-	void HierarchyPanel::addEntity(const std::string entity)
+	void HierarchyPanel::setFont(const std::string& font)
 	{
-		m_entities.push_back(entity);
+		m_font = font;
+	}
+
+	void HierarchyPanel::addEntity(const std::string& entityTag, entt::entity entity)
+	{
+		m_entities[entityTag] = entity;
 	}
 
 	void HierarchyPanel::show()
@@ -36,7 +41,7 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Entities", grey);
+		partition(m_font, "Entities", grey);
 
 		//sets the text colour to be red
 		s_style->Colors[ImGuiCol_Text] = red;
@@ -57,9 +62,9 @@ namespace Engine
 		{
 			for (const auto& entity : m_entities)
 			{
-				if (ImGui::TreeNode(entity.c_str()))
+				if (ImGui::TreeNode(entity.first.c_str()))
 				{
-					m_selectedEntity = entity;
+					m_selectedEntity = entity.second;
 					ImGui::TreePop();
 				}
 			}
