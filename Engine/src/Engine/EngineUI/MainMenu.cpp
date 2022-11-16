@@ -2,12 +2,14 @@
 
 namespace Engine
 {
-	void MainMenu::show()
+	void MainMenu::show(unsigned int fbo)
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
 			//sets the font colour to be white
-			s_style->Colors[ImGuiCol_Text] = white;
+			//s_style->Colors[ImGuiCol_Text] = white;
+
+			m_isSaveItemClicked = false;
 
 			//Do not use else-if statements here otherwise
 			//the menu titles will not render correctly
@@ -29,6 +31,7 @@ namespace Engine
 				if (ImGui::MenuItem("Save", nullptr, nullptr))
 				{
 					//Handle menu item...
+					m_isSaveItemClicked = true;
 				}
 
 				if (ImGui::MenuItem("Save As...", nullptr, nullptr))

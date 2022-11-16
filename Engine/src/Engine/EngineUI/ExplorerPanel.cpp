@@ -8,17 +8,21 @@ namespace Engine
 		ImGui::Begin("ExplorerPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
-			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
 		//sets the position and size of the UI element
-		ImGui::SetWindowPos("ExplorerPanel", ImVec2(m_position.x, m_position.y));
+		static bool isPositionSet = false;
+		if (!isPositionSet)
+		{
+			ImGui::SetWindowPos("ExplorerPanel", ImVec2(m_position.x, m_position.y));
+			isPositionSet = true;
+		}
+
 		ImGui::SetWindowSize("ExplorerPanel", ImVec2(m_dimension.x, m_dimension.y));
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Explorer", white);
+		partition("MyriadPro_Bold_16", "Explorer", grey);
 
 		//sets the text colour to be green
 		s_style->Colors[ImGuiCol_Text] = green;
