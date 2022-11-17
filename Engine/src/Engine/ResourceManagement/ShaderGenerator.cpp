@@ -26,7 +26,7 @@ namespace Engine
 
 	ShaderGenerator::~ShaderGenerator()
 	{
-		glDeleteProgram(m_programId);
+		//glDeleteProgram(m_programId);
 	}
 
 	int ShaderGenerator::getProgramId() const
