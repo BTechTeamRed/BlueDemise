@@ -60,6 +60,16 @@
               "z": 1.0
             }
           },
+		  {
+            "texName": "SpriteSheet.png",
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent"
+          },
           {
             "name": "VerticesComponent",
             "type": "sprite"

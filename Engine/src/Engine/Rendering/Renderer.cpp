@@ -99,11 +99,11 @@ namespace Engine
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glfwSwapBuffers(m_window.getWindow());
-		
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		glfwSwapBuffers(m_window.getWindow());
+		
 		if (glfwWindowShouldClose(m_window.getWindow())) 
 		{
 			scene.m_closeScene = true;
@@ -112,7 +112,6 @@ namespace Engine
 
 	void Renderer::drawEntities(Scene& scene)
 	{
-		
 		//Get entities that contain transform & vertices & color components,
 		const auto renderables = scene.getEntities<const VerticesComponent>();
 
@@ -145,6 +144,8 @@ namespace Engine
 			
 			//Set the color of the object
 			setColor(mvp, color);
+
+			//glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
 			
 			//VAO is container for VBO
 			glBindVertexArray(vertices.vaoID);
