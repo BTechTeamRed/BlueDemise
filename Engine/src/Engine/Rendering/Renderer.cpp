@@ -51,6 +51,8 @@ namespace Engine
 			
 			exit(0);
 		}
+
+		m_window.initFrameBuffer();
 		
 		glfwSwapInterval(1);
 
@@ -100,9 +102,16 @@ namespace Engine
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		m_window.bindFrameBuffer();
 		
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
+
+		m_window.unBindFrameBuffer();
+
+		glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 		glfwSwapBuffers(m_window.getWindow());
 		

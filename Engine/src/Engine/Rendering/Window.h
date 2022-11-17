@@ -13,12 +13,19 @@ namespace Engine {
 	private:
 		int m_windowWidth{ 1920 };
 		int m_windowHeight{ 1080 };
+		GLuint m_fboID;
+		GLuint m_fboTextureID;
+		GLuint m_rboID;
 		struct GLFWwindow* m_window;
 
 	public:
 		Window() {};
 	
 		bool initialize();
+
+		void initFrameBuffer();
+		void bindFrameBuffer();
+		void unBindFrameBuffer();
 
 		void resize(int width, int height);
 
