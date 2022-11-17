@@ -187,7 +187,6 @@ namespace Engine
 	std::string ResourceManager::getFont(const std::string& name)
 	{
 		std::string path;
-		GE_CORE_INFO("Font name is: {0}", name);
 
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
 		auto fontPath = m_filePaths.find(name);
@@ -197,8 +196,6 @@ namespace Engine
 		{
 			path = m_filePaths[name];
 		}
-
-		GE_CORE_INFO("Font path is: {0}", path);
 
 		return path;
 	}

@@ -211,21 +211,7 @@ namespace Engine
 	{
 		UserInterface::shutdown();
 	}
-
-//	//Callback to update window size when it changes
-//	//TODO: Handle screen resizing
-//	void windowResizeCallback(GLFWwindow* window, int width, int height)
-//	{
-//		/*Scene* scene = reinterpret_cast<Scene*>(glfwGetWindowUserPointer(window));
-//		auto cameraView = scene->getEntities<const CameraComponent>();
-//		auto &camera = scene->m_registry.get<CameraComponent>(cameraView.back());
-//		camera.viewport.x = width;
-//		camera.viewport.y = height;*/
-//	}
-//
-//
-//
-//	//clears the window and renders all entities that need to be rendered (those with transform, vertices, color).
+	
 	void Scene::renderScene(const DeltaTime& dt)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
