@@ -22,7 +22,7 @@ namespace Engine
 	{
 
 	public:
-
+		#pragma region Structs
 		//A struct to contain all data contained within an STB image. 
 		struct ImageData
 		{
@@ -39,7 +39,8 @@ namespace Engine
 
 			GLuint texID{ 0 };
 		};
-
+		#pragma endregion
+		
 		#pragma region Singleton Instance Management
 
 		//Singletons should not be cloneable, this is to prevent clones.
@@ -58,7 +59,7 @@ namespace Engine
 		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
 
 		//Function to set icon for the application.
-		void setAppIcon(GLFWwindow&);
+		void setAppIcon(std::string appIcon, GLFWwindow* window);
 
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
@@ -108,11 +109,7 @@ namespace Engine
 		#pragma endregion
 		
 		#pragma region File Storage Variables
-						
-		//Icon related functions.
-		std::vector<std::string> m_iconPaths{ std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" ,
-													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
-						
+										
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
@@ -130,8 +127,10 @@ namespace Engine
 
 		//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
 		//This can be added to from Application/Game code for custom paths.
-		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
-													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath };
+		std::vector<std::string> m_sourcePaths{ std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath };
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions

@@ -40,7 +40,7 @@ namespace Engine
 		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
 		
 		//Setting the icon
-		//ResourceManager::getInstance()->setAppIcon(*m_window);
+		ResourceManager::getInstance()->setAppIcon("BlueDemiseIcon.png", m_window.getWindow());
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -206,8 +206,6 @@ namespace Engine
 
 		glUseProgram(shaderGenerator.getProgramId());
 	}
-
-
 	
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)

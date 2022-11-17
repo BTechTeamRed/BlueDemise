@@ -12,6 +12,8 @@
 ///	Components shouldn't have any methods that define any kind of behavior.
 namespace Engine 
 {
+	class ScriptableBehavior;
+
 	struct TagComponent
 	{
 		std::string tag;
@@ -55,7 +57,7 @@ namespace Engine
 		glm::vec2 scale;
 	};
 
-	//A component containing a vec4 of color data, RGBA.
+	//A component containing a vec4 of color data (RGBA), and a GLuint for the texture and shader used for the material.
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
@@ -115,7 +117,7 @@ namespace Engine
 
 		std::vector<VertexAttribute> vertexAttributes;
 
-		//
+		//Vertex array object, which acts as a wrapper for VBO data
 		GLuint vaoID;
 
 		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
@@ -132,8 +134,6 @@ namespace Engine
 
 		bool isSprite;
 	};
-
-	class ScriptableBehavior;
 
 	//Defines a component to create custom script actions using ScriptableBehavior
 	struct ScriptComponent
