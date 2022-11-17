@@ -10,8 +10,10 @@
 #include "Engine/EngineUI/TagDialog.h"
 #include "Engine/EngineUI/HierarchyPanel.h"
 
+
 namespace Engine
 {
+    typedef unsigned int GLuint;
     class Scene;
     class Window;
 
@@ -20,7 +22,7 @@ namespace Engine
 	public:
         bool initializeUI(Window& window, Scene& scene);
         void shutdownUI();
-        void renderUI(Scene& scene);
+        void renderUI(Scene& scene, GLuint gameFBO);
         void updateHierarchyPanel(std::string tag, Entity entity);
 
 	private:
