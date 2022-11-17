@@ -67,6 +67,9 @@ namespace Engine
 		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
 		ImageData getTexture(const std::string& name);
 
+		//Function to return File path for provided font name. Returns empty string if path not found.
+		std::string getFont(const std::string& name);
+
 		//Based on the provided spritesheet filename, return a SpriteSheet struct (with info on a spriteSheet) stored within a map, or load it from the system. Returns an empty SpriteSheet if not found. 
 		SpriteSheet getSpritesheet(const std::string& name, float spriteWidth = 0.f, float spriteHeight = 0.f);
 

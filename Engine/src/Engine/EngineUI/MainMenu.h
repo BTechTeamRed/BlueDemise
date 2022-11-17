@@ -8,9 +8,16 @@ namespace Engine
 
 	public:
 
-		virtual void show() override;
+		bool getIsSaveItemClicked()
+		{
+			return m_isSaveItemClicked;
+		}
+
+		virtual void show(unsigned int fbo = 0) override;
 
 	private:
+
+		bool m_isSaveItemClicked{ false };
 
 	};
 }

@@ -8,7 +8,7 @@ namespace Engine
 
 	public:
 
-		virtual void show() override;
+		virtual void show();
 
 	private:
 
