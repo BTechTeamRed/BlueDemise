@@ -6,10 +6,9 @@ namespace Engine
 	class Window;
 	class GamePanel : public UserInterface
 	{
-
 	public:
+		void setInitialPosition();
 		void show(const Window& window);
-
 	private:
 
 	};

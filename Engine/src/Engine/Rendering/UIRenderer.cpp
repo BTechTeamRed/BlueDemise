@@ -44,7 +44,8 @@ namespace Engine
 
 		m_gamePanel.setPosition(glm::uvec2(panelWidth + 3, menuHeight));
 		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3, halfWindowHeight));
-
+		m_gamePanel.setInitialPosition();
+		
 		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
 		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 

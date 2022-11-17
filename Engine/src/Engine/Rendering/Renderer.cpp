@@ -129,14 +129,16 @@ namespace Engine
 		//Unbind the FBO.
 		m_window.unBindFrameBuffer();
 
-		//Draw the FBO to the screen.
-		glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
 		//UI window
 		if (showUI) 
 		{
 			m_UI.renderUI(scene, m_window);
+		}
+		else
+		{
+			//Draw the FBO to the screen.
+			glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		}
 
 		//Swap the glfw buffers.
