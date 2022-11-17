@@ -32,6 +32,7 @@ namespace Engine
 		float aspectRatio = m_camera.aspectRatio;
 		return glm::vec3(screenSpaceVector.x / m_windowWidth * frustumWidth, screenSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio, 1);
 	}
+	
 	glm::vec2 Window::worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector)
 	{
 		float frustumWidth = m_camera.frustumWidth;

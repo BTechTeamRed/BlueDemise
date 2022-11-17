@@ -31,7 +31,7 @@ namespace Engine {
 		//Gets a reference to the sprite Vertex Array
 		GLuint& getSpriteVAO();
 
-		GLuint getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, std::vector<VertexAttribute> vertexAttributes);
+		GLuint getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, VerticesComponent& vertexAttributes);
 		GLuint getVAO();
 		GLuint getIBO(unsigned int* indices, GLuint& vao);
 	private:
