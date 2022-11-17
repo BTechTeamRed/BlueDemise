@@ -5,48 +5,64 @@
 
 namespace Engine
 {
-
-	class Renderer; //forward declaration
+	//Define renderer as forward declaration to ignore include until cpp
+	class Renderer;
 
 	class ENGINE_API Window
 	{
 	private:
+		//Dimensions of window
 		int m_windowWidth{ 1920 };
 		int m_windowHeight{ 1080 };
+
+		//FBO definition to render all draw calls to a single texture, for future use.
 		GLuint m_fboID;
 		GLuint m_fboTextureID;
 		GLuint m_rboID;
+
+		//GLFW window pointer, our target rendering object
 		struct GLFWwindow* m_window;
 
 	public:
 		Window() {};
-	
-		bool initialize();
 
+		//Camera component is initialized with default component. This should be updated ASAP
+		CameraComponent m_camera{ CameraComponent{} };
+		
+		#pragma region Window handling
+		//Update camera component of window when camera is changed so the window can update its projection matrix.
+		void updateCamera(CameraComponent newCamera);
+
+		//Resize the window to the given dimensions
+		void resize(int width, int height);
+
+		//Initialize the window class and return the status of initialization.
+		bool initialize();
+		#pragma endregion
+
+		#pragma region FBO handling
+		//Frame buffer handling
 		void initFrameBuffer();
 		void bindFrameBuffer();
 		void unBindFrameBuffer();
+		#pragma endregion
 
-		void resize(int width, int height);
-
-		GLFWwindow* getWindow() const { return m_window; }
-		
+		#pragma region Getters
 		//Converts a vector in screenspace pixel units to worldspace units
 		glm::vec3 screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector);
 
 		//Converts a worldspace vector to screenspace pixel units
 		glm::vec2 worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector);
 
+		//Return a pointer to the current GLFW window
+		GLFWwindow* getWindow() const { return m_window; }
+
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;
 
 		//Get's the projection matrix of the camera
 		float getAspectRatio() const;
-		
-		void updateCamera(CameraComponent newCamera);
-
-		//Camera component is initialized with default component. This should be updated ASAP
-		CameraComponent m_camera{ CameraComponent{} };
+		#pragma endregion
 		
 		friend Renderer;
 	};
