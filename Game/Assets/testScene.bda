@@ -60,6 +60,16 @@
               "z": 1.0
             }
           },
+		  {
+            "texName": "SpriteSheet.png",
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent"
+          },
           {
             "name": "VerticesComponent",
             "type": "sprite"
@@ -70,8 +80,8 @@
       {
         "components": [
           {
-            "frustumWidth": 90.0,
-            "aspectRatio": 90.0,
+            "frustumWidth": 1024.0,
+            "aspectRatio": 1.7777,
             "farZ": 100.0,
             "name": "CameraComponent",
             "nearZ": 0.10000000149011612,

@@ -42,7 +42,6 @@ namespace Engine
 		//Setting the icon
 		//ResourceManager::getInstance()->setAppIcon(*m_window);
 
-		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");
@@ -77,6 +76,9 @@ namespace Engine
 	void Renderer::initializeScene(Scene& scene)
 	{
 		InputSystem::getInstance()->init(m_window.getWindow());
+
+		GLuint shaderProgram = loadShaders();
+		glUseProgram(shaderProgram);
 		
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
@@ -100,15 +102,16 @@ namespace Engine
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		glfwSwapBuffers(m_window.getWindow());
+		
 		if (glfwWindowShouldClose(m_window.getWindow())) 
 		{
-			scene.m_closeScene = false;
+			scene.m_closeScene = true;
 		}
 	}
 
 	void Renderer::drawEntities(Scene& scene)
 	{
-		
 		//Get entities that contain transform & vertices & color components,
 		const auto renderables = scene.getEntities<const VerticesComponent>();
 
@@ -116,8 +119,7 @@ namespace Engine
 		
 		for (auto [entity, vertices] : renderables.each())
 		{
-			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {0.f,0.f,0.f} , glm::vec3 {0.f,0.f,0.f} };
-			GLuint shaderProgram = loadShaders();
+			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
 			glm::vec4 color{0.f,0.f,0.f,0.f};
 
 			//Bind Texture
@@ -137,19 +139,19 @@ namespace Engine
 			
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
-				shaderProgram = material.shaderID;
+				glUseProgram(material.shaderID);
 			}
 			
 			//Set the color of the object
 			setColor(mvp, color);
 
-			//Bind shader
-			glUseProgram(shaderProgram);
+			//glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+			
+			//VAO is container for VBO
+			glBindVertexArray(vertices.vaoID);
+			
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
 
-			glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
-			
-			//glBindVertexArray(vertices.vaoID);
-			
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
