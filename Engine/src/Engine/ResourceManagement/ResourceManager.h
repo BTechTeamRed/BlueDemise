@@ -49,7 +49,7 @@ namespace Engine
 		void operator=(const ResourceManager&) = delete;
 
 		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
+		void saveJsonFile(nlohmann::json data, std::string fileName,std::string extension = ".json", std::string path = "Assets/");
 
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
