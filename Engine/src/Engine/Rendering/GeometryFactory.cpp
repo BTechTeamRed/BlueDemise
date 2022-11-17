@@ -103,12 +103,21 @@ namespace Engine
 		{
 			const auto attribute = vertexAttributes[i];
 			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, stride, (const void*)attribute.pointer);
+			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, stride * sizeof(float), (const void*)attribute.pointer);
 		}
-		
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
-		glBindVertexArray(0);
+		float t_vertices[] =
+		{
+			// positions  // texture coords (UV coords)
+			0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+			1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+			1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+			0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+		};
+		
+		glBufferData(GL_ARRAY_BUFFER, sizeof(t_vertices), t_vertices, GL_DYNAMIC_DRAW);
+
+		//glBindVertexArray(0);
 		
 		return vbo;
 	}
@@ -128,8 +137,14 @@ namespace Engine
 		GLuint ibo;
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+		unsigned int t_indices[6] =
+		{
+			0, 1, 2,  //first triangle
+			2, 3, 0,  //second triangle
+		};
 		
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(t_indices), t_indices, GL_DYNAMIC_DRAW);
 		return ibo;
 	}
 }
