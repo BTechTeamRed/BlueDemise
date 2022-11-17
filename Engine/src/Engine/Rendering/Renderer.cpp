@@ -37,12 +37,11 @@ namespace Engine
 		}
 
 		//Adds the callback to the inputsystem for when the window is resized
-		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
+		//InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
 		
 		//Setting the icon
 		//ResourceManager::getInstance()->setAppIcon(*m_window);
 
-		
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");
@@ -99,6 +98,8 @@ namespace Engine
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+		glfwSwapBuffers(m_window.getWindow());
 		
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
