@@ -123,6 +123,12 @@ namespace Engine
 		bool isSprite;
 	};
 
+	//Entities with this component will be serialized by Serializer.cpp
+	struct SerializableComponent
+	{
+		//nothing really needed here
+	};
+
 	class ScriptableBehavior;
 
 	//Defines a component to create custom script actions using ScriptableBehavior
