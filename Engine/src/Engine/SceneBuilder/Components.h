@@ -126,7 +126,9 @@ namespace Engine
 	//Entities with this component will be serialized by Serializer.cpp
 	struct SerializableComponent
 	{
-		//nothing really needed here
+		//struct can't be empty because of how entt is built.
+		//Added smallest type as a workaround.
+		bool serializable;
 	};
 
 	class ScriptableBehavior;
