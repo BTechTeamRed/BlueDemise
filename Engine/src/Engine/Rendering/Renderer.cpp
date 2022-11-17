@@ -76,9 +76,8 @@ namespace Engine
 	void Renderer::initializeScene(Scene& scene)
 	{
 		InputSystem::getInstance()->init(m_window.getWindow());
-
-		GLuint shaderProgram = loadShaders();
-		glUseProgram(shaderProgram);
+		
+		loadShaders();
 		
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
@@ -140,7 +139,7 @@ namespace Engine
 			
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
-				glUseProgram(material.shaderID);
+				//glUseProgram(material.shaderID);
 			}
 			
 			//Set the color of the object
@@ -151,7 +150,7 @@ namespace Engine
 			//VAO is container for VBO
 			glBindVertexArray(vertices.vaoID);
 			
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
 
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
@@ -178,7 +177,7 @@ namespace Engine
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
 	
-	GLuint Renderer::loadShaders()
+	void Renderer::loadShaders()
 	{
 
 		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
@@ -186,7 +185,8 @@ namespace Engine
 
 		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
 
-		return shaderGenerator.getProgramId();
+
+		glUseProgram(shaderGenerator.getProgramId());
 	}
 
 

@@ -44,7 +44,7 @@ namespace Engine
 		int m_maxBindableTextures = 32;
 
 		static Renderer* m_pinstance;
-		GLuint loadShaders();
+		void loadShaders();
 
 		//programID stores the current used shader.
 		GLuint m_programId;

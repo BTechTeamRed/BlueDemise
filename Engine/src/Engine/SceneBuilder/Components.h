@@ -58,7 +58,7 @@ namespace Engine
 		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
 			: color(color), texID(texID), texName(texName), shaderID(shaderID) {}
 		
-		glm::vec4 color{ 0.f,0.f,0.f,0.f };
+		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
 		GLuint shaderID;
