@@ -127,6 +127,7 @@ namespace Engine
 
 		std::cout << sceneJson << std::endl;
 		//TODO: Bind serialization to GUI event once we have one.
+		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile);
 	}
 
 	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)

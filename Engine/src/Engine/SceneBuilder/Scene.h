@@ -12,6 +12,10 @@
 #include "Engine/EngineUI/EntitiesPanel.h"
 #include "Engine/EngineUI/ComponentsPanel.h"
 #include "Engine/EngineUI/MainMenu.h"
+#include "Engine/EngineUI/GamePanel.h"
+#include "Engine/EngineUI/InspectorPanel.h"
+#include "Engine/EngineUI/TagDialog.h"
+#include "Engine/EngineUI/HierarchyPanel.h"
 
 namespace Engine
 {
@@ -24,6 +28,12 @@ namespace Engine
     public:
 
         #pragma region Entity Management
+
+        //unsigned int m_fbo;
+        //unsigned int textureColorbuffer;
+        unsigned int quadVAO, quadVBO;
+
+
         // Function to create an entity and add it to the scene
         // Takes in a tag as a string for input
         Entity createEntity(std::string tag);
@@ -68,6 +78,7 @@ namespace Engine
 
         //TODO: shader wrapper so switching out between different shaders is easier
         void loadShaders();
+        GLuint loadShaders2();
         #pragma endregion
 
 		//Create quad for sprites
@@ -99,6 +110,10 @@ namespace Engine
         int m_windowWidth{1920};
         int m_windowHeight{1080};
 
+        //TODO: convert showUI flag from local to build flag
+        //flag, if true: ui is rendered, if false: no ui is rendered
+        bool showUI = true;
+
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
 
@@ -106,7 +121,16 @@ namespace Engine
         ExplorerPanel m_explorerPanel;
 
         //entities panel is the UI element that lists all the entities
-        EntitiesPanel m_entitiesPanel;
+        HierarchyPanel m_hierarchyPanel;
+
+        //inspector panel is the UI element that lists all the components for each entity
+        InspectorPanel m_inspectorPanel;
+
+        //game panel is the UI element that shows the render of the game
+        GamePanel m_gamePanel;
+
+        //dialog box to allow user to input the tag name for an entity
+        TagDialog m_tagDialog;
 
         DeltaTime m_deltaTime{0};
         
@@ -120,6 +144,7 @@ namespace Engine
 
 		//GL IDs for various objects. 
         GLuint m_programId;
+        GLuint m_programId2;
 
         friend class Entity;
         friend class Serializer;
