@@ -20,7 +20,7 @@ namespace Engine
 		const ButtonState& getButtonState() const;
 
 		virtual void update() override;
-		virtual void show(unsigned int fbo = 0) override;
+		virtual void show() override;
 
 	private:
 

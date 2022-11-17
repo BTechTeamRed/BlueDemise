@@ -58,8 +58,9 @@ namespace Engine
 		GLFWwindow* getWindow() const { return m_window; }
 
 		//Get width/height of window.
-		int getHeight();
-		int getWidth();
+		int getHeight() const { return m_windowHeight; }
+		int getWidth() const { return m_windowWidth; }
+		GLuint getFboId() const { return m_fboID;  }
 
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;

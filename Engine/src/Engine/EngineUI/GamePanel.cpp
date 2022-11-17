@@ -1,15 +1,17 @@
 #include "Engine/EngineUI/GamePanel.h"
 
+#include "Engine/Rendering/Window.h"
+
 namespace Engine
 {
-	void GamePanel::show(unsigned int fbo)
+	void GamePanel::show(const Window& window)
 	{
 
 		ImGui::Begin("GamePanel");
 		{
 			ImGui::BeginChild("GamePanel");
 			ImVec2 wsize = ImGui::GetWindowSize();
-			ImGui::Image((ImTextureID)fbo, ImVec2(1920, 1080), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)window.getFboId(), ImVec2(window.getWidth(), window.getHeight()), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::EndChild();
 		}
 

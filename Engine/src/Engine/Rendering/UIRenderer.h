@@ -3,7 +3,6 @@
 #include <array>
 #include "Engine/EngineUI/ComponentsPanel.h"
 #include "Engine/EngineUI/ExplorerPanel.h"
-#include "Engine/EngineUI/EntitiesPanel.h"
 #include "Engine/EngineUI/MainMenu.h"
 #include "Engine/EngineUI/GamePanel.h"
 #include "Engine/EngineUI/InspectorPanel.h"
@@ -13,7 +12,6 @@
 
 namespace Engine
 {
-    typedef unsigned int GLuint;
     class Scene;
     class Window;
 
@@ -22,8 +20,8 @@ namespace Engine
 	public:
         bool initializeUI(Window& window, Scene& scene);
         void shutdownUI();
-        void renderUI(Scene& scene, GLuint gameFBO);
-        void updateHierarchyPanel(std::string tag, Entity entity);
+        void renderUI(Scene& scene, const Window& window);
+        void updateHierarchyPanel(std::string tag, const Entity entity);
 
 	private:
         //creates an array of three components panels

@@ -112,15 +112,5 @@ namespace Engine
 	{
 		return m_camera.aspectRatio;
 	}
-
-	int Window::getHeight() 
-	{
-		return m_windowHeight;
-	}
-
-	int Window::getWidth() 
-	{
-		return m_windowWidth;
-	}
 #pragma endregion
 }

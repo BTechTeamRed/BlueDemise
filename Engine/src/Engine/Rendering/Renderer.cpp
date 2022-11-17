@@ -129,20 +129,19 @@ namespace Engine
 		//Unbind the FBO.
 		m_window.unBindFrameBuffer();
 
-		//UI window
-		if (showUI)
-		{
-			//glfwMakeContextCurrent(m_window.getWindow());
-			m_UI.renderUI(scene, m_window.m_fboTextureID);
-			//glfwSwapBuffers(m_window.getWindow());
-		}
-
 		//Draw the FBO to the screen.
 		glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+		//UI window
+		if (showUI) 
+		{
+			m_UI.renderUI(scene, m_window);
+		}
+
 		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());
+
 
 		//Check if the 'X' was hit on the window. If so, close the program
 		if (glfwWindowShouldClose(m_window.getWindow())) 
