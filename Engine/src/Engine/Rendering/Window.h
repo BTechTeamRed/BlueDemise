@@ -2,13 +2,13 @@
 
 #include "Engine/SceneBuilder/Entity.h"
 #include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
 
-namespace Engine {
+namespace Engine
+{
 
 	class Renderer; //forward declaration
 
-	class Window
+	class ENGINE_API Window
 	{
 	private:
 		int m_windowWidth{ 1920 };

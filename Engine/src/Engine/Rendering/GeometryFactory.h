@@ -1,14 +1,11 @@
 #pragma once
 #include <vector>
 #include <Engine/SceneBuilder/Components.h>
-namespace Engine {
+#include <Engine/Core.h>
 
-	//Temp, delete when snow implements theese classes
-	//class VertexBuffer;
-	//class IndexBuffer;
-	//class VertexArray;
-
-	class GeometryFactory
+namespace Engine
+{
+	class ENGINE_API GeometryFactory
 	{
 	public:
 		enum Geometry
@@ -16,38 +13,43 @@ namespace Engine {
 			RT_Sprite
 		};
 
+		#pragma region Singleton Instance Management
 		//Gets the singleton instance
 		static GeometryFactory* getInstance();
+
+
 		GeometryFactory(GeometryFactory& other) = delete;
 
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const GeometryFactory&) = delete;
+		#pragma endregion
 		
+		#pragma region Geometry Generation
+		//Obtain geometry based on provided geometry type. Returns a vertices component containing geometry.
 		VerticesComponent getVerticesComponent(Geometry geometry);
-		//Gets a reference to the sprite Vertex Buffer
-		GLuint& getSpriteVBO();
-		//Gets a reference to the sprite Index Buffer
-		GLuint& getSpriteIBO();
-		//Gets a reference to the sprite Vertex Array
-		GLuint& getSpriteVAO();
 
-		GLuint getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, VerticesComponent& vertexAttributes);
+		//Generate a new piece of geometry with unique VBO, VAO and IBOs based on provided vertices and indices.
+		VerticesComponent generateVerticesComponent(float vertices[], int verticesSize, float indices[], int indicesSize, GLsizei stride);
+
+		//Generate VBO/VAO/IBO based on provided data.
+		GLuint getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute> vertexAttributes);
 		GLuint getVAO();
-		GLuint getIBO(unsigned int* indices, GLuint& vao);
+		GLuint getIBO(unsigned int* indices, int indicesSize);
+		#pragma endregion
 	private:
-		/// The singleton instance
+
+		#pragma region Singleton Management
+		// The singleton instance
 		static GeometryFactory* m_instance;
-		VerticesComponent m_sprite;
-
-		//Buffers specialized for the sprites. These would eventually be changed into the classes per buffer (VertexBuffer,IndexBuffer,VertexArray)
-		GLuint m_spriteVBO;
-		GLuint m_spriteIBO;
-		GLuint m_spriteVAO;
-
 		GeometryFactory();
+		#pragma endregion
 
+		std::unordered_map<Geometry, VerticesComponent> defaultGeometry;
+
+		#pragma region Default Geometry Initialization
 		//Initializes the sprite vao, vbo, and ibo
 		void initSpriteGeometry();
+		#pragma endregion
 	};
 }
 
