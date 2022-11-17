@@ -21,9 +21,6 @@ const float DT_THRESHOLD = 10;
 
 namespace Engine
 {
-	
-	//Issues:
-	//- Sprite size is inversely porpotional to the window size (shrinking window expands sprite)
 #pragma region Runtime Functions
 	void Scene::onRuntimeStart()
 	{
@@ -163,7 +160,7 @@ namespace Engine
 
 		//if (!UserInterface::loadFont("Assets/MyriadPro.otf", 12, "MyriadPro"))
 		//{
-		//	//Error loading font
+			//Error loading font
 		//}
 
 		const int menuHeight = 18;
