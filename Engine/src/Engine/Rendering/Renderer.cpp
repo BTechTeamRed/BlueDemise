@@ -37,7 +37,7 @@ namespace Engine
 		}
 
 		//Adds the callback to the inputsystem for when the window is resized
-		//InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
+		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
 		
 		//Setting the icon
 		//ResourceManager::getInstance()->setAppIcon(*m_window);
