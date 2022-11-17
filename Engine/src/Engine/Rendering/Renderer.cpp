@@ -27,8 +27,7 @@ namespace Engine
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		
-		
-		//Initialize the window and associated functions, and make the window the current context
+		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
 			GE_CORE_ERROR("Failed to initialize window");
@@ -42,6 +41,7 @@ namespace Engine
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon("BlueDemiseIcon.png", m_window.getWindow());
 
+		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			GE_CORE_ERROR("Failed to initialize GLAD");
@@ -52,9 +52,8 @@ namespace Engine
 			exit(0);
 		}
 
+		//Initialize the frame buffer
 		m_window.initFrameBuffer();
-
-		int amongus;
 		
 		glfwSwapInterval(1);
 
@@ -65,9 +64,6 @@ namespace Engine
 	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
 	Renderer* Renderer::getInstance()
 	{
-		//To ensure this is thread safe, lock this function until it returns a value.
-		//std::lock_guard<std::mutex> lock(m_mutex);
-
 		if (m_pinstance == nullptr)
 		{
 			m_pinstance = new Renderer();
@@ -76,19 +72,22 @@ namespace Engine
 		return m_pinstance;
 	}
 
-	//Initialize the Scene. Assigns camera to window for 
+#pragma region Scene Management & Rendering
+	//Initialize the Scene. Updates m_window's camera
 	void Renderer::initializeScene(Scene& scene)
 	{
+		//Initialize input system.
 		InputSystem::getInstance()->init(m_window.getWindow());
-		
+
+		//Create default shader.
 		loadShaders();
 
 		GLint prog = 0;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &prog);
-		
+
+		//Update m_window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
-
 		m_window.updateCamera(camera);
 	}
 
@@ -105,50 +104,56 @@ namespace Engine
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		//Bind the FBO for draw calls to render to.
 		m_window.bindFrameBuffer();
-		
+
+		//Update window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
 		m_window.updateCamera(scene.m_registry.get<CameraComponent>(cameraView.back()));
 
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		//Unbind the FBO.
 		m_window.unBindFrameBuffer();
 
+		//Draw the FBO to the screen.
 		glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
+		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());
-		
+
+		//Check if the 'X' was hit on the window. If so, close the program
 		if (glfwWindowShouldClose(m_window.getWindow())) 
 		{
 			scene.m_closeScene = true;
 		}
 	}
 
+	//Draw all Entities within scene that contain a vertices component.
 	void Renderer::drawEntities(Scene& scene)
 	{
-		//Get entities that contain transform & vertices & color components,
-		const auto renderables = scene.getEntities<const VerticesComponent, const TransformComponent>();
+		//Get entities that contain vertices component.
+		const auto renderables = scene.getEntities<const VerticesComponent>();
 
+		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
-		
-		for (auto [entity, vertices, transform] : renderables.each())
+
+		//For each entitiy with a vertices component, render it.
+		for (auto [entity, vertices] : renderables.each())
 		{
+			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
-
-			//Bind Texture
-			if (scene.m_registry.all_of<TransformComponent>(entity))
-			{
-				transform = scene.m_registry.get<const TransformComponent>(entity);
-			}
-
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
 
-			//Obtain MVP from Window class
+			//Change the transform component if the entity contains one.
+			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
+			
+			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 			
-			
+			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
 				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
@@ -161,20 +166,21 @@ namespace Engine
 			}
 			
 			//Set the color of the object
-			setColor(mvp, color);
-
-			//glBindBuffer(GL_ARRAY_BUFFER, vertices.vboID);
+			setColor(mvp, color, m_programId);
 			
-			//VAO is container for VBO
+			//VAO is container for VBO, and is bound to ensure correct vertices are draw.
 			glBindVertexArray(vertices.vaoID);
 			
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertices.iboID);
 
+			//Draw currently bound objects.
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
 	}
-
-	//Bind the texture to texture ID, and perform any other checks and binding 
+#pragma endregion
+	
+#pragma region Renderable Handling
+	//Bind the provided textureID, and return true if successfully bound
 	bool Renderer::setTexture(GLuint textureID, int currentBoundTextures)
 	{
 		if (textureID == 0){ return false; }
@@ -184,27 +190,27 @@ namespace Engine
 		return true;
 	}
 	
-	//Set the color of the current drawable object. This would need to be run per entity/renderable.
-	void Renderer::setColor(glm::mat4 mvp, glm::vec4 color)
+	//Set the color of the current drawable object using the current shader. This would need to be run per entity/renderable.
+	void Renderer::setColor(glm::mat4 mvp, glm::vec4 color, GLuint shaderID)
 	{
-		GLuint colorUniformID = glGetUniformLocation(1, "col");
-		GLuint mvpID = glGetUniformLocation(1, "mvp");
+		GLuint colorUniformID = glGetUniformLocation(shaderID, "col");
+		GLuint mvpID = glGetUniformLocation(shaderID, "mvp");
 
 		//Sets color of shader
 		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
 		glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 	}
-	
+
+	//Load default shader to 'fill' object. This should be changed when multiple shaders are utilized *******************
 	void Renderer::loadShaders()
 	{
-
 		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
 		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
 
 		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
+		m_programId = shaderGenerator.getProgramId();
 
-
-		glUseProgram(shaderGenerator.getProgramId());
+		glUseProgram(m_programId);
 	}
 	
 	//Update an MVP matrix, with the MVP generated in the function and returned.
@@ -223,6 +229,6 @@ namespace Engine
 
 		return mvp;
 	}
-	#pragma endregion
+#pragma endregion
 	
 }

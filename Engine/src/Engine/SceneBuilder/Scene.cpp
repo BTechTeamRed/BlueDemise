@@ -1,19 +1,12 @@
 #include "glad/glad.h"
 #include "Engine/SceneBuilder/Scene.h"
 
-#include <glm/gtc/type_ptr.hpp>
-
 #include "Engine/Utilities/Log.h"
 
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/matrix_transform.hpp"
-
 #include "Entity.h"
-#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include "Components.h"
 #include <Engine/Utilities/DeltaTime.h>
 #include "Engine/Scripts/ScriptableBehavior.h"
-#include "Engine/ResourceManagement/ResourceManager.h"
 #include "InputSystem.h"
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Renderer.h"
@@ -22,10 +15,9 @@ const float DT_THRESHOLD = 10;
 
 namespace Engine
 {
-
 #pragma region Scene Management
 
-	//Initialize inputsystem, renderer and loop update until the window should be closed. 
+	//Initialize the scene and loop update until the window should be closed. 
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
@@ -71,12 +63,9 @@ namespace Engine
 
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
-		//Main window
-		//glfwMakeContextCurrent(m_window.getWindow());
 
 		Renderer::getInstance()->renderScene(dt, *this);
-
-		//glfwSwapBuffers(m_window);
+		
 		glfwPollEvents();
 
 		//Execute onLateUpdate().
