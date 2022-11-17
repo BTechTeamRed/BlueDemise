@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	void MainMenu::show(unsigned int fbo)
+	void MainMenu::show()
 	{
 		if (ImGui::BeginMainMenuBar())
 		{

@@ -78,13 +78,13 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
-	void UIRenderer::renderUI(Scene& scene, GLuint gameFBO)
+	void UIRenderer::renderUI(Scene& scene, const Window& window)
 	{
 		UserInterface::startUI();
 
 		m_mainMenu.show();
 
-		m_gamePanel.show(gameFBO); //This function will take in an fbo when one is created
+		m_gamePanel.show(window); //This function will take in an fbo when one is created
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();

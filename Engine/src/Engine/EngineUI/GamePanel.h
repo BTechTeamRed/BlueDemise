@@ -3,12 +3,12 @@
 
 namespace Engine
 {
+	class Window;
 	class GamePanel : public UserInterface
 	{
 
 	public:
-
-		virtual void show(unsigned int fbo = 0) override;
+		void show(const Window& window);
 
 	private:
 
