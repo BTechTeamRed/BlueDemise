@@ -78,6 +78,9 @@ namespace Engine
 		InputSystem::getInstance()->init(m_window.getWindow());
 		
 		loadShaders();
+
+		GLint prog = 0;
+		glGetIntegerv(GL_CURRENT_PROGRAM, &prog);
 		
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
@@ -112,23 +115,28 @@ namespace Engine
 	void Renderer::drawEntities(Scene& scene)
 	{
 		//Get entities that contain transform & vertices & color components,
-		const auto renderables = scene.getEntities<const VerticesComponent>();
+		const auto renderables = scene.getEntities<const VerticesComponent, const TransformComponent>();
 
 		int currentBoundTextures = 0;
 		
-		for (auto [entity, vertices] : renderables.each())
+		for (auto [entity, vertices, transform] : renderables.each())
 		{
-			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
-			glm::vec4 color{1.f,1.f,1.f,1.f};
+			//TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {100.f,100.f,100.f} , glm::vec3 {0.f,0.f,0.f} };
+			//
 
-			//Bind Texture
-			if (scene.m_registry.all_of<TransformComponent>(entity))
-			{
-				const auto transform = scene.m_registry.get<const TransformComponent>(entity);
-			}
+			////Bind Texture
+			//if (scene.m_registry.all_of<TransformComponent>(entity))
+			//{
+			//	const auto transform = scene.m_registry.get<const TransformComponent>(entity);
+			//}
+
+			glm::vec4 color{ 1.f,1.f,1.f,1.f };
 			
+			glm::mat4 pm = glm::ortho(0.f, 1920.f, 1080.f, 0.f, 0.1f, 100.f);
+			glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
+
 			//Obtain MVP from Window class
-			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+			const glm::mat4 mvp = updateMVP(transform, pm * vm);
 			
 			
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
@@ -169,8 +177,8 @@ namespace Engine
 	//Set the color of the current drawable object. This would need to be run per entity/renderable.
 	void Renderer::setColor(glm::mat4 mvp, glm::vec4 color)
 	{
-		GLuint colorUniformID = glGetUniformLocation(m_programId, "col");
-		GLuint mvpID = glGetUniformLocation(m_programId, "mvp");
+		GLuint colorUniformID = glGetUniformLocation(1, "col");
+		GLuint mvpID = glGetUniformLocation(1, "mvp");
 
 		//Sets color of shader
 		glUniform4fv(colorUniformID, 1, glm::value_ptr(color));
