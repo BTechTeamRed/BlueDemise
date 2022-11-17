@@ -57,6 +57,10 @@ namespace Engine
 		//Return a pointer to the current GLFW window
 		GLFWwindow* getWindow() const { return m_window; }
 
+		//Get width/height of window.
+		int getHeight();
+		int getWidth();
+
 		//Get's the projection matrix of the camera
 		glm::mat4 getProjectionMatrix() const;
 

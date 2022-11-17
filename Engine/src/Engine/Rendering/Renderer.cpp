@@ -26,7 +26,7 @@ namespace Engine
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		
+
 		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
@@ -72,12 +72,24 @@ namespace Engine
 		return m_pinstance;
 	}
 
+	void Renderer::updateUIHeiraarchy(std::string tag, Entity entity)
+	{
+		m_UI.updateHierarchyPanel(tag, entity);
+	}
+
 #pragma region Scene Management & Rendering
 	//Initialize the Scene. Updates m_window's camera
 	void Renderer::initializeScene(Scene& scene)
 	{
 		//Initialize input system.
 		InputSystem::getInstance()->init(m_window.getWindow());
+
+		//initialize the window for UI
+		if (showUI)
+		{
+			if (!m_UI.initializeUI(m_window, scene))
+				GE_CORE_WARN("[Renderer] UI not initialized properly.");
+		}
 
 		//Create default shader.
 		loadShaders();
@@ -123,6 +135,14 @@ namespace Engine
 
 		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());
+
+		//UI window
+		if (showUI) 
+		{
+			//glfwMakeContextCurrent(m_window.getWindow());
+			m_UI.renderUI(scene);
+			//glfwSwapBuffers(m_window.getWindow());
+		}
 
 		//Check if the 'X' was hit on the window. If so, close the program
 		if (glfwWindowShouldClose(m_window.getWindow())) 

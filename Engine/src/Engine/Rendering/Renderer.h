@@ -2,6 +2,7 @@
 #include <Engine/Utilities/DeltaTime.h>
 #include <Engine/Core.h>
 #include <Engine/Rendering/Window.h>
+#include <Engine/Rendering/UIRenderer.h>
 
 namespace Engine
 {
@@ -13,6 +14,8 @@ namespace Engine
 		void renderScene(const DeltaTime& dt, Scene& scene);
 		void initializeScene(Scene& scene);
 		void stopScene(Scene& scene);
+
+		void updateUIHeiraarchy(std::string tag, Entity entity);
 		
 		#pragma region Singleton Instance Management
 		//Singletons should not be cloneable, this is to prevent clones.
@@ -32,8 +35,12 @@ namespace Engine
 		//Renderer is a singleton, so this is the only instance of it.
 		static Renderer* m_pinstance;
 
-		//Define window that is managed by this singleton
+		//Define window and UI that is managed by this singleton
 		Window m_window;
+		UIRenderer m_UI;
+
+		//flag, if true: ui is rendered, if false: no ui is rendered
+		bool showUI = true;
 
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
