@@ -53,6 +53,8 @@ namespace Engine
 		}
 
 		m_window.initFrameBuffer();
+
+		int amongus;
 		
 		glfwSwapInterval(1);
 
@@ -87,7 +89,7 @@ namespace Engine
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 
-		m_window.m_camera = camera;
+		m_window.updateCamera(camera);
 	}
 
 	//For when the scene must be stopped, perform cleanup
@@ -105,6 +107,9 @@ namespace Engine
 
 		m_window.bindFrameBuffer();
 		
+		auto cameraView = scene.getEntities<CameraComponent>();
+		m_window.updateCamera(scene.m_registry.get<CameraComponent>(cameraView.back()));
+
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
@@ -130,22 +135,18 @@ namespace Engine
 		
 		for (auto [entity, vertices, transform] : renderables.each())
 		{
-			//TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {100.f,100.f,100.f} , glm::vec3 {0.f,0.f,0.f} };
-			//
+			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
 
-			////Bind Texture
-			//if (scene.m_registry.all_of<TransformComponent>(entity))
-			//{
-			//	const auto transform = scene.m_registry.get<const TransformComponent>(entity);
-			//}
+			//Bind Texture
+			if (scene.m_registry.all_of<TransformComponent>(entity))
+			{
+				transform = scene.m_registry.get<const TransformComponent>(entity);
+			}
 
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
-			
-			glm::mat4 pm = glm::ortho(0.f, 1920.f, 1080.f, 0.f, 0.1f, 100.f);
-			glm::mat4 vm = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, -10.f)); //position of camera in world-space
 
 			//Obtain MVP from Window class
-			const glm::mat4 mvp = updateMVP(transform, pm * vm);
+			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 			
 			
 			if (scene.m_registry.all_of<MaterialComponent>(entity))

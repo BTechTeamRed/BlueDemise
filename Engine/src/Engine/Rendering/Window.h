@@ -42,9 +42,11 @@ namespace Engine {
 
 		//Get's the projection matrix of the camera
 		float getAspectRatio() const;
+		
+		void updateCamera(CameraComponent newCamera);
 
 		//Camera component is initialized with default component. This should be updated ASAP
-		CameraComponent& m_camera{ CameraComponent{} };
+		CameraComponent m_camera{ CameraComponent{} };
 		
 		friend Renderer;
 	};

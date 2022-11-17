@@ -46,7 +46,12 @@ namespace Engine
 			GE_CORE_ERROR("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-
+	
+	void Window::updateCamera(CameraComponent newCamera)
+	{
+		m_camera = newCamera;
+	}
+		
 	void Window::resize(int width, int height)
 	{
 		//Adjust height to maintain current aspect ratio
@@ -74,7 +79,7 @@ namespace Engine
 	{
 		//Change this to use camera's proper transform component. Perhaps we can pass it as an argument? **********************
 		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
-		return m_camera.projection * glm::translate(glm::mat4(1), cameraPos);
+		return m_camera.projection * glm::translate(glm::mat4(1.f), cameraPos);
 	}
 
 	float Window::getAspectRatio() const
