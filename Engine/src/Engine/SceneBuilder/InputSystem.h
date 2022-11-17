@@ -123,7 +123,7 @@ namespace Engine
 		/// <summary>
 		/// Callback for window being resized
 		/// </summary>
-		std::function<void(int, int)> resizeCallback;
+		std::function<void(int, int)> m_resizeCallback;
 #pragma endregion
 	};
 }

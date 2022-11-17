@@ -65,7 +65,7 @@ void InputSystem::init(GLFWwindow* window)
 		//Window Resize callback
 		auto resizeFunc = [](GLFWwindow* window, int x, int y)
 		{
-			static_cast<InputSystem*>(glfwGetWindowUserPointer(window))->resizeCallback(x, y);
+			static_cast<InputSystem*>(glfwGetWindowUserPointer(window))->m_resizeCallback(x, y);
 		};
 		glfwSetWindowSizeCallback(window, resizeFunc);
 		m_isInit = true;
@@ -91,6 +91,7 @@ glm::vec2& InputSystem::getCursorPos()
 
 void Engine::InputSystem::setResizeCallback(std::function<void(int, int)> callback)
 {
+	m_resizeCallback = callback;
 }
 
 void InputSystem::setWindow(GLFWwindow* window)
