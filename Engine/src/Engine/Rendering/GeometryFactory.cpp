@@ -1,6 +1,7 @@
 
 #include "glad/glad.h"
 #include "GeometryFactory.h"
+#include "Engine/Utilities/Log.h"
 
 namespace Engine 
 {
@@ -36,7 +37,7 @@ namespace Engine
 			default:
 				break;
 		}
-
+		
 		return vc;
 	}
 
@@ -59,24 +60,23 @@ namespace Engine
 			0, 1, 2,  //first triangle
 			2, 3, 0,  //second triangle
 		};
-
-		std::vector<VertexAttribute> vertexAttributes;
-
-		vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * stride));
-
-		//Create VBO, IBO, VAO from the spriteVerticies and indicies
-		m_spriteVAO = getVAO();//VertexArray();
-		m_spriteVBO = getVBO(vertices, (GLsizei)stride, m_spriteVAO, vertexAttributes);//VertexBuffer(vertices, stride, m_spriteVAO, vertexAttributes);
-		m_spriteIBO = getIBO(indices, m_spriteVAO);//IndexBuffer(indices, m_spriteVAO);
-
+		
+		m_sprite.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
+		m_sprite.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
 
 		m_sprite.stride = sizeof(float) * stride;
-		m_sprite.numIndices = sizeof(indices) / sizeof(indices[0]);
+		m_sprite.numIndices = 6; // sizeof(indices) / sizeof(indices[0]);
+		
+		
+		//Create VBO, IBO, VAO from the spriteVerticies and indicies
+		//m_spriteVAO = getVAO();//VertexArray();
+		//m_spriteVBO = getVBO(vertices, (GLsizei)stride, m_spriteVAO, m_sprite);//VertexBuffer(vertices, stride, m_spriteVAO, vertexAttributes);
+		//m_spriteIBO = getIBO(indices, m_spriteVAO);//IndexBuffer(indices, m_spriteVAO);
 
-		m_sprite.vaoID = m_spriteVAO;
-		m_sprite.vboID = m_spriteVBO;
-		m_sprite.iboID = m_spriteIBO;
+
+		m_sprite.vaoID = getVAO();//VertexArray();
+		m_sprite.vboID = getVBO(vertices, (GLsizei)stride, m_sprite.vaoID, m_sprite);
+		m_sprite.iboID = getIBO(indices, m_sprite.vaoID);
 	}
 
 	GLuint& GeometryFactory::getSpriteVBO()
@@ -93,20 +93,20 @@ namespace Engine
 	}
 
 	//Return the VBO for sprites. If it doesn't exist, create it.
-	GLuint GeometryFactory::getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, std::vector<VertexAttribute> vertexAttributes)
+	GLuint GeometryFactory::getVBO(float* vertices, GLsizei stride, GLuint m_spriteVAO, VerticesComponent& sprite)
 	{
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 		
-		for (int i = 0; i < vertexAttributes.size(); i++)
+		for (int i = 0; i < sprite.vertexAttributes.size(); i++)
 		{
-			const auto attribute = vertexAttributes[i];
+			const auto attribute = sprite.vertexAttributes[i];
 			glEnableVertexAttribArray(i);
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, stride, (const void*)attribute.pointer);
 		}
-		
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
 		glBindVertexArray(0);
 		

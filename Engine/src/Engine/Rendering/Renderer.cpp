@@ -120,7 +120,7 @@ namespace Engine
 		for (auto [entity, vertices] : renderables.each())
 		{
 			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
-			glm::vec4 color{0.f,0.f,0.f,0.f};
+			glm::vec4 color{1.f,1.f,1.f,1.f};
 
 			//Bind Texture
 			if (scene.m_registry.all_of<TransformComponent>(entity))
@@ -130,6 +130,7 @@ namespace Engine
 			
 			//Obtain MVP from Window class
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+			
 			
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
@@ -161,7 +162,7 @@ namespace Engine
 	{
 		if (textureID == 0){ return false; }
 		
-		glActiveTexture(GL_TEXTURE0 + currentBoundTextures);
+		//glActiveTexture(GL_TEXTURE0 + currentBoundTextures);
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		return true;
 	}

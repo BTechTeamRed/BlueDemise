@@ -71,9 +71,8 @@ namespace Engine
 
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
-
 		//Main window
-		//glfwMakeContextCurrent(m_window);
+		//glfwMakeContextCurrent(m_window.getWindow());
 
 		Renderer::getInstance()->renderScene(dt, *this);
 
