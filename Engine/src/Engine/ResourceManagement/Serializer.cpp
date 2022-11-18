@@ -126,20 +126,22 @@ namespace Engine
 				Entity entity = Entity{ entityHandle, scene };
 				if (!entity) return;
 
-				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+				if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
+				{
+					entitiesJson.push_back(serializeEntity(entity, sceneFile));
+				}
 			});
 
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
-
-		std::cout << sceneJson << std::endl;
-		//TODO: Bind serialization to GUI event once we have one.
-		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile);
+		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 	}
 
 	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
 	{
+
+
 		if (!entity.hasComponent<TagComponent>())
 		{
 			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
@@ -314,6 +316,8 @@ namespace Engine
 			}
 			}
 		}
+
+		out.addComponent<SerializableComponent>();
 
 		return true;
 	}

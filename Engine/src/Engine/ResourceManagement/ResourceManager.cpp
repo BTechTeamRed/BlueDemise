@@ -97,7 +97,7 @@ namespace Engine
 
 	//Save provided json object to a provided filename. Defaults file directory to m_appAssetsPath
 	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be overwritten.
-	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path, std::string extension)
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string extension, std::string path)
 	{
 		//Create a file path from the provided path, file name, and file extension.
 		std::string fileWithPath = path + fileName + "." + extension;
