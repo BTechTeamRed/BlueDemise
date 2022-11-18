@@ -1,8 +1,6 @@
 #pragma once
 #include "GLFW/glfw3.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Engine
 {
 	//Container for the DeltaTime used in game.
