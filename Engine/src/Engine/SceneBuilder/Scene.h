@@ -6,6 +6,8 @@
 #include "Engine/Core.h"
 #include <string>
 
+#include "Engine/Physics/OctTree.h"
+
 //Added for UI
 #include <array>
 #include "Engine/EngineUI/ExplorerPanel.h"
@@ -124,6 +126,7 @@ namespace Engine
         friend class Entity;
         friend class Serializer;
 
+        OctTree* m_physics;
     public:
         // Registry is a container to hold entities
         //Made public to allow for GLFW callbacks to access entities

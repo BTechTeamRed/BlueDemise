@@ -33,7 +33,39 @@ namespace Engine
 		if (!initializeUI()) return;
 
 		InputSystem::getInstance()->init(m_window);
+		auto cameraView = getEntities<const CameraComponent>();
+		const auto camera = m_registry.get<CameraComponent>(cameraView.back());
+		glm::vec3 dimensions;
+		dimensions.x = camera.viewport.x;
+		dimensions.y = camera.viewport.y;
+		dimensions.z = 100;
+		m_physics = new OctTree(dimensions);
 
+		auto physObjs = getEntities<PhysicsComponent>();
+		for (auto [entity, box] : physObjs.each())
+		{
+			Entity* ent = new Entity(entity, this);
+			std::string tag = ent->getComponent<TagComponent>().tag;
+			m_physics->insert(ent);
+		}
+
+		glm::vec3 direction(0, 0, 1);
+		glm::vec3 position(0, 0, -100);
+		//std::list<Entity*> elist;
+		//m_physics->raycast(position, direction);
+		auto elist = m_physics->raycast(position, direction);
+		if (elist.empty())
+		{
+			GE_CORE_TRACE("Scene::onRuntimeStart: No picks");
+		}
+		else
+		{
+			for (auto ent : elist)
+			{
+				std::string tag = ent->getComponent<TagComponent>().tag;
+				GE_CORE_TRACE("Scene::onRuntimeStart: Picked - {0}", tag);
+			}
+		}
 
 		while (!glfwWindowShouldClose(m_window))
 		{

@@ -2,7 +2,7 @@
 
 #include "entt.h"
 #include "Engine/SceneBuilder/Scene.h"
-#include "Components.h"
+#include "Engine/SceneBuilder/Components.h"
 
 namespace Engine
 {

@@ -69,28 +69,28 @@ bool AABB::intersect(Ray& ray)
 bool AABB::containsPoint(glm::vec3& point)
 {
 	// Check x-axis
-	bool xCheck = point.x >= m_corners[0].x + m_position.x && 
-		point.x <= m_corners[3].x + m_position.x;
+	bool xCheck = point.x >= m_corners[LTF].x + m_position.x && 
+		point.x <= m_corners[RTF].x + m_position.x;
 	// Check y-axis
-	bool yCheck = point.y <= m_corners[0].y + m_position.y && 
-		point.y >= m_corners[4].y + m_position.y;
+	bool yCheck = point.y <= m_corners[LTF].y + m_position.y && 
+		point.y >= m_corners[LBF].y + m_position.y;
 	// Check z-axis
-	bool zCheck = point.z <= m_corners[0].z + m_position.z && 
-		point.z >= m_corners[1].z + m_position.z;
+	bool zCheck = point.z >= m_corners[LTF].z + m_position.z && 
+		point.z <= m_corners[LTB].z + m_position.z;
 	return xCheck && yCheck && zCheck;
 }
 
 bool AABB::containsBox(AABB* other)
 {
 	// Check if this AABB contains the corners of the other AABB
-	return containsPoint(other->m_corners[0] + other->m_position) 
-		&& containsPoint(other->m_corners[1] + other->m_position)
-		&& containsPoint(other->m_corners[2] + other->m_position)
-		&& containsPoint(other->m_corners[3] + other->m_position)
-		&& containsPoint(other->m_corners[4] + other->m_position)
-		&& containsPoint(other->m_corners[5] + other->m_position)
-		&& containsPoint(other->m_corners[6] + other->m_position)
-		&& containsPoint(other->m_corners[7] + other->m_position);
+	return containsPoint(other->m_corners[LTF] + other->m_position) 
+		&& containsPoint(other->m_corners[LTB] + other->m_position)
+		&& containsPoint(other->m_corners[RTF] + other->m_position)
+		&& containsPoint(other->m_corners[RTB] + other->m_position)
+		&& containsPoint(other->m_corners[LBF] + other->m_position)
+		&& containsPoint(other->m_corners[LBB] + other->m_position)
+		&& containsPoint(other->m_corners[RBF] + other->m_position)
+		&& containsPoint(other->m_corners[RBB] + other->m_position);
 }
 
 void AABB::updateDimensions(glm::vec3& dimensions)
@@ -106,22 +106,22 @@ void AABB::updatePosition(glm::vec3& position)
 
 void AABB::updateCorners()
 {
-	// Using RHR
-	float front = m_dimensions.z / 2;
-	float back = -front;
+	// Using LHR
+	float back = m_dimensions.z / 2;
+	float front = -back;
 	float right = m_dimensions.x / 2;
 	float left = -right;
 	float top = m_dimensions.y / 2;
 	float bottom = -top;
 
-	m_corners[0] = glm::vec3(left, top, front);
-	m_corners[1] = glm::vec3(left, top, back);
-	m_corners[2] = glm::vec3(right, top, front);
-	m_corners[3] = glm::vec3(right, top, back);
-	m_corners[4] = glm::vec3(left, bottom, front);
-	m_corners[5] = glm::vec3(left, bottom, back);
-	m_corners[6] = glm::vec3(right, bottom, front);
-	m_corners[7] = glm::vec3(right, bottom, back);
+	m_corners[LTF] = glm::vec3(left, top, front);
+	m_corners[LTB] = glm::vec3(left, top, back);
+	m_corners[RTF] = glm::vec3(right, top, front);
+	m_corners[RTB] = glm::vec3(right, top, back);
+	m_corners[LBF] = glm::vec3(left, bottom, front);
+	m_corners[LBB] = glm::vec3(left, bottom, back);
+	m_corners[RBF] = glm::vec3(right, bottom, front);
+	m_corners[RBB] = glm::vec3(right, bottom, back);
 }
 
 glm::vec3& AABB::getDimensions()

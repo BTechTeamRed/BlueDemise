@@ -29,7 +29,8 @@ namespace Engine
 			CO_TextureComponent,
 			CO_AnimationComponent,
 			CO_VerticesComponent,
-			CO_ScriptComponent
+			CO_ScriptComponent,
+			CO_PhysicsComponent
 		};
 
 		//Deserializes out into an entity
@@ -48,6 +49,7 @@ namespace Engine
 			if (component == "AnimationComponent") return CO_AnimationComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
 			if (component == "ScriptComponent") return CO_ScriptComponent;
+			if (component == "PhysicsComponent") return CO_PhysicsComponent;
 			return CO_Invalid;
 		}
 
@@ -60,6 +62,7 @@ namespace Engine
 			if (component == CO_AnimationComponent) return"AnimationComponent";
 			if (component == CO_VerticesComponent) return"VerticesComponent";
 			if (component == CO_ScriptComponent) return"ScriptComponent";
+			if (component == CO_PhysicsComponent) return"PhysicsComponent";
 
 			return "";
 		}
