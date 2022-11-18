@@ -116,7 +116,7 @@ namespace Engine
 	}
 	
 	//Obtain icon at filepath stored in this class, then set the icon for the provided window.
-	void ResourceManager::setAppIcon(std::string appIcon, GLFWwindow* window)
+	void ResourceManager::setAppIcon(std::string& appIcon, GLFWwindow* window)
 	{
 		ImageData img;
 		

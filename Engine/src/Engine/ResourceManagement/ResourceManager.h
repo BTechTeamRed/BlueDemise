@@ -59,7 +59,7 @@ namespace Engine
 		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
 
 		//Function to set icon for the application.
-		void setAppIcon(std::string appIcon, GLFWwindow* window);
+		void setAppIcon(std::string& appIcon, GLFWwindow* window);
 
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);

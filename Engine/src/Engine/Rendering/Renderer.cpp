@@ -39,7 +39,7 @@ namespace Engine
 		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
 		
 		//Setting the icon
-		ResourceManager::getInstance()->setAppIcon("BlueDemiseIcon.png", m_window.getWindow());
+		ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", m_window.getWindow());
 
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -85,7 +85,7 @@ namespace Engine
 		InputSystem::getInstance()->init(m_window.getWindow());
 
 		//initialize the window for UI
-		if (showUI)
+		if (m_showUI)
 		{
 			if (!m_UI.initializeUI(m_window, scene))
 				GE_CORE_WARN("[Renderer] UI not initialized properly.");
@@ -130,7 +130,7 @@ namespace Engine
 		m_window.unBindFrameBuffer();
 
 		//UI window
-		if (showUI) 
+		if (m_showUI) 
 		{
 			m_UI.renderUI(scene, m_window);
 		}
@@ -165,7 +165,7 @@ namespace Engine
 		for (auto [entity, vertices] : renderables.each())
 		{
 			//Set a default transform component and color if the object does not contain one.
-			TransformComponent transform{ glm::vec3 {0.f,0.f,0.f}, glm::vec3 {1.f,1.f,1.f} , glm::vec3 {0.f,0.f,0.f} };
+			TransformComponent transform;
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
 
 			//Change the transform component if the entity contains one.

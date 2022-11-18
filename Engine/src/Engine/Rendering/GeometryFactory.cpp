@@ -29,11 +29,11 @@ namespace Engine
 	//Return geometry based on provided geometry type.
 	VerticesComponent GeometryFactory::getVerticesComponent(Geometry geometry)
 	{
-		return defaultGeometry[geometry];
+		return m_defaultGeometry[geometry];
 	}
 
 	//Return the VBO for sprites. If it doesn't exist, create it.
-	GLuint GeometryFactory::getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute> vertexAttributes)
+	GLuint GeometryFactory::getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute>& vertexAttributes)
 	{
 		GLuint vbo;
 		glGenBuffers(1, &vbo);
@@ -108,7 +108,7 @@ namespace Engine
 		m_sprite.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, m_sprite.vertexAttributes);
 		m_sprite.iboID = getIBO(indices, sizeof(indices));
 
-		defaultGeometry.insert(std::pair(RT_Sprite, m_sprite));
+		m_defaultGeometry.insert(std::pair(RT_Sprite, m_sprite));
 	}
 #pragma endregion
 }

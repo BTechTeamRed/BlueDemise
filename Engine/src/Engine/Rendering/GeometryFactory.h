@@ -32,7 +32,7 @@ namespace Engine
 		VerticesComponent generateVerticesComponent(float vertices[], int verticesSize, float indices[], int indicesSize, GLsizei stride);
 
 		//Generate VBO/VAO/IBO based on provided data.
-		GLuint getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute> vertexAttributes);
+		GLuint getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute>& vertexAttributes);
 		GLuint getVAO();
 		GLuint getIBO(unsigned int* indices, int indicesSize);
 		#pragma endregion
@@ -44,7 +44,7 @@ namespace Engine
 		GeometryFactory();
 		#pragma endregion
 
-		std::unordered_map<Geometry, VerticesComponent> defaultGeometry;
+		std::unordered_map<Geometry, VerticesComponent> m_defaultGeometry;
 
 		#pragma region Default Geometry Initialization
 		//Initializes the sprite vao, vbo, and ibo
