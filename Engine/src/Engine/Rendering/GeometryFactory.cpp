@@ -67,12 +67,6 @@ namespace Engine
 		glGenBuffers(1, &ibo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		unsigned int t_indices[6] =
-		{
-			0, 1, 2,  //first triangle
-			2, 3, 0,  //second triangle
-		};
-
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_DYNAMIC_DRAW);
 		return ibo;
 	}
