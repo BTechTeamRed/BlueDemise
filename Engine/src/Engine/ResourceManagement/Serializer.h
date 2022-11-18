@@ -25,10 +25,11 @@ namespace Engine
 			CO_Invalid,
 			CO_CameraComponent,
 			CO_TransformComponent,
-			CO_ColorComponent,
-			CO_TextureComponent,
+			CO_MaterialComponent,
 			CO_AnimationComponent,
-			CO_VerticesComponent
+			CO_VerticesComponent,
+			CO_SerializableComponent,
+			CO_ScriptComponent
 		};
 
 		//Deserializes out into an entity
@@ -42,10 +43,11 @@ namespace Engine
 		{
 			if (component == "CameraComponent") return CO_CameraComponent;
 			if (component == "TransformComponent") return CO_TransformComponent;
-			if (component == "ColorComponent") return CO_ColorComponent;
-			if (component == "TextureComponent") return CO_TextureComponent;
+			if (component == "MaterialComponent") return CO_MaterialComponent;
 			if (component == "AnimationComponent") return CO_AnimationComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
+			if (component == "SerializableComponent") return CO_SerializableComponent;
+			if (component == "ScriptComponent") return CO_ScriptComponent;
 			return CO_Invalid;
 		}
 
@@ -53,10 +55,11 @@ namespace Engine
 		{
 			if (component == CO_CameraComponent) return"CameraComponent";
 			if (component == CO_TransformComponent) return"TransformComponent";
-			if (component == CO_ColorComponent) return"ColorComponent";
-			if (component == CO_TextureComponent) return"TextureComponent";
+			if (component == CO_MaterialComponent) return"MaterialComponent";
 			if (component == CO_AnimationComponent) return"AnimationComponent";
 			if (component == CO_VerticesComponent) return"VerticesComponent";
+			if (component == CO_SerializableComponent) return"SerializableComponent";
+			if (component == CO_ScriptComponent) return"ScriptComponent";
 
 			return "";
 		}

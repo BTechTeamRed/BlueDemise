@@ -1,6 +1,7 @@
+#include "glad/glad.h"
+
 #include <Engine/ResourceManagement/ShaderGenerator.h>
 #include "Engine/Utilities/Log.h"
-#include "glad/glad.h"
 
 namespace Engine
 {
@@ -25,7 +26,7 @@ namespace Engine
 
 	ShaderGenerator::~ShaderGenerator()
 	{
-		glDeleteProgram(m_programId);
+		//glDeleteProgram(m_programId);
 	}
 
 	int ShaderGenerator::getProgramId() const

@@ -2,12 +2,15 @@
 #ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
 
+#include "glad/glad.h"
+
 #include "ResourceManager.h"
 #include "stb_image.h"
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "Engine/Rendering/Renderer.h"
 #include <fstream>
 #include <iostream>
+#include "Engine/Utilities/Log.h"
 
 namespace Engine
 {
@@ -94,7 +97,7 @@ namespace Engine
 
 	//Save provided json object to a provided filename. Defaults file directory to m_appAssetsPath
 	//If the provided file name does not exist, it will be created. Otherwise, the existing file will be overwritten.
-	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string path, std::string extension)
+	void ResourceManager::saveJsonFile(nlohmann::json data, std::string fileName, std::string extension, std::string path)
 	{
 		//Create a file path from the provided path, file name, and file extension.
 		std::string fileWithPath = path + fileName + "." + extension;
@@ -112,27 +115,43 @@ namespace Engine
 		}
 	}
 	
-	//Obtain icon at filepath stored in this class, then return icon as GLFW image.
-	void ResourceManager::setAppIcon(GLFWwindow& window)
+	//Obtain icon at filepath stored in this class, then set the icon for the provided window.
+	void ResourceManager::setAppIcon(std::string& appIcon, GLFWwindow* window)
 	{
-		for (auto path : m_iconPaths)
+		ImageData img;
+		
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		auto imagePath = m_filePaths.find(appIcon);
+
+		//If image path is found (should be loaded into m_filePaths, currently upon initialization), load, then set app icon.
+		if (imagePath == m_filePaths.end())
 		{
-			if (std::filesystem::exists(path))
-			{
-				GE_CORE_INFO("[ResourceManager] Icon being set to {0}", path);
-
-				GLFWimage images[1];
-
-				//Create a GLFW image and load the icon into it.
-				images[0].pixels = stbi_load(path.c_str(), &images[0].width, &images[0].height, 0, 4);
-
-				glfwSetWindowIcon(&window, 1, images);
-				stbi_image_free(images[0].pixels);
-				return;
-			}
+			GE_CORE_WARN("[ResourceManager] Could not find icon of name {0}.", appIcon);
+			return;
 		}
 
-		GE_CORE_ERROR("Icon does not exists in any paths");
+		std::string path = m_filePaths[appIcon];
+		std::string extension = path.substr(path.find_last_of('.') + 1);
+
+		//Ensure the file is an image file
+		if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
+		{
+
+			GE_CORE_INFO("[ResourceManager] Icon being set to {0}", appIcon);
+
+			GLFWimage images[1];
+
+			//Create a GLFW image and load the icon into it.
+			images[0].pixels = stbi_load(path.c_str(), &images[0].width, &images[0].height, 0, 4);
+
+			glfwSetWindowIcon(window, 1, images);
+			stbi_image_free(images[0].pixels);
+		}
+		else 
+		{
+			GE_CORE_WARN("[ResourceManager] Icon extension not supported for {0}", appIcon);
+		}
+		
 	}
 #pragma endregion
 	
@@ -180,6 +199,23 @@ namespace Engine
 
 		GE_CORE_INFO("[ResourceManager] " + name + " not found.");
 		return nullptr;
+	}
+
+	//A function to get font file path
+	std::string ResourceManager::getFont(const std::string& name)
+	{
+		std::string path;
+
+		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
+		auto fontPath = m_filePaths.find(name);
+
+		//If json path is found (should be loaded into m_filePaths, currently upon initialization), load, store, then return the json.
+		if (fontPath != m_filePaths.end())
+		{
+			path = m_filePaths[name];
+		}
+
+		return path;
 	}
 
 	//Based on the provided filename, return the ImageData for the texture stored within a map, or load it from the system.

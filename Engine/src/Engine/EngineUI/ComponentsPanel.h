@@ -9,14 +9,35 @@ namespace Engine
 
 	public:
 
+		enum class PanelType
+		{
+			ActiveComponents,
+			Attributes,
+			Components
+		};
+
 		//constructor takes in name of panel as a parameter
 		ComponentsPanel(const std::string& name);
 
-		virtual void show() override;
+		virtual ~ComponentsPanel() {}
+
+		bool isAddButtonClicked() const;
+
+		const std::string& getSelectedComponent() const;
+
+		void addComponent(const std::string& component);
+
+		virtual void show();
 
 	private:
 
+		bool m_isAddButtonClicked{ false };
+
 		std::string m_name;
+
+		std::string m_selectedComponent;
+
+		std::vector<std::string> m_components;
 
 	};
 }

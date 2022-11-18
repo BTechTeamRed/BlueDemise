@@ -24,6 +24,14 @@ _deps
 #CMake files for CLion
 .cmake/
 
+#script serialization and pre-processor
+Engine/src/Engine/Scripts/*.h
+Engine/src/Engine/Scripts/*.cpp
+Engine/src/Engine/ResourceManagement/ScriptSerializer.cpp
+
+#Gui
+Game/imgui.ini
+
 # GLFW specific files
 thirdparty/glfw3/docs/Doxyfile
 thirdparty/glfw3/docs/html
