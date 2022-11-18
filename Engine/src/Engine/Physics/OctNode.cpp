@@ -95,24 +95,24 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 	{
 		GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Attempting children", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
 		//TODO: refine check using math and refactor
-		//int child = getChild(bounds->getPosition());
-		//if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
-		//{
-		//	//
-		//	GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-		//	inserted = m_children[child]->insert(entity, component);
-		//}
-		bool found = false;
-		for (int i = 0; i < 8 && !found; ++i)
+		int child = getChild(bounds->getPosition());
+		if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 		{
-			// Check if child contains the component
-			if (m_children[i]->getAABB()->containsBox(bounds))
-			{
-				GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				found = true;
-				inserted = m_children[i]->insert(entity, component);
-			}
+			//
+			GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+			inserted = m_children[child]->insert(entity, component);
 		}
+		//bool found = false;
+		//for (int i = 0; i < 8 && !found; ++i)
+		//{
+		//	// Check if child contains the component
+		//	if (m_children[i]->getAABB()->containsBox(bounds))
+		//	{
+		//		GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found {6}", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, i);
+		//		found = true;
+		//		inserted = m_children[i]->insert(entity, component);
+		//	}
+		//}
 	}
 	// Insert into self if item is within node
 	if (!inserted && m_bounds->containsBox(bounds))
@@ -204,29 +204,29 @@ void OctNode::rebalance()
 					compSize.z < maxChildSize.z)
 			{
 				GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Attempting insertion of {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				//int child = getChild(bounds->getPosition());
-				//if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
-				//{
-				//	//
-				//	GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				//	if (m_children[child]->insert(ent.first, ent.second))
-				//	{
-				//		removal.push_back(ent);
-				//	}
-				//}
-				// More child checking code to refactor
-				for (int i = LTF; i <= RBB; i++)
+				int child = getChild(bounds->getPosition());
+				if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 				{
 					//
-					if (m_children[i]->getAABB()->containsBox(bounds))
+					GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child {7}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
+					if (m_children[child]->insert(ent.first, ent.second))
 					{
-						GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-						if (m_children[i]->insert(ent.first, ent.second))
-						{
-							removal.push_back(ent);
-						}
+						removal.push_back(ent);
 					}
 				}
+				// More child checking code to refactor
+				//for (int i = LTF; i <= RBB; i++)
+				//{
+				//	//
+				//	if (m_children[i]->getAABB()->containsBox(bounds))
+				//	{
+				//		GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+				//		if (m_children[i]->insert(ent.first, ent.second))
+				//		{
+				//			removal.push_back(ent);
+				//		}
+				//	}
+				//}
 			}
 		}
 		// Remove inserted entities
@@ -247,40 +247,39 @@ int OctNode::getChild(glm::vec3& position)
 	if (delta.x == 0 || delta.y == 0 || delta.z == 0)
 	{
 	}
-	else if (delta.x < 0 && delta.y > 0 && delta.z < 0)
+	else if (delta.x < 0 && delta.y > 0 && delta.z > 0)
 	{
 		child = LTF;
 	}
-	else if (delta.x < 0 && delta.y > 0 && delta.z > 0)
+	else if (delta.x < 0 && delta.y > 0 && delta.z < 0)
 	{
 		child = LTB;
 	}
-	else if (delta.x > 0 && delta.y > 0 && delta.z < 0)
+	else if (delta.x > 0 && delta.y > 0 && delta.z > 0)
 	{
 		child = RTF;
 	}
-	else if (delta.x > 0 && delta.y > 0 && delta.z > 0)
+	else if (delta.x > 0 && delta.y > 0 && delta.z < 0)
 	{
 		child = RTB;
 	}
-	else if (delta.x < 0 && delta.y < 0 && delta.z < 0)
+	else if (delta.x < 0 && delta.y < 0 && delta.z > 0)
 	{
 		child = LBF;
 	}
-	else if (delta.x < 0 && delta.y < 0 && delta.z > 0)
+	else if (delta.x < 0 && delta.y < 0 && delta.z < 0)
 	{
 		child = LBB;
 	}
-	else if (delta.x > 0 && delta.y < 0 && delta.z < 0)
+	else if (delta.x > 0 && delta.y < 0 && delta.z > 0)
 	{
 		child = RBF;
 	}
-	else if (delta.x > 0 && delta.y < 0 && delta.z > 0)
+	else if (delta.x > 0 && delta.y < 0 && delta.z < 0)
 	{
 		child = RBB;
 	}
-	GE_CORE_TRACE("OctNode::getChild: delta: {0} {1} {2}, child: {3}", delta.x, delta.y, delta.z, child);
-
+	
 	return child;
 }
 
