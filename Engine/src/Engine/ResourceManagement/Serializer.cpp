@@ -117,7 +117,7 @@ namespace Engine
 		return true;
 	}
 
-	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
+	std::string Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
@@ -135,6 +135,9 @@ namespace Engine
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
+		std::cout << sceneJson << std::endl;
+		return sceneJson.dump();
+		//TODO: Bind serialization to GUI event once we have one.
 		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 	}
 

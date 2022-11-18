@@ -17,7 +17,7 @@ namespace Engine
 		static bool tryDeserializeScene(Scene& out, const std::string& sceneFile);
 
 		//Serializes scene into a json file in sceneFile
-		static void serializeScene(Scene* scene, const std::string& sceneFile);
+		static std::string serializeScene(Scene* scene, const std::string& sceneFile);
 	private:
 
 		enum Components
