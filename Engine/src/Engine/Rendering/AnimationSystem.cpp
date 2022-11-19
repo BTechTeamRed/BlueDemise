@@ -1,5 +1,43 @@
 #include "AnimationSystem.h"
 
+namespace Engine
+{
+	AnimationSystem::AnimationSystem()
+	{
+	}
+
+	AnimationSystem::~AnimationSystem()
+	{
+	}
+
+	void AnimationSystem::playAnimation(AnimationType animType, int animate)
+	{
+		switch (animType)
+		{
+			case RT_LoopRow:
+			{
+
+
+			}
+			default:
+			{
+
+
+			}
+		}
+	}
+	
+
+	void AnimationSystem::changeFrame(int frame)
+	{
+		
+	}
+
+
+	void AnimationSystem::updateUVCoords()
+	{
+		
+	}
 /*
 	void prepareAnimations(Scene& scene)
 	{
@@ -43,3 +81,4 @@
 		}
 
 	}*/
+}

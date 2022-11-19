@@ -13,6 +13,20 @@
 namespace Engine 
 {
 	class ScriptableBehavior;
+	
+	//Not component, just container for vertex attribute data format
+	struct VertexAttribute
+	{
+		VertexAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei pointer)
+			: index(index), size(size), type(type), normalized(normalized), pointer(pointer), vbo(-1) {}
+
+		GLuint index;
+		GLint size;
+		GLenum type;
+		GLboolean normalized;
+		GLsizei pointer;
+		GLuint vbo;
+	};
 
 	struct TagComponent
 	{
@@ -48,7 +62,8 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
-	struct FixedScreenTransformComponent {
+	struct FixedScreenTransformComponent
+	{
 		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
 			: position(position), scale(scale)
 		{
@@ -92,20 +107,6 @@ namespace Engine
 		float frameRate;
 		float texWidthFraction;
 		float texHeightFraction;
-	};
-
-	//Not component, just container for vertex attribute data format
-	struct VertexAttribute 
-	{
-		VertexAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei pointer) 
-			: index(index), size(size), type(type), normalized(normalized), pointer(pointer), vbo(-1) {}
-
-		GLuint index;
-		GLint size;
-		GLenum type;
-		GLboolean normalized;
-		GLsizei pointer;
-		GLuint vbo;
 	};
 
 	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
