@@ -83,14 +83,14 @@ bool AABB::containsPoint(glm::vec3& point)
 bool AABB::containsBox(AABB* other)
 {
 	// Check if this AABB contains the corners of the other AABB
-	return containsPoint(other->m_corners[LTF] + other->m_position) 
-		&& containsPoint(other->m_corners[LTB] + other->m_position)
-		&& containsPoint(other->m_corners[RTF] + other->m_position)
-		&& containsPoint(other->m_corners[RTB] + other->m_position)
-		&& containsPoint(other->m_corners[LBF] + other->m_position)
-		&& containsPoint(other->m_corners[LBB] + other->m_position)
-		&& containsPoint(other->m_corners[RBF] + other->m_position)
-		&& containsPoint(other->m_corners[RBB] + other->m_position);
+	return containsPoint(other->getCorner(LTF) + other->getPosition()) 
+		&& containsPoint(other->getCorner(LTB) + other->getPosition())
+		&& containsPoint(other->getCorner(RTF) + other->getPosition())
+		&& containsPoint(other->getCorner(RBF) + other->getPosition())
+		&& containsPoint(other->getCorner(LTB) + other->getPosition())
+		&& containsPoint(other->getCorner(LBB) + other->getPosition())
+		&& containsPoint(other->getCorner(RTB) + other->getPosition())
+		&& containsPoint(other->getCorner(RBB) + other->getPosition());
 }
 
 void AABB::updateDimensions(glm::vec3& dimensions)
@@ -102,6 +102,9 @@ void AABB::updateDimensions(glm::vec3& dimensions)
 void AABB::updatePosition(glm::vec3& position)
 {
 	m_position = position;
+	/*m_position.x = position.x;
+	m_position.y = position.y;
+	m_position.z = position.z;*/
 }
 
 void AABB::updateCorners()
@@ -122,6 +125,11 @@ void AABB::updateCorners()
 	m_corners[LBB] = glm::vec3(left, bottom, back);
 	m_corners[RBF] = glm::vec3(right, bottom, front);
 	m_corners[RBB] = glm::vec3(right, bottom, back);
+}
+
+glm::vec3 AABB::getCorner(Corner corner)
+{
+	return m_corners[corner];
 }
 
 glm::vec3& AABB::getDimensions()

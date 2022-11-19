@@ -45,15 +45,13 @@ namespace Engine
 		for (auto [entity, box] : physObjs.each())
 		{
 			Entity* ent = new Entity(entity, this);
-			std::string tag = ent->getComponent<TagComponent>().tag;
 			m_physics->insert(ent);
 		}
 
 		glm::vec3 direction(0, 0, 1);
-		glm::vec3 position(0, 0, -100);
-		//std::list<Entity*> elist;
-		//m_physics->raycast(position, direction);
+		glm::vec3 position(950, 540, -100);
 		auto elist = m_physics->raycast(position, direction);
+		GE_CORE_TRACE("Scene::onRuntimeStart: pick 1");
 		if (elist.empty())
 		{
 			GE_CORE_TRACE("Scene::onRuntimeStart: No picks");
@@ -64,6 +62,60 @@ namespace Engine
 			{
 				std::string tag = ent->getComponent<TagComponent>().tag;
 				GE_CORE_TRACE("Scene::onRuntimeStart: Picked - {0}", tag);
+				if (ent->hasComponent<PhysicsComponent>())
+				{
+					GE_CORE_TRACE("Scene::onRuntimeStart: {0} has physics", tag);
+				}
+				// I have no idea why this works and not the other way
+				// Don't question it
+				auto phys = ent->getComponent<PhysicsComponent>().boundingBox;
+				glm::vec3 pos = phys->getPosition();
+				GE_CORE_TRACE("Scene::onRuntimeStart: start {0} {1} {2}", pos.x, pos.y, pos.z);
+				phys->updatePosition(glm::vec3(-495, 270, 1));
+				pos = phys->getPosition();
+				GE_CORE_TRACE("Scene::onRuntimeStart: end {0} {1} {2}", pos.x, pos.y, pos.z);
+			}
+		}
+		m_physics->update();
+
+		position = glm::vec3(0, 0, -100);
+		elist = m_physics->raycast(position, direction);
+		GE_CORE_TRACE("Scene::onRuntimeStart: pick 2");
+		if (elist.empty())
+		{
+			GE_CORE_TRACE("Scene::onRuntimeStart: No picks");
+		}
+		else
+		{
+			for (auto ent : elist)
+			{
+				std::string tag = ent->getComponent<TagComponent>().tag;
+				GE_CORE_TRACE("Scene::onRuntimeStart: Picked - {0}", tag);
+				if (ent->hasComponent<PhysicsComponent>())
+				{
+					GE_CORE_TRACE("Scene::onRuntimeStart: {0} has physics", tag);
+				}
+				m_physics->remove(ent);
+			}
+		}
+
+		elist = m_physics->raycast(position, direction);
+		GE_CORE_TRACE("Scene::onRuntimeStart: pick 3");
+		if (elist.empty())
+		{
+			GE_CORE_TRACE("Scene::onRuntimeStart: No picks");
+		}
+		else
+		{
+			for (auto ent : elist)
+			{
+				std::string tag = ent->getComponent<TagComponent>().tag;
+				GE_CORE_TRACE("Scene::onRuntimeStart: Picked - {0}", tag);
+				if (ent->hasComponent<PhysicsComponent>())
+				{
+					GE_CORE_TRACE("Scene::onRuntimeStart: {0} has physics", tag);
+				}
+				m_physics->remove(ent);
 			}
 		}
 

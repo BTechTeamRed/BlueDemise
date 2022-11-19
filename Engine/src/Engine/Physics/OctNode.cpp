@@ -31,6 +31,7 @@ OctNode::~OctNode()
 void OctNode::update()
 {
 	//TODO: implement checking for appropriate entity storage (no oct tree violations)
+	// Update children first
 	if (m_children)
 	{
 		for (int i = LTF; i <= RBB; ++i)
@@ -38,6 +39,10 @@ void OctNode::update()
 			m_children[i]->update();
 		}
 	}
+	// Check integregity of self
+	glm::vec3 dim = m_bounds->getDimensions();
+	glm::vec3 pos = m_bounds->getPosition();
+	GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::update: Updating node", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
 	rebalance();
 }
 
@@ -46,22 +51,30 @@ std::list<Entity*> OctNode::raycast(Ray& ray)
 	//TODO: raycasting code
 	// Can probably be made more efficent by casting ray against child's bounding box
 	std::list<Entity*> picks;
+	glm::vec3 dim = m_bounds->getDimensions();
+	glm::vec3 pos = m_bounds->getPosition();
 
 	// Check self
 	for (auto ent : m_entityList)
 	{
+		std::string tag = ent.first->getComponent<TagComponent>().tag;
+
+		GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::raycast: {0}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
 		if (ent.second->boundingBox->intersect(ray))
 		{
+			GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::raycast: Picked {0}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
 			picks.push_back(ent.first);
 		}
 	}
 	// Check children
-	//TODO: refactor to check only relevant children
 	for (int i = LTF; m_children && i <= RBB; ++i)
 	{
-		for (auto pick : m_children[i]->raycast(ray))
+		if (m_children[i]->getAABB()->intersect(ray))
 		{
-			picks.push_back(pick);
+			for (auto pick : m_children[i]->raycast(ray))
+			{
+				picks.push_back(pick);
+			}
 		}
 	}
 
@@ -99,20 +112,9 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 		if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 		{
 			//
-			GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+			GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child {6} found", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
 			inserted = m_children[child]->insert(entity, component);
 		}
-		//bool found = false;
-		//for (int i = 0; i < 8 && !found; ++i)
-		//{
-		//	// Check if child contains the component
-		//	if (m_children[i]->getAABB()->containsBox(bounds))
-		//	{
-		//		GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::insert: Child found {6}", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, i);
-		//		found = true;
-		//		inserted = m_children[i]->insert(entity, component);
-		//	}
-		//}
 	}
 	// Insert into self if item is within node
 	if (!inserted && m_bounds->containsBox(bounds))
@@ -128,6 +130,30 @@ bool OctNode::remove(Entity* entity, PhysicsComponent* component)
 {
 	//TODO: removal code
 	bool removed = false;
+	std::string tag = entity->getComponent<TagComponent>().tag;
+	glm::vec3 dim = m_bounds->getDimensions();
+	glm::vec3 pos = m_bounds->getPosition();
+	GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::remove: Attempting removal of {0}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+	int child = getChild(component->boundingBox->getPosition());
+	// DFS
+	if (m_children && child > -1)
+	{
+		GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::remove: Attempting removal of {0} from child {7}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
+		removed = m_children[child]->remove(entity, component);
+	}
+	// Remove from self
+	if(!removed)
+	{
+		for (auto it = m_entityList.begin(); !removed && it != m_entityList.end(); ++it)
+		{
+			removed = it->first->getHandle() == entity->getHandle();
+		}
+		if (removed)
+		{
+			GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::remove: Removing {0}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+			m_entityList.remove(std::make_pair(entity, component));
+		}
+	}
 
 	return removed;
 }
@@ -161,80 +187,64 @@ void OctNode::subdivide()
 		m_children = new OctNode * [8];
 		for (int i = LTF; i <= RBB; ++i)
 		{
-			m_children[i] = new OctNode(dimensions, centers[i]);
+			m_children[i] = new OctNode(dimensions, centers[i], this);
 		}
 	}
 }
 
 void OctNode::rebalance()
 {
-	//TODO: rebalance code
-	if (m_children)
-	{
-		glm::vec3 dim = m_bounds->getDimensions();
-		glm::vec3 pos = m_bounds->getPosition();
-		GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::rebalance: Rebalancing", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-		PhysicsComponent* component;
-		AABB* bounds;
+	glm::vec3 dim = m_bounds->getDimensions();
+	glm::vec3 pos = m_bounds->getPosition();
+	GE_CORE_TRACE("node d: {0} {1} {2}, p: {3} {4} {5} OctNode::rebalance: Rebalancing", dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+	PhysicsComponent* component;
+	AABB* bounds;
 
-		glm::vec3 maxChildSize = m_bounds->getDimensions();
-		glm::vec3 compSize;
-		std::list<std::pair<Entity*, PhysicsComponent*>> removal;
-		std::string tag;
-		// Go through entities and see if we can push entities down tree
-		bool moved;
-		for (auto ent : m_entityList)
+	glm::vec3 maxChildSize = m_bounds->getDimensions();
+	glm::vec3 compSize;
+	std::list<std::pair<Entity*, PhysicsComponent*>> removal;
+	std::string tag;
+	// Go through entities and see if we can push entities down tree
+	bool moved;
+	for (auto ent : m_entityList)
+	{
+		tag = ent.first->getComponent<TagComponent>().tag;
+		moved = false;
+		component = ent.second;
+		bounds = component->boundingBox;
+		compSize = bounds->getDimensions();
+		// Push to parent
+		if (m_parent && !m_bounds->containsBox(bounds))
 		{
-			tag = ent.first->getComponent<TagComponent>().tag;
-			moved = false;
-			component = ent.second;
-			bounds = component->boundingBox;
-			compSize = bounds->getDimensions();
-			// Push to parent
-			if (m_parent && !m_bounds->containsBox(bounds))
+			GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into parent", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
+			m_parent->insert(ent.first, ent.second);
+			// Whether inserted or not, cull entity from tree
+			removal.push_back(ent);
+		}
+		// Push to children if child sized
+		else if (m_children &&
+				compSize.x < maxChildSize.x &&
+				compSize.y < maxChildSize.y &&
+				compSize.z < maxChildSize.z)
+		{
+			int child = getChild(bounds->getPosition());
+			GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Attempting insertion of {0} into child {7}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
+			if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 			{
-				GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into parent", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				m_parent->insert(ent.first, ent.second);
-				// Whether inserted or not, cull entity from tree
-				removal.push_back(ent);
-			}
-			// Push to children
-			else if (compSize.x < maxChildSize.x &&
-					compSize.y < maxChildSize.y &&
-					compSize.z < maxChildSize.z)
-			{
-				GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Attempting insertion of {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				int child = getChild(bounds->getPosition());
-				if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
+				//
+				GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child {7}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
+				if (m_children[child]->insert(ent.first, ent.second))
 				{
-					//
-					GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child {7}", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z, child);
-					if (m_children[child]->insert(ent.first, ent.second))
-					{
-						removal.push_back(ent);
-					}
+					removal.push_back(ent);
 				}
-				// More child checking code to refactor
-				//for (int i = LTF; i <= RBB; i++)
-				//{
-				//	//
-				//	if (m_children[i]->getAABB()->containsBox(bounds))
-				//	{
-				//		GE_CORE_TRACE("node d: {1} {2} {3}, p: {4} {5} {6} OctNode::rebalance: Inserting {0} into child", tag, dim.x, dim.y, dim.z, pos.x, pos.y, pos.z);
-				//		if (m_children[i]->insert(ent.first, ent.second))
-				//		{
-				//			removal.push_back(ent);
-				//		}
-				//	}
-				//}
 			}
 		}
-		// Remove inserted entities
-		for (auto pair : removal)
-		{
-			m_entityList.remove(pair);
-			//remove(pair.first, pair.second);
-		}
+	}
+	// Remove inserted entities
+	for (auto pair : removal)
+	{
+		m_entityList.remove(pair);
+		//remove(pair.first, pair.second);
 	}
 }
 

@@ -18,7 +18,8 @@ namespace Engine
 
 		OctTree(OctTree& other) = delete;
 		void operator=(OctTree& other) = delete;
-
+		
+		void update();
 		std::list<Entity*> raycast(Ray& ray);
 		std::list<Entity*> raycast(glm::vec3& origin, glm::vec3& vector);
 		bool insert(Entity* entity);

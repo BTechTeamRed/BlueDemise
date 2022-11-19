@@ -30,6 +30,7 @@ namespace Engine
 		bool containsBox(AABB* other);
 		void updateDimensions(glm::vec3& dimensions);
 		void updatePosition(glm::vec3& position);
+		glm::vec3 getCorner(Corner corner);
 		glm::vec3& getDimensions();
 		glm::vec3& getPosition();
 	protected:

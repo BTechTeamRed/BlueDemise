@@ -17,6 +17,12 @@ OctTree::~OctTree()
 	}
 }
 
+void OctTree::update()
+{
+	GE_CORE_TRACE("OctTree::update: Updating");
+	m_root->update();
+}
+
 std::list<Entity*> OctTree::raycast(Ray& ray)
 {
 	return m_root->raycast(ray);
