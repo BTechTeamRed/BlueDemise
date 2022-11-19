@@ -19,7 +19,6 @@ OctTree::~OctTree()
 
 void OctTree::update()
 {
-	GE_CORE_TRACE("OctTree::update: Updating");
 	m_root->update();
 }
 
@@ -44,9 +43,6 @@ bool OctTree::insert(Entity* entity)
 		component = &entity->getComponent<PhysicsComponent>();
 		inserted = m_root->insert(entity, component);
 	}
-	std::string tag = entity->getComponent<TagComponent>().tag;
-	std::string result = inserted ? "OctTree::insert: {0} inserted" : "OctTree::insert: {0} failed insertion";
-	GE_CORE_TRACE(result, tag);
 
 	return inserted;
 }

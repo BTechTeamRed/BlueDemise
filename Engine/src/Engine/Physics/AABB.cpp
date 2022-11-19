@@ -83,14 +83,14 @@ bool AABB::containsPoint(glm::vec3& point)
 bool AABB::containsBox(AABB* other)
 {
 	// Check if this AABB contains the corners of the other AABB
-	return containsPoint(other->getCorner(LTF) + other->getPosition()) 
-		&& containsPoint(other->getCorner(LTB) + other->getPosition())
-		&& containsPoint(other->getCorner(RTF) + other->getPosition())
-		&& containsPoint(other->getCorner(RBF) + other->getPosition())
-		&& containsPoint(other->getCorner(LTB) + other->getPosition())
-		&& containsPoint(other->getCorner(LBB) + other->getPosition())
-		&& containsPoint(other->getCorner(RTB) + other->getPosition())
-		&& containsPoint(other->getCorner(RBB) + other->getPosition());
+	return containsPoint(other->m_corners[LTF] + other->m_position)
+		&& containsPoint(other->m_corners[LTB] + other->m_position)
+		&& containsPoint(other->m_corners[RTF] + other->m_position)
+		&& containsPoint(other->m_corners[RTB] + other->m_position)
+		&& containsPoint(other->m_corners[LBF] + other->m_position)
+		&& containsPoint(other->m_corners[LBB] + other->m_position)
+		&& containsPoint(other->m_corners[RBF] + other->m_position)
+		&& containsPoint(other->m_corners[RBB] + other->m_position);
 }
 
 void AABB::updateDimensions(glm::vec3& dimensions)
