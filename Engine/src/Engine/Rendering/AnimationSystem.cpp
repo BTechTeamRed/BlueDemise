@@ -1,9 +1,15 @@
 #include "AnimationSystem.h"
+#include "Engine/ResourceManagement/ResourceManager.h"
 
 namespace Engine
 {
-	AnimationSystem::AnimationSystem()
+	AnimationSystem::AnimationSystem(ResourceManager::ImageData textureData, int numPerRow, int spritesOnSheet)
 	{
+		m_textureID = textureData.texID;
+		m_spriteWidthFraction = textureData.width / textureData.width;
+		m_spriteHeightFraction = textureData.height / textureData.height;
+		m_spritesPerRow = numPerRow;
+
 	}
 
 	AnimationSystem::~AnimationSystem()
@@ -16,13 +22,11 @@ namespace Engine
 		{
 			case RT_LoopRow:
 			{
-
-
+				
 			}
 			default:
 			{
-
-
+				
 			}
 		}
 	}

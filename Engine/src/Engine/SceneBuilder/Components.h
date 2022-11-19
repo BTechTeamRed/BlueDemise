@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include "Engine/Rendering/AnimationSystem.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -89,24 +90,15 @@ namespace Engine
 	struct AnimationComponent
 	{
 		AnimationComponent() = default;
-		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow, int spritesOnSheet)
-			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet) { }
-		
-		std::vector<glm::vec2> texCoords;
+		AnimationComponent(GLuint texID, std::string spritesheetName, float spritesheetWidth, float spritesheetHeight, int numPerRow, int spritesOnSheet)
+			: spritesheetName(spritesheetName)
+		{
+			animator = new AnimationSystem(texID, spritesheetWidth, spritesheetHeight, numPerRow, spritesOnSheet);
+		}
 
-		GLuint texID;
-		std::string texName;
+		AnimationSystem* animator;
 
-		int currentIndex = 0;
-		int numPerRow;
-		int spritesOnSheet;
-		
-		double animationSpeed = 0.3;
-
-		float deltaTime;
-		float frameRate;
-		float texWidthFraction;
-		float texHeightFraction;
+		std::string spritesheetName;
 	};
 
 	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
