@@ -24,11 +24,6 @@ namespace Engine
 		glDeleteShader(fragmentShader);
 	}
 
-	ShaderGenerator::~ShaderGenerator()
-	{
-		//glDeleteProgram(m_programId);
-	}
-
 	int ShaderGenerator::getProgramId() const
 	{
 		return m_programId;
