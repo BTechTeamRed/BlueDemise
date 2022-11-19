@@ -29,7 +29,7 @@ namespace Engine
 			CO_AnimationComponent,
 			CO_VerticesComponent,
 			CO_SerializableComponent,
-			CO_ScriptComponent
+			CO_ScriptComponent,
 			CO_PhysicsComponent
 		};
 
