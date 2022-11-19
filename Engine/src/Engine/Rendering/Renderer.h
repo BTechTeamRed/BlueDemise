@@ -45,6 +45,8 @@ namespace Engine
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
 
+		//Define the stride of different components (textures, flat colors, gradients)
+		int m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates;
 		//programID stores the current used shader (Should be changed in the future when multiple shaders are utilized. Perhaps this will be the 'default' shader. *************
 		GLuint m_programId;
 		//Load the default shader in, and store it to m_programId. Should be changed when multiple shaders are utilized. **********************

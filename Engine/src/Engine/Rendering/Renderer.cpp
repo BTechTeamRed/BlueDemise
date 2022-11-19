@@ -8,7 +8,7 @@
 #include "Engine/SceneBuilder/InputSystem.h"
 
 #include "Engine/ResourceManagement/ResourceManager.h"
-#include "Engine/ResourceManagement/ShaderGenerator.h"
+#include "Engine/ResourceManagement/ShaderNorms.h"
 
 #include "Engine/Utilities/Log.h"
 
@@ -164,6 +164,9 @@ namespace Engine
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
+			//updates the shader based on vertices component's stride value
+			ShaderNorms::getInstance()->update(vertices.stride, m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
+
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
@@ -225,12 +228,11 @@ namespace Engine
 	//Load default shader to 'fill' object. This should be changed when multiple shaders are utilized *******************
 	void Renderer::loadShaders()
 	{
-		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
-		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
+		m_textureCoordinates = 5;
+		m_colorCoordinates = 3;
+		m_gradientCoordinates = 6;
 
-		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
-		m_programId = shaderGenerator.getProgramId();
-
+		m_programId = ShaderNorms::getInstance()->getShader();
 		glUseProgram(m_programId);
 	}
 	
