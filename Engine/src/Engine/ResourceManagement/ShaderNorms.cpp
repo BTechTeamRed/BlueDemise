@@ -36,6 +36,8 @@ namespace Engine
 		return m_singleton;
 	}
 
+	//tests the current renderable or vbo being rendered with the previous. If the current
+	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
 	void ShaderNorms::update(int stride, int& textureCoordinates, int& colorCoordinates,
 		int& gradientCoordinates, GLuint& programId)
 	{
