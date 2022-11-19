@@ -228,10 +228,7 @@ namespace Engine
 	//Load default shader to 'fill' object. This should be changed when multiple shaders are utilized *******************
 	void Renderer::loadShaders()
 	{
-		m_textureCoordinates = 5;
-		m_colorCoordinates = 3;
-		m_gradientCoordinates = 6;
-
+		ShaderNorms::getInstance()->assignsNewStride(m_textureCoordinates);
 		m_programId = ShaderNorms::getInstance()->getShader();
 		glUseProgram(m_programId);
 	}

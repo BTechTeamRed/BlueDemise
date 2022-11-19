@@ -46,7 +46,7 @@ namespace Engine
 		int m_maxBindableTextures = 31;
 
 		//Define the stride of different components (textures, flat colors, gradients)
-		int m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates;
+		int m_textureCoordinates{ 5 }, m_colorCoordinates{ 3 }, m_gradientCoordinates{ 6 };
 		//programID stores the current used shader (Should be changed in the future when multiple shaders are utilized. Perhaps this will be the 'default' shader. *************
 		GLuint m_programId;
 		//Load the default shader in, and store it to m_programId. Should be changed when multiple shaders are utilized. **********************
