@@ -9,7 +9,9 @@ namespace Engine
 
 	public:
 
-		virtual void show() override;
+		virtual ~ExplorerPanel() {}
+
+		virtual void show();
 
 	private:
 

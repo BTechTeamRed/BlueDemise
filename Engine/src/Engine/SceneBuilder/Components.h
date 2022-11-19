@@ -1,5 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
 #include "GLFW/glfw3.h"
 #include <vector>
 #include <string>
@@ -11,6 +13,8 @@
 ///	Components shouldn't have any methods that define any kind of behavior.
 namespace Engine 
 {
+	class ScriptableBehavior;
+
 	struct TagComponent
 	{
 		std::string tag;
@@ -19,12 +23,16 @@ namespace Engine
 	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
-		CameraComponent(float fieldOfView, glm::mat4 projectionMatrix, glm::vec2 viewVector, float farZcoordinate, float nearZcoordinate)
-			: fov(fieldOfView),  projection(projectionMatrix), viewport(viewVector), farZ(farZcoordinate), nearZ(nearZcoordinate) {}
+		CameraComponent() = default;
+		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
+			: frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) 
+		{	//frustumWidth and aspectRatio*frustumWidth
+			projection = glm::ortho(0.f, 1920.f, 1080.f, 0.f, nearZ, farZ);
+		}
 
-		float fov;
 		glm::mat4 projection;
-		glm::vec2 viewport;
+		float frustumWidth;
+		float aspectRatio;
 		float farZ;
 		float nearZ;
 	};
@@ -41,24 +49,26 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
-	//A component containing a vec4 of color data, RGBA.
-	struct ColorComponent 
-	{
-		ColorComponent() = default;
-		ColorComponent(glm::vec4 color)
-			: color(color) {}
-
-		glm::vec4 color;
+	struct FixedScreenTransformComponent {
+		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
+			: position(position), scale(scale)
+		{
+		}
+		glm::vec2 position;
+		glm::vec2 scale;
 	};
 
-	//A component containing texture data
-	struct TextureComponent
+	//A component containing a vec4 of color data (RGBA), and a GLuint for the texture and shader used for the material.
+	struct MaterialComponent
 	{
-		TextureComponent() = default;
-		TextureComponent(GLuint texID, std::string texName)
-			: texID(texID), texName(texName) { }
+		MaterialComponent() = default;
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+			: color(color), texID(texID), texName(texName), shaderID(shaderID) {}
+		
+		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
+		GLuint shaderID;
 	};
 
 	//A component containing animation data
@@ -108,7 +118,7 @@ namespace Engine
 
 		std::vector<VertexAttribute> vertexAttributes;
 
-		//
+		//Vertex array object, which acts as a wrapper for VBO data
 		GLuint vaoID;
 
 		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
@@ -126,7 +136,13 @@ namespace Engine
 		bool isSprite;
 	};
 
-	class ScriptableBehavior;
+	//Entities with this component will be serialized by Serializer.cpp
+	struct SerializableComponent
+	{
+		//struct can't be empty because of how entt is built.
+		//Added smallest type as a workaround.
+		bool serializable;
+	};
 
 	//Defines a component to create custom script actions using ScriptableBehavior
 	struct ScriptComponent

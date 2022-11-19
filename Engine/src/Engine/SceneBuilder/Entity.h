@@ -13,6 +13,7 @@ namespace Engine
 		Scene* m_scene = nullptr;
 		entt::entity m_entityHandle = entt::null;
 	public:
+
 		Entity() = default;
 		Entity(entt::entity entityHandle, Scene* scene);
 		Entity(const Entity& other) = default;

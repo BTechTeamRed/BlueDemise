@@ -5,12 +5,15 @@
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/Utilities/Log.h"
 #include "Engine/SceneBuilder/Scene.h"
+#include "Engine/Rendering/Renderer.h"
+#include "Engine/Rendering/GeometryFactory.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "Engine/ResourceManagement/ScriptSerializer.h"
 #include "Engine/Scripts/ScriptableBehavior.h"
 
 namespace glm
 {
+	#pragma region Json Serialization
 	//templates from nlohmann. Serializes/deserializes custom types
 	void to_json(nlohmann::json& j, const vec2& vec)
 	{
@@ -58,13 +61,15 @@ namespace glm
 	{
 		mat = mat4(j.at("matrix").get<float>());
 	}
+	#pragma endregion
 }
 
 namespace Engine
 {
 	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
-		if (!out.initializeGL())
+		
+		if (!Renderer::getInstance())
 		{
 			GE_CORE_FATAL("Failed to initialize opengl");
 			return false;
@@ -98,18 +103,21 @@ namespace Engine
 			}
 
 			Entity entity = out.createEntity(item["tag"]);
+			
 			if (!tryDeserializeEntity(entity, item, out))
 			{
+				
 				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
+			
 			}
 		}
-
+		
 		return true;
 	}
 
-	void Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
+	std::string Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
@@ -118,19 +126,25 @@ namespace Engine
 				Entity entity = Entity{ entityHandle, scene };
 				if (!entity) return;
 
-				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+				if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
+				{
+					entitiesJson.push_back(serializeEntity(entity, sceneFile));
+				}
 			});
 
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
-
 		std::cout << sceneJson << std::endl;
+		return sceneJson.dump();
 		//TODO: Bind serialization to GUI event once we have one.
+		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 	}
 
 	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
 	{
+
+
 		if (!entity.hasComponent<TagComponent>())
 		{
 			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
@@ -143,9 +157,8 @@ namespace Engine
 			auto c = entity.getComponent<CameraComponent>();
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_CameraComponent);
-			j["fov"] = c.fov;
-			j["projection"] = c.projection;
-			j["viewport"] = c.viewport;
+			j["aspectRatio"] = c.aspectRatio;
+			j["frustumWidth"] = c.frustumWidth;
 			j["farZ"] = c.farZ;
 			j["nearZ"] = c.nearZ;
 
@@ -164,21 +177,12 @@ namespace Engine
 			components.push_back(j);
 		}
 
-		if (entity.hasComponent<ColorComponent>())
+		if (entity.hasComponent<MaterialComponent>())
 		{
-			auto c = entity.getComponent<ColorComponent>();
+			auto c = entity.getComponent<MaterialComponent>();
 			nlohmann::json j;
-			j["name"] = parseComponentToString(CO_ColorComponent);
+			j["name"] = parseComponentToString(CO_MaterialComponent);
 			j["color"] = c.color;
-
-			components.push_back(j);
-		}
-
-		if (entity.hasComponent<TextureComponent>())
-		{
-			auto c = entity.getComponent<TextureComponent>();
-			nlohmann::json j;
-			j["name"] = parseComponentToString(CO_TextureComponent);
 			j["texName"] = c.texName;
 
 			components.push_back(j);
@@ -240,6 +244,7 @@ namespace Engine
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
 	{
+		
 		//Loop through all components and deserialize each
 		for (const auto& component : entity["components"])
 		{
@@ -257,13 +262,12 @@ namespace Engine
 			{
 			case CO_CameraComponent:
 			{
-				auto fov = component["fov"].get<float>();
-				auto projection = component["projection"].get<glm::mat4>();
-				auto viewport = component["viewport"].get<glm::vec2>();
+				auto frustumWidth = component["frustumWidth"].get<float>();
+				auto aspectRatio = component["aspectRatio"].get<float>();
 				auto farZ = component["farZ"].get<float>();
 				auto nearZ = component["nearZ"].get<float>();
-
-				out.addComponent<CameraComponent>(fov, projection, viewport, farZ, nearZ);
+				
+				out.addComponent<CameraComponent>(frustumWidth, aspectRatio, farZ, nearZ);
 				break;
 			}
 			case CO_TransformComponent:
@@ -275,17 +279,14 @@ namespace Engine
 				out.addComponent<TransformComponent>(position, scale, rotation);
 				break;
 			}
-			case CO_ColorComponent:
+			case CO_MaterialComponent:
 			{
-				out.addComponent<ColorComponent>(component["color"].get<glm::vec4>());
-				break;
-			}
-			case CO_TextureComponent:
-			{
+				
 				std::string texture = component["texName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
-
-				out.addComponent<TextureComponent>(image.texID, texture);
+				
+				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
 				break;
 			}
 			case CO_VerticesComponent:
@@ -300,7 +301,7 @@ namespace Engine
 
 				if (component["type"] == "sprite")
 				{
-					out.addComponent<VerticesComponent>(scene.createSprite());
+					out.addComponent<VerticesComponent>(GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Sprite));
 				}
 
 				break;
@@ -335,6 +336,8 @@ namespace Engine
 			}
 			}
 		}
+
+		out.addComponent<SerializableComponent>();
 
 		return true;
 	}

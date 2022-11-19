@@ -40,17 +40,12 @@
             }
           },
           {
-            "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 1.0,
-              "r": 1.0
-            },
-            "name": "ColorComponent"
-          },
-          {
-            "name": "TextureComponent",
-            "texName": "Texture_Test.jpg"
+            "frameRate": 0.0,
+            "name": "AnimationComponent",
+            "numPerRow": 3,
+            "texHeightFraction": 0.3333333432674408,
+            "texWidthFraction": 0.3333333432674408,
+            "texName": "SpriteSheet.png"
           },
           {
             "name": "VerticesComponent",
@@ -145,18 +140,15 @@
               "z": 1.0
             }
           },
-          {
+		  {
+            "texName": "SpriteSheet.png",
             "color": {
               "a": 1.0,
               "b": 1.0,
               "g": 1.0,
               "r": 1.0
             },
-            "name": "ColorComponent"
-          },
-          {
-            "name": "TextureComponent",
-            "texName": "Texture_Test.jpg"
+            "name": "MaterialComponent"
           },
           {
             "name": "VerticesComponent",
@@ -181,21 +173,13 @@
 	  {
         "components": [
           {
-            "name": "TransformComponent",
-            "position": {
-              "x": 1820.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 100.0,
-              "y": 100.0,
-              "z": 1.0
+            "frustumWidth": 1024.0,
+            "aspectRatio": 1.7777,
+            "farZ": 100.0,
+            "name": "CameraComponent",
+            "nearZ": 0.10000000149011612,
+            "projection": {
+              "matrix": 1.0
             }
           },
           {
