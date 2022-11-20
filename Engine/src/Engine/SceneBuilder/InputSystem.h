@@ -56,10 +56,15 @@ namespace Engine
 		/// </summary>
 		void setResizeCallback(std::function<void(int, int)> callback);
 		/// <summary>
+		/// Seetter for the window offset
+		/// </summary>
+		void setWindowOffset(glm::vec2 offset);
+		/// <summary>
 		/// Grabs the singleton instance
 		/// </summary>
 		/// <returns>The instance</returns>
 		static InputSystem* getInstance();
+
 #pragma endregion
 #pragma region Callbacks
 		/// <summary>
@@ -124,6 +129,10 @@ namespace Engine
 		/// Callback for window being resized
 		/// </summary>
 		std::function<void(int, int)> m_resizeCallback;
+		/// <summary>
+		/// Offset of the game window to the glfw window
+		/// </summary>
+		glm::vec2 m_windowOffset;
 #pragma endregion
 	};
 }

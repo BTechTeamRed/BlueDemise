@@ -89,7 +89,7 @@ glm::vec2& InputSystem::getCursorPos()
 	return m_isInit ? m_cursorPos : glm::vec2(0, 0);
 }
 
-void Engine::InputSystem::setResizeCallback(std::function<void(int, int)> callback)
+void InputSystem::setResizeCallback(std::function<void(int, int)> callback)
 {
 	m_resizeCallback = callback;
 }
@@ -112,11 +112,15 @@ void InputSystem::keyCallback(GLFWwindow* window, int key, int scancode, int act
 
 void InputSystem::cursorCallback(GLFWwindow* window, double xPos, double yPos)
 {
-	m_cursorPos.x = xPos;
-	m_cursorPos.y = yPos;
+	m_cursorPos.x = xPos + m_windowOffset.x;
+	m_cursorPos.y = yPos + m_windowOffset.y;
 }
 
 bool InputSystem::isInit()
 {
 	return m_isInit;
+}
+
+void InputSystem::setWindowOffset(glm::vec2 offset) {
+	m_windowOffset = offset;
 }

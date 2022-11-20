@@ -20,8 +20,11 @@ namespace Engine
 	public:
         bool initializeUI(Window& window, Scene& scene);
         void shutdownUI();
-        void renderUI(Scene& scene, const Window& window);
+        void renderUI(Scene& scene, Window& window);
         void updateHierarchyPanel(std::string tag, const Entity entity);
+
+        //Gets the current position of the Game Window
+        glm::vec2 getGameWindowPos();
 
 	private:
         //creates an array of three components panels

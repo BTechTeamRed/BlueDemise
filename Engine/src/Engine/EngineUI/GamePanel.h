@@ -8,8 +8,8 @@ namespace Engine
 	{
 	public:
 		void setInitialPosition();
-		void setPosition(float x, float y);
-		void show(const Window& window);
+		void show(Window& window);
+		glm::vec2 getPos();
 	private:
 
 	};
