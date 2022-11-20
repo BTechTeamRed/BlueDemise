@@ -72,33 +72,21 @@ namespace Engine
 				partition(m_font, "Camera", darkGreen);
 
 				//Not sure what the min/max values should be
-				ImGui::SliderFloat("FOV", &camera->fov, 45.0f, 90.0f, "%.2f");
 				ImGui::SliderFloat("Far Z", &camera->farZ, 100.0f, 1000.0f, "%.2f");
 				ImGui::SliderFloat("Near Z", &camera->nearZ, 0.01f, 0.1f, "%.2f");
-				ImGui::SliderFloat2("Viewport", &camera->viewport.x, 1.0f, 5.0f, "%.2f");
 
 				setSpacing(spacing);
 			}
-
-			if (m_registry->any_of<ColorComponent>(m_entityHandle))
+			
+			if (m_registry->any_of<MaterialComponent>(m_entityHandle))
 			{
-				auto* color = &(m_registry->get<ColorComponent>(m_entityHandle));
+				auto* material = &(m_registry->get<MaterialComponent>(m_entityHandle));
 
-				partition(m_font, "Color", darkGreen);
+				partition(m_font, "Material", darkGreen);
 
-				ImGui::SliderFloat4("Color", &color->color.r, 0.0f, 1.0f, "%.2f");
-
-				setSpacing(spacing);
-			}
-
-			if (m_registry->any_of<TextureComponent>(m_entityHandle))
-			{
-				auto* texture = &(m_registry->get<TextureComponent>(m_entityHandle));
-
-				partition(m_font, "Texture", darkGreen);
-
-				std::string id = "ID: " + std::to_string(texture->texID);
-				std::string name = "Name: " + texture->texName;
+				std::string id = "Texture ID: " + std::to_string(material->texID);
+				std::string name = "Texture Name: " + material->texName;
+				ImGui::SliderFloat4("Color", &material->color.r, 0.0f, 1.0f, "%.2f");
 
 				ImGui::Text(id.c_str());
 				ImGui::Text(name.c_str());
@@ -129,6 +117,12 @@ namespace Engine
 				ImGui::SliderFloat("Texture height", &animation->texHeightFraction, 0.0f, 1.0f, "%.2f");
 				
 				setSpacing(spacing);
+			}
+
+			if (m_registry->any_of<SerializableComponent>(m_entityHandle))
+			{
+				auto* serializable = &(m_registry->get<SerializableComponent>(m_entityHandle));
+				ImGui::Checkbox("Is serializable", &serializable->serializable);
 			}
 		}
 

@@ -22,7 +22,7 @@ namespace Engine
 	{
 
 	public:
-
+		#pragma region Structs
 		//A struct to contain all data contained within an STB image. 
 		struct ImageData
 		{
@@ -39,7 +39,8 @@ namespace Engine
 
 			GLuint texID{ 0 };
 		};
-
+		#pragma endregion
+		
 		#pragma region Singleton Instance Management
 
 		//Singletons should not be cloneable, this is to prevent clones.
@@ -48,24 +49,26 @@ namespace Engine
 		//Singletons should not be assignable, this is to prevent that.
 		void operator=(const ResourceManager&) = delete;
 
-		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
-		void saveJsonFile(nlohmann::json data, std::string fileName, std::string path = "Assets/", std::string extension = ".json");
-
 		//This retrieves a pointer to the current instance of ResourceManager. If it doesn't exist, then one will be created and returned.
 		static ResourceManager* getInstance();
 
 		#pragma endregion
 
 		#pragma region Get & Set Functions
+		//Function to save provided json data to a provided file. Will save to "Assets/" directory if path is not specified.
+		void saveJsonFile(nlohmann::json data, std::string fileName,std::string extension = ".json", std::string path = "Assets/");
 
 		//Function to set icon for the application.
-		void setAppIcon(GLFWwindow&);
+		void setAppIcon(std::string& appIcon, GLFWwindow* window);
 
 		//Function to return a json (formatted as jsons from nlohmanns library) from the hashmap based on a provided name. Returns a nullptr if no json is found.
 		nlohmann::json getJsonData(const std::string& name);
 
 		//Function to return Image data from texture stored at path name. Returns empty ImageData if file not found.
 		ImageData getTexture(const std::string& name);
+
+		//Function to return File path for provided font name. Returns empty string if path not found.
+		std::string getFont(const std::string& name);
 
 		//Based on the provided spritesheet filename, return a SpriteSheet struct (with info on a spriteSheet) stored within a map, or load it from the system. Returns an empty SpriteSheet if not found. 
 		SpriteSheet getSpritesheet(const std::string& name, float spriteWidth = 0.f, float spriteHeight = 0.f);
@@ -109,11 +112,7 @@ namespace Engine
 		#pragma endregion
 		
 		#pragma region File Storage Variables
-						
-		//Icon related functions.
-		std::vector<std::string> m_iconPaths{ std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" ,
-													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath + "\\BlueDemiseIcon.png" };
-						
+										
 		//Every file path found under the specified resources folder, 'm_sourcePath'.
 		std::unordered_map<std::string, std::string> m_filePaths{};
 		
@@ -131,8 +130,10 @@ namespace Engine
 
 		//Vector containing all source paths to search for files (think of these as the 'root' asset folders). 
 		//This can be added to from Application/Game code for custom paths.
-		std::vector<std::string> m_sourcePaths { std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
-													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath };
+		std::vector<std::string> m_sourcePaths{ std::filesystem::current_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_appAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\Engine\\" + m_engineAssetsPath,
+													std::filesystem::current_path().parent_path().string() + "\\" + m_engineAssetsPath };
 		#pragma endregion
 			
 		#pragma region Set & Read/Load Functions

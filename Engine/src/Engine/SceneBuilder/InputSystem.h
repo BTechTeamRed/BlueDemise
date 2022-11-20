@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <mutex>
+#include <functional>
 #include "glm/vec2.hpp"
 
 struct GLFWwindow;
@@ -50,6 +51,10 @@ namespace Engine
 		/// </summary>
 		/// <returns>The current position of the cursor if initialized</returns>
 		glm::vec2& getCursorPos();
+		/// <summary>
+		/// Seetter for the callback when the window is resized
+		/// </summary>
+		void setResizeCallback(std::function<void(int, int)> callback);
 		/// <summary>
 		/// Grabs the singleton instance
 		/// </summary>
@@ -115,6 +120,10 @@ namespace Engine
 		/// Current position of the cursor
 		/// </summary>
 		glm::vec2 m_cursorPos;
+		/// <summary>
+		/// Callback for window being resized
+		/// </summary>
+		std::function<void(int, int)> m_resizeCallback;
 #pragma endregion
 	};
 }
