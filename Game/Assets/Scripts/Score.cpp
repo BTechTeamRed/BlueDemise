@@ -13,7 +13,6 @@ namespace Engine
 		score++;
 	}
 
-
 	std::string Score::getScore()
 	{
 		return std::to_string(score);

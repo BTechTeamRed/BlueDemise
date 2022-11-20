@@ -991,6 +991,15 @@
             "scriptName": "Timer"
           }
         ]
+      },
+      {
+        "tag": "score",
+        "components": [
+          {
+            "name": "ScriptComponent",
+            "scriptName": "Score"
+          }
+        ]
       }
     ]
   }
