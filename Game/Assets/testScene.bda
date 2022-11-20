@@ -73,7 +73,20 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          }
+          },
+		  {
+			"name": "PhysicsComponent",
+			"dimensions": {
+				"x": 500.0,
+				"y": 500.0,
+				"z": 1.0
+				},
+			"position": {
+				"x": 250,
+				"y": 38,
+				"z": 0
+			}
+		  }
         ],
         "tag": "triangle"
       },

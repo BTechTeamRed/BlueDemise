@@ -20,7 +20,33 @@ namespace Engine
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
-		Renderer::getInstance()->initializeScene(*this);
+		auto render = Renderer::getInstance();
+		render->initializeScene(*this);
+		
+		// Create physics world
+		glm::vec3 dimensions;
+		auto entities = getEntities<CameraComponent>();
+		for (auto [entity, camera] : entities.each())
+		{
+			dimensions.x = camera.frustumWidth;
+			dimensions.y = camera.frustumWidth / camera.aspectRatio;
+			dimensions.z = camera.farZ - camera.nearZ;
+		}
+		m_physics = new OctTree(dimensions);
+
+		// Insert physics objects
+		auto physicsList = getEntities<PhysicsComponent>();
+		for (auto [entity, phyObj] : physicsList.each())
+		{
+			//TODO: Change OctTree to PhysicsSystem and have it track entities to prevent memory leaks
+			Entity* obj = new Entity(entity, this);
+			if (!m_physics->insert(obj))
+			{
+				std::string tag = obj->getComponent<TagComponent>().tag;
+				GE_CORE_ERROR("Scene::onRuntimStart: Failure to insert {0} into physics world", tag);
+				delete obj;
+			}
+		}
 
 		while (!m_closeScene)
 		{
@@ -72,6 +98,13 @@ namespace Engine
 
 			GE_CORE_TRACE("Scene::onRuntimeUpdate: cursor {0} {1}", cursor.x, cursor.y);
 			GE_CORE_TRACE("Scene::onRuntimeUpdate: point {0} {1} {2}", spot.x, spot.y, spot.z);
+
+			auto picks = m_physics->raycast(spot, glm::vec3(0, 0, 1));
+			for (auto pick : picks)
+			{
+				std::string tag = pick->getComponent<TagComponent>().tag;
+				GE_CORE_TRACE("Scene::onRuntimeUpdate: Picked {0}", tag);
+			}
 		}
 
 		Renderer::getInstance()->renderScene(dt, *this);

@@ -48,13 +48,14 @@ namespace Engine
 
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
-
+        OctTree* m_physics;
+        
         void runEntityScripts(const DeltaTime& dt);
 
         void renderScene();
         
         friend class Entity;
         friend class Serializer;
-        OctTree* m_physics;
+        
     };
 }

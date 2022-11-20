@@ -245,7 +245,7 @@ namespace Engine
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
 	{
-		
+
 		//Loop through all components and deserialize each
 		for (const auto& component : entity["components"])
 		{
