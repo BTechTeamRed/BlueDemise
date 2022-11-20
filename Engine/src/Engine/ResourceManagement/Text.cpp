@@ -5,17 +5,6 @@
 
 namespace Engine 
 {
-	class Text
-	{
-	public:
-		Text();
-		~Text();
-
-	private:
-		FT_Face face;
-		FT_Library ft;
-	};
-
 	Text::IterateText()
 	{
 		if (FT_Init_FreeType(&ft))

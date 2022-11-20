@@ -1,4 +1,5 @@
 #include <Engine/Utilities/Log.h>
+#include "Engine/Core.h"
 
 //Freetype Header file
 #include <ft2build.h>
@@ -19,28 +20,39 @@
 
 namespace Engine
 {
-	struct Character
+	class ENGINE_API Text
 	{
-		GLuint			TextureID; //ID handle of the glyph texture
-		glm::ivec2		Size;      //Size of glyph
-		glm::ivec2		Bearing;   //offset from baseline to left/top of glyph	
-		unsigned int	Advance;   //Offset to advance to next glyph
-		
-		float		height;	  // the height of the text
-		//GLuint*		textures; // used textures
-		//GLuint		list_base // the value of the list
+	public:
+		Text();
+		~Text();
+			
+	private:
+		FT_Face face;
+		FT_Library ft;
+
+		struct Character
+		{
+			GLuint			TextureID; //ID handle of the glyph texture
+			glm::ivec2		Size;      //Size of glyph
+			glm::ivec2		Bearing;   //offset from baseline to left/top of glyph	
+			unsigned int	Advance;   //Offset to advance to next glyph
+			
+			float		height;	  // the height of the text
+			//GLuint*		textures; // used textures
+			//GLuint		list_base // the value of the list
+		};
+
+		//initialize the structure
+		void init(const char* fname, unsigned int h);
+
+		//clean the resource
+		void clean();
+
+		//draw the texture to the screen
+		//void print(const Character& ft_text, float x, float y, const char* fmt);
+
+		//generate a texture and store its relevant data into a Character struct 
+		//that we add to the Characters map, all data require to render for later use
+		std::map<GLchar, Character> Characters;
 	};
-
-	//initialize the structure
-	void init(const char* fname, unsigned int h);
-
-	//clean the resource
-	void clean();
-
-	//draw the texture to the screen
-	//void print(const Character& ft_text, float x, float y, const char* fmt);
-
-	//generate a texture and store its relevant data into a Character struct 
-	//that we add to the Characters map, all data require to render for later use
-	std::map<GLchar, Character> Characters;
 }
