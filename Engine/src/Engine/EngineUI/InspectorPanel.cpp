@@ -118,6 +118,12 @@ namespace Engine
 				
 				setSpacing(spacing);
 			}
+
+			if (m_registry->any_of<SerializableComponent>(m_entityHandle))
+			{
+				auto* serializable = &(m_registry->get<SerializableComponent>(m_entityHandle));
+				ImGui::Checkbox("Is serializable", &serializable->serializable);
+			}
 		}
 
 		ImGui::End();

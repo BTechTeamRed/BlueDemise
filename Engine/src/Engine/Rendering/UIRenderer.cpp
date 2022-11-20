@@ -61,6 +61,7 @@ namespace Engine
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Transform");
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Camera");
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Material");
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Serializable");
 		//m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Animation");
 
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
@@ -196,7 +197,19 @@ namespace Engine
 				}
 			}
 
-			
+			if (component == "Serializable")
+			{
+				auto serializable = scene.m_registry.any_of<SerializableComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!serializable)
+				{
+					scene.m_registry.emplace<SerializableComponent>(
+						handle,
+						true);
+				}
+			}
+
 
 			//if (component == "Animation")
 			//{

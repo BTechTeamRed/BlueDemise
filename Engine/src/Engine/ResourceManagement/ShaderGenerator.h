@@ -11,7 +11,6 @@ namespace Engine
 	{
 	public:
 		ShaderGenerator(const char* vertexSource, const char* fragmentSource);
-		~ShaderGenerator();
 		int getProgramId() const;
 
 	private:
