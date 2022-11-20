@@ -23,7 +23,7 @@ namespace Engine
 				RT_Manual
 			};
 
-			AnimationSystem(ResourceManager::ImageData textureData, float spritesheetWidth, float spritesheetHeight, int numPerRow, int spritesOnSheet);
+			AnimationSystem(ResourceManager::ImageData textureData, int numPerRow, int spritesOnSheet);
 			~AnimationSystem();
 
 			#pragma region Manage Animation
