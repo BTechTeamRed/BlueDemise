@@ -11,6 +11,13 @@ namespace Engine
 		ImGui::SetWindowSize("GamePanel", ImVec2(m_dimension.x, m_dimension.y));
 	}
 
+	void GamePanel::setPosition(float x, float y)
+	{
+		//defines the position and size of the entities UI element
+		ImGui::SetWindowPos("Game", ImVec2(x, y));
+		ImGui::SetWindowSize("GamePanel", ImVec2(m_dimension.x, m_dimension.y));
+	}
+
 	void GamePanel::show(const Window& window)
 	{
 
