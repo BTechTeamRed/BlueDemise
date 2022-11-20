@@ -49,8 +49,44 @@ namespace Engine
 		virtual void onLateUpdate(const DeltaTime &dt) {}
 
 		//runs when enabled/disabled
-		virtual void onDisable() {}
+		virtual void onDisable() {} 
 		virtual void onEnable() {}
+
+		// Gets a view of entities with the defined components.
+		template<typename... Components>
+		auto getEntities()
+		{
+			return m_entity.m_scene->getEntities<Components...>();
+		}
+
+		bool doesEntityExist(const std::string& tagName)
+		{
+			auto entities = getEntities<TagComponent>();
+			for (auto [entity, tag] : entities.each())
+			{
+				if (tag.tag == tagName)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		Entity getEntity(const std::string& tagName)
+		{
+			auto entities = getEntities<TagComponent>();
+			for (auto [entity, tag] : entities.each())
+			{
+				if (tag.tag == tagName)
+				{
+					return Entity{ entity, m_entity.m_scene };
+				}
+			}
+
+			//DefinitelyAssert
+			return Entity{entt::entity() , nullptr};
+		}
 
 		void enable() { m_enabled = true; this->onEnable(); }
 		void disable() { m_enabled = false; this->onDisable(); }
