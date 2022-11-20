@@ -36,7 +36,13 @@ namespace Engine
 		}
 
 		//Adds the callback to the inputsystem for when the window is resized
-		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
+		//
+		if (!m_showUI) {
+			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { m_window.resize(x, y); });
+		}
+		else {
+			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { /*Resize Handled by GamePanel*/ });
+		}
 		
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", m_window.getWindow());
@@ -170,7 +176,7 @@ namespace Engine
 
 			//Change the transform component if the entity contains one.
 			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
-			
+
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 			

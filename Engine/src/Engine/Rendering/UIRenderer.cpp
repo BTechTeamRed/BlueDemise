@@ -5,6 +5,7 @@
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Window.h"
 #include "Engine/SceneBuilder/Scene.h"
+#include "Engine/SceneBuilder/InputSystem.h"
 
 
 
@@ -79,13 +80,14 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
-	void UIRenderer::renderUI(Scene& scene, const Window& window)
+	void UIRenderer::renderUI(Scene& scene, Window& window)
 	{
 		UserInterface::startUI();
 
 		m_mainMenu.show();
 
 		m_gamePanel.show(window); //This function will take in an fbo when one is created
+		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPos());
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
@@ -194,6 +196,7 @@ namespace Engine
 				}
 			}
 
+			
 
 			//if (component == "Animation")
 			//{
@@ -221,6 +224,11 @@ namespace Engine
 	void UIRenderer::updateHierarchyPanel(std::string tag, Entity entity)
 	{
 		m_hierarchyPanel.addEntity(tag, entity.getHandle());
+	}
+
+
+	glm::vec2 UIRenderer::getGameWindowPos() {
+		return m_gamePanel.getPos();
 	}
 #pragma endregion
 }

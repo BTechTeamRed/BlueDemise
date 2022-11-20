@@ -25,8 +25,8 @@ namespace Engine
 		CameraComponent() = default;
 		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
 			: frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) 
-		{	//frustumWidth and aspectRatio*frustumWidth
-			projection = glm::ortho(0.f, 1920.f, 1080.f, 0.f, nearZ, farZ);
+		{	
+			projection = glm::ortho(0.f, frustumWidth, frustumWidth*aspectRatio, 0.f, nearZ, farZ);
 		}
 
 		glm::mat4 projection;
