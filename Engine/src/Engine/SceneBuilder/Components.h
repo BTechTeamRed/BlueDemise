@@ -99,7 +99,6 @@ namespace Engine
 	struct TextComponent
 	{
 		std::string text;
-
 	};
 
 	//Not component, just container for vertex attribute data format
