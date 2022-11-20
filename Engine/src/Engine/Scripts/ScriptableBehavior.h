@@ -21,13 +21,6 @@ namespace Engine
 		{
 			return m_entity.getComponent<T>();
 		}
-		
-		// Gets a view of entities with the defined components.
-		template<typename... Components>
-		auto getEntities()
-		{
-			return m_entity.m_scene->getEntities<Components...>();
-		}
 
 		//This function should return the name of the script header without the extension.
 		//Failing to override this function will lead to errors in script serialization.

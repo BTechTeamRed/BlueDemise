@@ -3,6 +3,7 @@
 #include "Engine/Utilities/Log.h"
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/SceneBuilder/InputSystem.h"
+#include "Engine/Scripts/ColorSwap.h"
 
 namespace Engine
 {
@@ -33,7 +34,7 @@ namespace Engine
 						//other.getComponent<MaterialComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 						// Call the colorSwap method
-						//other.getComponent<ScriptComponent>().
+						static_cast<ColorSwap*>(other.getComponent<ScriptComponent>().m_instance)->swapMyColor();
 
 						// Move to the tile the player clicked on
 						auto player = m_entity;

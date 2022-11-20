@@ -22,6 +22,7 @@ namespace Engine
         if (scriptName == "PlayerMovementScript")
         {
             entity.addComponent<ScriptComponent>().linkBehavior<PlayerMovementScript>();
+        }
         if (scriptName == "Score")
         {
             entity.addComponent<ScriptComponent>().linkBehavior<Score>();
