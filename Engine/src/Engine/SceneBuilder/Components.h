@@ -13,6 +13,7 @@
 namespace Engine 
 {
 	class ScriptableBehavior;
+	class Text;
 
 	struct TagComponent
 	{
@@ -48,7 +49,8 @@ namespace Engine
 		glm::vec3 rotation;
 	};
 
-	struct FixedScreenTransformComponent {
+	struct FixedScreenTransformComponent
+	{
 		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
 			: position(position), scale(scale)
 		{
@@ -92,6 +94,12 @@ namespace Engine
 		float frameRate;
 		float texWidthFraction;
 		float texHeightFraction;
+	};
+
+	struct TextComponent
+	{
+		std::string text;
+
 	};
 
 	//Not component, just container for vertex attribute data format

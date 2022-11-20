@@ -23,7 +23,6 @@ namespace Engine
 			GE_CORE_ERROR("Could not init FreeType Library");
 		}
 
-
 		if (FT_New_Face(ft, "Cousine-Regular.ttf", 0, &face))
 		{
 			GE_CORE_ERROR("Failed to load font");
@@ -65,11 +64,12 @@ namespace Engine
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
 		//store character for later use
-		Character character = {
-		texture,
-		glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-		glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-		face->glyph->advance.x
+		Character character = 
+		{
+			texture,
+			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+			face->glyph->advance.x
 		};
 		Characters.insert(std::pair<char, Character>(c, character));
 	}

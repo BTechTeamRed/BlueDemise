@@ -21,14 +21,14 @@ namespace Engine
 {
 	struct Character
 	{
-		//GLuint			TextureID; //ID handle of the glyph texture
-		//glm::ivec2		Size;      //Size of glyph
-		//glm::ivec2		Bearing;   //offset from baseline to left/top of glyph	
-		//GLuint			Advance;   //Offset to advance to next glyph
-
+		GLuint			TextureID; //ID handle of the glyph texture
+		glm::ivec2		Size;      //Size of glyph
+		glm::ivec2		Bearing;   //offset from baseline to left/top of glyph	
+		unsigned int	Advance;   //Offset to advance to next glyph
+		
 		float		height;	  // the height of the text
-		GLuint*		textures; // used textures
-		GLuint		list_base // the value of the list
+		//GLuint*		textures; // used textures
+		//GLuint		list_base // the value of the list
 	};
 
 	//initialize the structure
