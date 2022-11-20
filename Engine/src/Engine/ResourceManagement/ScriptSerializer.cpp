@@ -1,5 +1,6 @@
 #include <string>
 #include "ScriptSerializer.h"
+#include "Engine/Scripts/ColorSwap.h"
 #include "Engine/Scripts/MoveRightScript.h"
 #include "Engine/Scripts/PlayerMovementScript.h"
 
@@ -8,6 +9,10 @@ namespace Engine
 {
     void ScriptSerializer::linkAndDeserializeScript(Entity& entity, std::string scriptName)
     {
+        if (scriptName == "ColorSwap")
+        {
+            entity.addComponent<ScriptComponent>().linkBehavior<ColorSwap>();
+        }
         if (scriptName == "MoveRightScript")
         {
             entity.addComponent<ScriptComponent>().linkBehavior<MoveRightScript>();

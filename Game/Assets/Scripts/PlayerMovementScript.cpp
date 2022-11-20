@@ -30,7 +30,10 @@ namespace Engine
 						other.getComponent<TagComponent>().tag != "obstacle")
 					{
 						// Change the color of the selected entity
-						other.getComponent<MaterialComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+						//other.getComponent<MaterialComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+						// Call the colorSwap method
+						//other.getComponent<ScriptComponent>().
 
 						// Move to the tile the player clicked on
 						auto player = m_entity;
