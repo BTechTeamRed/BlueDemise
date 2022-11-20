@@ -982,6 +982,15 @@
             "type": "sprite"
           }
         ]
+      },
+      {
+        "tag": "timer",
+        "components": [
+          {
+            "name": "ScriptComponent",
+            "scriptName": "Timer"
+          }
+        ]
       }
     ]
   }
