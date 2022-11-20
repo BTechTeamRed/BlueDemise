@@ -112,10 +112,5 @@ namespace Engine
 		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
 		return m_camera.projection * glm::translate(glm::mat4(1.f), cameraPos);
 	}
-	
-	float Window::getAspectRatio() const
-	{
-		return m_camera.aspectRatio;
-	}
 #pragma endregion
 }
