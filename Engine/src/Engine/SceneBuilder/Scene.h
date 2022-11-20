@@ -5,6 +5,7 @@
 #include <Engine/Utilities/DeltaTime.h>
 #include <string>
 
+#include "Engine/Physics/OctTree.h"
 namespace Engine
 {
     class Entity;
@@ -54,5 +55,6 @@ namespace Engine
         
         friend class Entity;
         friend class Serializer;
+        OctTree* m_physics;
     };
 }
