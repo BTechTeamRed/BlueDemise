@@ -83,6 +83,16 @@ namespace Engine
 		m_UI.updateHierarchyPanel(tag, entity);
 	}
 
+	glm::vec3 Renderer::screenToWorld(const glm::vec2& screenPosition)
+	{
+		return m_window.screenSpaceToWorldSpace(screenPosition, glm::vec2());
+	}
+
+	glm::vec2 Renderer::worldToScreen(const glm::vec3& worldPosition)
+	{
+		return m_window.worldSpaceToScreenSpace(worldPosition, glm::vec2());
+	}
+
 #pragma region Scene Management & Rendering
 	//Initialize the Scene. Updates m_window's camera
 	void Renderer::initializeScene(Scene& scene)

@@ -112,8 +112,8 @@ void InputSystem::keyCallback(GLFWwindow* window, int key, int scancode, int act
 
 void InputSystem::cursorCallback(GLFWwindow* window, double xPos, double yPos)
 {
-	m_cursorPos.x = xPos + m_windowOffset.x;
-	m_cursorPos.y = yPos + m_windowOffset.y;
+	m_cursorPos.x = xPos - m_windowOffset.x;
+	m_cursorPos.y = yPos - m_windowOffset.y;
 }
 
 bool InputSystem::isInit()

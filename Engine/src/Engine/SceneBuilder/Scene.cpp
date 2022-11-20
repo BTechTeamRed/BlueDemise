@@ -63,6 +63,17 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 		
+		auto input = InputSystem::getInstance();
+		if (input->isButtonPressed(0))
+		{
+			glm::vec2 cursor = input->getCursorPos();
+			GE_CORE_TRACE("Scene::onRuntimeUpdate: cursor {0} {1}", cursor.x, cursor.y);
+			glm::vec3 spot = Renderer::getInstance()->screenToWorld(cursor);
+
+			GE_CORE_TRACE("Scene::onRuntimeUpdate: cursor {0} {1}", cursor.x, cursor.y);
+			GE_CORE_TRACE("Scene::onRuntimeUpdate: point {0} {1} {2}", spot.x, spot.y, spot.z);
+		}
+
 		Renderer::getInstance()->renderScene(dt, *this);
 		
 		glfwPollEvents();
