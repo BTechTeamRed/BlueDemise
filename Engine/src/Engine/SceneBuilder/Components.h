@@ -26,7 +26,7 @@ namespace Engine
 		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
 			: frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) 
 		{	
-			projection = glm::ortho(0.f, frustumWidth, frustumWidth*aspectRatio, 0.f, nearZ, farZ);
+			projection = glm::ortho(0.f, frustumWidth, frustumWidth/aspectRatio, 0.f, nearZ, farZ);
 		}
 
 		glm::mat4 projection;

@@ -36,7 +36,6 @@ namespace Engine
 		}
 
 		//Adds the callback to the inputsystem for when the window is resized
-		//
 		if (!m_showUI) 
 		{
 			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { m_window.resize(x, y); });

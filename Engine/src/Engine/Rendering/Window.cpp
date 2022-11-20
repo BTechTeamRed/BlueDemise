@@ -91,7 +91,7 @@ namespace Engine
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
 		
-		auto result = glm::vec3((modifiedVector.x / m_windowWidth) * frustumWidth, (modifiedVector.y / m_windowHeight) * frustumWidth * aspectRatio, 1);
+		auto result = glm::vec3((modifiedVector.x / m_windowWidth) * frustumWidth, (modifiedVector.y / m_windowHeight) * frustumWidth / aspectRatio, 1);
 		return result;
 	}
 
@@ -100,7 +100,7 @@ namespace Engine
 	{
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
-		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / frustumWidth) * m_windowHeight * aspectRatio);
+		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / frustumWidth) / m_windowHeight * aspectRatio);
 		result += debugWindowOffset; //Offset the result by the position of the debug window
 		return result;
 	}
@@ -115,8 +115,7 @@ namespace Engine
 	
 	float Window::getAspectRatio() const
 	{
-		//return m_camera.aspectRatio;
-		return 9.f / 16.f;
+		return m_camera.aspectRatio;
 	}
 #pragma endregion
 }
