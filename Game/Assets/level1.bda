@@ -89,9 +89,14 @@
               "a": 1.0
             }
           },
+          
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
           }
         ]
       },
@@ -129,6 +134,10 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
           }
         ]
       },
@@ -166,6 +175,10 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
           }
         ]
       },
@@ -203,6 +216,10 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
           }
         ]
       },
@@ -240,6 +257,10 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
           }
         ]
       },
