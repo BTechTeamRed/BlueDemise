@@ -74,30 +74,35 @@ namespace Engine
 		m_camera = newCamera;
 	}
 
+	//Adjust height to maintain current aspect ratio
 	void Window::resize(int width, int height)
 	{
-		//Adjust height to maintain current aspect ratio
-		int newHeight = height * getAspectRatio(); 
-		int letterboxHeight = height - newHeight;
-		glViewport(0, letterboxHeight / 2, width, newHeight);
+		m_windowWidth = width;
+		m_windowHeight = height;
+
 	}
 #pragma endregion
 
 #pragma region Getters
 	//Convert vec3 screenspace coordinates to a vec3 of the worldspace coordinates.
-	glm::vec3 Window::screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector)
+	glm::vec3 Window::screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector, glm::vec2 debugWindowOffset = glm::vec2(0))
 	{
+		auto modifiedVector = screenSpaceVector - debugWindowOffset; //Offset the result by the position of the debug window
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
-		return glm::vec3(screenSpaceVector.x / m_windowWidth * frustumWidth, screenSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio, 1);
+		
+		auto result = glm::vec3((modifiedVector.x / m_windowWidth) * frustumWidth, (modifiedVector.y / m_windowHeight) * frustumWidth / aspectRatio, 1);
+		return result;
 	}
 
 	//Convert vec3 worldspace coordinates to a vec3 of the screenspace coordinates.
-	glm::vec2 Window::worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector)
+	glm::vec2 Window::worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector, glm::vec2 debugWindowOffset = glm::vec2(0))
 	{
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
-		return glm::vec2(worldSpaceVector.x / m_windowWidth * frustumWidth, worldSpaceVector.x / m_windowWidth * frustumWidth * aspectRatio);
+		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / frustumWidth) / m_windowHeight * aspectRatio);
+		result += debugWindowOffset; //Offset the result by the position of the debug window
+		return result;
 	}
 
 	//get position of camera in world space. Returns the projection matrix
@@ -106,11 +111,6 @@ namespace Engine
 		//Change this to use camera's proper transform component. Perhaps we can pass it as an argument? **********************
 		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
 		return m_camera.projection * glm::translate(glm::mat4(1.f), cameraPos);
-	}
-	
-	float Window::getAspectRatio() const
-	{
-		return m_camera.aspectRatio;
 	}
 #pragma endregion
 }

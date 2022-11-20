@@ -48,11 +48,11 @@ namespace Engine
 		#pragma endregion
 
 		#pragma region Getters
-		//Converts a vector in screenspace pixel units to worldspace units
-		glm::vec3 screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector);
+		//Converts a vector in screenspace pixel units to worldspace units, offset defaults to zero vector (don't use offset for sizes, only positions)
+		glm::vec3 screenSpaceToWorldSpace(const glm::vec2& screenSpaceVector, const glm::vec2 debugWindowOffset);
 
-		//Converts a worldspace vector to screenspace pixel units
-		glm::vec2 worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector);
+		//Converts a worldspace vector to screenspace pixel units, offset defaults to zero vector (don't use offset for sizes, only positions)
+		glm::vec2 worldSpaceToScreenSpace(const glm::vec3& worldSpaceVector, const glm::vec2 debugWindowOffset);
 
 		//Return a pointer to the current GLFW window
 		GLFWwindow* getWindow() const { return m_window; }
@@ -66,7 +66,7 @@ namespace Engine
 		glm::mat4 getProjectionMatrix() const;
 
 		//Get's the projection matrix of the camera
-		float getAspectRatio() const;
+		float getAspectRatio() const { return m_camera.aspectRatio; };
 		#pragma endregion
 		
 		friend Renderer;
