@@ -1,5 +1,6 @@
 #include <Engine/Utilities/Log.h>
 #include "Engine/Core.h"
+#include "glm/gtc/type_ptr.hpp"
 
 //Freetype Header file
 #include <ft2build.h>
