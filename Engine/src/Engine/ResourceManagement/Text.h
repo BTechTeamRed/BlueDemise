@@ -25,7 +25,9 @@ namespace Engine
 	public:
 		Text();
 		~Text();
-			
+
+		void IterateText();
+
 	private:
 		FT_Face face;
 		FT_Library ft;

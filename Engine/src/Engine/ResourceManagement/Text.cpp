@@ -5,7 +5,7 @@
 
 namespace Engine 
 {
-	Text::IterateText()
+	void Text::IterateText()
 	{
 		if (FT_Init_FreeType(&ft))
 		{
