@@ -23,10 +23,12 @@ namespace Engine
 				RT_Manual
 			};
 
-			AnimationSystem(ResourceManager::ImageData textureData, int numPerRow, int spritesOnSheet);
+			//Constructor for spriteSheet-based animations. Takes in a ResourceManager::SpriteSheet struct and converts it into an AnimationSystem::SpriteData struct.
+			AnimationSystem(ResourceManager::SpriteSheet spriteData);
 			~AnimationSystem();
 
 			#pragma region Manage Animation
+			//Command to play an animation
 			void playAnimation(AnimationType type, int animate);
 			void changeFrame(int frame);
 			void updateUVCoords();
@@ -34,22 +36,41 @@ namespace Engine
 
 		private:
 			#pragma region Sprite Data
-			//Generated texture ID for the spritesheet.
-			GLuint m_textureID;
+			//Struct to contain spriteData that is used for animating a spritesheet
+			struct SpriteData
+			{
+				SpriteData() = default;
 
-			//Texture/UV coordinates for the sprite, in the form of a 4x2 matrix.
-			std::vector<glm::vec2> m_UVCoords;
+				//Generated texture ID for the spritesheet.
+				GLuint texID;
 
-			//Currently rendered sprite from the sprite sheet, starting from top-left corner, going by row.
-			int m_currentIndex = 0;
+				//Currently rendered sprite from the sprite sheet, starting from top-left corner, going by row.
+				int currentIndex = 0;
 
-			//Height and width of a sprite as a percentage, in the context of UV coordinates.
-			float m_spriteWidthFraction;
-			float m_spriteHeightFraction;
+				//Height and width of a sprite as a percentage, in the context of UV coordinates.
+				float spriteWidthFraction;
+				float spriteHeightFraction;
 
-			//Number of sprites per row, and sprites on a spritesheet/texture.
-			int m_spritesPerRow;
-			int m_spritesOnSheet;
+				//Height and width of a spritesheet image.
+				int spritesheetWidth;
+				int spritesheetHeight;
+
+				//Individual sprite height/width
+				float spriteWidth;
+				float spriteHeight;
+
+				//Number of sprites per row, and sprites on a spritesheet/texture.
+				int spritesPerRow;
+				int spritesPerColumn;
+				int spritesOnSheet;
+
+				//Texture/UV coordinates for the sprite, in the form of a 4x2 matrix.
+				std::vector<glm::vec2> UVCoords;
+			};
+
+			int m_spriteRowIndex = 0;
+			int m_spriteColumnIndex = 0;
+			SpriteData m_spriteAnimationData;
 			#pragma endregion
 
 			#pragma region Animation Data

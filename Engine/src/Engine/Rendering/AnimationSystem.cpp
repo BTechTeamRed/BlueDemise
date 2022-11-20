@@ -3,26 +3,35 @@
 
 namespace Engine
 {
-	AnimationSystem::AnimationSystem(ResourceManager::ImageData textureData, int numPerRow, int spritesOnSheet)
+	//Constructor for an animationSystem that is sprite based. ResourceManagers spriteData struct is passed in and converted into animationSystems spriteData struct.
+	AnimationSystem::AnimationSystem(ResourceManager::SpriteSheet spriteData)
 	{
-		m_textureID = textureData.texID;
-		m_spriteWidthFraction = textureData.width / textureData.width;
-		m_spriteHeightFraction = textureData.height / textureData.height;
-		m_spritesPerRow = numPerRow;
-
+		m_spriteAnimationData.texID = spriteData.texID;
+		m_spriteAnimationData.spritesPerRow = spriteData.spritesPerRow;
+		m_spriteAnimationData.spritesPerColumn = spriteData.spritesPerColumn;
+		m_spriteAnimationData.spriteWidthFraction = spriteData.texWidthFraction;
+		m_spriteAnimationData.spriteHeightFraction = spriteData.texHeightFraction;
+		m_spriteAnimationData.spritesOnSheet = spriteData.numSprites;
+		m_spriteAnimationData.spritesheetHeight = spriteData.spriteSheetHeight;
+		m_spriteAnimationData.spritesheetWidth = spriteData.spriteSheetWidth;
+		m_spriteAnimationData.spriteWidth = spriteData.spriteWidth;
+		m_spriteAnimationData.spriteHeight = spriteData.spriteHeight;
 	}
 
 	AnimationSystem::~AnimationSystem()
 	{
 	}
 
-	void AnimationSystem::playAnimation(AnimationType animType, int animate)
+	void AnimationSystem::playAnimation(AnimationType animType, int changeToThis)
 	{
 		switch (animType)
 		{
 			case RT_LoopRow:
 			{
-				
+				if (m_spriteRowIndex < m_spriteAnimationData.spritesPerRow)
+					m_spriteRowIndex++;
+				else
+					m_spriteRowIndex = 0;
 			}
 			default:
 			{
