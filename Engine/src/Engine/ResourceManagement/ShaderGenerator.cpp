@@ -8,6 +8,7 @@ namespace Engine
 	// Generates a program for OpenGL to use based on a vertex shader  and a fragment shader.
 	// Both shaders have to be passed in as source file code.
 	ShaderGenerator::ShaderGenerator(const char* vertexSource, const char* fragmentSource)
+		: vertexSource(vertexSource), fragmentSource(fragmentSource)
 	{
 		m_programId = glCreateProgram();
 		const int vertexShader = genShader(vertexSource, GL_VERTEX_SHADER),
@@ -27,6 +28,16 @@ namespace Engine
 	int ShaderGenerator::getProgramId() const
 	{
 		return m_programId;
+	}
+
+	const char* ShaderGenerator::getVertexSource()
+	{
+		return vertexSource;
+	}
+
+	const char* ShaderGenerator::getFragmentSource()
+	{
+		return fragmentSource;
 	}
 
 	// Compiles a shader from a given source code, and returns the shader object if compilation succeeds.
@@ -55,5 +66,26 @@ namespace Engine
 			return false;
 		}
 		return true;
+	}
+
+	AdvancedShaderGenerator::AdvancedShaderGenerator(ShaderGenerator& shaderGenerator)
+	{
+
+	}
+
+	int AdvancedShaderGenerator::getProgramId(ShaderFillType::FillType fillType)
+	{
+		switch (fillType)
+		{
+		case ShaderFillType::SN_TEXTURE_FILL:
+			return m_programIds[0];
+			break;
+		case ShaderFillType::SN_COLOR_FILL:
+			return m_programIds[1];
+			break;
+		default:
+			return m_programIds[2];
+			break;
+		}
 	}
 }

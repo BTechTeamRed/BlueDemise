@@ -240,7 +240,7 @@ namespace Engine
 	void Renderer::loadShaders()
 	{
 		ShaderNorms::getInstance()->assignsNewStride(m_textureCoordinates);
-		m_programId = ShaderNorms::getInstance()->getShader();
+		m_programId = ShaderNorms::getInstance()->getShaderReference();
 		glUseProgram(m_programId);
 	}
 	
