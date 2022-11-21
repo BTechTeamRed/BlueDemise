@@ -236,7 +236,7 @@ namespace Engine
 		m_programId = ShaderNorms::getInstance()->getShader();
 		glUseProgram(m_programId);
 	}
-
+	/*
 	void Renderer::renderText(TextComponent text, float x, float y, float scale, glm::vec3 color, GLuint shader)
 	{
 		// activate corresponding render state	
@@ -279,7 +279,7 @@ namespace Engine
 		}
 		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	}*/
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)
