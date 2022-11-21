@@ -27,9 +27,6 @@ namespace Engine
         //Gets the current position of the Game Window
         glm::vec2 getGameWindowPos() { return m_gamePanel.getPosition(); }
 
-        //Gets the current position of the Game Window
-        glm::vec2 getGameWindowPos();
-
 	private:
         //creates an array of three components panels
         std::array<ComponentsPanel, 3> m_componentsPanels

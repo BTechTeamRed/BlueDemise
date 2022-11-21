@@ -2,6 +2,8 @@
 #include "Engine/SceneBuilder/Components.h"
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/Utilities/Log.h"
+#include "Engine/Physics/OctNode.h"
+#include "Engine/Physics/Ray.h"
 
 using namespace Engine;
 

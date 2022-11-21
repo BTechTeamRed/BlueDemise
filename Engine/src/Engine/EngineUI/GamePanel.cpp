@@ -35,9 +35,4 @@ namespace Engine
 
 		ImGui::End();
 	}
-
-	glm::vec2 GamePanel::getPos()
-	{
-		return m_position;
-	}
 }
