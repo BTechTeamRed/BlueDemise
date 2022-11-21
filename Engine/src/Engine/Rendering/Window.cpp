@@ -107,6 +107,9 @@ namespace Engine
 		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / (frustumWidth / aspectRatio)) * m_windowHeight * aspectRatio);
 		result += debugWindowOffset; //Offset the result by the position of the debug window
 		return result;
+		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / frustumWidth) / m_windowHeight * aspectRatio);
+		result += debugWindowOffset; //Offset the result by the position of the debug window
+		return result;
 	}
 
 	//get position of camera in world space. Returns the projection matrix
@@ -115,12 +118,6 @@ namespace Engine
 		//Change this to use camera's proper transform component. Perhaps we can pass it as an argument? **********************
 		glm::vec3 cameraPos = glm::vec3(0.f,0.f,-10.f);
 		return m_camera.projection * glm::translate(glm::mat4(1.f), cameraPos);
-	}
-	
-	float Window::getAspectRatio() const
-	{
-		//return m_camera.aspectRatio;
-		return 9.f / 16.f;
 	}
 #pragma endregion
 }

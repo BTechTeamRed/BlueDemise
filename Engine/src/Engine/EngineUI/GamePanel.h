@@ -9,7 +9,7 @@ namespace Engine
 	public:
 		void setInitialPosition();
 		void show(Window& window);
-		glm::vec2 getPos();
+		glm::vec2 getPosition() { return m_position; };
 	private:
 
 	};

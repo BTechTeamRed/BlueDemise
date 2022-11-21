@@ -66,7 +66,7 @@ namespace Engine
 		glm::mat4 getProjectionMatrix() const;
 
 		//Get's the projection matrix of the camera
-		float getAspectRatio() const;
+		float getAspectRatio() const { return m_camera.aspectRatio; };
 		#pragma endregion
 		
 		friend Renderer;
