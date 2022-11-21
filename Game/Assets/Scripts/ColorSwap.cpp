@@ -18,8 +18,6 @@ namespace Engine
 	}
 	
 	void ColorSwap::swapMyColor() {
-		GE_CORE_INFO("Swapping Color!");
-
 		// Increment index to the next color
 		currentColorIndex++;
 		if (currentColorIndex > difficultyLevel) {

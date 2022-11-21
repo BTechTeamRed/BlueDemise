@@ -9,5 +9,6 @@ namespace Engine
 
 	public:
 		virtual std::string getScriptName() override { return "PlayerMovementScript"; }
+		bool tileInRange(Entity tile);
 	};
 }

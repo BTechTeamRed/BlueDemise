@@ -30,21 +30,50 @@ namespace Engine
 					if (other.getComponent<TagComponent>().tag != "player" &&
 						other.getComponent<TagComponent>().tag != "obstacle")
 					{
-						// Change the color of the selected entity
-						//other.getComponent<MaterialComponent>().color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+						if (tileInRange(other)) {
+							// Call the colorSwap method
+							static_cast<ColorSwap*>(other.getComponent<ScriptComponent>().m_instance)->swapMyColor();
 
-						// Call the colorSwap method
-						static_cast<ColorSwap*>(other.getComponent<ScriptComponent>().m_instance)->swapMyColor();
-
-						// Move to the tile the player clicked on
-						auto player = m_entity;
-						int x = transform.position.x + 36;
-						int y = transform.position.y - 104;
-						player.getComponent<TransformComponent>().position.x = x;
-						player.getComponent<TransformComponent>().position.y = y;
+							// Move to the tile the player clicked on
+							auto player = m_entity;
+							int x = transform.position.x + 36;
+							int y = transform.position.y - 104;
+							player.getComponent<TransformComponent>().position.x = x;
+							player.getComponent<TransformComponent>().position.y = y;
+						}
 					}
 				}
 			}
 		}
+	}
+
+	bool PlayerMovementScript::tileInRange(Entity tile)
+	{
+		// Get the position of the player
+		glm::vec3 playerPos = m_entity.getComponent<TransformComponent>().position;
+		int minX = playerPos.x - 136; // -36 for offset, -100 for the tile
+		int maxX = minX + 400;
+
+		int upperMinY = playerPos.y + 54; // +104 for the offset, -50 for the tile
+		int upperMaxY = playerPos.y + 104;
+		int lowerMinY = upperMaxY + 50;
+		int lowerMaxY = lowerMinY + 50;
+
+		// Get the position of the tile
+		auto tilePos = tile.getComponent<TransformComponent>().position;
+		tilePos.x += 10;
+		tilePos.y += 10;
+
+		if (tilePos.y > upperMinY && tilePos.y < upperMaxY) {
+			if (tilePos.x > minX && tilePos.x < maxX) {
+				return true;
+			}
+		}
+		else if (tilePos.y > lowerMinY && tilePos.y < lowerMaxY) {
+			if (tilePos.x > minX && tilePos.x < maxX) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
