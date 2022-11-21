@@ -1,7 +1,11 @@
 #pragma once
 #include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
 
+using namespace std;
+
 namespace Engine
 {
-	AdvancedShaderDistributor::AdvancedShaderDistributor(const char* advancedSource) {}
+	AdvancedShaderDistributor::AdvancedShaderDistributor(string advancedSource) {
+		
+	}
 }

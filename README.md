@@ -24,31 +24,31 @@ The project should now be built according to the configure used in step 3.
 
 Template:
 
-[vertex]<br />
-[layout]<br />
+<span style="color: black">[vertex]</span><br />
+<span style="color: black">[layout]</span><br />
 (location=0) in vec3 pos;<br />
 (location=1) in vec2 vertexUV;<br />
 
-[uniform]<br />
+<span style="color: black">[uniform]</span><br />
 mat4 mvp;
 
-[out]<br />
+<span style="color: black">[out]</span><br />
 vec2 uv;
 
-[main]<br />
+<span style="color: black">[main]</span><br />
 gl_Position = mvp * vec4(pos, 1);
 uv = vertexUV;
 
-[fragment]<br />
-[uniform]<br />
+<span style="color: black">[fragment]</span><br />
+<span style="color: black">[uniform]</span><br />
 vec4 col;<br />
 sampler2D myTextureSampler;
 
-[in]<br />
+<span style="color: black">[in]</span><br />
 vec2 uv;
 
-[out]<br />
+<span style="color: black">[out]</span><br />
 vec4 color;
 
-[main]<br />
+<span style="color: black">[main]</span><br />
 color = texture(myTextureSampler, uv).rgba * col;
