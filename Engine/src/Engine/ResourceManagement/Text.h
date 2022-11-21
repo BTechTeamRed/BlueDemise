@@ -13,6 +13,7 @@
 //OpenGl Header file
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include <gl.h>
 
 //STL Header file
 #include <vector>
@@ -24,8 +25,8 @@ namespace Engine
 	class ENGINE_API Text
 	{
 	public:
-		Text();
-		~Text();
+		/*Text();
+		~Text();*/
 
 		void IterateText();
 
@@ -49,7 +50,7 @@ namespace Engine
 		void init(const char* fname, unsigned int h);
 
 		//clean the resource
-		void clean();
+		//void clean();
 
 		//draw the texture to the screen
 		//void print(const Character& ft_text, float x, float y, const char* fmt);

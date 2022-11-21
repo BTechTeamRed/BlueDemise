@@ -1,12 +1,10 @@
 #include "Text.h"
 #include <Engine/Utilities/Log.h>
-
+#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include FT_FREETYPE_H
 
 namespace Engine 
 {
-	FT_Library ft;
-	FT_Face face;
 	void Text::IterateText()
 	{
 		if (FT_Init_FreeType(&ft))
@@ -25,7 +23,7 @@ namespace Engine
 		for (unsigned char i = 0; i < 128; i++)
 		{
 			//load character glyph
-			if (FT_Load_Char(face, charID,FT_LOAD_RENDER))
+			if (FT_Load_Char(face, i, FT_LOAD_RENDER))
 			{
 				GE_CORE_INFO("Error: failed to load Glyph");
 				continue;
@@ -33,7 +31,7 @@ namespace Engine
 		}
 
 		//Generate texture
-		unsigned int texture;
+		GLuint texture;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexImage2D(
@@ -62,12 +60,18 @@ namespace Engine
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
-		Characters.insert(std::pair<char, Character>(c, character));
+
+		Characters.insert(std::pair<GLchar, Character>(i, character));
+
+		//clean up freetype resource
+		clean();
 	}
 
-	FT_Done_Face();
-	FT_Done_FreeType();
-
-
+	//This function for cleaning up the freetype resource
+	void clean()
+	{
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
+	}
 
 }
