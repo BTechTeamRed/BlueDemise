@@ -34,6 +34,7 @@ namespace Engine
 		static ShaderNorms* m_singleton;
 		//shader generator is stored by default shaders map for further use by adv. shaders
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;
+		//std::map<int, AdvancedShaderGenerator> m_advancedShaders;//TODO
 		//used to detect any change in stride
 		int m_currentStride{ -1 };
 		//converts the shader name enum value into string

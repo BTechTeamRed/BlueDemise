@@ -1,13 +1,12 @@
 #pragma once
-#ifndef SHADERFILLTYPE_H
-#define SHADERFILLTYPE_H
-
 namespace Engine
 {
 	//shader tokens to access map of shader types
-	class ShaderFillType {
+	class ShaderFillType
+	{
 	public:
-		static enum FillType {
+		static enum FillType
+		{
 			SN_TEXTURE_FILL,
 			SN_COLOR_FILL,
 			SN_GRADIENT_FILL
@@ -16,5 +15,3 @@ namespace Engine
 		inline static const int types = 3;
 	};
 }
-
-#endif

@@ -2,8 +2,6 @@
 #ifndef SHADERGENERATOR_H
 #define SHADERGENERATOR_H
 
-#include <Engine/ResourceManagement/ShaderFillType.h>
-
 namespace Engine
 {
 	typedef unsigned int GLuint;
@@ -25,6 +23,7 @@ namespace Engine
 		bool requestStatus(GLuint shaderObj, GLenum status);
 	};
 
+	/*
 	// Based on the advanced shader source code, this generates shaders for each
 	// shader fill type (check ShaderFillType.h). This means that each advanced
 	// shader can be applied to different sets of vertex data such as gradients,
@@ -33,13 +32,14 @@ namespace Engine
 	// default shader code are separate.
 	class AdvancedShaderGenerator {
 	public:
-		AdvancedShaderGenerator(ShaderGenerator& shaderGenerator);
+		AdvancedShaderGenerator(const char* vertexSource, const char* fragmentSource);
 		int getProgramId(ShaderFillType::FillType fillType = ShaderFillType::DEFAULT_FILL_TYPE);
 
 	private:
 		const char* vertexSource, * fragmentSource;
 		int m_programIds[ShaderFillType::types];
 	};
+	*/
 }
 
 #endif

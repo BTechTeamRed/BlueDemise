@@ -68,9 +68,14 @@ namespace Engine
 		return true;
 	}
 
-	AdvancedShaderGenerator::AdvancedShaderGenerator(ShaderGenerator& shaderGenerator)
+	/*
+	AdvancedShaderGenerator::AdvancedShaderGenerator(const char* vertexSource, const char* fragmentSource)
 	{
-
+		ShaderGenerator sg(vertexSource, fragmentSource);
+		GE_CORE_INFO("Vertex: \n");
+		GE_CORE_INFO(sg.getVertexSource());
+		GE_CORE_INFO("Fragment: \n");
+		GE_CORE_INFO(sg.getFragmentSource());
 	}
 
 	int AdvancedShaderGenerator::getProgramId(ShaderFillType::FillType fillType)
@@ -88,4 +93,5 @@ namespace Engine
 			break;
 		}
 	}
+	*/
 }
