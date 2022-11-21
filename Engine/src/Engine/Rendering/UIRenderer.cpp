@@ -45,7 +45,8 @@ namespace Engine
 
 		m_gamePanel.setPosition(glm::uvec2(panelWidth + 3, menuHeight));
 		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3, halfWindowHeight));
-		m_gamePanel.setInitialPosition();
+		m_gamePanel.setInitialPosition(panelWidth + 3, menuHeight);
+		m_gamePanel.setInitialDimension(panelWidth * 3, halfWindowHeight);
 		
 		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
 		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
@@ -53,22 +54,15 @@ namespace Engine
 		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, halfWindowHeight + menuHeight));
 		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 1, menuHeight));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
-
+		m_componentsPanel.setPosition(glm::uvec2(panelWidth * 3 - 3, halfWindowHeight + menuHeight));
+		m_componentsPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		//TODO - Does this need to be read from a .json file?
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Transform");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Camera");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Material");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Serializable");
-		//m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Animation");
-
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
-
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_componentsPanel.addComponent("Transform");
+		m_componentsPanel.addComponent("Camera");
+		m_componentsPanel.addComponent("Material");
+		m_componentsPanel.addComponent("Serializable");
+		//m_componentsPanels.addComponent("Animation");
 
 		m_inspectorPanel.setRegistry(&scene.m_registry);
 
@@ -94,10 +88,7 @@ namespace Engine
 		m_hierarchyPanel.show();
 		m_inspectorPanel.show();
 
-		for (auto& panel : m_componentsPanels)
-		{
-			panel.show();
-		}
+		m_componentsPanel.show();
 
 		m_tagDialog.update();
 		m_tagDialog.show();
@@ -140,10 +131,10 @@ namespace Engine
 			//Do nothing if we cancel
 		}
 
-		if (m_componentsPanels[2].isAddButtonClicked())
+		if (m_componentsPanel.isAddButtonClicked())
 		{
 			//Check which component was selected to be added to entity
-			auto component = m_componentsPanels[2].getSelectedComponent();
+			auto component = m_componentsPanel.getSelectedComponent();
 
 			//Get the handle on the selected entity to add the component to
 			auto handle = m_hierarchyPanel.getSelectedEntity();
