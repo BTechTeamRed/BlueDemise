@@ -53,7 +53,7 @@ target_include_directories(json
                            )
 target_include_directories(freetype
                            INTERFACE
-                            ${CMAKE_CURRENT_SOURCE_DIR}/freetype
+                            ${CMAKE_CURRENT_SOURCE_DIR}/freetype/include
                            )
 target_include_directories(imgui
                            PUBLIC
