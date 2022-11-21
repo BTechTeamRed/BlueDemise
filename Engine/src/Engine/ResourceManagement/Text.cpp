@@ -1,3 +1,4 @@
+#pragma once
 #include "Text.h"
 #include "glad/glad.h"
 

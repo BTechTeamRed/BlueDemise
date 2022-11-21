@@ -1,3 +1,4 @@
+#pragma once
 #include "Engine/Core.h"
 #include "glm/gtc/type_ptr.hpp"
 
