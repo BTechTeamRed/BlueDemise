@@ -5,11 +5,14 @@
 #include "Engine/ResourceManagement/ResourceManager.h"
 
 #include <Engine/Utilities/Log.h>
+#include <freetype/freetype.h>
 
-#include FT_FREETYPE_H
+//#include <ft2build.h>
+//#include FT_FREETYPE_H
 
 namespace Engine 
 {
+
 	//Construct the text class by initializing the texture generation of ASCII characters.
 	Text::Text()
 	{
@@ -19,10 +22,14 @@ namespace Engine
 			GE_CORE_ERROR("[Text] Text unsuccessfully initialized. Please check Text.cpp");
 			
 	}
-
+	
 	//Iterate through 128 ASCII characters and generate textures for each to be rendered.
 	bool Text::initializeText()
 	{
+		//Freetype resources used to generate character textures.
+		FT_Face face;
+		FT_Library ft;
+
 		if (FT_Init_FreeType(&ft))
 		{
 			GE_CORE_ERROR("[Text] Could not init FreeType Library");
@@ -83,16 +90,9 @@ namespace Engine
 		}
 
 		//clean up freetype resource
-		clean();
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
 
 		return true;
 	}
-
-	//This function for cleaning up the freetype resource
-	void Text::clean()
-	{
-		FT_Done_Face(face);
-		FT_Done_FreeType(ft);
-	}
-
 }
