@@ -19,7 +19,7 @@ The project should now be built according to the configure used in step 3.
 	in the background. The following is a template for the advanced shader syntax:</li>
 </ol>
 	
-<i>Example translated from TextureFill.vs and TextureFill.fs</i>
+<i>Example translated from TextureFill.vs and TextureFill.fs</i><br />
 <b>Illegal syntax warning: Do not use [] characters in comments</b>
 
 Template:

@@ -4,6 +4,7 @@
 
 #include <Engine/ResourceManagement/ShaderFillType.h>
 #include <Engine/ResourceManagement/ShaderGenerator.h>
+#include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
 #include <string>
 #include <map>
 
@@ -26,6 +27,7 @@ namespace Engine
 		bool assignsNewStride(int stride);
 		//add shader to the shader map
 		void addShader(ShaderFillType::FillType shaderName);
+		void addAdvancedShader(int bind, std::string shaderName);
 		//access the shader given key value
 		GLuint getShaderReference(ShaderFillType::FillType fillType = ShaderFillType::DEFAULT_FILL_TYPE);
 
@@ -34,9 +36,9 @@ namespace Engine
 		static ShaderNorms* m_singleton;
 		//shader generator is stored by default shaders map for further use by adv. shaders
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;
-		//std::map<int, AdvancedShaderGenerator> m_advancedShaders;//TODO
+		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
 		//used to detect any change in stride
-		int m_currentStride{ -1 };
+		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };//m_currentAdvancedShaderBind - TODO
 		//converts the shader name enum value into string
 		std::string getShaderNameString(ShaderFillType::FillType shaderName);
 	};

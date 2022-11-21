@@ -13,40 +13,42 @@ The project should now be built according to the configure used in step 3.
 
 <a name="advanced-shader-template"></a>
 # How to construct an advanced shader
-1. You must use the .as file extension to extract the source for an advanced shader.
-2. The advanced shader uses a custom syntax that gets merged with the default shaders
-	in the background. The following is a template for the advanced shader syntax:
+<ol>
+<li>You must use the .as file extension to extract the source for an advanced shader.</li>
+<li>The advanced shader uses a custom syntax that gets merged with the default shaders
+	in the background. The following is a template for the advanced shader syntax:</li>
+</ol>
 	
-Example translated from TextureFill.vs and TextureFill.fs
-Illegal syntax warning: Do not use [] characters in comments
+<i>Example translated from TextureFill.vs and TextureFill.fs</i>
+<b>Illegal syntax warning: Do not use [] characters in comments</b>
 
 Template:
 
-[vertex]
-[layout]
-(location=0) in vec3 pos;
-(location=1) in vec2 vertexUV;
+[vertex]<br />
+[layout]<br />
+(location=0) in vec3 pos;<br />
+(location=1) in vec2 vertexUV;<br />
 
-[uniform]
+[uniform]<br />
 mat4 mvp;
 
-[out]
+[out]<br />
 vec2 uv;
 
-[main]
+[main]<br />
 gl_Position = mvp * vec4(pos, 1);
 uv = vertexUV;
 
-[fragment]
-[uniform]
-vec4 col;
+[fragment]<br />
+[uniform]<br />
+vec4 col;<br />
 sampler2D myTextureSampler;
 
-[in]
+[in]<br />
 vec2 uv;
 
-[out]
+[out]<br />
 vec4 color;
 
-[main]
+[main]<br />
 color = texture(myTextureSampler, uv).rgba * col;
