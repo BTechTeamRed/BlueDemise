@@ -3,6 +3,7 @@
 #include <Engine/Core.h>
 #include <Engine/Rendering/Window.h>
 #include <Engine/Rendering/UIRenderer.h>
+#include <Engine/ResourceManagement/Text.h>
 
 namespace Engine
 {
@@ -35,9 +36,10 @@ namespace Engine
 		//Renderer is a singleton, so this is the only instance of it.
 		static Renderer* m_pinstance;
 
-		//Define window and UI that is managed by this singleton
+		//Define window, UI and text that is managed by this singleton
 		Window m_window;
 		UIRenderer m_UI;
+		Text m_text;
 
 		//flag, if true: ui is rendered, if false: no ui is rendered
 		bool m_showUI = true;
