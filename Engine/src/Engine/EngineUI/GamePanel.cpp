@@ -22,7 +22,8 @@ namespace Engine
 		{
 			ImGui::BeginChild("GamePanel");
 			ImVec2 wsize = ImGui::GetWindowSize();
-			if (std::round(wsize.x) != window.getWidth() || std::round(wsize.y) != window.getHeight()) {
+			if (std::round(wsize.x) != window.getWidth() || std::round(wsize.y) != window.getHeight()) 
+			{
 				window.resize(std::round(wsize.x), std::round(wsize.y));
 			}
 			auto imguiWindowPos = ImGui::GetWindowPos();

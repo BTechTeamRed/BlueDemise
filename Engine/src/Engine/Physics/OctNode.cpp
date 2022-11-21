@@ -41,7 +41,6 @@ void OctNode::update()
 
 std::list<Entity*> OctNode::raycast(Ray& ray)
 {
-	//TODO: raycasting code
 	// Can probably be made more efficent by casting ray against child's bounding box
 	std::list<Entity*> picks;
 	glm::vec3 dim = m_bounds->getDimensions();
@@ -90,7 +89,6 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 	// Check children
 	if (isChildSized && m_children)
 	{
-		//TODO: refine check using math and refactor
 		int child = getChild(bounds->getPosition());
 		if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 		{
@@ -108,7 +106,6 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 
 bool OctNode::remove(Entity* entity, PhysicsComponent* component)
 {
-	//TODO: removal code
 	bool removed = false;
 	int child = getChild(component->boundingBox->getPosition());
 	// DFS
@@ -134,7 +131,6 @@ bool OctNode::remove(Entity* entity, PhysicsComponent* component)
 
 void OctNode::subdivide()
 {
-	//TODO: subdivision code
 	if (!m_children)
 	{
 		glm::vec3 center = m_bounds->getPosition();
@@ -208,7 +204,6 @@ void OctNode::rebalance()
 	for (auto pair : removal)
 	{
 		m_entityList.remove(pair);
-		//remove(pair.first, pair.second);
 	}
 }
 

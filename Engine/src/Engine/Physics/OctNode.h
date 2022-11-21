@@ -3,21 +3,17 @@
 #include <list>
 #include <vector>
 #include "glm/glm.hpp"
-#include "AABB.h"
 
 namespace Engine
 {
-	/// <summary>
-	/// Forward declaration of Physics Component
-	/// </summary>
+	// Forward declarations
 	struct PhysicsComponent;
-	/// <summary>
-	/// Forward declaration of Entity
-	/// </summary>
 	class Entity;
+	class AABB;
+	class Ray;
 
 	/// <summary>
-	/// Node that backs the OctTree
+	/// Node of an oct-tree graph
 	/// </summary>
 	class OctNode
 	{
@@ -29,6 +25,7 @@ namespace Engine
 		/// <param name="dimensions">Dimensions of the node</param>
 		/// <param name="parent">Parent node, null if root</param>
 		OctNode(glm::vec3& center, glm::vec3& dimensions, OctNode* parent = nullptr);
+
 		// D'tor
 		~OctNode();
 
@@ -40,12 +37,14 @@ namespace Engine
 		/// Check integerity of nodes
 		/// </summary>
 		void update();
+
 		/// <summary>
 		/// Cast a ray into the world and intersect objects
 		/// </summary>
 		/// <param name="ray">Ray to intersect with</param>
 		/// <returns>List of entities that ray intersected</returns>
 		std::list<Entity*> raycast(Ray& ray);
+
 		/// <summary>
 		/// Insert entity into node or child node
 		/// </summary>
@@ -53,6 +52,7 @@ namespace Engine
 		/// <param name="component">Physics component of the entity</param>
 		/// <returns>True on successful insertion</returns>
 		bool insert(Entity* entity, PhysicsComponent* component);
+
 		/// <summary>
 		/// Remove entity from node or child node
 		/// </summary>
@@ -60,6 +60,7 @@ namespace Engine
 		/// <param name="component">Physics component of the entity</param>
 		/// <returns>True on successful removal</returns>
 		bool remove(Entity* entity, PhysicsComponent* component);
+
 		/// <summary>
 		/// Getter for the AABB
 		/// </summary>
@@ -71,10 +72,12 @@ namespace Engine
 		/// Create children nodes
 		/// </summary>
 		void subdivide();
+
 		/// <summary>
 		/// Rebalance tree by pushing objects up or down as appropriate
 		/// </summary>
 		void rebalance();
+
 		/// <summary>
 		/// Based on the center position get child that object should check against
 		/// </summary>
@@ -86,14 +89,17 @@ namespace Engine
 		/// AABB of the node
 		/// </summary>
 		AABB* m_bounds;
+
 		/// <summary>
 		/// List of entities that exist in the node
 		/// </summary>
 		std::list<std::pair<Entity*, PhysicsComponent*>> m_entityList;
+
 		/// <summary>
 		/// Pointer to the parent node
 		/// </summary>
 		OctNode* m_parent;
+
 		/// <summary>
 		/// Array of children nodes
 		/// </summary>

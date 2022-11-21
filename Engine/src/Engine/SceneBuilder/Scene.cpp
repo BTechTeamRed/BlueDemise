@@ -32,13 +32,13 @@ namespace Engine
 			dimensions.y = camera.frustumWidth / camera.aspectRatio;
 			dimensions.z = camera.farZ - camera.nearZ;
 		}
-		m_physics = new OctTree(dimensions);
+		m_physics = new PhysicsSystem(dimensions);
 
 		// Insert physics objects
 		auto physicsList = getEntities<PhysicsComponent>();
 		for (auto [entity, phyObj] : physicsList.each())
 		{
-			//TODO: Change OctTree to PhysicsSystem and have it track entities to prevent memory leaks
+			//TODO: Change PhysicsSystem to PhysicsSystem and have it track entities to prevent memory leaks
 			Entity* obj = new Entity(entity, this);
 			if (!m_physics->insert(obj))
 			{
@@ -93,11 +93,7 @@ namespace Engine
 		if (input->isButtonPressed(0))
 		{
 			glm::vec2 cursor = input->getCursorPos();
-			GE_CORE_TRACE("Scene::onRuntimeUpdate: cursor {0} {1}", cursor.x, cursor.y);
 			glm::vec3 spot = Renderer::getInstance()->screenToWorld(cursor);
-
-			GE_CORE_TRACE("Scene::onRuntimeUpdate: cursor {0} {1}", cursor.x, cursor.y);
-			GE_CORE_TRACE("Scene::onRuntimeUpdate: point {0} {1} {2}", spot.x, spot.y, spot.z);
 
 			auto picks = m_physics->raycast(spot, glm::vec3(0, 0, 1));
 			for (auto pick : picks)

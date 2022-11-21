@@ -164,6 +164,7 @@ namespace Engine
 	//A component used for collision detection in the physics system
 	struct PhysicsComponent
 	{
+		// Create physics component with the inputed dimensions and position (at center of dimensions)
 		PhysicsComponent(glm::vec3& dimensions, glm::vec3& position)
 			: boundingBox(new AABB(dimensions, position)) {}
 		~PhysicsComponent()
@@ -174,6 +175,7 @@ namespace Engine
 			}
 		}
 
+		// Backing Axis-Aligned Bounding Box
 		AABB* boundingBox;
 	};
 }

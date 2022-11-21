@@ -2,21 +2,19 @@
 
 #include <list>
 #include "glm/glm.hpp"
-#include "AABB.h"
-#include "Ray.h"
-#include "OctNode.h"
 
 namespace Engine
 {
-	/// <summary>
-	/// Forward declaration of Entity
-	/// </summary>
+	// Forward declarations
 	class Entity;
+	class AABB;
+	class Ray;
+	class OctNode;
 
 	/// <summary>
-	/// 3D space is recursively divided into 8 portions
+	/// Handle physics via an oct-tree: 3D space graph where space is divided into 8 containers, each representing a portion of the space
 	/// </summary>
-	class OctTree
+	class PhysicsSystem
 	{
 	public:
 		/// <summary>
@@ -24,24 +22,27 @@ namespace Engine
 		/// </summary>
 		/// <param name="dimensions">Dimensions of the world</param>
 		/// <param name="center">Center of the world - default: 0 0 0 </param>
-		OctTree(glm::vec3& dimensions, glm::vec3& center = glm::vec3());
+		PhysicsSystem(glm::vec3& dimensions, glm::vec3& center = glm::vec3());
+
 		// D'tor
-		~OctTree();
+		~PhysicsSystem();
 
 		// Prevent copying
-		OctTree(OctTree& other) = delete;
-		void operator=(OctTree& other) = delete;
+		PhysicsSystem(PhysicsSystem& other) = delete;
+		void operator=(PhysicsSystem& other) = delete;
 		
 		/// <summary>
 		/// Update root node
 		/// </summary>
 		void update();
+
 		/// <summary>
 		/// Raycast using specified ray
 		/// </summary>
 		/// <param name="ray">Ray to check against</param>
 		/// <returns>List of entities intersected by ray</returns>
 		std::list<Entity*> raycast(Ray& ray);
+
 		/// <summary>
 		/// Raycast using a ray starting at the origin haeding along vector
 		/// </summary>
@@ -49,12 +50,14 @@ namespace Engine
 		/// <param name="vector">Heading of the ray</param>
 		/// <returns>List of entities intersected by ray</returns>
 		std::list<Entity*> raycast(glm::vec3& origin, glm::vec3& vector);
+
 		/// <summary>
 		/// Insert specified entity into the world
 		/// </summary>
 		/// <param name="entity">Entity to insert</param>
 		/// <returns>True if entity is inserted</returns>
 		bool insert(Entity* entity);
+
 		/// <summary>
 		/// Remove specified entity from the world
 		/// </summary>
@@ -67,5 +70,10 @@ namespace Engine
 		/// Root node of the tree
 		/// </summary>
 		OctNode* m_root;
+
+		/// <summary>
+		/// List of entities successfully inserted into the system
+		/// </summary>
+		std::list<Entity*> m_entityList;
 	};
 };

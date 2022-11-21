@@ -5,7 +5,7 @@
 #include <Engine/Utilities/DeltaTime.h>
 #include <string>
 
-#include "Engine/Physics/OctTree.h"
+#include "Engine/Physics/PhysicsSystem.h"
 namespace Engine
 {
     class Entity;
@@ -48,7 +48,7 @@ namespace Engine
 
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
-        OctTree* m_physics;
+        PhysicsSystem* m_physics;
         
         void runEntityScripts(const DeltaTime& dt);
 

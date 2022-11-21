@@ -239,9 +239,5 @@ namespace Engine
 		m_hierarchyPanel.addEntity(tag, entity.getHandle());
 	}
 
-
-	glm::vec2 UIRenderer::getGameWindowPos() {
-		return m_gamePanel.getPos();
-	}
 #pragma endregion
 }

@@ -25,7 +25,7 @@ namespace Engine
         GamePanel* getGamePanel() { return &m_gamePanel; }
 
         //Gets the current position of the Game Window
-        glm::vec2 getGameWindowPos();
+        glm::vec2 getGameWindowPos() { return m_gamePanel.getPosition(); }
 
 	private:
         //creates an array of three components panels

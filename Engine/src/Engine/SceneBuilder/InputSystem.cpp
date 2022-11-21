@@ -121,6 +121,7 @@ bool InputSystem::isInit()
 	return m_isInit;
 }
 
-void InputSystem::setWindowOffset(glm::vec2 offset) {
+void InputSystem::setWindowOffset(glm::vec2 offset) 
+{
 	m_windowOffset = offset;
 }
