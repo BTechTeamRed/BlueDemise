@@ -33,10 +33,10 @@ namespace Engine
 
 		//generate a texture and store its relevant data into a Character struct 
 		//that we add to the Characters map, all data require to render for later use
-		std::map<unsigned char, Character> Characters;
+		std::map<char, Character> Characters;
 	private:
 
-		std::string defaultFont = "MyriadPro.otf";
+		std::string defaultFont = "arial.ttf";
 		
 	};
 }

@@ -119,8 +119,7 @@ namespace Engine
 	}
 	
 	void GeometryFactory::initTextGeometry()
-	{
-		//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
+	{//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
 		int stride = 5;
 
 		//Definition of dimensions of sprite.
@@ -139,9 +138,27 @@ namespace Engine
 			0, 1, 2,  //first triangle
 			2, 3, 0,  //second triangle
 		};
+		/*
+		unsigned int VAO, VBO;
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 20, NULL, GL_DYNAMIC_DRAW);
+
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(sizeof(float)*3));
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		*/
 
 		VerticesComponent text;
-
+		
 		//Based on the stride, we can determine the number of attributes.
 		text.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
 		text.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
@@ -152,7 +169,10 @@ namespace Engine
 		text.vaoID = getVAO();//VertexArray();
 		text.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, text.vertexAttributes);
 		text.iboID = getIBO(indices, sizeof(indices));
-
+		
+		//text.vaoID = VAO;
+		//text.vboID = VBO;
+		//text.iboID = getIBO(indices, sizeof(indices));
 		m_defaultGeometry.insert(std::pair(RT_Text, text));
 	}
 #pragma endregion

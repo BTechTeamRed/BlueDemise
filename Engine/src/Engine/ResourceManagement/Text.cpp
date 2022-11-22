@@ -16,7 +16,6 @@ namespace Engine
 	bool Text::initializeText()
 	{
 		//Freetype resources used to generate character textures.
-		FT_Face face;
 		FT_Library ft;
 
 		if (FT_Init_FreeType(&ft))
@@ -25,11 +24,15 @@ namespace Engine
 			return false;
 		}
 
+		FT_Face face;
 		if (FT_New_Face(ft, ResourceManager::getInstance()->getFont(defaultFont).c_str(), 0, &face))
 		{
 			GE_CORE_ERROR("[Text] Failed to load {0}", defaultFont);
 			return false;
 		}
+
+		FT_Set_Pixel_Sizes(face, 0, 150);
+
 		//disable byte-alignment restriction from opengl
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -48,24 +51,24 @@ namespace Engine
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
 
-			glTexImage2D(
-				GL_TEXTURE_2D,
-				0,
-				GL_GREEN,
-				face->glyph->bitmap.width,
-				face->glyph->bitmap.rows,
-				0,
-				GL_BLUE,
-				GL_UNSIGNED_BYTE,
-				face->glyph->bitmap.buffer
-			);
-
 			//setting up the texture options
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		
+
+			glTexImage2D(
+				GL_TEXTURE_2D,
+				0,
+				GL_RED,
+				face->glyph->bitmap.width,
+				face->glyph->bitmap.rows,
+				0,
+				GL_RED,
+				GL_UNSIGNED_BYTE,
+				face->glyph->bitmap.buffer
+			);
+
 			//store character for later use
 			Character character = 
 			{
@@ -75,7 +78,7 @@ namespace Engine
 				face->glyph->advance.x
 			};
 
-			Characters.insert(std::pair<unsigned char, Character>(ch, character));
+			Characters.insert(std::pair<char, Character>(ch, character));
 		}
 
 		m_textShaderProgram = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);

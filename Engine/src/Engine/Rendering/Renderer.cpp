@@ -282,7 +282,7 @@ namespace Engine
 		// activate corresponding render state	
 		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
 
-		//glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(m_text.m_textVertices.vaoID);
 
 		// iterate through all characters
@@ -291,31 +291,43 @@ namespace Engine
 		{
 			Text::Character ch = m_text.Characters[*c];
 
-			float xpos = x + ch.Bearing.x * scale.x;
-			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale.y;
+			float xpos = x + ch.Bearing.x;// *scale.x;
+			float ypos = y - (ch.Size.y - ch.Bearing.y);// * scale.y;
 
-			float w = ch.Size.x * scale.x;
-			float h = ch.Size.y * scale.y;
+			float w = ch.Size.x;// *scale.x;
+			float h = ch.Size.y;// *scale.y;
 			// update VBO for each character
-			float vertices[6][4] = {
-				{ xpos,     ypos + h,   0.0f, 0.0f },
-				{ xpos,     ypos,       0.0f, 1.0f },
-				{ xpos + w, ypos,       1.0f, 1.0f },
+			float vertices[6][5] = {
+				{ xpos,     ypos + h, 0.f,  0.0f, 0.0f },
+				{ xpos,     ypos, 0.f,       0.0f, 1.0f },
+				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
 
-				{ xpos,     ypos + h,   0.0f, 0.0f },
-				{ xpos + w, ypos,       1.0f, 1.0f },
-				{ xpos + w, ypos + h,   1.0f, 0.0f }
+				{ xpos,     ypos + h, 0.f,   0.0f, 0.0f },
+				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
+				{ xpos + w, ypos + h, 0.f,   1.0f, 0.0f }
 			};
+			/*
+			float vertices[] = {
+				xpos, ypos, 0.f,		0.0f, 0.0f,
+				xpos+w, ypos, 0.f,		1.0f, 0.0f,
+				xpos+w, ypos+h, 0.f,	1.0f, 1.0f,
+				xpos, ypos + h, 0.f,	0.0f, 1.0f,
+			};*/
+
 			// render glyph texture over quad
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+
 			// update content of VBO memory
 			glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+			
+
 			// render quad
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-			x += (ch.Advance >> 6) * ((scale.x*scale.y) /2); // bitshift by 6 to get value in pixels (2^6 = 64)
+			x += (ch.Advance >> 6);// *((scale.x * scale.y) / 2); // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
 
 		glBindVertexArray(0);
