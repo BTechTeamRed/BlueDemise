@@ -1,5 +1,5 @@
 #include <Engine/ResourceManagement/ShaderNorms.h>
-#include "Engine/ResourceManagement/ResourceManager.h"
+#include <Engine/ResourceManagement/ResourceManager.h>
 #include "glad/glad.h"
 
 using namespace std;
@@ -42,18 +42,15 @@ namespace Engine
 		{
 			if (stride == textureCoordinates)
 			{
-				programId = getShaderReference();
-				glUseProgram(programId);
+				assignProgram(getShaderReference(), programId);
 			}
 			else if (stride == colorCoordinates)
 			{
-				programId = getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL);
-				glUseProgram(programId);
+				assignProgram(getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL), programId);
 			}
 			else if (stride == gradientCoordinates)
 			{
-				programId = getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL);
-				glUseProgram(programId);
+				assignProgram(getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
 			}
 		}
 	}
@@ -83,19 +80,19 @@ namespace Engine
 
 	void ShaderNorms::addAdvancedShader(int bind, std::string shaderName)
 	{
-		/*
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
-		GE_CORE_INFO(asSource);
-		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource)));
-		*/
-		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
-		GE_CORE_INFO(asSource);
 		AdvancedShaderDistributor asd(asSource, m_shaders);
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
 	{
 		return m_shaders.at(shaderName).getProgramId();
+	}
+
+	void ShaderNorms::assignProgram(GLuint shaderBind, GLuint& shaderAccessor)
+	{
+		shaderAccessor = shaderBind;
+		glUseProgram(shaderBind);
 	}
 
 	string ShaderNorms::getShaderNameString(ShaderFillType::FillType shaderName)

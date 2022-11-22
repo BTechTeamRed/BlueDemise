@@ -39,6 +39,8 @@ namespace Engine
 		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
 		//used to detect any change in stride
 		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };//m_currentAdvancedShaderBind - TODO
+		//assigns program to GL and the accessor variable
+		void assignProgram(GLuint shaderBind, GLuint& shaderAccessor);
 		//converts the shader name enum value into string
 		std::string getShaderNameString(ShaderFillType::FillType shaderName);
 	};

@@ -19,18 +19,22 @@ namespace Engine
 	private:
 		std::string advancedSource;
 		std::string vertexSourceSet[ShaderFillType::types], fragmentSourceSet[ShaderFillType::types];
-		/*
 		struct SourceExtractor
 		{
-			vector<std::string> layout;
-			vector<std::string> uniform;
-			vector<std::string> inVariables;
-			vector<std::string> outVariables;
-			vector<std::string> mainCommands;
-		};
-		*/
+			std::vector<std::string> layout;
+			std::vector<std::string> uniforms;
+			std::vector<std::string> inVariables;
+			std::vector<std::string> outVariables;
+			std::vector<std::string> mainCommands;
 
-		//void extractSource(SourceExtractor& se, std::string source);
+			bool layoutAvailable, uniformAvailable, inVariablesAvailable,
+				outVariablesAvailable, mainCommandsAvailable;
+			void print();
+		};
+
+		void extractSource(std::string source, SourceExtractor& se);
+		void extractAdvancedSource(std::string source, SourceExtractor& vertexSourceExtractor,
+			SourceExtractor& fragmentSourceExtractor);
 	};
 }
 
