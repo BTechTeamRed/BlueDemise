@@ -19,6 +19,7 @@ namespace Engine
 		int currentColorIndex;
 		
 		void swapMyColor();
+		void checkLevelComplete();
 	protected:
 		virtual void onCreate() override;
 		virtual void onUpdate(const Engine::DeltaTime& dt) override;
