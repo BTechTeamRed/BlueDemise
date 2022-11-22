@@ -83,9 +83,14 @@ namespace Engine
 
 	void ShaderNorms::addAdvancedShader(int bind, std::string shaderName)
 	{
+		/*
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
 		GE_CORE_INFO(asSource);
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource)));
+		*/
+		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
+		GE_CORE_INFO(asSource);
+		AdvancedShaderDistributor asd(asSource, m_shaders);
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)

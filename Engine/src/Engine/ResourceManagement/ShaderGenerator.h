@@ -2,6 +2,8 @@
 #ifndef SHADERGENERATOR_H
 #define SHADERGENERATOR_H
 
+#include <string>
+
 namespace Engine
 {
 	typedef unsigned int GLuint;
@@ -11,13 +13,13 @@ namespace Engine
 	class ShaderGenerator
 	{
 	public:
-		ShaderGenerator(const char* vertexSource, const char* fragmentSource);
+		ShaderGenerator(std::string vertexSource, std::string fragmentSource);
 		int getProgramId() const;
-		const char* getVertexSource();
-		const char* getFragmentSource();
+		std::string getVertexSource();
+		std::string getFragmentSource();
 
 	private:
-		const char* vertexSource, * fragmentSource;
+		std::string vertexSource, fragmentSource;
 		int m_programId;
 		int genShader(const char* source, GLenum shaderType);
 		bool requestStatus(GLuint shaderObj, GLenum status);

@@ -3,16 +3,18 @@
 #include <Engine/ResourceManagement/ShaderGenerator.h>
 #include "Engine/Utilities/Log.h"
 
+using namespace std;
+
 namespace Engine
 {
 	// Generates a program for OpenGL to use based on a vertex shader  and a fragment shader.
 	// Both shaders have to be passed in as source file code.
-	ShaderGenerator::ShaderGenerator(const char* vertexSource, const char* fragmentSource)
+	ShaderGenerator::ShaderGenerator(string vertexSource, string fragmentSource)
 		: vertexSource(vertexSource), fragmentSource(fragmentSource)
 	{
 		m_programId = glCreateProgram();
-		const int vertexShader = genShader(vertexSource, GL_VERTEX_SHADER),
-			fragmentShader = genShader(fragmentSource, GL_FRAGMENT_SHADER);
+		const int vertexShader = genShader(vertexSource.c_str(), GL_VERTEX_SHADER),
+			fragmentShader = genShader(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
 
 		if (vertexShader == -1 || fragmentShader == -1)
 			m_programId = -1;
@@ -30,12 +32,12 @@ namespace Engine
 		return m_programId;
 	}
 
-	const char* ShaderGenerator::getVertexSource()
+	string ShaderGenerator::getVertexSource()
 	{
 		return vertexSource;
 	}
 
-	const char* ShaderGenerator::getFragmentSource()
+	string ShaderGenerator::getFragmentSource()
 	{
 		return fragmentSource;
 	}
