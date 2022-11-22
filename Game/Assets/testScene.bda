@@ -1,12 +1,12 @@
 {
   "scene": {
     "entities": [
-      {
+	  {
         "components": [
-          {
+			{
             "name": "TransformComponent",
             "position": {
-              "x": 0.0,
+              "x": 50.0,
               "y": 0.0,
               "z": 0.0
             },
@@ -16,29 +16,44 @@
               "z": 0.0
             },
             "scale": {
-              "x": 288.0,
-              "y": 288.0,
+              "x": 50.0,
+              "y": 50.0,
               "z": 1.0
             }
           },
-          {
-            "frameRate": 0.0,
-            "name": "AnimationComponent",
-            "numPerRow": 3,
-            "texHeightFraction": 0.3333333432674408,
-            "texWidthFraction": 0.3333333432674408,
-            "texName": "SpriteSheet.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "MoveRightScript"
+		  {
+            "name": "TextComponent",
+            "text": "H"
           }
         ],
-        "tag": "triangle2"
+        "tag": "triangle3"
+      },
+	  {
+        "components": [
+			{
+            "name": "TransformComponent",
+            "position": {
+              "x": 110.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 10.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+		  {
+            "name": "TextComponent",
+            "text": "i"
+          }
+        ],
+        "tag": "triangle3"
       },
       {
         "components": [

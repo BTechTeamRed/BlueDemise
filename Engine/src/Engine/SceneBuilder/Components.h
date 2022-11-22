@@ -43,12 +43,13 @@ namespace Engine
 		TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
 			: position(position), scale(scale), rotation(rotation) {}
 
-		glm::vec3 position;
-		glm::vec3 scale;
-		glm::vec3 rotation;
+		glm::vec3 position = { 0.f, 0.f, 0.f };
+		glm::vec3 scale = { 1.f, 1.f, 1.f };
+		glm::vec3 rotation = { 0.f, 0.f, 0.f };
 	};
 
-	struct FixedScreenTransformComponent {
+	struct FixedScreenTransformComponent
+	{
 		FixedScreenTransformComponent(glm::vec3 position, glm::vec3 scale)
 			: position(position), scale(scale)
 		{
@@ -92,6 +93,15 @@ namespace Engine
 		float frameRate;
 		float texWidthFraction;
 		float texHeightFraction;
+	};
+
+	struct TextComponent
+	{
+		TextComponent() = default;
+		TextComponent(std::string text)
+			: text(text) {}
+
+		std::string text = "";
 	};
 
 	//Not component, just container for vertex attribute data format

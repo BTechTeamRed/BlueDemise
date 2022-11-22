@@ -3,13 +3,19 @@ add_library(spdlog INTERFACE)
 add_library(glad ${CMAKE_CURRENT_SOURCE_DIR}/glad/include/glad/glad.h ${CMAKE_CURRENT_SOURCE_DIR}/glad/src/glad.c)
 add_library(glm INTERFACE)
 add_library(entt INTERFACE)
+add_library(stb INTERFACE)
+add_library(json INTERFACE)
+
 find_library(irrKlang 
 	NAMES irrKlang ikpMP3.dll ikpFlac.dll irrKlang.dll
 	PATHS "${CMAKE_CURRENT_SOURCE_DIR}/irrKlang"
 )
 add_library(irrKlang INTERFACE)
-add_library(stb INTERFACE)
-add_library(json INTERFACE)
+find_library(freetype 
+	NAMES freetype freetype.dll freetype.lib
+	PATHS "${CMAKE_CURRENT_SOURCE_DIR}/freetype/release dll/win64"
+)
+add_library(freetype INTERFACE)
 
 file(GLOB IMGUI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h)
 add_library(imgui STATIC ${IMGUI_SOURCES})
@@ -49,6 +55,10 @@ target_include_directories(stb
 target_include_directories(json
                            INTERFACE
                             ${CMAKE_CURRENT_SOURCE_DIR}/json
+                           )
+target_include_directories(freetype
+                           INTERFACE
+                            ${CMAKE_CURRENT_SOURCE_DIR}/freetype/include
                            )
 target_include_directories(imgui
                            PUBLIC

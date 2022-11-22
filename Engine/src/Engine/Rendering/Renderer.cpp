@@ -1,3 +1,4 @@
+#pragma once
 #include "glad/glad.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -57,8 +58,14 @@ namespace Engine
 		
 		glfwSwapInterval(1);
 
+		//Enable transparency
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//Sets the color of the 'clear' command. This is a dark grey
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		m_text.initializeText();
 	}
 
 	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
@@ -161,6 +168,8 @@ namespace Engine
 		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
 
+		glUseProgram(m_programId);
+
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
@@ -200,6 +209,41 @@ namespace Engine
 			//Draw currently bound objects.
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
+		
+		//Get entities that contain text component.
+		const auto textRenderables = scene.getEntities<const TextComponent>();
+		
+		glUseProgram(m_text.m_textShaderProgram);
+		GLuint mvpID = glGetUniformLocation(m_text.m_textShaderProgram, "mvp");
+
+		for (auto [entity, text] : textRenderables.each())
+		{
+			//Set a default transform component and color if the object does not contain one.
+			TransformComponent transform;
+			glm::vec4 color{ .5f,.5f,.5f,1.f };
+
+			//Change the transform component if the entity contains one.
+			if (scene.m_registry.all_of<TransformComponent>(entity)) { transform = scene.m_registry.get<const TransformComponent>(entity); }
+
+			//Obtain MVP using transform and window's projection matrix.
+			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+
+			//Bind color, texture and shader if entity contains material.
+			if (scene.m_registry.all_of<MaterialComponent>(entity))
+			{
+				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+
+				if (setTexture(material.texID, currentBoundTextures)) { currentBoundTextures++; }
+
+				//Change color and shaderProgram to material components color and shader.
+				color = material.color;
+				//glUseProgram(material.shaderID);
+			}
+
+			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
+			renderText(text, transform.position.x, transform.position.y, glm::vec2(transform.scale.x, transform.scale.y), color, m_text.m_textShaderProgram);
+			
+		}
 	}
 #pragma endregion
 	
@@ -233,6 +277,63 @@ namespace Engine
 		glUseProgram(m_programId);
 	}
 	
+	void Renderer::renderText(TextComponent text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader)
+	{
+		// activate corresponding render state	
+		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(m_text.m_textVertices.vaoID);
+
+		// iterate through all characters
+		std::string::const_iterator c;
+		for (c = text.text.begin(); c != text.text.end(); c++)
+		{
+			Text::Character ch = m_text.Characters[*c];
+
+			float xpos = x + ch.Bearing.x;// *scale.x;
+			float ypos = y - (ch.Size.y - ch.Bearing.y);// * scale.y;
+
+			float w = ch.Size.x;// *scale.x;
+			float h = ch.Size.y;// *scale.y;
+			// update VBO for each character
+			float vertices[6][5] = {
+				{ xpos,     ypos + h, 0.f,  0.0f, 0.0f },
+				{ xpos,     ypos, 0.f,       0.0f, 1.0f },
+				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
+
+				{ xpos,     ypos + h, 0.f,   0.0f, 0.0f },
+				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
+				{ xpos + w, ypos + h, 0.f,   1.0f, 0.0f }
+			};
+			/*
+			float vertices[] = {
+				xpos, ypos, 0.f,		0.0f, 0.0f,
+				xpos+w, ypos, 0.f,		1.0f, 0.0f,
+				xpos+w, ypos+h, 0.f,	1.0f, 1.0f,
+				xpos, ypos + h, 0.f,	0.0f, 1.0f,
+			};*/
+
+			// render glyph texture over quad
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+
+			// update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+			
+
+			// render quad
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+			x += (ch.Advance >> 6);// *((scale.x * scale.y) / 2); // bitshift by 6 to get value in pixels (2^6 = 64)
+		}
+
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)
 	{

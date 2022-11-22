@@ -17,6 +17,7 @@ namespace Engine
 		{
 			SN_TEXTURE_FILL,
 			SN_COLOR_FILL,
+			SN_TEXT_FILL,
 			SN_GRADIENT_FILL
 		};
 		static const ShaderName DEFAULT_SHADER_NAME;

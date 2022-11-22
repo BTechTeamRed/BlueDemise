@@ -5,7 +5,12 @@ add_library(Engine SHARED ${sources} )
 add_compile_definitions(GE_BUILD_DLL)
 
 find_package(OpenGL REQUIRED)
-target_link_libraries(Engine spdlog glfw OpenGL::GL glm glad entt imgui ${irrKlang} irrKlang stb json)
+
+###################
+##Link Libraries###
+###################
+
+target_link_libraries(Engine spdlog glfw OpenGL::GL glm glad entt imgui ${irrKlang} irrKlang stb json ${freetype} freetype)
 target_include_directories(Engine PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src)
 
 ####################
@@ -30,4 +35,8 @@ add_custom_command(TARGET Engine PRE_BUILD
 add_custom_command(TARGET Engine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/thirdparty/irrKlang/dlls"
+        $<TARGET_FILE_DIR:Engine>)
+add_custom_command(TARGET Engine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/thirdparty/freetype/release dll/win64"
         $<TARGET_FILE_DIR:Engine>)
