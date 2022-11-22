@@ -89,19 +89,7 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 		
-		auto input = InputSystem::getInstance();
-		if (input->isButtonPressed(0))
-		{
-			glm::vec2 cursor = input->getCursorPos();
-			glm::vec3 spot = Renderer::getInstance()->screenToWorld(cursor);
-
-			auto picks = m_physics->raycast(spot, glm::vec3(0, 0, 1));
-			for (auto pick : picks)
-			{
-				std::string tag = pick->getComponent<TagComponent>().tag;
-				GE_CORE_TRACE("Scene::onRuntimeUpdate: Picked {0}", tag);
-			}
-		}
+		m_physics->update();
 
 		Renderer::getInstance()->renderScene(dt, *this);
 		
