@@ -48,7 +48,7 @@ namespace Engine
 		}
 		if (tileCount == matchingColorCount) {
 			// Finish the level!
-			m_entity.getScene()->swapScene();
+			m_entity.getScene()->m_switch = !m_entity.getScene()->m_switch;
 		}
 	}
 
