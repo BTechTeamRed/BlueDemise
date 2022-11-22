@@ -1,27 +1,15 @@
 #pragma once
-#include "Text.h"
 #include "glad/glad.h"
+#include "Text.h"
 
 #include "Engine/ResourceManagement/ResourceManager.h"
+#include "Engine/Rendering/GeometryFactory.h"
 
 #include <Engine/Utilities/Log.h>
 #include <freetype/freetype.h>
 
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
-
 namespace Engine 
 {
-
-	//Construct the text class by initializing the texture generation of ASCII characters.
-	Text::Text()
-	{
-		if (initializeText())
-			GE_CORE_INFO("[Text] Text initialized.");
-		else
-			GE_CORE_ERROR("[Text] Text unsuccessfully initialized. Please check Text.cpp");
-			
-	}
 	
 	//Iterate through 128 ASCII characters and generate textures for each to be rendered.
 	bool Text::initializeText()
@@ -45,10 +33,10 @@ namespace Engine
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		//In this for loop, iterate through all 128 characters in the ASCll set and generate textures for each to be rendered.
-		for (unsigned char i = 0; i < 128; i++)
+		for (unsigned char ch = 0; ch < 128; ch++)
 		{
 			//load character glyph
-			if (FT_Load_Char(face, i, FT_LOAD_RENDER))
+			if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
 			{
 				GE_CORE_ERROR("[Text] Error: failed to load Glyph");
 				continue;
@@ -86,8 +74,10 @@ namespace Engine
 				face->glyph->advance.x
 			};
 
-			Characters.insert(std::pair<unsigned char, Character>(i, character));
+			Characters.insert(std::pair<unsigned char, Character>(ch, character));
 		}
+
+		m_textVertices = GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Text);
 
 		//clean up freetype resource
 		FT_Done_Face(face);

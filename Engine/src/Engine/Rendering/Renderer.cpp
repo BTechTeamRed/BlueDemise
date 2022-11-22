@@ -64,6 +64,8 @@ namespace Engine
 
 		//Sets the color of the 'clear' command. This is a dark grey
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		m_text.initializeText();
 	}
 
 	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
@@ -205,6 +207,43 @@ namespace Engine
 			//Draw currently bound objects.
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
 		}
+		
+		//Get entities that contain text component.
+		const auto textRenderables = scene.getEntities<const TextComponent>();
+		/*
+		for (auto [entity, text] : textRenderables.each())
+		{
+			//updates the shader based on vertices component's stride value
+			GLuint textShader = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);
+			glUseProgram(textShader);
+
+			//Set a default transform component and color if the object does not contain one.
+			TransformComponent transform;
+			glm::vec4 color{ 1.f,1.f,1.f,1.f };
+
+			//Change the transform component if the entity contains one.
+			if (scene.m_registry.all_of<TransformComponent>(entity)) { transform = scene.m_registry.get<const TransformComponent>(entity); }
+
+			//Obtain MVP using transform and window's projection matrix.
+			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+
+			//Bind color, texture and shader if entity contains material.
+			if (scene.m_registry.all_of<MaterialComponent>(entity))
+			{
+				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+
+				if (setTexture(material.texID, currentBoundTextures)) { currentBoundTextures++; }
+
+				//Change color and shaderProgram to material components color and shader.
+				color = material.color;
+				//glUseProgram(material.shaderID);
+			}
+
+			//Set the color of the object
+			setColor(mvp, color, textShader);
+
+			
+		}*/
 	}
 #pragma endregion
 	
@@ -237,12 +276,11 @@ namespace Engine
 		m_programId = ShaderNorms::getInstance()->getShader();
 		glUseProgram(m_programId);
 	}
-	/*
+	
 	void Renderer::renderText(TextComponent text, float x, float y, float scale, glm::vec3 color, GLuint shader)
-	{
+	{/*
 		// activate corresponding render state	
-		s.Use();
-		glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
+		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
 		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(VAO);
 
@@ -279,8 +317,8 @@ namespace Engine
 			x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
 		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}*/
+		glBindTexture(GL_TEXTURE_2D, 0);*/
+	}
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)

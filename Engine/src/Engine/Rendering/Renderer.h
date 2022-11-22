@@ -57,6 +57,9 @@ namespace Engine
 		//Draw entities with a VerticesComponent to screen/FBO
 		void drawEntities(Scene& scene);
 
+		//Render text given a text component
+		void renderText(TextComponent text, float x, float y, float scale, glm::vec3 color, GLuint shader);
+
 		//Set color of screen using the current shader, and provided mvp and color.
 		void setColor(glm::mat4 mvp, glm::vec4 color, GLuint shaderID);
 

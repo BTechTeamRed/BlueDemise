@@ -15,8 +15,9 @@ namespace Engine
 	ShaderNorms::ShaderNorms()
 	{
 		addShader(DEFAULT_SHADER_NAME);
-		addShader(ShaderName::SN_COLOR_FILL);
-		addShader(ShaderName::SN_GRADIENT_FILL);
+		addShader(SN_COLOR_FILL);
+		addShader(SN_TEXT_FILL);
+		addShader(SN_GRADIENT_FILL);
 	}
 
 	ShaderNorms::~ShaderNorms()
@@ -93,15 +94,14 @@ namespace Engine
 	{
 		switch (shaderName)
 		{
-		case ShaderName::SN_TEXTURE_FILL:
+		case SN_TEXTURE_FILL:
 			return "TextureFill";
-			break;
-		case ShaderName::SN_COLOR_FILL:
+		case SN_COLOR_FILL:
 			return "ColorFill";
-			break;
+		case SN_TEXT_FILL:
+			return "TextFill";
 		default:
 			return "GradientFill";
-			break;
 		}
 	}
 }
