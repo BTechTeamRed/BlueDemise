@@ -43,6 +43,7 @@ namespace Engine
 		void setPosition(const glm::uvec2& position);
 		void setDimension(const glm::uvec2& dimension);
 		void setButtonDimension(const glm::uvec2& dimension);
+		glm::vec2& getPosition() { return m_position; }
 
 		void setSpacing(int amount);
 

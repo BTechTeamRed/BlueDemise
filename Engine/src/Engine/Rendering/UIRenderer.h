@@ -22,9 +22,10 @@ namespace Engine
         void shutdownUI();
         void renderUI(Scene& scene, Window& window);
         void updateHierarchyPanel(std::string tag, const Entity entity);
+        GamePanel* getGamePanel() { return &m_gamePanel; }
 
         //Gets the current position of the Game Window
-        glm::vec2 getGameWindowPos();
+        glm::vec2 getGameWindowPos() { return m_gamePanel.getPosition(); }
 
 	private:
         //creates an array of three components panels

@@ -90,8 +90,12 @@ namespace Engine
 		auto modifiedVector = screenSpaceVector - debugWindowOffset; //Offset the result by the position of the debug window
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
-		
-		auto result = glm::vec3((modifiedVector.x / m_windowWidth) * frustumWidth, (modifiedVector.y / m_windowHeight) * frustumWidth / aspectRatio, 1);
+		float height = frustumWidth / aspectRatio;
+		float depth = m_camera.farZ - m_camera.nearZ;
+		glm::vec3 result;
+		result.x = (modifiedVector.x / m_windowWidth) * frustumWidth - (frustumWidth / 2.0f);
+		result.y = (height / 2.0) - ((modifiedVector.y / m_windowHeight) * height);
+		result.z = depth / -2.0f;
 		return result;
 	}
 
@@ -100,7 +104,7 @@ namespace Engine
 	{
 		float frustumWidth = m_camera.frustumWidth;
 		float aspectRatio = m_camera.aspectRatio;
-		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / frustumWidth) / m_windowHeight * aspectRatio);
+		auto result = glm::vec2((worldSpaceVector.x / frustumWidth) * m_windowWidth, (worldSpaceVector.y / (frustumWidth / aspectRatio)) * m_windowHeight);
 		result += debugWindowOffset; //Offset the result by the position of the debug window
 		return result;
 	}

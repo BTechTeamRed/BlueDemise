@@ -20,7 +20,33 @@ namespace Engine
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
-		Renderer::getInstance()->initializeScene(*this);
+		auto render = Renderer::getInstance();
+		render->initializeScene(*this);
+		
+		// Create physics world
+		glm::vec3 dimensions;
+		auto entities = getEntities<CameraComponent>();
+		for (auto [entity, camera] : entities.each())
+		{
+			dimensions.x = camera.frustumWidth;
+			dimensions.y = camera.frustumWidth / camera.aspectRatio;
+			dimensions.z = camera.farZ - camera.nearZ;
+		}
+		m_physics = new PhysicsSystem(dimensions);
+
+		// Insert physics objects
+		auto physicsList = getEntities<PhysicsComponent>();
+		for (auto [entity, phyObj] : physicsList.each())
+		{
+			//TODO: Change PhysicsSystem to PhysicsSystem and have it track entities to prevent memory leaks
+			Entity* obj = new Entity(entity, this);
+			if (!m_physics->insert(obj))
+			{
+				std::string tag = obj->getComponent<TagComponent>().tag;
+				GE_CORE_ERROR("Scene::onRuntimStart: Failure to insert {0} into physics world", tag);
+				delete obj;
+			}
+		}
 
 		while (!m_closeScene)
 		{
@@ -63,6 +89,8 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 		
+		m_physics->update();
+
 		Renderer::getInstance()->renderScene(dt, *this);
 		
 		glfwPollEvents();
