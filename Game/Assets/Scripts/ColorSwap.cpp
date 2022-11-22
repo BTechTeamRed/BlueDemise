@@ -1,4 +1,5 @@
 #include "ColorSwap.h"
+#include "Score.h"
 
 namespace Engine
 {
@@ -49,6 +50,12 @@ namespace Engine
 		if (tileCount == matchingColorCount) {
 			// Finish the level!
 			m_entity.getScene()->m_switch = !m_entity.getScene()->m_switch;
+			if (doesEntityExist("score"))
+			{
+				static_cast<Score*>(getEntity("score").getComponent<ScriptComponent>().m_instance)->addOne();
+				GE_CORE_INFO("Score: {0}", static_cast<Score*>(getEntity("score").getComponent<ScriptComponent>().m_instance)->getScore());
+				GE_CORE_INFO("Scene Score: {0}", m_entity.getScene()->score);
+			}
 		}
 	}
 

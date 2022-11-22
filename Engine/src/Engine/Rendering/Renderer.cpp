@@ -216,10 +216,13 @@ namespace Engine
 		glUseProgram(m_text.m_textShaderProgram);
 		GLuint mvpID = glGetUniformLocation(m_text.m_textShaderProgram, "mvp");
 
+		//Set a default transform component and color if the object does not contain one.
+		TransformComponent transform;
+		float mod = 0.f;
+
 		for (auto [entity, text] : textRenderables.each())
 		{
-			//Set a default transform component and color if the object does not contain one.
-			TransformComponent transform;
+			transform.position.x += mod;
 			glm::vec4 color{ .5f,.5f,.5f,1.f };
 
 			//Change the transform component if the entity contains one.
@@ -240,9 +243,12 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
+			std::string render = std::to_string(scene.score);
+
 			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
-			renderText(text, transform.position.x, transform.position.y, glm::vec2(transform.scale.x, transform.scale.y), color, m_text.m_textShaderProgram);
-			
+			renderText(render, transform.position.x, transform.position.y, glm::vec2(transform.scale.x, transform.scale.y), color, m_text.m_textShaderProgram);
+
+			mod +=  60.f;
 		}
 	}
 #pragma endregion
@@ -277,7 +283,7 @@ namespace Engine
 		glUseProgram(m_programId);
 	}
 	
-	void Renderer::renderText(TextComponent text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader)
+	void Renderer::renderText(std::string text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader)
 	{
 		// activate corresponding render state	
 		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
@@ -287,7 +293,7 @@ namespace Engine
 
 		// iterate through all characters
 		std::string::const_iterator c;
-		for (c = text.text.begin(); c != text.text.end(); c++)
+		for (c = text.begin(); c != text.end(); c++)
 		{
 			Text::Character ch = m_text.Characters[*c];
 

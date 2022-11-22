@@ -42,9 +42,8 @@ namespace Engine
 		TransformComponent() = default;
 		TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
 			: position(position), scale(scale), rotation(rotation) {}
-
-		glm::vec3 position = { 0.f, 0.f, 0.f };
-		glm::vec3 scale = { 1.f, 1.f, 1.f };
+		glm::vec3 position = { 25.f, 25.f, 0.f };
+		glm::vec3 scale = { 100.f, 100.f, 1.f };
 		glm::vec3 rotation = { 0.f, 0.f, 0.f };
 	};
 

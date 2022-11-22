@@ -15,6 +15,7 @@ namespace Engine
     public:
         bool m_closeScene = false;
         bool m_switch{ false };
+        int score = 1;
         std::string m_nextScene;
         
         #pragma region Entity Management

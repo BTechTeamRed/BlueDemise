@@ -2,6 +2,19 @@
   "scene": {
     "name": "level1",
     "entities": [
+		{
+        "components": [
+		  {
+            "name": "TextComponent",
+            "text": "1"
+          },
+		  {
+            "name": "ScriptComponent",
+            "scriptName": "Score"
+          }
+        ],
+        "tag": "text1"
+      },
       {
         "tag": "camera",
         "components": [
