@@ -22,7 +22,7 @@ namespace Engine
 	{
 		Renderer::getInstance()->initializeScene(*this);
 
-		while (!m_closeScene)
+		while (!m_closeScene) //switch will be a swap condition
 		{
 			m_deltaTime.updateDeltaTime();
 			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
@@ -48,6 +48,12 @@ namespace Engine
 	//Per scene update loop, add scripts to entities if enabled and render the scene.
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{
+		if (m_switch)
+		{
+			m_switch = false;
+			swapScene(m_nextScene);
+		}
+
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
@@ -74,6 +80,12 @@ namespace Engine
 		}
 
 		glfwPollEvents();
+	}
+
+	void Scene::swapScene(const std::string& other)
+	{
+		m_registry = entt::registry();
+		Serializer::tryDeserializeScene(*this, other);
 	}
 #pragma endregion
 

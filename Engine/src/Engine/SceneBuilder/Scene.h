@@ -14,6 +14,8 @@ namespace Engine
     {
     public:
         bool m_closeScene = false;
+        bool m_switch{ false };
+        std::string m_nextScene;
         
         #pragma region Entity Management
         // Registry is a container to hold entities
@@ -41,6 +43,8 @@ namespace Engine
 
         // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate(const DeltaTime& dt);
+
+        void swapScene(const std::string& other);
         #pragma endregion
 	
     private:
