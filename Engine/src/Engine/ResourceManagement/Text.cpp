@@ -7,6 +7,7 @@
 
 #include <Engine/Utilities/Log.h>
 #include <freetype/freetype.h>
+#include <Engine/ResourceManagement/ShaderNorms.h>
 
 namespace Engine 
 {
@@ -77,6 +78,7 @@ namespace Engine
 			Characters.insert(std::pair<unsigned char, Character>(ch, character));
 		}
 
+		m_textShaderProgram = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);
 		m_textVertices = GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Text);
 
 		//clean up freetype resource

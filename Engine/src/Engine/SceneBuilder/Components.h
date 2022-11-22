@@ -13,7 +13,6 @@
 namespace Engine 
 {
 	class ScriptableBehavior;
-	class Text;
 
 	struct TagComponent
 	{
@@ -44,9 +43,9 @@ namespace Engine
 		TransformComponent(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
 			: position(position), scale(scale), rotation(rotation) {}
 
-		glm::vec3 position;
-		glm::vec3 scale;
-		glm::vec3 rotation;
+		glm::vec3 position = { 0.f, 0.f, 0.f };
+		glm::vec3 scale = { 1.f, 1.f, 1.f };
+		glm::vec3 rotation = { 0.f, 0.f, 0.f };
 	};
 
 	struct FixedScreenTransformComponent
@@ -98,7 +97,11 @@ namespace Engine
 
 	struct TextComponent
 	{
-		std::string text;
+		TextComponent() = default;
+		TextComponent(std::string text)
+			: text(text) {}
+
+		std::string text = "";
 	};
 
 	//Not component, just container for vertex attribute data format

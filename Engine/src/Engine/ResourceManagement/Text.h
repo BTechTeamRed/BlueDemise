@@ -18,9 +18,9 @@ namespace Engine
 
 		//Contains Vertices used for each character to be rendered. Utilized in Renderer, when a VBO/VAO is required.
 		VerticesComponent m_textVertices;
-	private:
 
-		std::string defaultFont = "MyriadPro.otf";
+		//Identifier for the shader program of text components. Used when rendering text.
+		GLuint m_textShaderProgram;
 
 		//Struct to store character render data.
 		struct Character
@@ -30,9 +30,13 @@ namespace Engine
 			glm::ivec2 Bearing;   //offset from baseline to left/top of glyph	
 			unsigned int Advance;   //Offset to advance to next glyph
 		};
-		
+
 		//generate a texture and store its relevant data into a Character struct 
 		//that we add to the Characters map, all data require to render for later use
 		std::map<unsigned char, Character> Characters;
+	private:
+
+		std::string defaultFont = "MyriadPro.otf";
+		
 	};
 }

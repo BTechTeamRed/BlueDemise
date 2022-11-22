@@ -168,6 +168,8 @@ namespace Engine
 		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
 
+		glUseProgram(m_programId);
+
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
@@ -210,16 +212,15 @@ namespace Engine
 		
 		//Get entities that contain text component.
 		const auto textRenderables = scene.getEntities<const TextComponent>();
-		/*
+		
+		glUseProgram(m_text.m_textShaderProgram);
+		GLuint mvpID = glGetUniformLocation(m_text.m_textShaderProgram, "mvp");
+
 		for (auto [entity, text] : textRenderables.each())
 		{
-			//updates the shader based on vertices component's stride value
-			GLuint textShader = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);
-			glUseProgram(textShader);
-
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
-			glm::vec4 color{ 1.f,1.f,1.f,1.f };
+			glm::vec4 color{ .5f,.5f,.5f,1.f };
 
 			//Change the transform component if the entity contains one.
 			if (scene.m_registry.all_of<TransformComponent>(entity)) { transform = scene.m_registry.get<const TransformComponent>(entity); }
@@ -239,11 +240,10 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
-			//Set the color of the object
-			setColor(mvp, color, textShader);
-
+			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
+			renderText(text, transform.position.x, transform.position.y, glm::vec2(transform.scale.x, transform.scale.y), color, m_text.m_textShaderProgram);
 			
-		}*/
+		}
 	}
 #pragma endregion
 	
@@ -277,24 +277,25 @@ namespace Engine
 		glUseProgram(m_programId);
 	}
 	
-	void Renderer::renderText(TextComponent text, float x, float y, float scale, glm::vec3 color, GLuint shader)
-	{/*
+	void Renderer::renderText(TextComponent text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader)
+	{
 		// activate corresponding render state	
 		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
-		glActiveTexture(GL_TEXTURE0);
-		glBindVertexArray(VAO);
+
+		//glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(m_text.m_textVertices.vaoID);
 
 		// iterate through all characters
 		std::string::const_iterator c;
-		for (c = text.begin(); c != text.end(); c++)
+		for (c = text.text.begin(); c != text.text.end(); c++)
 		{
-			Character ch = Characters[*c];
+			Text::Character ch = m_text.Characters[*c];
 
-			float xpos = x + ch.Bearing.x * scale;
-			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+			float xpos = x + ch.Bearing.x * scale.x;
+			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale.y;
 
-			float w = ch.Size.x * scale;
-			float h = ch.Size.y * scale;
+			float w = ch.Size.x * scale.x;
+			float h = ch.Size.y * scale.y;
 			// update VBO for each character
 			float vertices[6][4] = {
 				{ xpos,     ypos + h,   0.0f, 0.0f },
@@ -306,18 +307,19 @@ namespace Engine
 				{ xpos + w, ypos + h,   1.0f, 0.0f }
 			};
 			// render glyph texture over quad
-			glBindTexture(GL_TEXTURE_2D, ch.textureID);
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 			// update content of VBO memory
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			// render quad
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-			x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
+			x += (ch.Advance >> 6) * ((scale.x*scale.y) /2); // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
+
 		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);*/
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	//Update an MVP matrix, with the MVP generated in the function and returned.

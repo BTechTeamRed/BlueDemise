@@ -58,7 +58,7 @@ namespace Engine
 		void drawEntities(Scene& scene);
 
 		//Render text given a text component
-		void renderText(TextComponent text, float x, float y, float scale, glm::vec3 color, GLuint shader);
+		void renderText(TextComponent text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader);
 
 		//Set color of screen using the current shader, and provided mvp and color.
 		void setColor(glm::mat4 mvp, glm::vec4 color, GLuint shaderID);

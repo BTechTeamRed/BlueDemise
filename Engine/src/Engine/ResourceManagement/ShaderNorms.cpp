@@ -51,12 +51,12 @@ namespace Engine
 			}
 			else if (stride == colorCoordinates)
 			{
-				programId = getShader(ShaderName::SN_COLOR_FILL);
+				programId = getShader(SN_COLOR_FILL);
 				glUseProgram(programId);
 			}
 			else if (stride == gradientCoordinates)
 			{
-				programId = getShader(ShaderName::SN_GRADIENT_FILL);
+				programId = getShader(SN_GRADIENT_FILL);
 				glUseProgram(programId);
 			}
 		}

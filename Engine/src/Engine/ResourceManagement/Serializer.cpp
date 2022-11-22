@@ -178,6 +178,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<TextComponent>())
+		{
+			auto c = entity.getComponent<TextComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TextComponent);
+			j["text"] = c.text;
+
+			components.push_back(j);
+		}
+
 		if (entity.hasComponent<MaterialComponent>())
 		{
 			auto c = entity.getComponent<MaterialComponent>();
@@ -279,6 +289,13 @@ namespace Engine
 				
 				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
 				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
+				break;
+			}
+			case CO_TextComponent:
+			{
+				std::string text = component["text"];
+
+				out.addComponent<TextComponent>(text);
 				break;
 			}
 			case CO_VerticesComponent:
