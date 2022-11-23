@@ -20,7 +20,9 @@ The project should now be built according to the configure used in step 3.
 </ol>
 	
 <i>Example translated from TextureFill.vs and TextureFill.fs</i><br />
-<b>Illegal syntax warning: Do not use [] characters in comments</b>
+<b>Rules:</b>
+<b>#1. Separate all comands by \n (enter). Do not continue code on the same line as tag commands ([]).</b>
+<b>#2. Illegal syntax warning: Do not use [] characters in comments</b>
 
 Template:
 
