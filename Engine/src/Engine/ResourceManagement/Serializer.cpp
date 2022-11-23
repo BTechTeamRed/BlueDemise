@@ -236,6 +236,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<AudioComponent>())
+		{
+			auto c = entity.getComponent<AudioComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_AudioComponent);
+			j["soundFileName"] = c.soundFileName;
+
+			components.push_back(j);
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -328,6 +338,12 @@ namespace Engine
 			{
 				std::string scriptName = component["scriptName"];
 				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
+				break;
+			}
+			case CO_AudioComponent:
+			{
+				std::string soundFileName = component["soundFileName"];
+				out.addComponent<AudioComponent>(soundFileName);
 				break;
 			}
 			default:

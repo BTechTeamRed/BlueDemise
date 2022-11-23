@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include "../ResourceManagement/Audio.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -166,6 +167,25 @@ namespace Engine
 		{
 			instantiateScript = [] { return static_cast<ScriptableBehavior*>(new T()); };
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
+		}
+	};
+
+	// Defines a component to add audio actions to entities.
+	struct AudioComponent
+	{
+		AudioComponent() = default;
+		AudioComponent(std::string soundFileName)
+			: soundFileName(soundFileName) {};
+		std::string soundFileName = "";
+		irrklang::ISound* playSound(bool loop, bool startPaused, bool useSoundEffects)
+		{
+			AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
+			return audioPlayer->playSound(soundFileName.c_str(), loop, startPaused, useSoundEffects, false);
+		}
+		irrklang::ISound* play3DSound(irrklang::vec3df sound3DPosition, bool loop, bool beginPaused, bool useSoundEffects)
+		{
+			AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
+			return audioPlayer->play3DSound(soundFileName.c_str(), sound3DPosition, loop, beginPaused, useSoundEffects, false);
 		}
 	};
 }

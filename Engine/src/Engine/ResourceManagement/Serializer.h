@@ -30,7 +30,8 @@ namespace Engine
 			CO_AnimationComponent,
 			CO_VerticesComponent,
 			CO_SerializableComponent,
-			CO_ScriptComponent
+			CO_ScriptComponent,
+			CO_AudioComponent
 		};
 
 		//Deserializes out into an entity
@@ -50,6 +51,7 @@ namespace Engine
 			if (component == "TextComponent") return CO_TextComponent;
 			if (component == "SerializableComponent") return CO_SerializableComponent;
 			if (component == "ScriptComponent") return CO_ScriptComponent;
+			if (component == "AudioComponent") return CO_AudioComponent;
 			return CO_Invalid;
 		}
 
@@ -63,6 +65,10 @@ namespace Engine
 			if (component == CO_TextComponent) return"TextComponent";
 			if (component == CO_SerializableComponent) return"SerializableComponent";
 			if (component == CO_ScriptComponent) return"ScriptComponent";
+			if (component == CO_AudioComponent) return"AudioComponent";
+			{
+
+			}
 
 			return "";
 		}

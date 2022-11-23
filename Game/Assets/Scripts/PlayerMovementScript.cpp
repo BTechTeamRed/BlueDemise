@@ -40,6 +40,10 @@ namespace Engine
 							int y = transform.position.y - 104;
 							player.getComponent<TransformComponent>().position.x = x;
 							player.getComponent<TransformComponent>().position.y = y;
+							if (player.hasComponent<AudioComponent>())
+							{
+								player.getComponent<AudioComponent>().playSound(false, false, false);
+							}
 						}
 					}
 				}
