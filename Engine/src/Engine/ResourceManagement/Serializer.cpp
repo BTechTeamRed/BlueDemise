@@ -106,7 +106,7 @@ namespace Engine
 			
 			if (!tryDeserializeEntity(entity, item, out))
 			{
-				
+
 				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
@@ -185,6 +185,7 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_MaterialComponent);
 			j["color"] = c.color;
 			j["texName"] = c.texName;
+			j["shaderName"] = c.shaderName;
 
 			components.push_back(j);
 		}
@@ -275,10 +276,11 @@ namespace Engine
 			{
 				
 				std::string texture = component["texName"];
+				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 				
 				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
-				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader); //0 Would be shaderID. waiting until shader code is imported ********
 				break;
 			}
 			case CO_VerticesComponent:

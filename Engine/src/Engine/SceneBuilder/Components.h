@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "Engine/ResourceManagement/ShaderNorms.h"
 #include "GLFW/glfw3.h"
 #include <vector>
 #include <string>
@@ -61,18 +62,21 @@ namespace Engine
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
-		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderId)
-			: color(color), texID(texID), texName(texName){}
-		//MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
-		//	: color(color), texID(texID), texName(texName), bind(shadersInstantiated++) {
-		//	ResourceManager::getInstance()->addAdvancedShader(bind, shaderName);
-		//}
+		//MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderId)
+			//: color(color), texID(texID), texName(texName){}
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
+			: color(color), texID(texID), texName(texName), shaderName(shaderName)
+		{
+			bind = shadersInstantiated++;
+			ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
+		}
 		
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
-		//inline static int shadersInstantiated{ 0 };
-		//int bind;
+		std::string shaderName;
+		inline static int shadersInstantiated{ 0 };
+		int bind;
 	};
 
 	//A component containing animation data
