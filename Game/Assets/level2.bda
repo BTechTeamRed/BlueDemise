@@ -19,7 +19,7 @@
         "tag": "camera",
         "components": [
           {
-            "frustumWidth": 1024.0,
+            "frustumWidth": 1920.0,
             "aspectRatio": 1.7777,
             "farZ": 100.0,
             "name": "CameraComponent",
