@@ -1,25 +1,13 @@
 [vertex]
 [layout]
-vec3 pos;
-
+float greatestValue;
 [uniform]
-float value;
-
 [out]
-vec2 uv;
-
 [main]
-uv = vec2(1.0, 1.0);
-
 [fragment]
 [uniform]
-float value2;
-
+float positionRelative;
 [in]
-vec2 uv;
-
 [out]
-vec4 color;
-
 [main]
-color = vec4(0.8, 0, 0, 1.0);
+color = vec4(1.0, 1.0, 0.0, 1.0);

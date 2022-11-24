@@ -17,12 +17,15 @@ The project should now be built according to the configure used in step 3.
 <li>You must use the .as file extension to extract the source for an advanced shader.</li>
 <li>The advanced shader uses a custom syntax that gets merged with the default shaders
 	in the background. The following is a template for the advanced shader syntax:</li>
+<li>On the odd chance your variable type is a unique keyword (like sampler2D), check
+	AdvancedShaderDistributor.h for VARIABLE_TYPES to ensure your keyword is supported.</li>
 </ol>
 	
 <i>Example translated from TextureFill.vs and TextureFill.fs</i><br />
 <b>Rules:</b>
 <b>#1. Separate all comands by \n (enter). Do not continue code on the same line as tag commands ([]).</b>
 <b>#2. Illegal syntax warning: Do not use [] characters in comments</b>
+<b>#3. Vertex and fragment shader code must be separated using the [vertex] and [fragment] tags.</b>
 
 Template:
 
