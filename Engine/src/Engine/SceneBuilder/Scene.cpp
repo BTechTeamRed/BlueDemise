@@ -38,7 +38,6 @@ namespace Engine
 		auto physicsList = getEntities<PhysicsComponent>();
 		for (auto [entity, phyObj] : physicsList.each())
 		{
-			//TODO: Change PhysicsSystem to PhysicsSystem and have it track entities to prevent memory leaks
 			Entity* obj = new Entity(entity, this);
 			if (!m_physics->insert(obj))
 			{
@@ -129,4 +128,10 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
+
+	std::list<Entity*> Scene::pick(float x, float y)
+	{
+		glm::vec3 worldPos = Renderer::getInstance()->screenToWorld(glm::vec2(x,y));
+		return m_physics->raycast(worldPos, glm::vec3(0,0,1));
+	}
 }
