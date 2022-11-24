@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include "Engine/Physics/AABB.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -33,15 +34,15 @@ namespace Engine
 	{
 		std::string tag;
 	};
-	
+
 	//A component for storing the matrices of a camera, and distance/fov.
 	struct CameraComponent 
 	{
 		CameraComponent() = default;
 		CameraComponent(float frustumWidth, float aspectRatio, float farZcoordinate, float nearZcoordinate)
 			: frustumWidth(frustumWidth), aspectRatio(aspectRatio), farZ(farZcoordinate), nearZ(nearZcoordinate) 
-		{	//frustumWidth and aspectRatio*frustumWidth
-			projection = glm::ortho(0.f, 1920.f, 1080.f, 0.f, nearZ, farZ);
+		{	
+			projection = glm::ortho(0.f, frustumWidth, frustumWidth/aspectRatio, 0.f, nearZ, farZ);
 		}
 
 		glm::mat4 projection;
@@ -171,5 +172,22 @@ namespace Engine
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
 	};
-	#pragma endregion
+
+	//A component used for collision detection in the physics system
+	struct PhysicsComponent
+	{
+		// Create physics component with the inputed dimensions and position (at center of dimensions)
+		PhysicsComponent(glm::vec3& dimensions, glm::vec3& position)
+			: boundingBox(new AABB(dimensions, position)) {}
+		~PhysicsComponent()
+		{
+			if (boundingBox)
+			{
+				delete boundingBox;
+			}
+		}
+
+		// Backing Axis-Aligned Bounding Box
+		AABB* boundingBox;
+	};
 }

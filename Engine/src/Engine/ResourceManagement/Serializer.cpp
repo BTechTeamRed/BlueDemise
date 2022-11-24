@@ -236,6 +236,15 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<PhysicsComponent>())
+		{
+			auto c = entity.getComponent<PhysicsComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_PhysicsComponent);
+			j["dimensions"] = c.boundingBox->getDimensions();
+			j["position"] = c.boundingBox->getPosition();
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -246,7 +255,7 @@ namespace Engine
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
 	{
-		
+
 		//Loop through all components and deserialize each
 		for (const auto& component : entity["components"])
 		{
@@ -328,6 +337,14 @@ namespace Engine
 			{
 				std::string scriptName = component["scriptName"];
 				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
+				break;
+			}
+			case CO_PhysicsComponent:
+			{
+				glm::vec3 dimensions = component["dimensions"].get<glm::vec3>();
+				glm::vec3 position = component["position"].get<glm::vec3>();
+
+				out.addComponent<PhysicsComponent>(dimensions, position);
 				break;
 			}
 			default:
