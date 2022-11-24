@@ -111,6 +111,7 @@ namespace Engine
 		float texHeightFraction;
 	};
 
+	//Component that contains a string for rendering text to the screen.
 	struct TextComponent
 	{
 		TextComponent() = default;
