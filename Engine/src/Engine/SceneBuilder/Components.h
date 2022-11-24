@@ -14,6 +14,21 @@ namespace Engine
 {
 	class ScriptableBehavior;
 
+	//Not component, just container for vertex attribute data format
+	struct VertexAttribute
+	{
+		VertexAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei pointer)
+			: index(index), size(size), type(type), normalized(normalized), pointer(pointer), vbo(-1) {}
+
+		GLuint index;
+		GLint size;
+		GLenum type;
+		GLboolean normalized;
+		GLsizei pointer;
+		GLuint vbo;
+	};
+
+	#pragma region ECS Game Components
 	struct TagComponent
 	{
 		std::string tag;
@@ -69,6 +84,7 @@ namespace Engine
 		std::string texName;
 		GLuint texID;
 		GLuint shaderID;
+		std::unordered_map<std::string, GLuint> uniforms;
 	};
 
 	//A component containing animation data
@@ -102,20 +118,6 @@ namespace Engine
 			: text(text) {}
 
 		std::string text = "";
-	};
-
-	//Not component, just container for vertex attribute data format
-	struct VertexAttribute 
-	{
-		VertexAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei pointer) 
-			: index(index), size(size), type(type), normalized(normalized), pointer(pointer), vbo(-1) {}
-
-		GLuint index;
-		GLint size;
-		GLenum type;
-		GLboolean normalized;
-		GLsizei pointer;
-		GLuint vbo;
 	};
 
 	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
@@ -169,4 +171,5 @@ namespace Engine
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
 	};
+	#pragma endregion
 }

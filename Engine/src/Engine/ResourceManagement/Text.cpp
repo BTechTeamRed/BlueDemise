@@ -81,6 +81,8 @@ namespace Engine
 			Characters.insert(std::pair<char, Character>(ch, character));
 		}
 
+		m_whiteSpaceSize = Characters['H'].Size.x;
+
 		m_textShaderProgram = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);
 		m_textVertices = GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Text);
 

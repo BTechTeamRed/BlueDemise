@@ -225,9 +225,6 @@ namespace Engine
 			//Change the transform component if the entity contains one.
 			if (scene.m_registry.all_of<TransformComponent>(entity)) { transform = scene.m_registry.get<const TransformComponent>(entity); }
 
-			//Obtain MVP using transform and window's projection matrix.
-			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
-
 			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
@@ -240,8 +237,7 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
-			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
-			renderText(text, transform.position.x, transform.position.y, glm::vec2(transform.scale.x, transform.scale.y), color, m_text.m_textShaderProgram);
+			renderText(text, transform, color, m_text.m_textShaderProgram, mvpID);
 			
 		}
 	}
@@ -276,61 +272,60 @@ namespace Engine
 		m_programId = ShaderNorms::getInstance()->getShader();
 		glUseProgram(m_programId);
 	}
-	
-	void Renderer::renderText(TextComponent text, float x, float y, glm::vec2 scale, glm::vec3 color, GLuint shader)
+
+	//Render a string line of text based on the transform location. Based on https://learnopengl.com/In-Practice/Text-Rendering
+	void Renderer::renderText(TextComponent text, TransformComponent transform, glm::vec3 color, GLuint shader, GLuint mvpID)
 	{
-		// activate corresponding render state	
+		TransformComponent charPos = transform;
+
+		//Access the current shader data/program and pass the color XYZ to the textColor variable in the shader.
 		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
 
-		glActiveTexture(GL_TEXTURE0);
+		//glActiveTexture(GL_TEXTURE0);
+
+		std::string printLine = text.text;
+
+
 		glBindVertexArray(m_text.m_textVertices.vaoID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_text.m_textVertices.iboID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
 
-		// iterate through all characters
-		std::string::const_iterator c;
-		for (c = text.text.begin(); c != text.text.end(); c++)
+		// iterate through all characters in printLine, adjusting the scale and position for each character before rendering the quad.
+		Text::Character ch;
+		for (char c : printLine)
 		{
-			Text::Character ch = m_text.Characters[*c];
+			ch = m_text.Characters[c];
 
-			float xpos = x + ch.Bearing.x;// *scale.x;
-			float ypos = y - (ch.Size.y - ch.Bearing.y);// * scale.y;
+			if (c != ' ')
+			{
+				charPos.scale.x = ((charPos.position.x + ch.Size.x) - (charPos.position.x + (ch.Size.x / 2)));//(target - ((baseMin * objScale) + objPos)) / baseDifference;//(1.f/ch.Size.x);
+				charPos.scale.y = ((charPos.position.y + ch.Size.y) - (charPos.position.y + (ch.Size.y / 2)));//(1.f/ch.Size.y);
 
-			float w = ch.Size.x;// *scale.x;
-			float h = ch.Size.y;// *scale.y;
-			// update VBO for each character
-			float vertices[6][5] = {
-				{ xpos,     ypos + h, 0.f,  0.0f, 0.0f },
-				{ xpos,     ypos, 0.f,       0.0f, 1.0f },
-				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
+				charPos.position.x += ch.Bearing.x;// *scale.x;
+				charPos.position.y += 5.f * ((ch.Size.y - ch.Bearing.y) / (charPos.scale.y));// * scale.y;
 
-				{ xpos,     ypos + h, 0.f,   0.0f, 0.0f },
-				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
-				{ xpos + w, ypos + h, 0.f,   1.0f, 0.0f }
-			};
-			/*
-			float vertices[] = {
-				xpos, ypos, 0.f,		0.0f, 0.0f,
-				xpos+w, ypos, 0.f,		1.0f, 0.0f,
-				xpos+w, ypos+h, 0.f,	1.0f, 1.0f,
-				xpos, ypos + h, 0.f,	0.0f, 1.0f,
-			};*/
+				//Obtain MVP using transform and window's projection matrix.
+				const glm::mat4 mvp = updateMVP(charPos, m_window.getProjectionMatrix());
+				glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
 
-			// render glyph texture over quad
-			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+				// render glyph texture over quad
+				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+				
+				// render quad
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-			// update content of VBO memory
-			glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-			//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-			
-
-			// render quad
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-			x += (ch.Advance >> 6);// *((scale.x * scale.y) / 2); // bitshift by 6 to get value in pixels (2^6 = 64)
+				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+				charPos.position.x += (ch.Size.x/2.f); //(ch.Advance >> 6) // bitshift by 6 to get value in pixels (2^6 = 64). Unused for now
+				charPos.position.y = transform.position.y;
+			}
+			else
+			{
+				charPos.position.x += m_text.m_whiteSpaceSize/3.f;
+			}
 		}
 
 		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 

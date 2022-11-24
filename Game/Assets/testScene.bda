@@ -7,7 +7,7 @@
             "name": "TransformComponent",
             "position": {
               "x": 50.0,
-              "y": 0.0,
+              "y": 50.0,
               "z": 0.0
             },
             "rotation": {
@@ -23,37 +23,10 @@
           },
 		  {
             "name": "TextComponent",
-            "text": "H"
+            "text": "Hello, my name is Kevin"
           }
         ],
-        "tag": "triangle3"
-      },
-	  {
-        "components": [
-			{
-            "name": "TransformComponent",
-            "position": {
-              "x": 110.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 10.0,
-              "y": 50.0,
-              "z": 1.0
-            }
-          },
-		  {
-            "name": "TextComponent",
-            "text": "i"
-          }
-        ],
-        "tag": "triangle3"
+        "tag": "ScoreText"
       },
       {
         "components": [
@@ -91,6 +64,43 @@
           }
         ],
         "tag": "triangle"
+      },
+	  {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 50.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 500.0,
+              "y": 500.0,
+              "z": 1.0
+            }
+          },
+		  {
+            "texName": "SpriteSheet.png",
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
+        "tag": "triangle2"
       },
       {
         "components": [

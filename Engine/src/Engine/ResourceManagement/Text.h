@@ -22,6 +22,9 @@ namespace Engine
 		//Identifier for the shader program of text components. Used when rendering text.
 		GLuint m_textShaderProgram;
 
+		//White space size
+		float m_whiteSpaceSize;
+
 		//Struct to store character render data.
 		struct Character
 		{
@@ -35,7 +38,6 @@ namespace Engine
 		//that we add to the Characters map, all data require to render for later use
 		std::map<char, Character> Characters;
 	private:
-
 		std::string defaultFont = "arial.ttf";
 		
 	};
