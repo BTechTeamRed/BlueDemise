@@ -1,10 +1,11 @@
 #pragma once
 #include "GLFW/glfw3.h"
+#include "Engine/Core.h"
 
 namespace Engine
 {
 	//Container for the DeltaTime used in game.
-	class DeltaTime
+	class ENGINE_API DeltaTime
 	{
 	public:
 		DeltaTime(double dt = 0)

@@ -33,7 +33,7 @@
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960.0,
+              "x": 512.0,
               "y": 0.0,
               "z": 0.0
             },
@@ -61,7 +61,20 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          }
+          },
+		  {
+			"name": "PhysicsComponent",
+			"dimensions": {
+				"x": 500.0,
+				"y": 500.0,
+				"z": 1.0
+				},
+			"position": {
+				"x": 250,
+				"y": 38,
+				"z": 0
+			}
+		  }
         ],
         "tag": "triangle"
       },
@@ -106,7 +119,7 @@
         "components": [
           {
             "frustumWidth": 1024.0,
-            "aspectRatio": 1.7777,
+            "aspectRatio": 1.7777778,
             "farZ": 100.0,
             "name": "CameraComponent",
             "nearZ": 0.10000000149011612,
