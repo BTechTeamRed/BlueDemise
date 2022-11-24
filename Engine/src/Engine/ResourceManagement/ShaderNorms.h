@@ -21,7 +21,10 @@ namespace Engine
 		void operator=(const ShaderNorms&) = delete;
 		static ShaderNorms* getInstance();
 		//load shader according to vertices component (given shader is not already loaded)
-		void update(int stride, int& textureCoordinates, int& colorCoordinates,
+		void update(int advancedShaderBind, int stride, int& textureCoordinates,
+			int& colorCoordinates, int& gradientCoordinates, GLuint& programId);
+		//loads default shader program based on stride
+		void assignOnStride(int stride, int& textureCoordinates, int& colorCoordinates,
 			int& gradientCoordinates, GLuint& programId);
 		//to be tested per render to detect any change in the vertices component's stride
 		bool assignsNewStride(int stride);
@@ -38,7 +41,7 @@ namespace Engine
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;
 		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
 		//used to detect any change in stride
-		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };//m_currentAdvancedShaderBind - TODO
+		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };
 		//assigns program to GL and the accessor variable
 		void assignProgram(GLuint shaderBind, GLuint& shaderAccessor);
 		//converts the shader name enum value into string

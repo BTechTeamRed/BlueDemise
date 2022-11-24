@@ -61,13 +61,18 @@ namespace Engine
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
-		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
-			: color(color), texID(texID), texName(texName), shaderID(shaderID) {}
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderId)
+			: color(color), texID(texID), texName(texName){}
+		//MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
+		//	: color(color), texID(texID), texName(texName), bind(shadersInstantiated++) {
+		//	ResourceManager::getInstance()->addAdvancedShader(bind, shaderName);
+		//}
 		
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
-		GLuint shaderID;
+		//inline static int shadersInstantiated{ 0 };
+		//int bind;
 	};
 
 	//A component containing animation data

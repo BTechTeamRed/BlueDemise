@@ -175,9 +175,6 @@ namespace Engine
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
-			//updates the shader based on vertices component's stride value
-			ShaderNorms::getInstance()->update(vertices.stride, m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
-
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
@@ -199,6 +196,10 @@ namespace Engine
 				color = material.color;
 				//glUseProgram(material.shaderID);
 			}
+
+			//updates the shader based on vertices component's stride value and/or advanced shader
+			ShaderNorms::getInstance()->update(-1, vertices.stride, m_textureCoordinates,
+				m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);

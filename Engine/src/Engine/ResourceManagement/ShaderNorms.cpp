@@ -35,23 +35,57 @@ namespace Engine
 
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
-	void ShaderNorms::update(int stride, int& textureCoordinates, int& colorCoordinates,
+	void ShaderNorms::update(int advancedShaderBind, int stride, int& textureCoordinates,
+		int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
+	{
+		if (advancedShaderBind != m_currentAdvancedShaderBind)
+		{
+			m_currentAdvancedShaderBind = advancedShaderBind;
+			if (m_currentAdvancedShaderBind != -1)
+			{
+				if (stride == textureCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_TEXTURE_FILL), programId);
+				}
+				else if (stride == colorCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_COLOR_FILL), programId);
+				}
+				else if (stride == gradientCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
+				}
+			}
+			else
+			{
+				//reset m_currentStride
+				assignsNewStride(stride);
+				assignOnStride(stride, textureCoordinates, colorCoordinates, gradientCoordinates, programId);
+			}
+		}
+		else if (m_currentAdvancedShaderBind == -1 && assignsNewStride(stride))
+		{
+			assignOnStride(stride, textureCoordinates, colorCoordinates, gradientCoordinates, programId);
+		}
+	}
+
+	void ShaderNorms::assignOnStride(int stride, int& textureCoordinates, int& colorCoordinates,
 		int& gradientCoordinates, GLuint& programId)
 	{
-		if (assignsNewStride(stride))
+		if (stride == textureCoordinates)
 		{
-			if (stride == textureCoordinates)
-			{
-				assignProgram(getShaderReference(), programId);
-			}
-			else if (stride == colorCoordinates)
-			{
-				assignProgram(getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL), programId);
-			}
-			else if (stride == gradientCoordinates)
-			{
-				assignProgram(getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
-			}
+			assignProgram(getShaderReference(), programId);
+		}
+		else if (stride == colorCoordinates)
+		{
+			assignProgram(getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL), programId);
+		}
+		else if (stride == gradientCoordinates)
+		{
+			assignProgram(getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
 		}
 	}
 
