@@ -48,13 +48,20 @@ namespace Engine
 
         void swapScene(const std::string& other);
         #pragma endregion
+
+        /// <summary>
+        /// Exposure of the picking system to scripts via m_entity.getScene()
+        /// </summary>
+        /// <param name="x">X-cooridnate on screen</param>
+        /// <param name="y">Y-coordinate on screen</param>
+        /// <returns></returns>
+        std::list<Entity*> pick(float x, float y);
 	
     private:
-
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
         PhysicsSystem* m_physics;
-        
+
         void runEntityScripts(const DeltaTime& dt);
 
         void renderScene();

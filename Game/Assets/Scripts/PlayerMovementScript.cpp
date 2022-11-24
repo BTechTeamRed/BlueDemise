@@ -15,31 +15,30 @@ namespace Engine
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
 
-			// Loop through all the entities
-			const auto entities = getEntities<TransformComponent>();
-			for (auto& [entity, transform] : entities.each())
+			std::list<Entity*> entities = m_entity.getScene()->pick(mouseX, mouseY);
+			for (auto entity : entities)
 			{
-				// If the mouse is inside the entity:
-				if (mouseX > transform.position.x && mouseY > transform.position.y
-					&& mouseX < (transform.position.x + transform.scale.x)
-					&& mouseY < (transform.position.y + transform.scale.y))
+				if (entity->hasComponent<TransformComponent>())
 				{
-					Entity other = { entity, m_entity.getScene() };
-
-					// If the entity is not a player or obstacle:
-					if (other.getComponent<TagComponent>().tag != "player" &&
-						other.getComponent<TagComponent>().tag != "obstacle")
+					auto transform = entity->getComponent<TransformComponent>();
+					std::string tag = entity->getComponent<TagComponent>().tag;
+					if (mouseX > transform.position.x && mouseY > transform.position.y
+						&& mouseX < (transform.position.x + transform.scale.x)
+						&& mouseY < (transform.position.y + transform.scale.y))
 					{
-						if (tileInRange(other)) {
-							// Call the colorSwap method
-							static_cast<ColorSwap*>(other.getComponent<ScriptComponent>().m_instance)->swapMyColor();
+						if (tag != "player" && tag != "obstacle")
+						{
+							if (tileInRange(*entity))
+							{
+								static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance)->swapMyColor();
 
-							// Move to the tile the player clicked on
-							auto player = m_entity;
-							int x = transform.position.x + 36;
-							int y = transform.position.y - 104;
-							player.getComponent<TransformComponent>().position.x = x;
-							player.getComponent<TransformComponent>().position.y = y;
+								// Move to the tile the player clicked on
+								auto player = m_entity;
+								int x = transform.position.x + 36;
+								int y = transform.position.y - 104;
+								player.getComponent<TransformComponent>().position.x = x;
+								player.getComponent<TransformComponent>().position.y = y;
+							}
 						}
 					}
 				}
