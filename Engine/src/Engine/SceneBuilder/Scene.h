@@ -5,6 +5,7 @@
 #include <Engine/Utilities/DeltaTime.h>
 #include <string>
 
+#include "Engine/Physics/PhysicsSystem.h"
 namespace Engine
 {
     class Entity;
@@ -52,12 +53,14 @@ namespace Engine
 
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
-
+        PhysicsSystem* m_physics;
+        
         void runEntityScripts(const DeltaTime& dt);
 
         void renderScene();
         
         friend class Entity;
         friend class Serializer;
+        
     };
 }

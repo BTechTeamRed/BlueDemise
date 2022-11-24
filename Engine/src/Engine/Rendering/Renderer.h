@@ -17,7 +17,9 @@ namespace Engine
 		void stopScene(Scene& scene);
 
 		void updateUIHeiraarchy(std::string tag, Entity entity);
-		
+		glm::vec3 screenToWorld(const glm::vec2& screenPosition);
+		glm::vec2 worldToScreen(const glm::vec3& worldPosition);
+
 		#pragma region Singleton Instance Management
 		//Singletons should not be cloneable, this is to prevent clones.
 		Renderer(Renderer& other) = delete;

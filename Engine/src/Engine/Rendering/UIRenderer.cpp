@@ -5,6 +5,7 @@
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Window.h"
 #include "Engine/SceneBuilder/Scene.h"
+#include "Engine/SceneBuilder/InputSystem.h"
 
 
 
@@ -80,13 +81,14 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
-	void UIRenderer::renderUI(Scene& scene, const Window& window)
+	void UIRenderer::renderUI(Scene& scene, Window& window)
 	{
 		UserInterface::startUI();
 
 		m_mainMenu.show();
 
 		m_gamePanel.show(window); //This function will take in an fbo when one is created
+		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition());
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
