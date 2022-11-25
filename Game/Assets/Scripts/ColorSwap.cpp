@@ -16,6 +16,23 @@ namespace Engine
 				currentColorIndex = index;
 			}
 		}
+
+		/*auto transform = m_entity.getComponent<TransformComponent>();
+		glm::vec3 dimensions;
+		auto entities = getEntities<CameraComponent>();
+		for (auto& [entity, camera] : entities.each())
+		{
+			dimensions.x = camera.frustumWidth;
+			dimensions.y = camera.frustumWidth / camera.aspectRatio;
+			dimensions.z = camera.farZ - camera.nearZ;
+		}
+		dimensions /= 2.0f;
+		glm::vec3 position = transform.position;
+		position -= dimensions;
+		if (!m_entity.hasComponent<PhysicsComponent>())
+		{
+			m_entity.addComponent<PhysicsComponent>(transform.scale, position);
+		}*/
 	}
 
 	void ColorSwap::swapMyColor() {

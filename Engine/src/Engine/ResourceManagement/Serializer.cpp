@@ -243,6 +243,8 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
+
+			components.push_back(j);
 		}
 
 		//add all components and tag to json

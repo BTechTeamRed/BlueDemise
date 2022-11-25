@@ -26,17 +26,18 @@ namespace Engine
 		// Create physics world
 		glm::vec3 dimensions;
 		auto entities = getEntities<CameraComponent>();
-		for (auto [entity, camera] : entities.each())
+		for (auto& [entity, camera] : entities.each())
 		{
 			dimensions.x = camera.frustumWidth;
 			dimensions.y = camera.frustumWidth / camera.aspectRatio;
 			dimensions.z = camera.farZ - camera.nearZ;
 		}
+		GE_CORE_TRACE("Scene::onRuntimeStart: Creating world {0} x {1} x {2}", dimensions.x, dimensions.y, dimensions.z);
 		m_physics = new PhysicsSystem(dimensions);
 
 		// Insert physics objects
 		auto physicsList = getEntities<PhysicsComponent>();
-		for (auto [entity, phyObj] : physicsList.each())
+		for (auto& [entity, phyObj] : physicsList.each())
 		{
 			Entity* obj = new Entity(entity, this);
 			if (!m_physics->insert(obj))
