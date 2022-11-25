@@ -109,6 +109,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -150,6 +163,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -191,6 +217,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -232,6 +271,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -273,6 +325,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -314,6 +379,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -355,6 +433,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -396,6 +487,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -437,6 +541,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -478,6 +595,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -519,6 +649,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -560,6 +703,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -601,6 +757,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -642,6 +811,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -683,6 +865,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -724,6 +919,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -765,6 +973,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -806,6 +1027,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -847,6 +1081,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -888,6 +1135,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -929,6 +1189,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -970,6 +1243,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -1011,6 +1297,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -1052,6 +1351,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
@@ -1093,6 +1405,19 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "name": "PhysicsComponent",
+            "dimensions": {
+              "x": 200,
+              "y": 50,
+              "z": 1
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
           }
         ]
       },
