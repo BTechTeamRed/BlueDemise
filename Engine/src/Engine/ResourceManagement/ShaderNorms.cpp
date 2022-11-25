@@ -13,7 +13,6 @@ namespace Engine
 		addShader(ShaderFillType::DEFAULT_FILL_TYPE);
 		addShader(ShaderFillType::FillType::SN_COLOR_FILL);
 		addShader(ShaderFillType::FillType::SN_GRADIENT_FILL);
-		addAdvancedShader(0, "SinWave");
 	}
 
 	ShaderNorms::~ShaderNorms()
@@ -115,7 +114,7 @@ namespace Engine
 	void ShaderNorms::addAdvancedShader(int bind, std::string shaderName)
 	{
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
-		AdvancedShaderDistributor asd(asSource, m_shaders);
+		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource, m_shaders)));
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)

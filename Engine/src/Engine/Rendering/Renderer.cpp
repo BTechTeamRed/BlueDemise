@@ -184,11 +184,15 @@ namespace Engine
 
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+
+			//access to the advanced shader if it exists
+			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
 				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+				advancedShaderBind = material.bind;
 				
 				if (setTexture(material.texID, currentBoundTextures)){currentBoundTextures++;}
 			
@@ -198,7 +202,7 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(-1, vertices.stride, m_textureCoordinates,
+			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
 				m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
