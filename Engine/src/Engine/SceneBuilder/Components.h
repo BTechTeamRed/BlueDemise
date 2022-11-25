@@ -7,7 +7,7 @@
 #include <string>
 #include <functional>
 #include "Engine/Physics/AABB.h"
-#include "../ResourceManagement/Audio.h"
+#include "Engine/ResourceManagement/Audio.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
