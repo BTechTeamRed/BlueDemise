@@ -71,6 +71,10 @@ std::list<Entity*> OctNode::raycast(Ray& ray)
 
 bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 {
+	std::string tag = entity->getComponent<TagComponent>().tag;
+	glm::vec3 nodePos = m_bounds->getPosition();
+	glm::vec3 nodeDim = m_bounds->getDimensions();
+	GE_CORE_TRACE("OctNode::insert: Node: {0}x{1}x{2} p {3} {4} {5} Attempting insert {6}", nodeDim.x, nodeDim.y, nodeDim.z, nodePos.x, nodePos.y, nodePos.z, tag);
 	bool inserted = false;
 	//Check if we can push to children
 	AABB* bounds = component->boundingBox;
@@ -92,6 +96,7 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 		int child = getChild(bounds->getPosition());
 		if (child > -1 && m_children[child]->getAABB()->containsBox(bounds))
 		{
+			GE_CORE_TRACE("OctNode::insert: Node: {0}x{1}x{2} p {3} {4} {5} inserting into child {6}", nodeDim.x, nodeDim.y, nodeDim.z, nodePos.x, nodePos.y, nodePos.z, tag);
 			inserted = m_children[child]->insert(entity, component);
 		}
 	}
@@ -100,6 +105,11 @@ bool OctNode::insert(Entity* entity, PhysicsComponent* component)
 	{
 		inserted = true;
 		m_entityList.push_back(std::make_pair(entity, component));
+		GE_CORE_TRACE("OctNode::insert: Node: {0}x{1}x{2} p {3} {4} {5} inserting into self {6}", nodeDim.x, nodeDim.y, nodeDim.z, nodePos.x, nodePos.y, nodePos.z, tag);
+	}
+	else if (!m_bounds->containsBox(bounds))
+	{
+		GE_CORE_TRACE("OctNode::insert: Node: {0}x{1}x{2} p {3} {4} {5} does not contain {6}", nodeDim.x, nodeDim.y, nodeDim.z, nodePos.x, nodePos.y, nodePos.z, tag);
 	}
 	return inserted;
 }

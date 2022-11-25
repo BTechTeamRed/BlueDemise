@@ -1,14 +1,13 @@
 {
   "scene": {
-    "name": "level1",
     "entities": [
-		{
+      {
         "components": [
-		  {
+          {
             "name": "TextComponent",
             "text": "1"
           },
-		  {
+          {
             "name": "ScriptComponent",
             "scriptName": "Score"
           }
@@ -16,50 +15,46 @@
         "tag": "text1"
       },
       {
-        "tag": "camera",
         "components": [
           {
-            "frustumWidth": 1920.0,
-            "aspectRatio": 1.7777,
+            "aspectRatio": 1.7776999473571777,
             "farZ": 100.0,
+            "frustumWidth": 1920.0,
             "name": "CameraComponent",
-            "nearZ": 0.10000000149011612,
-            "projection": {
-              "matrix": 1.0
-            }
+            "nearZ": 0.10000000149011612
           }
-        ]
+        ],
+        "tag": "camera"
       },
       {
-        "tag": "player",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 896,
-              "y": 412,
-              "z": 1
-            },
-            "scale": {
-              "x": 128,
-              "y": 128,
-              "z": 1
+              "x": 896.0,
+              "y": 412.0,
+              "z": 1.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "player.png",
             "color": {
-              "r": 1.0,
-              "g": 1.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "texName": "player.png"
           },
           {
             "name": "VerticesComponent",
@@ -69,38 +64,38 @@
             "name": "ScriptComponent",
             "scriptName": "PlayerMovementScript"
           }
-        ]
+        ],
+        "tag": "player"
       },
       {
-        "tag": "tile1",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860,
-              "y": 715,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 860.0,
+              "y": 715.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -109,39 +104,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": 174.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile1"
       },
       {
-        "tag": "tile2",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 760,
-              "y": 665,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 760.0,
+              "y": 665.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -150,39 +158,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": 124.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile2"
       },
       {
-        "tag": "tile3",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 660,
-              "y": 615,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 660.0,
+              "y": 615.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -191,39 +212,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -300.0,
+              "y": 74.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile3"
       },
       {
-        "tag": "tile4",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 560,
-              "y": 565,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 560.0,
+              "y": 565.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -232,39 +266,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -400.0,
+              "y": 24.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile4"
       },
       {
-        "tag": "tile5",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 460,
-              "y": 515,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 460.0,
+              "y": 515.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -273,39 +320,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -500.0,
+              "y": -25.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile5"
       },
       {
-        "tag": "tile6",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960,
-              "y": 665,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 960.0,
+              "y": 665.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -314,39 +374,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 124.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile6"
       },
       {
-        "tag": "tile7",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860,
-              "y": 615,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 860.0,
+              "y": 615.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -355,39 +428,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": 74.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile7"
       },
       {
-        "tag": "tile8",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 760,
-              "y": 565,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 760.0,
+              "y": 565.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -396,39 +482,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": 24.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile8"
       },
       {
-        "tag": "tile9",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 660,
-              "y": 515,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 660.0,
+              "y": 515.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -437,39 +536,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -300.0,
+              "y": -25.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile9"
       },
       {
-        "tag": "tile10",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 560,
-              "y": 465,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 560.0,
+              "y": 465.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -478,39 +590,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -400.0,
+              "y": -75.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile10"
       },
       {
-        "tag": "tile11",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1060,
-              "y": 615,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1060.0,
+              "y": 615.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -519,39 +644,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": 74.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile11"
       },
       {
-        "tag": "tile12",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960,
-              "y": 565,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 960.0,
+              "y": 565.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -560,39 +698,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 24.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile12"
       },
       {
-        "tag": "tile13",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860,
-              "y": 515,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 860.0,
+              "y": 515.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -601,39 +752,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": -25.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile13"
       },
       {
-        "tag": "tile14",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 760,
-              "y": 465,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 760.0,
+              "y": 465.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -642,39 +806,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": -75.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile14"
       },
       {
-        "tag": "tile15",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 660,
-              "y": 415,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 660.0,
+              "y": 415.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -683,39 +860,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -300.0,
+              "y": -125.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile15"
       },
       {
-        "tag": "tile16",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1160,
-              "y": 565,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1160.0,
+              "y": 565.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -724,39 +914,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 200.0,
+              "y": 24.97637939453125,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile16"
       },
       {
-        "tag": "tile17",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1060,
-              "y": 515,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1060.0,
+              "y": 515.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -765,39 +968,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": -25.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile17"
       },
       {
-        "tag": "tile18",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960,
-              "y": 465,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 960.0,
+              "y": 465.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -806,39 +1022,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": -75.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile18"
       },
       {
-        "tag": "tile19",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860,
-              "y": 415,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 860.0,
+              "y": 415.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -847,39 +1076,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": -125.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile19"
       },
       {
-        "tag": "tile20",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 760,
-              "y": 365,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 760.0,
+              "y": 365.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -888,39 +1130,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": -175.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile20"
       },
       {
-        "tag": "tile21",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1260,
-              "y": 515,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1260.0,
+              "y": 515.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -929,39 +1184,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 300.0,
+              "y": -25.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile21"
       },
       {
-        "tag": "tile22",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1160,
-              "y": 465,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1160.0,
+              "y": 465.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -970,39 +1238,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 200.0,
+              "y": -75.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile22"
       },
       {
-        "tag": "tile23",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 1060,
-              "y": 415,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 1060.0,
+              "y": 415.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -1011,39 +1292,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": -125.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile23"
       },
       {
-        "tag": "tile24",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 960,
-              "y": 365,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 960.0,
+              "y": 365.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -1052,39 +1346,52 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": -175.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile24"
       },
       {
-        "tag": "tile25",
         "components": [
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860,
-              "y": 315,
-              "z": 0
-            },
-            "scale": {
-              "x": 200,
-              "y": 50,
-              "z": 1
+              "x": 860.0,
+              "y": 315.0,
+              "z": 0.0
             },
             "rotation": {
-              "x": 0,
-              "y": 0,
-              "z": 0
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
             }
           },
           {
-            "name": "MaterialComponent",
-            "texName": "tileTemp.png",
             "color": {
-              "r": 0.0,
-              "g": 0.0,
+              "a": 1.0,
               "b": 1.0,
-              "a": 1.0
-            }
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "texName": "tileTemp.png"
           },
           {
             "name": "VerticesComponent",
@@ -1093,27 +1400,42 @@
           {
             "name": "ScriptComponent",
             "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": -225.02362060546875,
+              "z": -49.95000076293945
+            }
           }
-        ]
+        ],
+        "tag": "tile25"
       },
       {
-        "tag": "timer",
         "components": [
           {
             "name": "ScriptComponent",
             "scriptName": "Timer"
           }
-        ]
+        ],
+        "tag": "timer"
       },
       {
-        "tag": "score",
         "components": [
           {
             "name": "ScriptComponent",
             "scriptName": "Score"
           }
-        ]
+        ],
+        "tag": "score"
       }
-    ]
+    ],
+    "name": "level1"
   }
 }
