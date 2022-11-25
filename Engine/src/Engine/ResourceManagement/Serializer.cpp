@@ -235,6 +235,16 @@ namespace Engine
 			j["position"] = c.boundingBox->getPosition();
 		}
 
+		if (entity.hasComponent<AudioComponent>())
+		{
+			auto c = entity.getComponent<AudioComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_AudioComponent);
+			j["soundFileName"] = c.soundFileName;
+
+			components.push_back(j);
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -328,6 +338,12 @@ namespace Engine
 				glm::vec3 position = component["position"].get<glm::vec3>();
 
 				out.addComponent<PhysicsComponent>(dimensions, position);
+				break;
+			}
+			case CO_AudioComponent:
+			{
+				std::string soundFileName = component["soundFileName"];
+				out.addComponent<AudioComponent>(soundFileName);
 				break;
 			}
 			default:
