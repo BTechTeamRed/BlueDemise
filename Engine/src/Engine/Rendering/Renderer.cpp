@@ -291,14 +291,12 @@ namespace Engine
 	}
 
 	//Render a string line of text based on the transform location. Based on https://learnopengl.com/In-Practice/Text-Rendering
-	void Renderer::renderText(TextComponent text, TransformComponent transform, glm::vec3 color, GLuint shader, GLuint mvpID)
+	void Renderer::renderText(const TextComponent& text, const TransformComponent& transform, const glm::vec3& color, GLuint shader, GLuint mvpID)
 	{
 		TransformComponent charPos = transform;
 
 		//Access the current shader data/program and pass the color XYZ to the textColor variable in the shader.
 		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
-
-		//glActiveTexture(GL_TEXTURE0);
 
 		std::string printLine = text.text;
 

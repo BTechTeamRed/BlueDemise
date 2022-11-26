@@ -29,6 +29,33 @@ namespace Engine
 		GLuint vbo;
 	};
 
+	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
+	//Contains data to communicate with the GPU about what to draw (typically per entity).
+	struct VerticesComponent
+	{
+		VerticesComponent() = default;
+		VerticesComponent(const VerticesComponent& other) = default;
+
+		std::vector<VertexAttribute> vertexAttributes;
+
+		//Vertex array object, which acts as a wrapper for VBO data
+		GLuint vaoID;
+
+		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
+		GLuint iboID;
+
+		//Vertex buffer object ID: ID for the buffer containing the verts on the GPU
+		GLuint vboID;
+
+		//Size of a single vertex in bytes
+		GLsizei stride;
+
+		//Num of vertices provided to GPU
+		unsigned long numIndices;
+
+		bool isSprite;
+	};
+
 	struct TagComponent
 	{
 		std::string tag;
@@ -119,33 +146,6 @@ namespace Engine
 			: text(text) {}
 
 		std::string text = "";
-	};
-
-	//under this definition, vertex data is only ever stored on the gpu in the vao. It doesn't exist in the ECS. Not sure if this is optimal.
-	//Contains data to communicate with the GPU about what to draw (typically per entity).
-	struct VerticesComponent 
-	{
-		VerticesComponent() = default;
-		VerticesComponent(const VerticesComponent& other) = default;
-
-		std::vector<VertexAttribute> vertexAttributes;
-
-		//Vertex array object, which acts as a wrapper for VBO data
-		GLuint vaoID;
-
-		//Indices buffer object that reference specific vertices in the VBO. 'Draw everything in the VBO using IBO'.
-		GLuint iboID;
-		
-		//Vertex buffer object ID: ID for the buffer containing the verts on the GPU
-		GLuint vboID;
-		
-		//Size of a single vertex in bytes
-		GLsizei stride;
-
-		//Num of vertices provided to GPU
-		unsigned long numIndices;
-
-		bool isSprite;
 	};
 
 	//Entities with this component will be serialized by Serializer.cpp
