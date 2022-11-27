@@ -45,7 +45,7 @@ std::list<Entity*> OctNode::raycast(Ray& ray)
 	std::list<Entity*> picks;
 	glm::vec3 dim = m_bounds->getDimensions();
 	glm::vec3 pos = m_bounds->getPosition();
-	GE_CORE_TRACE("OctNode::raycast: Pinging {0} {1} {2} : {3} {4} {5}", pos.x, pos.y, pos.z, dim.x, dim.y, dim.z);
+	//GE_CORE_TRACE("OctNode::raycast: Pinging {0} {1} {2} : {3} {4} {5}", pos.x, pos.y, pos.z, dim.x, dim.y, dim.z);
 
 	// Check self
 	for (auto ent : m_entityList)
