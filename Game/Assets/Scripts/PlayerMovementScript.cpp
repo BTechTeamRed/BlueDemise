@@ -11,10 +11,10 @@ namespace Engine
 	{
 		if (InputSystem::getInstance()->isButtonPressed(0)) {
 
-			// TODO: REPLACE WITH PICKING //
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
 
+			// Use picking to get entities (with physics component) player clicked on
 			std::list<Entity*> entities = m_entity.getScene()->pick(mouseX, mouseY);
 			//GE_TRACE("Pick @ {0} {1}", mouseX, mouseY);
 			for (auto entity : entities)
@@ -23,25 +23,16 @@ namespace Engine
 				if (entity->hasComponent<TransformComponent>())
 				{
 					auto transform = entity->getComponent<TransformComponent>();
-					std::string tag = entity->getComponent<TagComponent>().tag;
-					/*if (mouseX > transform.position.x && mouseY > transform.position.y
-						&& mouseX < (transform.position.x + transform.scale.x)
-						&& mouseY < (transform.position.y + transform.scale.y))*/
+					if (tileInRange(*entity))
 					{
-						if (tag != "player" && tag != "obstacle")
-						{
-							if (tileInRange(*entity))
-							{
-								static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance)->swapMyColor();
+						static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance)->swapMyColor();
 
-								// Move to the tile the player clicked on
-								auto player = m_entity;
-								int x = transform.position.x + 36;
-								int y = transform.position.y - 104;
-								player.getComponent<TransformComponent>().position.x = x;
-								player.getComponent<TransformComponent>().position.y = y;
-							}
-						}
+						// Move to the tile the player clicked on
+						auto player = m_entity;
+						int x = transform.position.x + 36;
+						int y = transform.position.y - 104;
+						player.getComponent<TransformComponent>().position.x = x;
+						player.getComponent<TransformComponent>().position.y = y;
 					}
 				}
 			}
