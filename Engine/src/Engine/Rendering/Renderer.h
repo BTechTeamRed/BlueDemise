@@ -40,7 +40,14 @@ namespace Engine
 		UIRenderer m_UI;
 
 		//flag, if true: ui is rendered, if false: no ui is rendered
-		bool m_showUI = true;
+		//bool m_showUI = true;
+		#ifdef NDEBUG
+			const bool m_showUI = false; //release
+		#else
+			const bool m_showUI = true; //debug
+		#endif
+
+
 
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
