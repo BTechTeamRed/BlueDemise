@@ -74,11 +74,12 @@ namespace Engine
 	//Per scene update loop, add scripts to entities if enabled and render the scene.
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{
-		if (m_switch)
-		{
-			m_switch = false;
-			swapScene(m_nextScene);
-		}
+		// Boolean to switch the scene, left over from old implementation
+		//if (m_switch)
+		//{
+		//	m_switch = false;
+		//	swapScene(m_nextScene); // <- not working properly
+		//}
 
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
@@ -110,6 +111,7 @@ namespace Engine
 		glfwPollEvents();
 	}
 
+	// CURRENTLY NOT USED AND NOT WORKING PROPERLY
 	void Scene::swapScene(const std::string& other)
 	{
 		m_registry = entt::registry();
