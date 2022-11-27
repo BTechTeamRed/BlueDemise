@@ -9,7 +9,6 @@
 namespace Engine
 {
 	typedef unsigned int GLuint;
-	class ShaderFillType;
 	class ShaderGenerator;
 	class AdvancedShaderDistributor;
 
