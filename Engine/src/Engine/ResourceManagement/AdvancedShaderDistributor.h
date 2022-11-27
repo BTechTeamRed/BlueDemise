@@ -72,9 +72,6 @@ namespace Engine
 		//splits string into list separated by \n character.
 		std::vector<std::string> split(std::string source);
 
-		//returns true if the string contains a substring value
-		bool strContains(std::string parent, std::string substr);
-
 		//substrings the parent string to represent its data declaration given the current entry.
 		//For example, if current entry == "layout (location = 0) in vec3 pos;", returns
 		//"vec3 pos;" This will be the string collected by the SourceExtractor struct

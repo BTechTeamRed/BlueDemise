@@ -1,4 +1,6 @@
 #include <Engine/ResourceManagement/ShaderNorms.h>
+#include <Engine/ResourceManagement/ShaderGenerator.h>
+#include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
 #include <Engine/ResourceManagement/ResourceManager.h>
 #include "glad/glad.h"
 

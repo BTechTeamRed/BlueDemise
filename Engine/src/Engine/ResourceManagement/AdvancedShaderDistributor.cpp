@@ -1,9 +1,10 @@
 #pragma once
 #include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
-#include <Engine/Utilities/Log.h>
+#include <Engine/Utilities/BasicUtilities.h>
 #include <sstream>
 
 using namespace std;
+using namespace Engine::Utilities;
 
 namespace Engine
 {
@@ -76,7 +77,8 @@ namespace Engine
 			{
 				se.mainCommands.push_back(src[i]);
 			}
-			else {
+			else
+			{
 				if (strContains(src[i], "layout"))
 				{
 					se.layout.push_back(substringAtDataDeclaration(src[i]));
@@ -249,11 +251,6 @@ namespace Engine
 		}
 
 		return list;
-	}
-
-	bool AdvancedShaderDistributor::strContains(string parent, string substr)
-	{
-		return parent.find(substr) != string::npos;
 	}
 
 	//Given line of code, gathers the data type and variable name i.e. mat4 mvp;

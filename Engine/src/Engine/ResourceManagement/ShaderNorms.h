@@ -3,14 +3,13 @@
 #define SHADERNORMS_H
 
 #include <Engine/ResourceManagement/ShaderFillType.h>
-#include <Engine/ResourceManagement/ShaderGenerator.h>
-#include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
 #include <string>
 #include <map>
 
 namespace Engine
 {
 	typedef unsigned int GLuint;
+	class ShaderFillType;
 	class ShaderGenerator;
 	class AdvancedShaderDistributor;
 
