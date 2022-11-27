@@ -7,25 +7,6 @@ using namespace std;
 
 namespace Engine
 {
-	void AdvancedShaderDistributor::SourceExtractor::print()
-	{
-		GE_CORE_INFO("[layout]");
-		for (int i = 0; i < layout.size(); i++)
-			GE_CORE_INFO(layout[i]);
-		GE_CORE_INFO("[in]");
-		for (int i = 0; i < inVariables.size(); i++)
-			GE_CORE_INFO(inVariables[i]);
-		GE_CORE_INFO("[out]");
-		for (int i = 0; i < outVariables.size(); i++)
-			GE_CORE_INFO(outVariables[i]);
-		GE_CORE_INFO("[uniforms]");
-		for (int i = 0; i < uniforms.size(); i++)
-			GE_CORE_INFO(uniforms[i]);
-		GE_CORE_INFO("[main]");
-		for (int i = 0; i < mainCommands.size(); i++)
-			GE_CORE_INFO(mainCommands[i]);
-	}
-
 	AdvancedShaderDistributor::AdvancedShaderDistributor(string advancedSource,
 		std::map<ShaderFillType::FillType, ShaderGenerator>& shaders) :
 		advancedSource(advancedSource)
@@ -114,7 +95,8 @@ namespace Engine
 					mainExtracting = true;
 					se.mainCommands.push_back(src[i]);
 				}
-				else if(strContains(src[i], "in")) {
+				else if(strContains(src[i], "in"))
+				{
 					se.inVariables.push_back(substringAtDataDeclaration(src[i]));
 				}
 			}
@@ -132,40 +114,40 @@ namespace Engine
 			if (strContains(src[i], "[vertex]"))
 			{
 				loadingVertex = true;
-				pendingMessenger = SEMessenger::PENDING_NONE;
+				pendingMessenger = SEMessenger::SEM_PENDING_NONE;
 				continue;
 			}
 			else if (strContains(src[i], "[fragment]"))
 			{
 				loadingVertex = false;
-				pendingMessenger = SEMessenger::PENDING_NONE;
+				pendingMessenger = SEMessenger::SEM_PENDING_NONE;
 				continue;
 			}
 
 			//check which source extractor variable to be assigned
 			if (strContains(src[i], "[layout]"))
 			{
-				pendingMessenger = SEMessenger::PENDING_LAYOUT;
+				pendingMessenger = SEMessenger::SEM_PENDING_LAYOUT;
 				messengerAssigned = true;
 			}
 			else if (strContains(src[i], "[in]"))
 			{
-				pendingMessenger = SEMessenger::PENDING_IN_VARIABLES;
+				pendingMessenger = SEMessenger::SEM_PENDING_IN_VARIABLES;
 				messengerAssigned = true;
 			}
 			else if (strContains(src[i], "[out]"))
 			{
-				pendingMessenger = SEMessenger::PENDING_OUT_VARIABLES;
+				pendingMessenger = SEMessenger::SEM_PENDING_OUT_VARIABLES;
 				messengerAssigned = true;
 			}
 			else if (strContains(src[i], "[uniform]"))
 			{
-				pendingMessenger = SEMessenger::PENDING_UNIFORMS;
+				pendingMessenger = SEMessenger::SEM_PENDING_UNIFORMS;
 				messengerAssigned = true;
 			}
 			else if (strContains(src[i], "[main]"))
 			{
-				pendingMessenger = SEMessenger::PENDING_MAIN_COMMANDS;
+				pendingMessenger = SEMessenger::SEM_PENDING_MAIN_COMMANDS;
 				messengerAssigned = true;
 			}
 
@@ -181,19 +163,19 @@ namespace Engine
 			SourceExtractor* se = ((loadingVertex) ? &vertexExtractor : &fragmentExtractor);
 			switch (pendingMessenger)
 			{
-			case SEMessenger::PENDING_LAYOUT:
+			case SEMessenger::SEM_PENDING_LAYOUT:
 				se->layout.push_back(src[i]);
 				break;
-			case SEMessenger::PENDING_IN_VARIABLES:
+			case SEMessenger::SEM_PENDING_IN_VARIABLES:
 				se->inVariables.push_back(src[i]);
 				break;
-			case SEMessenger::PENDING_OUT_VARIABLES:
+			case SEMessenger::SEM_PENDING_OUT_VARIABLES:
 				se->outVariables.push_back(src[i]);
 				break;
-			case SEMessenger::PENDING_UNIFORMS:
+			case SEMessenger::SEM_PENDING_UNIFORMS:
 				se->uniforms.push_back(src[i]);
 				break;
-			case SEMessenger::PENDING_MAIN_COMMANDS:
+			case SEMessenger::SEM_PENDING_MAIN_COMMANDS:
 				se->mainCommands.push_back(src[i]);
 				break;
 			default:
@@ -261,7 +243,8 @@ namespace Engine
 		vector<string> list;
 
 		string s;
-		while (getline(ss, s, '\n')) {
+		while (getline(ss, s, '\n'))
+		{
 			list.push_back(s);
 		}
 
@@ -273,6 +256,8 @@ namespace Engine
 		return parent.find(substr) != string::npos;
 	}
 
+	//Given line of code, gathers the data type and variable name i.e. mat4 mvp;
+	//from layout(location=0) in mat4 mvp;
 	string AdvancedShaderDistributor::substringAtDataDeclaration(string parent)
 	{
 		string keyword = "";
@@ -284,11 +269,7 @@ namespace Engine
 				break;
 			}
 		}
-		if (keyword == "")
-		{
-			return keyword;
-		}
-
-		return parent.substr(parent.find(keyword));
+		
+		return ((keyword != "") ? parent.substr(parent.find(keyword)) : keyword);
 	}
 }

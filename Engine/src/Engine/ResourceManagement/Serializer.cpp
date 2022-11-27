@@ -279,8 +279,7 @@ namespace Engine
 				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 				
-				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
-				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader); //0 Would be shaderID. waiting until shader code is imported ********
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
 				break;
 			}
 			case CO_VerticesComponent:

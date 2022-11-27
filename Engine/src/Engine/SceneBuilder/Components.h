@@ -62,8 +62,6 @@ namespace Engine
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
-		//MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderId)
-			//: color(color), texID(texID), texName(texName){}
 		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
 			: color(color), texID(texID), texName(texName), shaderName(shaderName)
 		{

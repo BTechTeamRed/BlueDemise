@@ -111,7 +111,7 @@ namespace Engine
 		GE_CORE_INFO(getShaderNameString(shaderName) + " shader added.");
 	}
 
-	void ShaderNorms::addAdvancedShader(int bind, std::string shaderName)
+	void ShaderNorms::addAdvancedShader(int bind, std::string& shaderName)
 	{
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource, m_shaders)));

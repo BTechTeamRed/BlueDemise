@@ -69,31 +69,4 @@ namespace Engine
 		}
 		return true;
 	}
-
-	/*
-	AdvancedShaderGenerator::AdvancedShaderGenerator(const char* vertexSource, const char* fragmentSource)
-	{
-		ShaderGenerator sg(vertexSource, fragmentSource);
-		GE_CORE_INFO("Vertex: \n");
-		GE_CORE_INFO(sg.getVertexSource());
-		GE_CORE_INFO("Fragment: \n");
-		GE_CORE_INFO(sg.getFragmentSource());
-	}
-
-	int AdvancedShaderGenerator::getProgramId(ShaderFillType::FillType fillType)
-	{
-		switch (fillType)
-		{
-		case ShaderFillType::SN_TEXTURE_FILL:
-			return m_programIds[0];
-			break;
-		case ShaderFillType::SN_COLOR_FILL:
-			return m_programIds[1];
-			break;
-		default:
-			return m_programIds[2];
-			break;
-		}
-	}
-	*/
 }
