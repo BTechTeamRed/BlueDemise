@@ -6,11 +6,10 @@
 #include <map>
 #include <vector>
 #include <Engine/ResourceManagement/ShaderFillType.h>
-#include <Engine/ResourceManagement/ShaderGenerator.h>
 
 namespace Engine
 {
-	class ShaderFillType;
+	typedef unsigned int GLuint;
 	class ShaderGenerator;
 
 	// Based on the advanced shader source code, this generates shaders for each

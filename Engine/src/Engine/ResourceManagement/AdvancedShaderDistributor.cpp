@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
+#include <Engine/ResourceManagement/ShaderGenerator.h>
 #include <Engine/Utilities/BasicUtilities.h>
 #include <sstream>
 
