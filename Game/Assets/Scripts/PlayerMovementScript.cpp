@@ -16,10 +16,10 @@ namespace Engine
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
 
 			std::list<Entity*> entities = m_entity.getScene()->pick(mouseX, mouseY);
-			GE_TRACE("Pick @ {0} {1}", mouseX, mouseY);
+			//GE_TRACE("Pick @ {0} {1}", mouseX, mouseY);
 			for (auto entity : entities)
 			{
-				GE_TRACE("Picked this: {0}", entity->getComponent<TagComponent>().tag);
+				//GE_TRACE("Picked this: {0}", entity->getComponent<TagComponent>().tag);
 				if (entity->hasComponent<TransformComponent>())
 				{
 					auto transform = entity->getComponent<TransformComponent>();
