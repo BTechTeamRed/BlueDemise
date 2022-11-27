@@ -68,6 +68,10 @@
           {
             "name": "ScriptComponent",
             "scriptName": "PlayerMovementScript"
+          },
+          {
+            "name": "AudioComponent",
+            "soundFileName": "FOLEY_FOOTSTEP.wav"
           }
         ]
       },
