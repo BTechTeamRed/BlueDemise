@@ -46,6 +46,9 @@ namespace Engine
 		//flag, if true: ui is rendered, if false: no ui is rendered
 		bool m_showUI = true;
 
+		//Sets the default color used for components that would be rendered, but do not have a material. This is a gray.
+		glm::vec4 m_defaultColor{ .5f,.5f,.5f,1.0f };
+
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
 
