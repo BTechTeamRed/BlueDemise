@@ -5,12 +5,12 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <Engine/ResourceManagement/ShaderFillType.h>
 
 namespace Engine
 {
 	typedef unsigned int GLuint;
 	class ShaderGenerator;
+	enum ShaderFillType::FillType;
 
 	// Based on the advanced shader source code, this generates shaders for each
 	// shader fill type (check ShaderFillType.h). This means that each advanced

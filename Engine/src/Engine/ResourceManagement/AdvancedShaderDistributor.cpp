@@ -1,4 +1,5 @@
 #pragma once
+#include <Engine/ResourceManagement/ShaderFillType.h>
 #include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
 #include <Engine/ResourceManagement/ShaderGenerator.h>
 #include <Engine/Utilities/BasicUtilities.h>
