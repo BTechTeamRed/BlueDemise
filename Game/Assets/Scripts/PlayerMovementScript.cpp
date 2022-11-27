@@ -16,15 +16,17 @@ namespace Engine
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
 
 			std::list<Entity*> entities = m_entity.getScene()->pick(mouseX, mouseY);
+			//GE_TRACE("Pick @ {0} {1}", mouseX, mouseY);
 			for (auto entity : entities)
 			{
+				//GE_TRACE("Picked this: {0}", entity->getComponent<TagComponent>().tag);
 				if (entity->hasComponent<TransformComponent>())
 				{
 					auto transform = entity->getComponent<TransformComponent>();
 					std::string tag = entity->getComponent<TagComponent>().tag;
-					if (mouseX > transform.position.x && mouseY > transform.position.y
+					/*if (mouseX > transform.position.x && mouseY > transform.position.y
 						&& mouseX < (transform.position.x + transform.scale.x)
-						&& mouseY < (transform.position.y + transform.scale.y))
+						&& mouseY < (transform.position.y + transform.scale.y))*/
 					{
 						if (tag != "player" && tag != "obstacle")
 						{
