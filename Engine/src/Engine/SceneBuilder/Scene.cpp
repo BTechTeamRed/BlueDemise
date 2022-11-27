@@ -133,6 +133,7 @@ namespace Engine
 	std::list<Entity*> Scene::pick(float x, float y)
 	{
 		glm::vec3 worldPos = Renderer::getInstance()->screenToWorld(glm::vec2(x,y));
+		GE_CORE_TRACE("Scene::pick: {0} {1} = {2} {3} {4}", x, y, worldPos.x, worldPos.y, worldPos.z);
 		return m_physics->raycast(worldPos, glm::vec3(0,0,1));
 	}
 }

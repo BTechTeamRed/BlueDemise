@@ -17,7 +17,7 @@ namespace Engine
 			}
 		}
 
-		/*auto transform = m_entity.getComponent<TransformComponent>();
+		auto transform = m_entity.getComponent<TransformComponent>();
 		glm::vec3 dimensions;
 		auto entities = getEntities<CameraComponent>();
 		for (auto& [entity, camera] : entities.each())
@@ -28,10 +28,19 @@ namespace Engine
 		}
 		dimensions /= 2.0f;
 		glm::vec3 position = transform.position;
-		position -= dimensions;
+		glm::vec3 scaleOffset = transform.scale / 2.0f;
+		position -= dimensions - scaleOffset;
+		position.y *= -1;
+		position.z += 1.0f;
 		if (!m_entity.hasComponent<PhysicsComponent>())
 		{
 			m_entity.addComponent<PhysicsComponent>(transform.scale, position);
+		}
+		/*else
+		{
+			auto comp = m_entity.getComponent<PhysicsComponent>();
+			comp.boundingBox->updateDimensions(dimensions);
+			comp.boundingBox->updatePosition(position);
 		}*/
 	}
 
