@@ -13,6 +13,5 @@ namespace Engine
 		void addOne();
 		std::string getScore();
 		virtual std::string getScriptName() override { return "Score"; }
-		virtual void onUpdate(const Engine::DeltaTime& dt) override;
 	};
 }
