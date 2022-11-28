@@ -1,15 +1,13 @@
 #include <Engine/ResourceManagement/ShaderNorms.h>
 #include <Engine/ResourceManagement/ShaderGenerator.h>
-#include "Engine/ResourceManagement/ResourceManager.h"
+#include <Engine/ResourceManagement/AdvancedShaderDistributor.h>
+#include <Engine/ResourceManagement/ResourceManager.h>
 #include "glad/glad.h"
 
 using namespace std;
 
 namespace Engine
 {
-	const ShaderNorms::ShaderName ShaderNorms::DEFAULT_SHADER_NAME
-		= ShaderNorms::ShaderName::SN_TEXTURE_FILL;
-
 	ShaderNorms* ShaderNorms::m_singleton = nullptr;
 
 	ShaderNorms::ShaderNorms()
@@ -18,13 +16,15 @@ namespace Engine
 		addShader(SN_COLOR_FILL);
 		addShader(SN_TEXT_FILL);
 		addShader(SN_GRADIENT_FILL);
+    
+		addShader(DEFAULT_FILL_TYPE);
 	}
 
 	ShaderNorms::~ShaderNorms()
 	{
 		for (auto [key, value] : m_shaders)
 		{
-			glDeleteProgram(value);
+			glDeleteProgram(value.getProgramId());
 		}
 	}
 
@@ -39,26 +39,64 @@ namespace Engine
 
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
-	void ShaderNorms::update(int stride, int& textureCoordinates, int& colorCoordinates,
-		int& gradientCoordinates, GLuint& programId)
+	void ShaderNorms::update(int advancedShaderBind, int stride, int& textureCoordinates,
+		int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
 	{
-		if (assignsNewStride(stride))
+		if (advancedShaderBind != m_currentAdvancedShaderBind)
 		{
-			if (stride == textureCoordinates)
+			m_currentAdvancedShaderBind = advancedShaderBind;
+			if (m_currentAdvancedShaderBind != -1)
 			{
-				programId = getShader();
-				glUseProgram(programId);
-			}
-			else if (stride == colorCoordinates)
-			{
+      
 				programId = getShader(SN_COLOR_FILL);
 				glUseProgram(programId);
+        
+				if (stride == textureCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_TEXTURE_FILL), programId);
+				}
+				else if (stride == colorCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_COLOR_FILL), programId);
+				}
+				else if (stride == gradientCoordinates)
+				{
+					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
+						.getAdvancedProgramId(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
+				}
 			}
-			else if (stride == gradientCoordinates)
+			else
 			{
 				programId = getShader(SN_GRADIENT_FILL);
 				glUseProgram(programId);
+        
+				//reset m_currentStride
+				assignsNewStride(stride);
+				assignOnStride(stride, textureCoordinates, colorCoordinates, gradientCoordinates, programId);
 			}
+		}
+		else if (m_currentAdvancedShaderBind == -1 && assignsNewStride(stride))
+		{
+			assignOnStride(stride, textureCoordinates, colorCoordinates, gradientCoordinates, programId);
+		}
+	}
+
+	void ShaderNorms::assignOnStride(int stride, int& textureCoordinates, int& colorCoordinates,
+		int& gradientCoordinates, GLuint& programId)
+	{
+		if (stride == textureCoordinates)
+		{
+			assignProgram(getShaderReference(), programId);
+		}
+		else if (stride == colorCoordinates)
+		{
+			assignProgram(getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL), programId);
+		}
+		else if (stride == gradientCoordinates)
+		{
+			assignProgram(getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
 		}
 	}
 
@@ -75,27 +113,40 @@ namespace Engine
 		return changed;
 	}
 
-	void ShaderNorms::addShader(ShaderName shaderName)
+	void ShaderNorms::addShader(ShaderFillType::FillType shaderName)
 	{
 		string shaderStr = getShaderNameString(shaderName);
 		m_shaders.insert(pair(shaderName, ShaderGenerator(
 			ResourceManager::getInstance()->getShaderData(shaderStr + ".vs").c_str(),
 			ResourceManager::getInstance()->getShaderData(shaderStr + ".fs").c_str()
-		).getProgramId()));
+		)));
 		GE_CORE_INFO(getShaderNameString(shaderName) + " shader added.");
 	}
 
-	GLuint ShaderNorms::getShader(ShaderName shaderName)
+	void ShaderNorms::addAdvancedShader(int bind, std::string& shaderName)
 	{
-		return m_shaders.at(shaderName);
+		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
+		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource, m_shaders)));
 	}
 
-	string ShaderNorms::getShaderNameString(ShaderName shaderName)
+	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
+	{
+		return m_shaders.at(shaderName).getProgramId();
+	}
+
+	void ShaderNorms::assignProgram(GLuint shaderBind, GLuint& shaderAccessor)
+	{
+		shaderAccessor = shaderBind;
+		glUseProgram(shaderBind);
+	}
+
+	string ShaderNorms::getShaderNameString(ShaderFillType::FillType shaderName)
 	{
 		switch (shaderName)
 		{
 		case SN_TEXTURE_FILL:
 			return "TextureFill";
+			break;
 		case SN_COLOR_FILL:
 			return "ColorFill";
 		case SN_TEXT_FILL:
