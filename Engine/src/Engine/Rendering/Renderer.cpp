@@ -195,7 +195,7 @@ namespace Engine
 
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
-			glm::vec4 color{ 1.f,1.f,1.f,1.f };
+			glm::vec4 color = m_defaultColor;
 
 			//Change the transform component if the entity contains one.
 			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
