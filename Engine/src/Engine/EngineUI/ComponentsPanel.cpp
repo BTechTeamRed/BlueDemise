@@ -19,6 +19,13 @@ namespace Engine
 		m_components.push_back(component);
 	}
 
+	//struct for radio buttons for components
+	struct ComponentsButton 
+	{
+		bool state; // true if selected
+		std::string tag; // component name
+	};
+
 	void ComponentsPanel::show()
 	{
 
@@ -50,10 +57,20 @@ namespace Engine
 
 		for (const auto& component : m_components)
 		{
-			if (ImGui::TreeNode(component.c_str()))
+			// Initializes ComponentButton struct for each component
+			ComponentsButton Component;
+			Component.tag = component;
+			Component.state = false;
+
+			// if this component is selected, fill in the radio button
+			if (Component.tag == m_selectedComponent)
 			{
-				m_selectedComponent = component;
-				ImGui::TreePop();
+				Component.state = true;
+			}
+
+			if (ImGui::RadioButton(Component.tag.c_str(), Component.state))
+			{
+				m_selectedComponent = Component.tag;
 			}
 		}
 

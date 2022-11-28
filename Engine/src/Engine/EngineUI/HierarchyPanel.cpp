@@ -22,6 +22,15 @@ namespace Engine
 		m_entities[entityTag] = entity;
 	}
 
+	//struct for entity list radio buttons
+	struct EntityButton 
+	{
+		bool state; // true if selected
+		std::string tag; // entity name
+		entt::entity entity; // actual entt entity 
+	};
+
+
 	void HierarchyPanel::show()
 	{
 		ImGui::Begin("HierarchyPanel", nullptr,
@@ -62,10 +71,21 @@ namespace Engine
 		{
 			for (const auto& entity : m_entities)
 			{
-				if (ImGui::TreeNode(entity.first.c_str()))
+				// Initializes EntityButton struct for each entity
+				EntityButton Entity;
+				Entity.tag = entity.first.c_str();
+				Entity.entity = entity.second;
+				Entity.state = false;
+
+				// if this entity is selected, fill in the radio button
+				if (Entity.entity == m_selectedEntity) 
+				{
+					Entity.state = true;
+				}
+
+				if (ImGui::RadioButton(Entity.tag.c_str(), Entity.state))
 				{
 					m_selectedEntity = entity.second;
-					ImGui::TreePop();
 				}
 			}
 		}
