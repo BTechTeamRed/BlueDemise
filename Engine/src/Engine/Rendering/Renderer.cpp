@@ -185,9 +185,6 @@ namespace Engine
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
-			//updates the shader based on vertices component's stride value
-			ShaderNorms::getInstance()->update(vertices.stride, m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
-
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
 			glm::vec4 color{ 1.f,1.f,1.f,1.f };
@@ -197,11 +194,15 @@ namespace Engine
 
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+
+			//access to the advanced shader if it exists
+			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
 				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+				advancedShaderBind = material.bind;
 				
 				if (setTexture(material.texID, currentBoundTextures)){currentBoundTextures++;}
 			
@@ -209,6 +210,10 @@ namespace Engine
 				color = material.color;
 				//glUseProgram(material.shaderID);
 			}
+
+			//updates the shader based on vertices component's stride value and/or advanced shader
+			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
+				m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);
@@ -250,7 +255,7 @@ namespace Engine
 	void Renderer::loadShaders()
 	{
 		ShaderNorms::getInstance()->assignsNewStride(m_textureCoordinates);
-		m_programId = ShaderNorms::getInstance()->getShader();
+		m_programId = ShaderNorms::getInstance()->getShaderReference();
 		glUseProgram(m_programId);
 	}
 	

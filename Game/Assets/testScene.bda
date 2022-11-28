@@ -68,6 +68,7 @@
               "g": 1.0,
               "r": 1.0
             },
+            "shaderName": "SinWave",
             "name": "MaterialComponent"
           },
           {
