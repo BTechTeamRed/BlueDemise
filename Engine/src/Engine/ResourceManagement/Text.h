@@ -13,6 +13,17 @@ namespace Engine
 	class ENGINE_API Text
 	{
 	public:
+		enum Font
+		{
+			RT_Arial,
+			RT_Daubmark,
+			RT_Freedom,
+			RT_JohnHenry,
+			RT_MyriadPro,
+			RT_times,
+			RT_VioletWasteland
+		};
+
 		//Iterate through 128 ASCII characters and generate textures for each to be rendered.
 		bool initializeText();
 
@@ -32,13 +43,29 @@ namespace Engine
 			glm::ivec2 Size;      //Size of glyph
 			glm::ivec2 Bearing;   //offset from baseline to left/top of glyph	
 			unsigned int Advance;   //Offset to advance to next glyph
+			int maxAscent;
+			int maxDescent;
+			int bitmap_top;
 		};
 
 		//generate a texture and store its relevant data into a Character struct 
 		//that we add to the Characters map, all data require to render for later use
 		std::map<char, Character> Characters;
 	private:
-		std::string defaultFont = "arial.ttf";
+		Font defaultFont = RT_Arial;
+
+		static std::string parseFontToString(Font fontType)
+		{
+			if (fontType == RT_Arial) return"arial.ttf";
+			if (fontType == RT_Daubmark) return"Daubmark.ttf";
+			if (fontType == RT_Freedom) return"Freedom.ttf";
+			if (fontType == RT_JohnHenry) return"JohnHenry.ttf";
+			if (fontType == RT_MyriadPro) return"MyriadPro.otf";
+			if (fontType == RT_times) return"times.ttf";
+			if (fontType == RT_VioletWasteland) return"VioletWasteland.ttf";
+
+			return "";
+		}
 		
 	};
 }

@@ -217,7 +217,7 @@ namespace Engine
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);
-			
+
 			//VAO is container for VBO, and is bound to ensure correct vertices are draw.
 			glBindVertexArray(vertices.vaoID);
 			
@@ -236,11 +236,11 @@ namespace Engine
 		for (auto [entity, text] : textRenderables.each())
 		{
 			//Set a default transform component and color if the object does not contain one.
-			TransformComponent transform;
+			TransformComponent textTransform;
 			glm::vec4 color = m_defaultColor;
 
 			//Change the transform component if the entity contains one.
-			if (scene.m_registry.all_of<TransformComponent>(entity)) { transform = scene.m_registry.get<const TransformComponent>(entity); }
+			if (scene.m_registry.all_of<TransformComponent>(entity)) { textTransform = scene.m_registry.get<const TransformComponent>(entity); }
 
 			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
@@ -254,7 +254,7 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
-			renderText(text, transform, color, m_text.m_textShaderProgram, mvpID);
+			renderText(text, textTransform, color, m_text.m_textShaderProgram, mvpID);
 			
 		}
 	}
@@ -313,11 +313,13 @@ namespace Engine
 
 			if (c != ' ')
 			{
-				charPos.scale.x = ((charPos.position.x + ch.Size.x) - (charPos.position.x + (ch.Size.x / 2)));//(target - ((baseMin * objScale) + objPos)) / baseDifference;//(1.f/ch.Size.x);
-				charPos.scale.y = ((charPos.position.y + ch.Size.y) - (charPos.position.y + (ch.Size.y / 2)));//(1.f/ch.Size.y);
+				//Adjust the scale of the charPos transform to reflect the scale of text.
+				charPos.scale.x = ((charPos.position.x + ch.Size.x) - (charPos.position.x + (ch.Size.x / 2)));
+				charPos.scale.y = ((charPos.position.y + ch.Size.y) - (charPos.position.y));
 
-				charPos.position.x += ch.Bearing.x;// *scale.x;
-				charPos.position.y += 5.f * ((ch.Size.y - ch.Bearing.y) / (charPos.scale.y));// * scale.y;
+				//Adjust the charPos transform to the correct position for the character.
+				charPos.position.x += ch.Bearing.x;
+				charPos.position.y += (((ch.maxAscent + ch.maxDescent) - ch.bitmap_top) + ((ch.Size.y - ch.Bearing.y) / (charPos.scale.y)));
 
 				//Obtain MVP using transform and window's projection matrix.
 				const glm::mat4 mvp = updateMVP(charPos, m_window.getProjectionMatrix());
@@ -341,6 +343,7 @@ namespace Engine
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 

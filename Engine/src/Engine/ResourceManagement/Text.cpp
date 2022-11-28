@@ -25,7 +25,7 @@ namespace Engine
 		}
 
 		FT_Face face;
-		if (FT_New_Face(ft, ResourceManager::getInstance()->getFont(defaultFont).c_str(), 0, &face))
+		if (FT_New_Face(ft, ResourceManager::getInstance()->getFont(parseFontToString(defaultFont)).c_str(), 0, &face))
 		{
 			GE_CORE_ERROR("[Text] Failed to load {0}", defaultFont);
 			return false;
@@ -75,7 +75,10 @@ namespace Engine
 				texture,
 				glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 				glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-				face->glyph->advance.x
+				face->glyph->advance.x,
+				int(face->ascender * (face->size->metrics.y_scale / 65536.0)) >> 6,
+				int(abs(face->descender * (face->size->metrics.y_scale / 65536.0))) >> 6,
+				(int)face->glyph->bitmap_top
 			};
 
 			Characters.insert(std::pair<char, Character>(ch, character));
