@@ -106,7 +106,7 @@ namespace Engine
 			
 			if (!tryDeserializeEntity(entity, item, out))
 			{
-
+				
 				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
@@ -195,7 +195,6 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_MaterialComponent);
 			j["color"] = c.color;
 			j["texName"] = c.texName;
-			j["shaderName"] = c.shaderName;
 
 			components.push_back(j);
 		}
@@ -244,16 +243,6 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
-
-			components.push_back(j);
-		}
-
-		if (entity.hasComponent<AudioComponent>())
-		{
-			auto c = entity.getComponent<AudioComponent>();
-			nlohmann::json j;
-			j["name"] = parseComponentToString(CO_AudioComponent);
-			j["soundFileName"] = c.soundFileName;
 
 			components.push_back(j);
 		}
@@ -307,10 +296,17 @@ namespace Engine
 			{
 				
 				std::string texture = component["texName"];
-				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 				
-				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
+				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
+				break;
+			}
+			case CO_TextComponent:
+			{
+				std::string text = component["text"];
+
+				out.addComponent<TextComponent>(text);
 				break;
 			}
 			case CO_TextComponent:
@@ -358,12 +354,6 @@ namespace Engine
 				glm::vec3 position = component["position"].get<glm::vec3>();
 
 				out.addComponent<PhysicsComponent>(dimensions, position);
-				break;
-			}
-			case CO_AudioComponent:
-			{
-				std::string soundFileName = component["soundFileName"];
-				out.addComponent<AudioComponent>(soundFileName);
 				break;
 			}
 			default:

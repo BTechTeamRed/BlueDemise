@@ -119,7 +119,8 @@ namespace Engine
 	}
 	
 	void GeometryFactory::initTextGeometry()
-	{//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
+	{
+		//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
 		int stride = 5;
 
 		//Definition of dimensions of sprite.
@@ -152,9 +153,6 @@ namespace Engine
 		text.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, text.vertexAttributes);
 		text.iboID = getIBO(indices, sizeof(indices));
 		
-		//text.vaoID = VAO;
-		//text.vboID = VBO;
-		//text.iboID = getIBO(indices, sizeof(indices));
 		m_defaultGeometry.insert(std::pair(RT_Text, text));
 	}
 #pragma endregion
