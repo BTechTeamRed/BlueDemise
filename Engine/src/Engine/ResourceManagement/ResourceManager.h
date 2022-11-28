@@ -106,7 +106,7 @@ namespace Engine
 		//Extensions for all files handled through resource manager.
 		std::set<std::string> m_jsonFileExts { "json", "bda"};
 		
-		std::vector<std::string> m_shaderFileExts { "vs", "fs", "as"};
+		std::vector<std::string> m_shaderFileExts { "vs", "fs" };
 			
 		std::vector<std::string> m_imageFileExts { "jpeg", "png", "jpg"};
 		#pragma endregion

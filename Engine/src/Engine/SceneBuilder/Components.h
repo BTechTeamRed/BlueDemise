@@ -2,13 +2,11 @@
 #include "glm/glm.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
-#include "Engine/ResourceManagement/ShaderNorms.h"
 #include "GLFW/glfw3.h"
 #include <vector>
 #include <string>
 #include <functional>
 #include "Engine/Physics/AABB.h"
-#include "Engine/ResourceManagement/Audio.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -106,23 +104,14 @@ namespace Engine
 	struct MaterialComponent
 	{
 		MaterialComponent() = default;
-		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
-			: color(color), texID(texID), texName(texName), shaderName(shaderName)
-		{
-			bind = shadersInstantiated++;
-			ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
-		}
+		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
+			: color(color), texID(texID), texName(texName), shaderID(shaderID) {}
 		
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
-    
 		GLuint shaderID;
 		std::unordered_map<std::string, GLuint> uniforms;
-		std::string shaderName;
-    
-		inline static int shadersInstantiated{ 0 };
-		int bind;
 	};
 
 	//A component containing animation data
@@ -200,24 +189,5 @@ namespace Engine
 
 		// Backing Axis-Aligned Bounding Box
 		AABB* boundingBox;
-	};
-
-	// Defines a component to add audio actions to entities.
-	struct AudioComponent
-	{
-		AudioComponent() = default;
-		AudioComponent(std::string soundFileName)
-			: soundFileName(soundFileName) {};
-		std::string soundFileName = "";
-		irrklang::ISound* playSound(bool loop, bool startPaused, bool useSoundEffects)
-		{
-			AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
-			return audioPlayer->playSound(soundFileName.c_str(), loop, startPaused, useSoundEffects, false);
-		}
-		irrklang::ISound* play3DSound(irrklang::vec3df sound3DPosition, bool loop, bool beginPaused, bool useSoundEffects)
-		{
-			AudioPlayerSingleton* audioPlayer = AudioPlayerSingleton::getInstance();
-			return audioPlayer->play3DSound(soundFileName.c_str(), sound3DPosition, loop, beginPaused, useSoundEffects, false);
-		}
 	};
 }

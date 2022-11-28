@@ -53,8 +53,7 @@ namespace Engine
 		int m_maxBindableTextures = 31;
 
 		//Define the stride of different components (textures, flat colors, gradients)
-		//Idk why, but someone or something made the texture vertices component have a stride of 20, so Mike made a judgement call
-		int m_textureCoordinates{ 20 }, m_colorCoordinates{ 3 }, m_gradientCoordinates{ 6 };
+		int m_textureCoordinates{ 5 }, m_colorCoordinates{ 3 }, m_gradientCoordinates{ 6 };
 		//programID stores the current used shader (Should be changed in the future when multiple shaders are utilized. Perhaps this will be the 'default' shader. *************
 		GLuint m_programId;
 		//Load the default shader in, and store it to m_programId. Should be changed when multiple shaders are utilized. **********************
