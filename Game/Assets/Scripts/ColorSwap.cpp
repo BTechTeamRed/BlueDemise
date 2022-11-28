@@ -81,7 +81,6 @@ namespace Engine
 		if (tileCount == matchingColorCount)
 		{
 			// Finish the level!
-			//m_entity.getScene()->m_switch = !m_entity.getScene()->m_switch;
 			if (doesEntityExist("score"))
 			{
 				static_cast<Score*>(getEntity("score").getComponent<ScriptComponent>().m_instance)->addOne();
