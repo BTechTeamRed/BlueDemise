@@ -192,7 +192,7 @@ namespace Engine
 						glm::vec4(1, 1, 1, 1.0f),
 						0,
 						"<Texture>",
-						0
+						"<Shader>"
 						);
 				}
 			}
