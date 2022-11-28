@@ -88,7 +88,7 @@ namespace Engine
 
 		m_whiteSpaceSize = Characters['H'].Size.x;
 
-		m_textShaderProgram = ShaderNorms::getInstance()->getShader(ShaderNorms::SN_TEXT_FILL);
+		m_textShaderProgram = ShaderNorms::getInstance()->getShaderReference(ShaderFillType::FillType::SN_TEXT_FILL);
 		m_textVertices = GeometryFactory::getInstance()->getVerticesComponent(GeometryFactory::RT_Text);
 
 		//clean up freetype resource

@@ -47,7 +47,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "texName": "tileTemp.png"
+            "texName": "tileTemp.png",
+            "shaderName": "TextureFill"
           },
           {
             "name": "VerticesComponent",
@@ -101,6 +102,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -155,6 +157,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -209,6 +212,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -263,6 +267,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -317,6 +322,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -371,6 +377,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -425,6 +432,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -479,6 +487,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -533,6 +542,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -587,6 +597,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -641,6 +652,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -695,6 +707,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -749,6 +762,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -803,6 +817,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -857,6 +872,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -911,6 +927,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -965,6 +982,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1019,6 +1037,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1073,6 +1092,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1127,6 +1147,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1181,6 +1202,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1235,6 +1257,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1289,6 +1312,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1343,6 +1367,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1397,6 +1422,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
+			"shaderName": "TextureFill",
             "texName": "player.png"
           },
           {
