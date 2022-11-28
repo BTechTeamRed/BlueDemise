@@ -45,10 +45,12 @@ namespace Engine
 		}*/
 	}
 
-	void ColorSwap::swapMyColor() {
+	void ColorSwap::swapMyColor()
+	{
 		// Increment index to the next color
 		currentColorIndex++;
-		if (currentColorIndex > difficultyLevel) {
+		if (currentColorIndex > difficultyLevel)
+		{
 			currentColorIndex = 0;
 		}
 
@@ -57,7 +59,8 @@ namespace Engine
 		checkLevelComplete();
 	}
 
-	void ColorSwap::checkLevelComplete() {
+	void ColorSwap::checkLevelComplete()
+	{
 		glm::vec4 color = m_entity.getComponent<MaterialComponent>().color;
 		const auto entities = getEntities<TransformComponent>();
 		int tileCount = 0;
@@ -69,12 +72,14 @@ namespace Engine
 				other.getComponent<TagComponent>().tag != "obstacle")
 			{
 				tileCount++;
-				if (color == other.getComponent<MaterialComponent>().color) {
+				if (color == other.getComponent<MaterialComponent>().color)
+				{
 					matchingColorCount++;
 				}
 			}
 		}
-		if (tileCount == matchingColorCount) {
+		if (tileCount == matchingColorCount)
+		{
 			// Finish the level!
 			//m_entity.getScene()->m_switch = !m_entity.getScene()->m_switch;
 			if (doesEntityExist("score"))

@@ -9,8 +9,8 @@ namespace Engine
 {
 	void PlayerMovementScript::onUpdate(const Engine::DeltaTime& dt)
 	{
-		if (InputSystem::getInstance()->isButtonPressed(0)) {
-
+		if (InputSystem::getInstance()->isButtonPressed(0))
+		{
 			float mouseX = InputSystem::getInstance()->getCursorPos().x;
 			float mouseY = InputSystem::getInstance()->getCursorPos().y;
 
@@ -56,13 +56,17 @@ namespace Engine
 		tilePos.x += 10;
 		tilePos.y += 10;
 
-		if (tilePos.y > upperMinY && tilePos.y < upperMaxY) {
-			if (tilePos.x > minX && tilePos.x < maxX) {
+		if (tilePos.y > upperMinY && tilePos.y < upperMaxY)
+		{
+			if (tilePos.x > minX && tilePos.x < maxX)
+			{
 				return true;
 			}
 		}
-		else if (tilePos.y > lowerMinY && tilePos.y < lowerMaxY) {
-			if (tilePos.x > minX && tilePos.x < maxX) {
+		else if (tilePos.y > lowerMinY && tilePos.y < lowerMaxY)
+		{
+			if (tilePos.x > minX && tilePos.x < maxX)
+			{
 				return true;
 			}
 		}
