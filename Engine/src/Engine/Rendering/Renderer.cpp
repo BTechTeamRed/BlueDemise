@@ -255,8 +255,6 @@ namespace Engine
 
 			std::string render = std::to_string(scene.score);
 
-			glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
-
 			renderText(text, textTransform, color, m_text.m_textShaderProgram, mvpID);
 		}
 	}

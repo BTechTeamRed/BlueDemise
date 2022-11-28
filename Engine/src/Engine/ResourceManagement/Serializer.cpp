@@ -309,13 +309,6 @@ namespace Engine
 				out.addComponent<TextComponent>(text);
 				break;
 			}
-			case CO_TextComponent:
-			{
-				std::string text = component["text"];
-
-				out.addComponent<TextComponent>(text);
-				break;
-			}
 			case CO_VerticesComponent:
 			{
 				//Check if vertices is of type sprite
