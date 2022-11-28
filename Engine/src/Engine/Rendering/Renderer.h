@@ -49,6 +49,8 @@ namespace Engine
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
 
+		glm::vec4 m_defaultColor = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+
 		//Define the stride of different components (textures, flat colors, gradients)
 		int m_textureCoordinates{ 5 }, m_colorCoordinates{ 3 }, m_gradientCoordinates{ 6 };
 		//programID stores the current used shader (Should be changed in the future when multiple shaders are utilized. Perhaps this will be the 'default' shader. *************
