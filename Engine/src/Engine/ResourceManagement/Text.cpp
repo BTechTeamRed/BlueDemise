@@ -25,9 +25,9 @@ namespace Engine
 		}
 
 		FT_Face face;
-		if (FT_New_Face(ft, ResourceManager::getInstance()->getFont(defaultFont).c_str(), 0, &face))
+		if (FT_New_Face(ft, ResourceManager::getInstance()->getFont(m_defaultFont).c_str(), 0, &face))
 		{
-			GE_CORE_ERROR("[Text] Failed to load {0}", defaultFont);
+			GE_CORE_ERROR("[Text] Failed to load {0}", m_defaultFont);
 			return false;
 		}
 

@@ -36,7 +36,7 @@ namespace Engine
 		std::map<char, Character> Characters;
 	private:
 
-		std::string defaultFont = "Daubmark.ttf";
+		std::string m_defaultFont = "Daubmark.ttf";
 		
 	};
 }
