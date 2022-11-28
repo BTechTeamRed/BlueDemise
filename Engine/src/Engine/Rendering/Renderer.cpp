@@ -257,7 +257,6 @@ namespace Engine
 
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
-				//glUseProgram(material.shaderID);
 			}
 
 			std::string render = std::to_string(scene.score);
@@ -329,13 +328,6 @@ namespace Engine
 				{ xpos + w, ypos, 0.f,       1.0f, 1.0f },
 				{ xpos + w, ypos + h, 0.f,   1.0f, 0.0f }
 			};
-			/*
-			float vertices[] = {
-				xpos, ypos, 0.f,		0.0f, 0.0f,
-				xpos+w, ypos, 0.f,		1.0f, 0.0f,
-				xpos+w, ypos+h, 0.f,	1.0f, 1.0f,
-				xpos, ypos + h, 0.f,	0.0f, 1.0f,
-			};*/
 
 			// render glyph texture over quad
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);

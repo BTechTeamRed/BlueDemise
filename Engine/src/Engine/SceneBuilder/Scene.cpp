@@ -74,13 +74,6 @@ namespace Engine
 	//Per scene update loop, add scripts to entities if enabled and render the scene.
 	void Scene::onRuntimeUpdate(const DeltaTime& dt)
 	{
-		// Boolean to switch the scene, left over from old implementation
-		//if (m_switch)
-		//{
-		//	m_switch = false;
-		//	swapScene(m_nextScene); // <- not working properly
-		//}
-
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
 		for (auto [entity, script] : entities.each())
@@ -135,7 +128,6 @@ namespace Engine
 	std::list<Entity*> Scene::pick(float x, float y)
 	{
 		glm::vec3 worldPos = Renderer::getInstance()->screenToWorld(glm::vec2(x,y));
-		//GE_CORE_TRACE("Scene::pick: {0} {1} = {2} {3} {4}", x, y, worldPos.x, worldPos.y, worldPos.z);
 		return m_physics->raycast(worldPos, glm::vec3(0,0,1));
 	}
 }
