@@ -45,24 +45,19 @@ std::list<Entity*> OctNode::raycast(Ray& ray)
 	std::list<Entity*> picks;
 	glm::vec3 dim = m_bounds->getDimensions();
 	glm::vec3 pos = m_bounds->getPosition();
-	//GE_CORE_TRACE("OctNode::raycast: Pinging {0} {1} {2} : {3} {4} {5}", pos.x, pos.y, pos.z, dim.x, dim.y, dim.z);
-
 	// Check self
 	for (auto ent : m_entityList)
 	{
 		glm::vec3 dDim = ent.second->boundingBox->getDimensions();
 		glm::vec3 dPos = ent.second->boundingBox->getPosition();
-		//GE_CORE_TRACE("OctNode::raycast: Attempting {0}, {1} {2} {3} : {4} {5} {6}", ent.first->getComponent<TagComponent>().tag, dPos.x,dPos.y,dPos.z,dDim.x,dDim.y,dDim.z);
 		if (ent.second->boundingBox->intersect(ray))
 		{
-			//GE_CORE_TRACE("OctNode::raycast: CONTACT {0}", ent.first->getComponent<TagComponent>().tag);
 			picks.push_back(ent.first);
 		}
 	}
 	// Check children
 	for (int i = LTF; m_children && i <= RBB; ++i)
 	{
-		//GE_CORE_TRACE("OctNode::raycast: Pinging child");
 		if (m_children[i]->getAABB()->intersect(ray))
 		{
 			for (auto pick : m_children[i]->raycast(ray))

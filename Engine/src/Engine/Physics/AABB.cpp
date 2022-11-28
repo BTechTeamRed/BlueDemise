@@ -61,7 +61,6 @@ bool AABB::intersect(Ray& ray)
 			t /= denom;
 			point = ray.getOrigin() + (ray.getVector() * t);
 			intersect = containsPoint(point);
-			//GE_CORE_TRACE("AABB::intersect: {0} {1} {2} : {3} {4} {5}; normal: {11} {12} {13}; t {10}; point {6} {7} {8}; ping {9}", m_position.x, m_position.y, m_position.z, m_dimensions.x, m_dimensions.y, m_dimensions.z, point.x, point.y, point.z, intersect, t, normals[i].x, normals[i].y, normals[i].z);
 		}
 	}
 
