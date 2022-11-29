@@ -12,6 +12,17 @@ namespace Engine
 		return m_selectedEntity;
 	}
 
+	const std::string& HierarchyPanel::getSelectedEntityTag() const
+	{
+		for (const auto& entity : m_entities)
+		{
+			if (entity.second == m_selectedEntity)
+			{
+				return entity.first;
+			}
+		}
+	}
+
 	void HierarchyPanel::setFont(const std::string& font)
 	{
 		m_font = font;

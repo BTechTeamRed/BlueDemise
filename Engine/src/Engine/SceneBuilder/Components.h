@@ -159,4 +159,9 @@ namespace Engine
 			destroyScript = [this] { delete m_instance; m_instance = nullptr; };
 		}
 	};
+
+	struct ScriptUI
+	{
+		std::string sourceFileName;
+	};
 }

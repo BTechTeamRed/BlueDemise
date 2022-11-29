@@ -123,6 +123,20 @@ namespace Engine
 			{
 				auto* serializable = &(m_registry->get<SerializableComponent>(m_entityHandle));
 				ImGui::Checkbox("Is serializable", &serializable->serializable);
+
+				setSpacing(spacing);
+			}
+
+			/*if (m_registry->any_of<ScriptComponent>(m_entityHandle))
+			{
+				auto* script = &(m_registry->get<ScriptComponent>(m_entityHandle));
+				partition(m_font, "Script", darkGreen);
+			}*/
+
+			if (m_registry->any_of<ScriptUI>(m_entityHandle))
+			{
+				auto* script = &(m_registry->get<ScriptUI>(m_entityHandle));
+				partition(m_font, "Script - " + script->sourceFileName, darkGreen);
 			}
 		}
 

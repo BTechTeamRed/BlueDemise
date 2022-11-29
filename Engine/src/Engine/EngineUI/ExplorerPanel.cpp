@@ -1,10 +1,22 @@
 #include "ExplorerPanel.h"
+#include <filesystem>
+#include <iostream>
+#include <string>
 
 namespace Engine
 {
+	bool ExplorerPanel::isAddButtonClicked() const
+	{
+		return m_isAddButtonClicked;
+	}
+
+	const std::string& ExplorerPanel::getSelectedScript() const
+	{
+		return m_selectedScript;
+	}
+
 	void ExplorerPanel::show()
 	{
-
 		ImGui::Begin("ExplorerPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -28,29 +40,33 @@ namespace Engine
 		s_style->Colors[ImGuiCol_Text] = green;
 
 		//creates a drop down where if x is true (open), display y 
-		if (ImGui::TreeNode("Asset folder"))
+		if (ImGui::TreeNode("Scripts"))
 		{
-			if (ImGui::TreeNode("Models"))
-			{
-				ImGui::TreePop();
-			}
+			std::string path = "Assets\\Scripts\\";
 
-			if (ImGui::TreeNode("Textures"))
+			for (const auto& entry : std::filesystem::directory_iterator(path))
 			{
-				ImGui::TreePop();
-			}
+				auto filename = entry.path().u8string().substr(path.size());
 
-			if (ImGui::TreeNode("Sprites"))
-			{
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("Audio"))
-			{
-				ImGui::TreePop();
+				if (filename.find(".cpp") != std::string::npos)
+				{
+					//This is true if a script file is clicked on
+					if (ImGui::TreeNode(filename.c_str()))
+					{
+						m_selectedScript = filename;
+						ImGui::TreePop();
+					}
+				}
 			}
 
 			ImGui::TreePop();
+		}
+
+		setSpacing(3);
+
+		if (ImGui::Button("Add script to selected entity", ImVec2(250, 25)))
+		{
+			m_isAddButtonClicked = true;
 		}
 
 		ImGui::End();
