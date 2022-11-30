@@ -15,6 +15,16 @@ namespace Engine
 	class ShaderNorms
 	{
 	public:
+		//shader tokens to access map of shaders
+		static enum ShaderName
+		{
+			SN_TEXTURE_FILL,
+			SN_COLOR_FILL,
+			SN_TEXT_FILL,
+			SN_GRADIENT_FILL
+		};
+		static const ShaderName DEFAULT_SHADER_NAME;
+
 		//requires the stride of the default shader's vertices component
 		~ShaderNorms();
 		ShaderNorms(ShaderNorms& other) = delete;

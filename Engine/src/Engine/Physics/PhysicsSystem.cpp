@@ -44,10 +44,15 @@ bool PhysicsSystem::insert(Entity* entity)
 	//TODO: insertion code
 	bool inserted = false;
 	PhysicsComponent* component = nullptr;
+	std::string tag = entity->getComponent<TagComponent>().tag;
 	if (entity->hasComponent<PhysicsComponent>())
 	{
 		component = &entity->getComponent<PhysicsComponent>();
 		inserted = m_root->insert(entity, component);
+	}
+	else
+	{
+		GE_CORE_ERROR("PhysicsSystem::insert: {0} is missing PhysicsComponent", tag);
 	}
 	if (inserted)
 	{

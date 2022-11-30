@@ -64,7 +64,7 @@ namespace Engine
 		if (!success) 
 		{
 			glGetShaderInfoLog(shaderObj, 512, nullptr, infoLog);
-			GE_CORE_ERROR("Error in shader compilation {0}", infoLog);
+			GE_CORE_ERROR("[ShaderGenerator] Error in shader compilation {0}", infoLog);
 			return false;
 		}
 		return true;

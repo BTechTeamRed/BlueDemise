@@ -6,10 +6,10 @@ class GameApp : public Engine::Application
 public:
 	GameApp()
 	{
-		Engine::Scene scene;
-		if (Engine::Serializer::tryDeserializeScene(scene, "testScene.bda"))
+		Engine::Scene scene1;
+		if (Engine::Serializer::tryDeserializeScene(scene1, "level1.bda"))
 		{
-			scene.onRuntimeStart();
+			scene1.onRuntimeStart();
 		}
 		
 	}

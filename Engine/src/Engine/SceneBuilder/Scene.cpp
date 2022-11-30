@@ -26,19 +26,19 @@ namespace Engine
 		// Create physics world
 		glm::vec3 dimensions;
 		auto entities = getEntities<CameraComponent>();
-		for (auto [entity, camera] : entities.each())
+		for (auto& [entity, camera] : entities.each())
 		{
 			dimensions.x = camera.frustumWidth;
 			dimensions.y = camera.frustumWidth / camera.aspectRatio;
 			dimensions.z = camera.farZ - camera.nearZ;
 		}
+		GE_CORE_TRACE("Scene::onRuntimeStart: Creating world {0} x {1} x {2}", dimensions.x, dimensions.y, dimensions.z);
 		m_physics = new PhysicsSystem(dimensions);
 
 		// Insert physics objects
 		auto physicsList = getEntities<PhysicsComponent>();
-		for (auto [entity, phyObj] : physicsList.each())
+		for (auto& [entity, phyObj] : physicsList.each())
 		{
-			//TODO: Change PhysicsSystem to PhysicsSystem and have it track entities to prevent memory leaks
 			Entity* obj = new Entity(entity, this);
 			if (!m_physics->insert(obj))
 			{
@@ -48,7 +48,7 @@ namespace Engine
 			}
 		}
 
-		while (!m_closeScene)
+		while (!m_closeScene) //switch will be a swap condition
 		{
 			m_deltaTime.updateDeltaTime();
 			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
@@ -103,6 +103,13 @@ namespace Engine
 
 		glfwPollEvents();
 	}
+
+	// CURRENTLY NOT USED AND NOT WORKING PROPERLY
+	void Scene::swapScene(const std::string& other)
+	{
+		m_registry = entt::registry();
+		Serializer::tryDeserializeScene(*this, other);
+	}
 #pragma endregion
 
 
@@ -117,4 +124,10 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
+
+	std::list<Entity*> Scene::pick(float x, float y)
+	{
+		glm::vec3 worldPos = Renderer::getInstance()->screenToWorld(glm::vec2(x,y));
+		return m_physics->raycast(worldPos, glm::vec3(0,0,1));
+	}
 }

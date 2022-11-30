@@ -9,6 +9,7 @@ namespace Engine
 		{
 			SN_TEXTURE_FILL,
 			SN_COLOR_FILL,
+			SN_TEXT_FILL,
 			SN_GRADIENT_FILL
 		};
 		inline static const FillType DEFAULT_FILL_TYPE = FillType::SN_TEXTURE_FILL;

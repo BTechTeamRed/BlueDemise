@@ -22,6 +22,7 @@ namespace Engine
 	GeometryFactory::GeometryFactory() 
 	{
 		initSpriteGeometry();
+		initTextGeometry();
 	}
 #pragma endregion
 
@@ -45,6 +46,12 @@ namespace Engine
 		{
 			const auto attribute = vertexAttributes[i];
 			glEnableVertexAttribArray(i);
+
+			//Reserve attribute.size floats of memory, which is the number of components per vert, either 1/2/3/4. Generally is 3 (xyz).
+			//If you store more per row, you must calculate more for the VBO by breaking it down to a max of 4 components per vert, and using index to indicate which part it is.
+			//Ie 5 components per vert (3 position, 2 texture) would be [index 0: 3 components] and then [index 1: 2 components].
+			//The pointer (last value) is the number of components since the last one in the row. So if the first vert has 3 components, the pointer is 3. (XYZ coords before texture coords)
+			//Stride is total number of components per row (coords per row). 
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, stride * sizeof(float), (const void*)attribute.pointer);
 		}
 
@@ -75,8 +82,6 @@ namespace Engine
 #pragma region Geometry Generation
 	void GeometryFactory::initSpriteGeometry()
 	{
-		VerticesComponent m_sprite;
-
 		//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
 		int stride = 5;
 
@@ -97,18 +102,58 @@ namespace Engine
 			2, 3, 0,  //second triangle
 		};
 
+		VerticesComponent sprite;
+
 		//Based on the stride, we can determine the number of attributes.
-		m_sprite.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
-		m_sprite.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
+		sprite.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
+		sprite.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
+		
+		sprite.stride = sizeof(float) * stride;
+		sprite.numIndices = sizeof(indices) / sizeof(indices[0]);
 
-		m_sprite.stride = sizeof(float) * stride;
-		m_sprite.numIndices = sizeof(indices) / sizeof(indices[0]);
+		sprite.vaoID = getVAO();//VertexArray();
+		sprite.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, sprite.vertexAttributes);
+		sprite.iboID = getIBO(indices, sizeof(indices));
+		
+		m_defaultGeometry.insert(std::pair(RT_Sprite, sprite));
+	}
+	
+	void GeometryFactory::initTextGeometry()
+	{
+		//Stride is the number of coords per row of vertices (in our case, XYZ position and XY UV coords)
+		int stride = 5;
 
-		m_sprite.vaoID = getVAO();//VertexArray();
-		m_sprite.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, m_sprite.vertexAttributes);
-		m_sprite.iboID = getIBO(indices, sizeof(indices));
+		//Definition of dimensions of sprite.
+		float vertices[] =
+		{
+			// positions  // texture coords (UV coords)
+			0.f, 0.f, 0.f,  0.f, 0.f,  // top left
+			1.f, 0.f, 0.f,  1.f, 0.f,  // top right
+			1.f, 1.f, 0.f,  1.f, 1.f,  // bottom right
+			0.f, 1.f, 0.f,  0.f, 1.f,  // bottom left
+		};
 
-		m_defaultGeometry.insert(std::pair(RT_Sprite, m_sprite));
+		//Definition of draw order for vertices.
+		unsigned int indices[6] =
+		{
+			0, 1, 2,  //first triangle
+			2, 3, 0,  //second triangle
+		};
+
+		VerticesComponent text;
+		
+		//Based on the stride, we can determine the number of attributes.
+		text.vertexAttributes.push_back(VertexAttribute(0, 3, GL_FLOAT, GL_FALSE, 0));
+		text.vertexAttributes.push_back(VertexAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3));
+
+		text.stride = sizeof(float) * stride;
+		text.numIndices = sizeof(indices) / sizeof(indices[0]);
+		
+		text.vaoID = getVAO();//VertexArray();
+		text.vboID = getVBO(vertices, sizeof(vertices), (GLsizei)stride, text.vertexAttributes);
+		text.iboID = getIBO(indices, sizeof(indices));
+		
+		m_defaultGeometry.insert(std::pair(RT_Text, text));
 	}
 #pragma endregion
 }

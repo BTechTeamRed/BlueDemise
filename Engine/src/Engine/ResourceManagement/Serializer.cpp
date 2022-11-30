@@ -178,6 +178,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<TextComponent>())
+		{
+			auto c = entity.getComponent<TextComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TextComponent);
+			j["text"] = c.text;
+
+			components.push_back(j);
+		}
+
 		if (entity.hasComponent<MaterialComponent>())
 		{
 			auto c = entity.getComponent<MaterialComponent>();
@@ -234,6 +244,8 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
+
+			components.push_back(j);
 		}
 
 		if (entity.hasComponent<AudioComponent>())
@@ -299,6 +311,13 @@ namespace Engine
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 				
 				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
+				break;
+			}
+			case CO_TextComponent:
+			{
+				std::string text = component["text"];
+
+				out.addComponent<TextComponent>(text);
 				break;
 			}
 			case CO_VerticesComponent:

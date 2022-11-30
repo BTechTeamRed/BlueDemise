@@ -1,13 +1,13 @@
 {
   "scene": {
     "entities": [
-      {
+	  {
         "components": [
-          {
+			{
             "name": "TransformComponent",
             "position": {
-              "x": 0.0,
-              "y": 0.0,
+              "x": 50.0,
+              "y": 50.0,
               "z": 0.0
             },
             "rotation": {
@@ -16,29 +16,17 @@
               "z": 0.0
             },
             "scale": {
-              "x": 288.0,
-              "y": 288.0,
+              "x": 50.0,
+              "y": 50.0,
               "z": 1.0
             }
           },
-          {
-            "frameRate": 0.0,
-            "name": "AnimationComponent",
-            "numPerRow": 3,
-            "texHeightFraction": 0.3333333432674408,
-            "texWidthFraction": 0.3333333432674408,
-            "texName": "SpriteSheet.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "MoveRightScript"
+		  {
+            "name": "TextComponent",
+            "text": "Hello, my name is Kevin"
           }
         ],
-        "tag": "triangle2"
+        "tag": "ScoreText"
       },
       {
         "components": [
@@ -90,6 +78,43 @@
 		  }
         ],
         "tag": "triangle"
+      },
+	  {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 50.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 500.0,
+              "y": 500.0,
+              "z": 1.0
+            }
+          },
+		  {
+            "texName": "SpriteSheet.png",
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
+        "tag": "triangle2"
       },
       {
         "components": [

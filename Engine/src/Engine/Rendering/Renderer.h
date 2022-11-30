@@ -3,6 +3,7 @@
 #include <Engine/Core.h>
 #include <Engine/Rendering/Window.h>
 #include <Engine/Rendering/UIRenderer.h>
+#include <Engine/ResourceManagement/Text.h>
 
 namespace Engine
 {
@@ -37,12 +38,16 @@ namespace Engine
 		//Renderer is a singleton, so this is the only instance of it.
 		static Renderer* m_pinstance;
 
-		//Define window and UI that is managed by this singleton
+		//Define window, UI and text that is managed by this singleton
 		Window m_window;
 		UIRenderer m_UI;
+		Text m_text;
 
 		//flag, if true: ui is rendered, if false: no ui is rendered
 		bool m_showUI = true;
+
+		//Sets the default color used for components that would be rendered, but do not have a material. This is a gray.
+		glm::vec4 m_defaultColor{ .5f,.5f,.5f,1.0f };
 
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
@@ -57,6 +62,9 @@ namespace Engine
 
 		//Draw entities with a VerticesComponent to screen/FBO
 		void drawEntities(Scene& scene);
+
+		//Render text given a text component
+		void renderText(const TextComponent& text, const TransformComponent& transform, const glm::vec3& color, GLuint shader, GLuint mvpID);
 
 		//Set color of screen using the current shader, and provided mvp and color.
 		void setColor(glm::mat4 mvp, glm::vec4 color, GLuint shaderID);

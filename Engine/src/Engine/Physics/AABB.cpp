@@ -1,4 +1,5 @@
 #include "AABB.h"
+#include "Engine/Utilities/Log.h"
 
 using namespace Engine;
 
@@ -33,8 +34,8 @@ bool AABB::intersect(Ray& ray)
 	glm::vec3 origin[6];
 	
 	// Set origin point for face planes
-	origin[0] = origin[1] = origin[2] = m_corners[LBB];
-	origin[3] = origin[4] = origin[5] = m_corners[RTF];
+	origin[0] = origin[1] = origin[2] = m_corners[LBB] + m_position;
+	origin[3] = origin[4] = origin[5] = m_corners[RTF] + m_position;
 
 	// Top-face
 	normals[0] = m_corners[LTB] - m_corners[LBB];
@@ -47,7 +48,7 @@ bool AABB::intersect(Ray& ray)
 	// Left-face
 	normals[4] = m_corners[LTF] - m_corners[RTF];
 	// Bottom-face
-	normals[5] = m_corners[RBF] - m_corners[RBF];
+	normals[5] = m_corners[RBF] - m_corners[RTF];
 
 	// Check ray against face planes
 	for (int i = 0; !intersect && i < 6; ++i)
@@ -58,7 +59,7 @@ bool AABB::intersect(Ray& ray)
 		{
 			t = glm::dot(origin[i] - ray.getOrigin(), normals[i]);
 			t /= denom;
-			point = ray.getOrigin() + ray.getVector() * t;
+			point = ray.getOrigin() + (ray.getVector() * t);
 			intersect = containsPoint(point);
 		}
 	}
@@ -102,9 +103,6 @@ void AABB::updateDimensions(glm::vec3& dimensions)
 void AABB::updatePosition(glm::vec3& position)
 {
 	m_position = position;
-	/*m_position.x = position.x;
-	m_position.y = position.y;
-	m_position.z = position.z;*/
 }
 
 void AABB::updateCorners()
