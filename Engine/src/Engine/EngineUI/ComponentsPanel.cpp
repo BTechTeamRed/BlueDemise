@@ -28,7 +28,6 @@ namespace Engine
 
 	void ComponentsPanel::show()
 	{
-
 		ImGui::Begin(m_name.c_str(), nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -46,14 +45,13 @@ namespace Engine
 
 		ImGui::SetWindowSize(m_name.c_str(), ImVec2(m_dimension.x, m_dimension.y));
 
-		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", m_name, white);
-
-		//sets the colour of the text to blue, uses blue defined in UserInterface
-		s_style->Colors[ImGuiCol_Text] = green;
+		partition("MyriadPro_bold_18", m_name, darkCyan);
 
 		m_isAddButtonClicked = false;
+
+		ImGui::PushFont(s_fonts["MyriadPro_14"]);
+		s_style->Colors[ImGuiCol_Text] = offWhite;
 
 		for (const auto& component : m_components)
 		{
@@ -74,13 +72,19 @@ namespace Engine
 			}
 		}
 
+		ImGui::PopFont();
+
 		setSpacing(3);
+
+		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
+		s_style->Colors[ImGuiCol_Text] = white;
 
 		if (ImGui::Button("Add component to selected entity", ImVec2(250, 25)))
 		{
 			m_isAddButtonClicked = true;
 		}
 
+		ImGui::PopFont();
 		ImGui::End();
 	}
 }

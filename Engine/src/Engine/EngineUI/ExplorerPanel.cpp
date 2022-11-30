@@ -34,10 +34,10 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Explorer", grey);
+		partition("MyriadPro_bold_18", "Explorer", darkCyan);
 
-		//sets the text colour to be green
-		s_style->Colors[ImGuiCol_Text] = green;
+		ImGui::PushFont(s_fonts["MyriadPro_14"]);
+		s_style->Colors[ImGuiCol_Text] = offWhite;
 
 		//creates a drop down where if x is true (open), display y 
 		if (ImGui::TreeNode("Scripts"))
@@ -62,13 +62,19 @@ namespace Engine
 			ImGui::TreePop();
 		}
 
+		ImGui::PopFont();
+
 		setSpacing(3);
+
+		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
+		s_style->Colors[ImGuiCol_Text] = white;
 
 		if (ImGui::Button("Add script to selected entity", ImVec2(250, 25)))
 		{
 			m_isAddButtonClicked = true;
 		}
 
+		ImGui::PopFont();
 		ImGui::End();
 	}
 }

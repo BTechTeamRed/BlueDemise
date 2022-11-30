@@ -10,14 +10,14 @@ namespace Engine
 	std::unordered_map<std::string, ImFont*> UserInterface::s_fonts;
 
 	//define the ImGUI vec4s for each colour
-	ImVec4 UserInterface::red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-	ImVec4 UserInterface::green = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
-	ImVec4 UserInterface::darkGreen = ImVec4(0.0f, 0.75f, 0.0f, 1.0f);
-	ImVec4 UserInterface::blue = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
-	ImVec4 UserInterface::grey = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+	ImVec4 UserInterface::lightGrey = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+	ImVec4 UserInterface::darkGrey = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
 	ImVec4 UserInterface::white = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-
+	ImVec4 UserInterface::offWhite = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+	ImVec4 UserInterface::darkBlue = UserInterface::ConvertColors(20, 13, 145);
+	ImVec4 UserInterface::lightBlue = UserInterface::ConvertColors(14, 127, 231);
+	ImVec4 UserInterface::darkCyan = UserInterface::ConvertColors(12, 186, 223);
+	ImVec4 UserInterface::lightCyan = UserInterface::ConvertColors(10, 223, 217);
 
 	//initializes UI that can be used with provided GLFWwindow
 	bool UserInterface::initialize(GLFWwindow* window)
@@ -29,9 +29,6 @@ namespace Engine
 		//TODO - Reference for style
 		//https://www.unknowncheats.me/forum/c-and-c-/189635-imgui-style-settings.html
 		s_style = &ImGui::GetStyle();
-
-
-
 		s_IO = &ImGui::GetIO();
 
 		return true;
@@ -42,6 +39,11 @@ namespace Engine
 		ImGui_ImplGlfw_Shutdown();
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui::DestroyContext();
+	}
+
+	ImVec4 UserInterface::ConvertColors(int r, int g, int b)
+	{
+		return ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 	}
 
 	//creates new ImGUI frame (window)
@@ -105,17 +107,14 @@ namespace Engine
 		}
 	}
 
-
-
-
 	//creates a heading section above the UI element
 	void UserInterface::partition(const std::string& fontTag, const std::string& title, const ImVec4& color)
 	{
 		s_style->Colors[ImGuiCol_Text] = color;
 
-		//ImGui::PushFont(s_fonts[fontTag]);
+		ImGui::PushFont(s_fonts[fontTag]);
 		ImGui::Text(title.c_str());
-		//ImGui::PopFont();
+		ImGui::PopFont();
 
 		ImGui::Separator();
 		setSpacing(1);

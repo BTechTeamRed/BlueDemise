@@ -59,12 +59,11 @@ namespace Engine
 
 		ImGui::SetWindowSize("HierarchyPanel", ImVec2(m_dimension.x, m_dimension.y));
 
-		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition(m_font, "Entities", grey);
+		partition("MyriadPro_bold_18", "Entities", darkCyan);
 
-		//sets the text colour to be red
-		s_style->Colors[ImGuiCol_Text] = red;
+		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
+		s_style->Colors[ImGuiCol_Text] = white;
 
 		m_isAddButtonClicked = false;
 
@@ -72,6 +71,11 @@ namespace Engine
 		{
 			m_isAddButtonClicked = true;
 		}
+
+		ImGui::PopFont();
+
+		ImGui::PushFont(s_fonts["MyriadPro_14"]);
+		s_style->Colors[ImGuiCol_Text] = offWhite;
 
 		if (m_entities.empty())
 		{
@@ -101,7 +105,7 @@ namespace Engine
 			}
 		}
 
+		ImGui::PopFont();
 		ImGui::End();
-
 	}
 }

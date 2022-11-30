@@ -16,12 +16,16 @@ namespace Engine
 	public:
 
 		//initializes ImGUI vec4s to be used for colours
-		static ImVec4 red;
-		static ImVec4 green;
-		static ImVec4 darkGreen;
-		static ImVec4 blue;
-		static ImVec4 grey;
+		static ImVec4 darkGrey;
+		static ImVec4 lightGrey;
 		static ImVec4 white;
+		static ImVec4 offWhite;
+		static ImVec4 darkBlue;
+		static ImVec4 lightBlue;
+		static ImVec4 darkCyan;
+		static ImVec4 lightCyan;
+
+		static ImVec4 ConvertColors(int r, int g, int b);
 
 		//initialize start and end functions
 		static void startUI();
@@ -29,8 +33,6 @@ namespace Engine
 
 		//loadFont takes in a string file name, float font size, and string tag and returns true if the font is valid
 		static bool loadFont(const std::string& fontFilename, float fontSize, const std::string& tag);
-
-
 
 		virtual ~UserInterface() = 0 {};
 

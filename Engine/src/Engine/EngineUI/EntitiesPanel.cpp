@@ -4,7 +4,6 @@ namespace Engine
 {
 	void EntitiesPanel::show()
 	{
-
 		ImGui::Begin("EntitiesPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -18,10 +17,9 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Entities", white);
+		partition("MyriadPro_bold_18", "Entities", darkBlue);
 
-		//sets the text colour to be red
-		s_style->Colors[ImGuiCol_Text] = red;
+		s_style->Colors[ImGuiCol_Text] = lightCyan;
 
 		//displays text in the UI element
 		ImGui::Text("Player");

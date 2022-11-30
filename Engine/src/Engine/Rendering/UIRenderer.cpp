@@ -22,13 +22,49 @@ namespace Engine
 
 		//Load custom fonts - we must load a different for each size we require
 		//We are using MyriadPro currently as the Freedom font does not display numeric values
-		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "Freedom_12"))
+		if (!UserInterface::loadFont("MyriadPro.otf", 12, "MyriadPro_12"))
 		{
 			//Error loading font
 			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
-		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
+		if (!UserInterface::loadFont("MyriadPro.otf", 14, "MyriadPro_14"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro.otf", 16, "MyriadPro_16"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro.otf", 18, "MyriadPro_18"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "MyriadPro_bold_12"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 14, "MyriadPro_bold_14"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 16, "MyriadPro_bold_16"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "MyriadPro_bold_18"))
 		{
 			//Error loading font
 			GE_CORE_ERROR("Failed to load custom fonts");
@@ -63,6 +99,29 @@ namespace Engine
 		//m_componentsPanels.addComponent("Animation");
 
 		m_inspectorPanel.setRegistry(&scene.m_registry);
+
+		//Set the style of the UI
+		ImGui::GetStyle().FrameRounding = 5.0f;
+		ImGui::GetStyle().GrabRounding = 5.0f;
+		ImGui::GetStyle().FrameBorderSize = 1.0f;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Border] = UserInterface::lightBlue;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Header] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = UserInterface::lightBlue;
+
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBg] = UserInterface::darkGrey;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgActive] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgHovered] = UserInterface::lightBlue;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Button] = UserInterface::darkGrey;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = UserInterface::lightBlue;
+
+		ImGui::GetStyle().Colors[ImGuiCol_CheckMark] = UserInterface::lightGrey;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrab] = UserInterface::lightGrey;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrabActive] = UserInterface::lightGrey;
 
 		return true;
 
