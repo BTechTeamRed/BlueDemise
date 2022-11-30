@@ -2,13 +2,13 @@
   "scene": {
     "name": "level1",
     "entities": [
-	{
+      {
         "components": [
-		  {
+          {
             "name": "TextComponent",
             "text": "1"
           },
-		  {
+          {
             "name": "ScriptComponent",
             "scriptName": "Score"
           }
@@ -98,7 +98,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -139,7 +139,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -180,7 +180,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -221,7 +221,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -262,7 +262,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -303,7 +303,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -344,7 +344,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -385,7 +385,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -426,7 +426,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -467,7 +467,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -508,7 +508,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -549,7 +549,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -590,7 +590,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -631,7 +631,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -672,7 +672,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -713,7 +713,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -754,7 +754,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -795,7 +795,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -836,7 +836,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -877,7 +877,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -918,7 +918,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -959,7 +959,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -1000,7 +1000,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 0.0,
               "g": 0.0,
@@ -1041,7 +1041,7 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
@@ -1082,11 +1082,52 @@
           },
           {
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "color": {
               "r": 1.0,
               "g": 0.0,
               "b": 0.0,
+              "a": 1.0
+            }
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          }
+        ]
+      },
+      {
+        "tag": "background",
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": -290,
+              "y": -50,
+              "z": 0
+            },
+            "scale": {
+              "x": 2500,
+              "y": 1250,
+              "z": 1.0
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "name": "MaterialComponent",
+            "texName": "Background.png",
+            "color": {
+              "r": 1.0,
+              "g": 1.0,
+              "b": 1.0,
               "a": 1.0
             }
           },
