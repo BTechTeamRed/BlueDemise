@@ -7,10 +7,13 @@ namespace Engine
 	class GamePanel : public UserInterface
 	{
 	public:
-		void setInitialPosition(int position_x, int position_y);
-		void setInitialDimension(int dimension_x, int dimension_y);
+
+		virtual ~GamePanel() {}
+
 		void show(Window& window);
+
 		glm::vec2 getPosition() { return m_position; };
+
 	private:
 
 	};

@@ -41,12 +41,10 @@ namespace Engine
 		m_tagDialog.setPosition(glm::uvec2(0.5f * window.getWidth(), 0.5f * window.getHeight()));
 
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(panelWidth, window.getWidth()));
+		m_explorerPanel.setDimension(glm::uvec2(panelWidth, window.getHeight()));
 
-		m_gamePanel.setPosition(glm::uvec2(panelWidth + 3, menuHeight));
-		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3, halfWindowHeight));
-		m_gamePanel.setInitialPosition(panelWidth + 3, menuHeight);
-		m_gamePanel.setInitialDimension(panelWidth * 3, halfWindowHeight);
+		m_gamePanel.setPosition(glm::uvec2(panelWidth, menuHeight));
+		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3 - 3, halfWindowHeight));
 		
 		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
 		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
