@@ -147,6 +147,13 @@ namespace Engine
 		auto cameraView = scene.getEntities<CameraComponent>();
 		m_window.updateCamera(scene.m_registry.get<CameraComponent>(cameraView.back()));
 
+		//Update all animations
+		auto animations = scene.getEntities<AnimationComponent>();
+		for (auto& [entity, anim] : animations.each()) {
+			animationSystem.updateAnimation(dt, anim);
+		}
+
+
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
@@ -214,6 +221,15 @@ namespace Engine
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
 				//glUseProgram(material.shaderID);
+			}
+
+			if (scene.m_registry.all_of<AnimationComponent>(entity))
+			{
+				//Bind animation shader
+				const auto anim = scene.m_registry.get<const AnimationComponent>(entity);
+				//Update uvMatrix uniform
+				GLuint uvUniformID = glGetUniformLocation(shaderID, "uvMatrix");
+				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(anim.uvTransformMatrix));
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader

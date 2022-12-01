@@ -5,6 +5,8 @@
 #include <string>
 
 #include "Engine/ResourceManagement/ResourceManager.h"
+#include "Engine/SceneBuilder/Components.h"
+#include "Engine/Utilities/DeltaTime.h"
 
 
 namespace Engine 
@@ -24,19 +26,22 @@ namespace Engine
 			};
 
 			//Constructor for spriteSheet-based animations. Takes in a ResourceManager::SpriteSheet struct and converts it into an AnimationSystem::SpriteData struct.
-			AnimationSystem(ResourceManager::SpriteSheet spriteData);
-			~AnimationSystem();
+			/*AnimationSystem(ResourceManager::SpriteSheet spriteData);
+			~AnimationSystem();*/
 
 			#pragma region Manage Animation
-			//Command to play an animation
-			void playAnimation(AnimationType type, int animate);
-			void changeFrame(int frame);
-			void updateUVCoords();
+			//Updates an Animation component, changing the frame if required
+			void updateAnimation(const DeltaTime& dt, AnimationComponent& component);
+			//updates the UV matrix to reflect the sprite at the frameIndex, if it is a valid index
+			bool changeFrame(int frameIndex, AnimationComponent& component);
+			//Creates a list of indicies to the component's sprites to create an animation of the specified type
+			std::vector<int> createAnimationClip(AnimationType type, const AnimationComponent& component) const;
 			#pragma endregion
 
 		private:
 			#pragma region Sprite Data
 			//Struct to contain spriteData that is used for animating a spritesheet
+			/*
 			struct SpriteData
 			{
 				SpriteData() = default;
@@ -80,5 +85,6 @@ namespace Engine
 
 			float m_animationSpeed = 0.1f;
 			#pragma endregion
+			*/
 	};
 }

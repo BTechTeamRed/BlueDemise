@@ -1,10 +1,11 @@
 #include "AnimationSystem.h"
 #include "Engine/ResourceManagement/ResourceManager.h"
+#include <glm/gtx/matrix_transform_2d.hpp>
 
 namespace Engine
 {
 	//Constructor for an animationSystem that is sprite based. ResourceManagers spriteData struct is passed in and converted into animationSystems spriteData struct.
-	AnimationSystem::AnimationSystem(ResourceManager::SpriteSheet spriteData)
+	/*AnimationSystem::AnimationSystem(ResourceManager::SpriteSheet spriteData)
 	{
 		m_spriteAnimationData.texID = spriteData.texID;
 		m_spriteAnimationData.spritesPerRow = spriteData.spritesPerRow;
@@ -20,37 +21,46 @@ namespace Engine
 
 	AnimationSystem::~AnimationSystem()
 	{
-	}
+	}*/
 
-	void AnimationSystem::playAnimation(AnimationType animType, int changeToThis)
+	void AnimationSystem::updateAnimation(const DeltaTime& dt, AnimationComponent& component)
 	{
-		switch (animType)
-		{
-			case RT_LoopRow:
-			{
-				if (m_spriteRowIndex < m_spriteAnimationData.spritesPerRow)
-					m_spriteRowIndex++;
-				else
-					m_spriteRowIndex = 0;
-			}
-			default:
-			{
-				
-			}
+		component.deltaTime += dt.getSeconds();
+		if (component.deltaTime > component.animationSpeed) { //enough time has elapsed since last frame update
+			component.deltaTime -= component.animationSpeed;
+			if (++component.currentIndex >= component.animationClip.size()) { //Loop back to the start if we are at the end of the clip
+				//TODO: add animation mode enum to dictate whether we loop here, stop, or reverse direction
+				component.currentIndex = 0; 
+			} 
+			changeFrame(component.currentIndex, component); //update the current frame of the animation to the next one in the clip
 		}
 	}
-	
 
-	void AnimationSystem::changeFrame(int frame)
+	bool AnimationSystem::changeFrame(int frameIndex, AnimationComponent& component)
 	{
-		
+		if (component.currentIndex >= component.animationClip.size()) return false; //Cannot change to frame that is outside of clip
+		component.currentIndex = frameIndex;
+
+		//Calculate the row and 
+		int row = std::floor(component.animationClip[frameIndex] / component.numPerRow);
+		int col = component.animationClip[frameIndex] % component.numPerRow;
+
+		//Apply Scale
+		glm::vec2 scale = glm::vec2(component.spriteSize.x / component.spriteSheetSize.x, component.spriteSize.y / component.spriteSheetSize.y);
+		component.uvTransformMatrix = glm::scale(glm::mat3(1.f), scale);
+
+		//Apply Transform
+		component.uvTransformMatrix = glm::translate(component.uvTransformMatrix, glm::vec2(row * scale.x, col * scale.y));
+
+		return true;
+	}
+
+	std::vector<int> AnimationSystem::createAnimationClip(AnimationType type, const AnimationComponent& component) const
+	{
+
 	}
 
 
-	void AnimationSystem::updateUVCoords()
-	{
-		
-	}
 /*
 	void prepareAnimations(Scene& scene)
 	{

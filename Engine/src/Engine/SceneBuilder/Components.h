@@ -130,28 +130,30 @@ namespace Engine
 	struct AnimationComponent
 	{
 		AnimationComponent() = default;
-		AnimationComponent(GLuint texID, std::string spritesheetName, float spritesheetWidth, float spritesheetHeight, int numPerRow, int spritesOnSheet)
-			: spritesheetName(spritesheetName)
-		{
-			animator = new AnimationSystem(texID, spritesheetWidth, spritesheetHeight, numPerRow, spritesOnSheet);
-		}
+		AnimationComponent(glm::vec<2, int> spriteSheetSize, glm::vec<2, int> spriteSize, int numPerRow, int spritesOnSheet, float animationSpeed = 0.3f)
+			: spriteSheetSize(spriteSheetSize), spriteSize(spriteSize), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet), animationSpeed(animationSpeed), animationClip(std::vector<int>(1,0))
+		{}
+		//Dimensions of sprite and sheet in pixels
+		glm::vec<2, int> spriteSheetSize;
+		glm::vec<2, int> spriteSize;
 
-		AnimationSystem* animator;
+		//Matrix to scale and translate UV coordinates to sprite on sheet
+		glm::mat3 uvTransformMatrix; //If multithreading the animation system, this will need to be locked with mutex
 
-		GLuint texID;
-		std::string texName;
-
+		//Determines the available sprites on the spritesheet
 		int currentIndex = 0;
 		int numPerRow;
 		int spritesOnSheet;
-		
-		double animationSpeed = 0.3;
 
+		//List of indicies 
+		std::vector<int> animationClip; 
+
+		//determines when to switch
+		float animationSpeed;
 		float deltaTime;
-		float frameRate;
-		float texWidthFraction;
-		float texHeightFraction;
 	};
+
+	//TODO: Animation controller component to allow users to easily store and switch between clips
 
 	//Component that contains a string for rendering text to the screen.
 	struct TextComponent
