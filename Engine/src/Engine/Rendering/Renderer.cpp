@@ -114,6 +114,9 @@ namespace Engine
 			if (!m_UI.initializeUI(m_window, scene))
 				GE_CORE_WARN("[Renderer] UI not initialized properly.");
 		}
+		else {
+			glEnable(GL_DEPTH_TEST);
+		}
 
 		//Create default shader.
 		loadShaders();
@@ -153,10 +156,15 @@ namespace Engine
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		
+
 		//Unbind the FBO.
 		if (m_showUI) 
 		{
 			m_window.unBindFrameBuffer();
+		}
+		else {
+			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 
 		//UI window
