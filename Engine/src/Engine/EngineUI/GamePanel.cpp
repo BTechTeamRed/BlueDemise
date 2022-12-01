@@ -17,6 +17,7 @@ namespace Engine
 		s_style->Colors[ImGuiCol_Text] = darkCyan;
 
 		ImGui::Begin("GamePanel", nullptr,
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 		
@@ -33,6 +34,9 @@ namespace Engine
 		{
 			window.resize(std::round(wsize.x), std::round(wsize.y));
 		}
+		auto imguiWindowPos = ImGui::GetWindowPos();
+		m_position.x = imguiWindowPos.x;
+		m_position.y = imguiWindowPos.y;
 		ImGui::Image((ImTextureID)window.getFboId(), wsize, ImVec2(0, 1), ImVec2(1, 0));
 
 		ImGui::PopFont();

@@ -161,7 +161,7 @@ namespace Engine
 		else
 		{
 			//Draw the FBO to the screen.
-			glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
+			glBindFramebuffer(GL_FRAMEBUFFER, m_window.m_fboTextureID);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		}
 
