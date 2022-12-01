@@ -114,6 +114,7 @@ namespace Engine
 				shaderName) == uniqueShadersInstantiated.end())
 			{
 				bind = uniqueShadersInstantiated.size();
+				uniqueShadersInstantiated.push_back(shaderName);
 				ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
 			}
 		}

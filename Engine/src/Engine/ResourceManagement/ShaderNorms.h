@@ -51,7 +51,7 @@ namespace Engine
 		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
 
 		//store binds for reference by shader name
-		std::map<std::string, int> m_advancedShaderBinds;
+		//std::map<std::string, int> m_advancedShaderBinds;
 
 		//used to detect any change in stride
 		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };
