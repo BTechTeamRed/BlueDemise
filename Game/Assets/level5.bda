@@ -218,23 +218,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": 300.0,
-              "y": 50.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -273,23 +256,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": 400.0,
-              "y": 0.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -548,23 +514,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": 300.0,
-              "y": -49.97637939453125,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -768,23 +717,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": 100.0,
-              "y": -49.97637939453125,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -878,23 +810,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": -300.0,
-              "y": 50.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -933,23 +848,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": -200.0,
-              "y": 0.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -1153,23 +1051,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": -400.0,
-              "y": 0.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
@@ -1208,23 +1089,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": -300.0,
-              "y": -49.97637939453125,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "obstacle"
