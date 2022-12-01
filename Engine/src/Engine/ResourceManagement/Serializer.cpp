@@ -207,9 +207,8 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_AnimationComponent);
 			j["numPerRow"] = c.numPerRow;
 			j["frameRate"] = c.frameRate;
-			j["texWidthFraction"] = c.texWidthFraction;
-			j["texHeightFraction"] = c.texHeightFraction;
-			j["texName"] = c.texName;
+			j["spriteSheetSize"] = c.spriteSheetSize;
+			j["spriteSize"] = c.spriteSize;
 			j["numSprites"] = c.spritesOnSheet;
 
 			components.push_back(j);
@@ -342,8 +341,13 @@ namespace Engine
 				std::string texture = component["texName"];
 				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
 
-				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction,
-					spritesheet.texHeightFraction, spritesheet.spritesPerRow, spritesheet.numSprites);
+				auto numPerRow = component["numPerRow"].get<int>();
+				auto frameRate = component["frameRate"].get<float>();
+				auto spriteSheetSize = component["spriteSheetSize"].get<glm::vec<2, int>>();
+				auto spriteSize = component["spriteSize"].get<glm::vec<2, int>>();
+				auto spritesOnSheet = component["numSprites"].get<int>();
+
+				out.addComponent<AnimationComponent>(spriteSheetSize, spriteSize, numPerRow, frameRate);
 				break;
 			}
 			case CO_ScriptComponent:

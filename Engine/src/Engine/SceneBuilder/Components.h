@@ -130,8 +130,8 @@ namespace Engine
 	struct AnimationComponent
 	{
 		AnimationComponent() = default;
-		AnimationComponent(glm::vec<2, int> spriteSheetSize, glm::vec<2, int> spriteSize, int numPerRow, int spritesOnSheet, float animationSpeed = 0.3f)
-			: spriteSheetSize(spriteSheetSize), spriteSize(spriteSize), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet), animationSpeed(animationSpeed), animationClip(std::vector<int>(1,0))
+		AnimationComponent(glm::vec<2, int> spriteSheetSize, glm::vec<2, int> spriteSize, int numPerRow, int spritesOnSheet, float frameRate = 0.3f)
+			: spriteSheetSize(spriteSheetSize), spriteSize(spriteSize), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet), frameRate(frameRate), animationClip(std::vector<int>(1,0))
 		{}
 		//Dimensions of sprite and sheet in pixels
 		glm::vec<2, int> spriteSheetSize;
@@ -149,7 +149,7 @@ namespace Engine
 		std::vector<int> animationClip; 
 
 		//determines when to switch
-		float animationSpeed;
+		float frameRate;
 		float deltaTime;
 	};
 

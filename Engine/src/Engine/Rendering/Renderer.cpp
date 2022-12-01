@@ -125,6 +125,12 @@ namespace Engine
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 		m_window.updateCamera(camera);
+
+		//Temp code, initialize animations for testing
+		auto animations = scene.getEntities<AnimationComponent>();
+		for (auto& [entity, anim] : animations.each()) {
+			anim.animationClip = animationSystem.createAnimationClip(AnimationSystem::RT_LoopAll, anim);
+		}
 	}
 
 	//For when the scene must be stopped, perform cleanup
@@ -228,8 +234,13 @@ namespace Engine
 				//Bind animation shader
 				const auto anim = scene.m_registry.get<const AnimationComponent>(entity);
 				//Update uvMatrix uniform
-				GLuint uvUniformID = glGetUniformLocation(shaderID, "uvMatrix");
+				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
 				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(anim.uvTransformMatrix));
+			}
+			else {
+				//Ignore UV transformation by setting uvMatrix to an identity matrix
+				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
+				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader

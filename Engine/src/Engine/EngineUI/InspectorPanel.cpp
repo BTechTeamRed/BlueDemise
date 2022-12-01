@@ -100,7 +100,8 @@ namespace Engine
 
 				partition(m_font, "Animation", darkGreen);
 
-				std::string id = "ID: " + std::to_string(animation->texID);
+				//TODO: redo the animation component ui
+				/*std::string id = "ID: " + std::to_string(animation->texID);
 				std::string name = "Name: " + animation->texName;
 
 				ImGui::Text(id.c_str());
@@ -114,7 +115,7 @@ namespace Engine
 
 				ImGui::SliderFloat("Frame rate", &animation->frameRate, 0.0f, 1.0f, "%.2f");
 				ImGui::SliderFloat("Texture width", &animation->texWidthFraction, 0.0f, 1.0f, "%.2f");
-				ImGui::SliderFloat("Texture height", &animation->texHeightFraction, 0.0f, 1.0f, "%.2f");
+				ImGui::SliderFloat("Texture height", &animation->texHeightFraction, 0.0f, 1.0f, "%.2f");*/
 				
 				setSpacing(spacing);
 			}

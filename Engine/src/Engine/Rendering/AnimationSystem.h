@@ -22,7 +22,7 @@ namespace Engine
 				RT_LoopRow,
 				RT_LoopColumn,
 				RT_LoopAll,
-				RT_Manual
+				//RT_Manual manual replaced by animationClip
 			};
 
 			//Constructor for spriteSheet-based animations. Takes in a ResourceManager::SpriteSheet struct and converts it into an AnimationSystem::SpriteData struct.

@@ -26,8 +26,8 @@ namespace Engine
 	void AnimationSystem::updateAnimation(const DeltaTime& dt, AnimationComponent& component)
 	{
 		component.deltaTime += dt.getSeconds();
-		if (component.deltaTime > component.animationSpeed) { //enough time has elapsed since last frame update
-			component.deltaTime -= component.animationSpeed;
+		if (component.deltaTime > component.frameRate) { //enough time has elapsed since last frame update
+			component.deltaTime -= component.frameRate;
 			if (++component.currentIndex >= component.animationClip.size()) { //Loop back to the start if we are at the end of the clip
 				//TODO: add animation mode enum to dictate whether we loop here, stop, or reverse direction
 				component.currentIndex = 0; 
@@ -57,7 +57,27 @@ namespace Engine
 
 	std::vector<int> AnimationSystem::createAnimationClip(AnimationType type, const AnimationComponent& component) const
 	{
+		std::vector<int> result;
+		switch (type) {
+			case RT_LoopRow:
+				result = std::vector<int>(component.numPerRow);
+				//Fills result with values 0 to numPerRow - 1
+				std::iota(result.begin(), result.end(), 0); 
+				return result;
 
+			case RT_LoopColumn:
+				//Fills result with the first index on each row;
+				for (int i = 0; i < std::floor(component.spritesOnSheet / component.numPerRow); i++) {
+					result.push_back(component.numPerRow * i);
+				}
+				return result;
+
+			case RT_LoopAll:
+				result = std::vector<int>(component.spritesOnSheet);
+				//Fills result with values 0 to spritesOnSheet - 1
+				std::iota(result.begin(), result.end(), 0);
+				return result;
+		}
 	}
 
 
