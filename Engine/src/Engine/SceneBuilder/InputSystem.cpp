@@ -69,6 +69,8 @@ void InputSystem::init(GLFWwindow* window)
 		};
 		glfwSetWindowSizeCallback(window, resizeFunc);
 		m_isInit = true;
+
+		m_windowOffset = glm::vec2(0);
 	}
 }
 

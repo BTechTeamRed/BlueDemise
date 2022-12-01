@@ -141,7 +141,10 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Bind the FBO for draw calls to render to.
-		m_window.bindFrameBuffer();
+		if (m_showUI)
+		{
+			m_window.bindFrameBuffer();
+		}
 
 		//Update window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
@@ -151,19 +154,22 @@ namespace Engine
 		drawEntities(scene);
 
 		//Unbind the FBO.
-		m_window.unBindFrameBuffer();
+		if (m_showUI) 
+		{
+			m_window.unBindFrameBuffer();
+		}
 
 		//UI window
 		if (m_showUI) 
 		{
 			m_UI.renderUI(scene, m_window);
 		}
-		else
-		{
-			//Draw the FBO to the screen.
-			glBindFramebuffer(GL_FRAMEBUFFER, m_window.m_fboTextureID);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		}
+		//else
+		//{
+		//	//Draw the FBO to the screen.
+		//	glBindFramebuffer(GL_FRAMEBUFFER, m_window.m_fboTextureID);
+		//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		//}
 
 		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());

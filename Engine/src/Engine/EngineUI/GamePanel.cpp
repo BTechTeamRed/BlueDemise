@@ -17,7 +17,7 @@ namespace Engine
 		s_style->Colors[ImGuiCol_Text] = darkCyan;
 
 		ImGui::Begin("GamePanel", nullptr,
-			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
+			//ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 		
