@@ -261,7 +261,7 @@ namespace Engine
 						glm::vec4(1, 1, 1, 1.0f),
 						0,
 						"<Texture>",
-						0
+						"<Shader>"
 						);
 				}
 			}
@@ -306,12 +306,6 @@ namespace Engine
 	void UIRenderer::updateHierarchyPanel(std::string tag, Entity entity)
 	{
 		m_hierarchyPanel.addEntity(tag, entity.getHandle());
-	}
-
-
-	glm::vec2 UIRenderer::getGameWindowPos() 
-	{
-		return m_gamePanel.getPosition();
 	}
 #pragma endregion
 }

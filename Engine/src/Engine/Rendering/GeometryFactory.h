@@ -10,13 +10,13 @@ namespace Engine
 	public:
 		enum Geometry
 		{
-			RT_Sprite
+			RT_Sprite,
+			RT_Text
 		};
 
 		#pragma region Singleton Instance Management
 		//Gets the singleton instance
 		static GeometryFactory* getInstance();
-
 
 		GeometryFactory(GeometryFactory& other) = delete;
 
@@ -29,7 +29,7 @@ namespace Engine
 		VerticesComponent getVerticesComponent(Geometry geometry);
 
 		//Generate a new piece of geometry with unique VBO, VAO and IBOs based on provided vertices and indices.
-		VerticesComponent generateVerticesComponent(float vertices[], int verticesSize, float indices[], int indicesSize, GLsizei stride);
+		//VerticesComponent generateVerticesComponent(float vertices[], int stride, unsigned int* indices);
 
 		//Generate VBO/VAO/IBO based on provided data.
 		GLuint getVBO(float vertices[], int verticesSize, GLsizei stride, std::vector<VertexAttribute>& vertexAttributes);
@@ -47,8 +47,11 @@ namespace Engine
 		std::unordered_map<Geometry, VerticesComponent> m_defaultGeometry;
 
 		#pragma region Default Geometry Initialization
-		//Initializes the sprite vao, vbo, and ibo
+		//Initializes the sprite objects. This is a quad with a texture.
 		void initSpriteGeometry();
+
+		//Initializes the text objects. This is another quad with a texture. However, this one will be modified on runtime, and needs a seperate VBO as a result.
+		void initTextGeometry();
 		#pragma endregion
 	};
 }

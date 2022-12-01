@@ -15,8 +15,8 @@ AudioPlayerSingleton* AudioPlayerSingleton::getInstance()
 	if (m_instance == nullptr)
 	{
 		m_instance = new AudioPlayerSingleton();
-		m_engineMediaPath = std::filesystem::current_path().parent_path().string() + "\\Engine\\src\\Media\\";
-		m_gameMediaPath = std::filesystem::current_path().parent_path().string() + "\\Game\\src\\Media\\";
+		m_engineMediaPath = std::filesystem::current_path().parent_path().string() + "\\Engine\\src\\Engine\\Media\\";
+		m_gameMediaPath = std::filesystem::current_path().parent_path().string() + "\\Game\\Assets\\";
 	}
 
 	return m_instance;

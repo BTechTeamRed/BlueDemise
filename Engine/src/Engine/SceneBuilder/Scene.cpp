@@ -20,9 +20,35 @@ namespace Engine
 	//I feel a new loop method should be used rather than 'when the window closes'
 	void Scene::onRuntimeStart()
 	{
-		Renderer::getInstance()->initializeScene(*this);
+		auto render = Renderer::getInstance();
+		render->initializeScene(*this);
+		
+		// Create physics world
+		glm::vec3 dimensions;
+		auto entities = getEntities<CameraComponent>();
+		for (auto& [entity, camera] : entities.each())
+		{
+			dimensions.x = camera.frustumWidth;
+			dimensions.y = camera.frustumWidth / camera.aspectRatio;
+			dimensions.z = camera.farZ - camera.nearZ;
+		}
+		GE_CORE_TRACE("Scene::onRuntimeStart: Creating world {0} x {1} x {2}", dimensions.x, dimensions.y, dimensions.z);
+		m_physics = new PhysicsSystem(dimensions);
 
-		while (!m_closeScene)
+		// Insert physics objects
+		auto physicsList = getEntities<PhysicsComponent>();
+		for (auto& [entity, phyObj] : physicsList.each())
+		{
+			Entity* obj = new Entity(entity, this);
+			if (!m_physics->insert(obj))
+			{
+				std::string tag = obj->getComponent<TagComponent>().tag;
+				GE_CORE_ERROR("Scene::onRuntimStart: Failure to insert {0} into physics world", tag);
+				delete obj;
+			}
+		}
+
+		while (!m_closeScene) //switch will be a swap condition
 		{
 			m_deltaTime.updateDeltaTime();
 			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
@@ -63,6 +89,8 @@ namespace Engine
 			if (script.m_instance->m_enabled) script.m_instance->onUpdate(dt);//don't update if entity is disabled
 		}
 		
+		m_physics->update();
+
 		Renderer::getInstance()->renderScene(dt, *this);
 		
 		glfwPollEvents();
@@ -74,6 +102,13 @@ namespace Engine
 		}
 
 		glfwPollEvents();
+	}
+
+	// CURRENTLY NOT USED AND NOT WORKING PROPERLY
+	void Scene::swapScene(const std::string& other)
+	{
+		m_registry = entt::registry();
+		Serializer::tryDeserializeScene(*this, other);
 	}
 #pragma endregion
 
@@ -89,4 +124,10 @@ namespace Engine
 		return entity;
 	}
 #pragma endregion
+
+	std::list<Entity*> Scene::pick(float x, float y)
+	{
+		glm::vec3 worldPos = Renderer::getInstance()->screenToWorld(glm::vec2(x,y));
+		return m_physics->raycast(worldPos, glm::vec3(0,0,1));
+	}
 }
