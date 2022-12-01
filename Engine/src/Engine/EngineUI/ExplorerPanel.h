@@ -11,7 +11,7 @@ namespace Engine
 
 		virtual ~ExplorerPanel() {}
 
-		bool isAddButtonClicked() const;
+		bool isAddButtonClicked();
 
 		const std::string& getSelectedScript() const;
 

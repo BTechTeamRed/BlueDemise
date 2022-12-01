@@ -191,18 +191,21 @@ namespace Engine
 		if (m_explorerPanel.isAddButtonClicked())
 		{
 			auto scriptName = m_explorerPanel.getSelectedScript();
-			auto entityName = m_hierarchyPanel.getSelectedEntityTag();
-			scriptName.erase(scriptName.find(".cpp"), 4);
-
-			//Get the handle on the selected entity to add the component to
-			auto handle = m_hierarchyPanel.getSelectedEntity();
-
-			auto script = scene.m_registry.any_of<ScriptUI>(handle);
-
-			//Only add this component if there isn't already one attached
-			if (!script)
+			if (scriptName != "")
 			{
-				scene.m_registry.emplace<ScriptUI>(handle, scriptName);
+				auto entityName = m_hierarchyPanel.getSelectedEntityTag();
+				scriptName.erase(scriptName.find(".cpp"), 4);
+
+				//Get the handle on the selected entity to add the component to
+				auto handle = m_hierarchyPanel.getSelectedEntity();
+
+				auto script = scene.m_registry.any_of<ScriptUI>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!script)
+				{
+					scene.m_registry.emplace<ScriptUI>(handle, scriptName);
+				}
 			}
 		}
 

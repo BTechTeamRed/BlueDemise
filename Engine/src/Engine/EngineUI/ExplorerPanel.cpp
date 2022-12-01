@@ -5,15 +5,24 @@
 
 namespace Engine
 {
-	bool ExplorerPanel::isAddButtonClicked() const
+	bool ExplorerPanel::isAddButtonClicked() 
 	{
-		return m_isAddButtonClicked;
+		bool isClicked = m_isAddButtonClicked;
+		m_isAddButtonClicked = false;
+		return isClicked;
 	}
 
 	const std::string& ExplorerPanel::getSelectedScript() const
 	{
 		return m_selectedScript;
 	}
+
+	//struct for radio buttons for scripts
+	struct ScriptButton
+	{
+		bool state; // true if selected
+		std::string tag; // script name
+	};
 
 	void ExplorerPanel::show()
 	{
@@ -50,11 +59,20 @@ namespace Engine
 
 				if (filename.find(".cpp") != std::string::npos)
 				{
-					//This is true if a script file is clicked on
-					if (ImGui::TreeNode(filename.c_str()))
+					// Initializes ScriptButton struct for each scritp
+					ScriptButton Script;
+					Script.tag = filename;
+					Script.state = false;
+
+					// if this script is selected, fill in the radio button
+					if (Script.tag == m_selectedScript)
 					{
-						m_selectedScript = filename;
-						ImGui::TreePop();
+						Script.state = true;
+					}
+
+					if (ImGui::RadioButton(Script.tag.c_str(), Script.state))
+					{
+						m_selectedScript = Script.tag;
 					}
 				}
 			}
@@ -73,6 +91,7 @@ namespace Engine
 		{
 			m_isAddButtonClicked = true;
 		}
+
 
 		ImGui::PopFont();
 		ImGui::End();
