@@ -63,6 +63,9 @@ namespace Engine
         DeltaTime m_deltaTime{ 0 };
         PhysicsSystem* m_physics;
 
+		// Creates a new physics world and inserts physics entities
+        void createPhysics();
+
         void runEntityScripts(const DeltaTime& dt);
 
         void renderScene();

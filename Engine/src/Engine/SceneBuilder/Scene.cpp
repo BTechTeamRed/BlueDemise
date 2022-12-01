@@ -23,30 +23,8 @@ namespace Engine
 		auto render = Renderer::getInstance();
 		render->initializeScene(*this);
 		
-		// Create physics world
-		glm::vec3 dimensions;
-		auto entities = getEntities<CameraComponent>();
-		for (auto& [entity, camera] : entities.each())
-		{
-			dimensions.x = camera.frustumWidth;
-			dimensions.y = camera.frustumWidth / camera.aspectRatio;
-			dimensions.z = camera.farZ - camera.nearZ;
-		}
-		GE_CORE_TRACE("Scene::onRuntimeStart: Creating world {0} x {1} x {2}", dimensions.x, dimensions.y, dimensions.z);
-		m_physics = new PhysicsSystem(dimensions);
-
-		// Insert physics objects
-		auto physicsList = getEntities<PhysicsComponent>();
-		for (auto& [entity, phyObj] : physicsList.each())
-		{
-			Entity* obj = new Entity(entity, this);
-			if (!m_physics->insert(obj))
-			{
-				std::string tag = obj->getComponent<TagComponent>().tag;
-				GE_CORE_ERROR("Scene::onRuntimStart: Failure to insert {0} into physics world", tag);
-				delete obj;
-			}
-		}
+		// Set up physics components for picking
+		createPhysics();
 
 		while (!m_closeScene) //switch will be a swap condition
 		{
@@ -78,7 +56,8 @@ namespace Engine
 		{
 			m_switch = false;
 			
-			if (score > 5) {
+			if (score > 5)
+			{
 				score = 1;
 			}
 			
@@ -89,10 +68,8 @@ namespace Engine
 
 		//get a view on entities with a script Component, and execute their onUpdate.
 		const auto entities = getEntities<ScriptComponent>();
-		int count = 0;
 		for (auto [entity, script] : entities.each())
 		{
-			count++;
 			//initialize the script instance and run OnCreate();
 			if (!script.m_instance)
 			{
@@ -119,25 +96,12 @@ namespace Engine
 		glfwPollEvents();
 	}
 
-	void Scene::swapScene(const std::string& other)
+	void Scene::createPhysics()
 	{
-		const auto entities = getEntities<ScriptComponent>();
-		for (auto [entity, script] : entities.each())
-		{
-			//initialize the script instance and run OnCreate();
-			if (script.m_instance)
-			{
-				script.destroyScript();
-			}
-		}
-		
-		m_registry = entt::registry();
-		Serializer::tryDeserializeScene(*this, other);
-		
-		delete m_physics;
+		// Create physics world
 		glm::vec3 dimensions;
-		auto cameras = getEntities<CameraComponent>();
-		for (auto& [entity, camera] : cameras.each())
+		auto entities = getEntities<CameraComponent>();
+		for (auto& [entity, camera] : entities.each())
 		{
 			dimensions.x = camera.frustumWidth;
 			dimensions.y = camera.frustumWidth / camera.aspectRatio;
@@ -158,6 +122,26 @@ namespace Engine
 				delete obj;
 			}
 		}
+	}
+
+	void Scene::swapScene(const std::string& other)
+	{
+		const auto entities = getEntities<ScriptComponent>();
+		for (auto [entity, script] : entities.each())
+		{
+			//initialize the script instance and run OnCreate();
+			if (script.m_instance)
+			{
+				script.destroyScript();
+			}
+		}
+		
+		m_registry = entt::registry();
+		Serializer::tryDeserializeScene(*this, other);
+		
+		// Delete old physics, recreate physics for the new scene
+		delete m_physics;
+		createPhysics();
 	}
 #pragma endregion
 
