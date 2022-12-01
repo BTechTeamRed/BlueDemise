@@ -130,6 +130,7 @@ namespace Engine
 		auto animations = scene.getEntities<AnimationComponent>();
 		for (auto& [entity, anim] : animations.each()) {
 			anim.animationClip = animationSystem.createAnimationClip(AnimationSystem::RT_LoopAll, anim);
+			animationSystem.changeFrame(0, anim);
 		}
 	}
 

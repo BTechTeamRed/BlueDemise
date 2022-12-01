@@ -26,6 +26,17 @@ namespace glm
 		vec.y = j.at("y").get<float>();
 	}
 
+	void to_json(nlohmann::json& j, const vec<2, int>& vec)
+	{
+		j = { { "x", vec.x }, { "y", vec.y } };
+	}
+
+	void from_json(const nlohmann::json& j, vec<2, int>& vec)
+	{
+		vec.x = j.at("x").get<int>();
+		vec.y = j.at("y").get<int>();
+	}
+
 	void to_json(nlohmann::json& j, const vec3& vec)
 	{
 		j = { { "x", vec.x }, { "y", vec.y }, { "z", vec.z } };
@@ -338,9 +349,6 @@ namespace Engine
 			}
 			case CO_AnimationComponent:
 			{
-				std::string texture = component["texName"];
-				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
-
 				auto numPerRow = component["numPerRow"].get<int>();
 				auto frameRate = component["frameRate"].get<float>();
 				auto spriteSheetSize = component["spriteSheetSize"].get<glm::vec<2, int>>();

@@ -7,7 +7,7 @@ out vec2 uv;
 
 uniform mat4 mvp;
 
-uniform mat3 uvMatrix
+uniform mat3 uvMatrix;
 
 void main()
 {
