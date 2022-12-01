@@ -14,6 +14,8 @@ namespace Engine
 
 		glm::vec2 getPosition() { return m_position; };
 
+		const int titleBarHeight = 36;
+
 	private:
 
 	};
