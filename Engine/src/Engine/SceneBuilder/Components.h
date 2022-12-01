@@ -109,19 +109,20 @@ namespace Engine
 		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
 			: color(color), texID(texID), texName(texName), shaderName(shaderName)
 		{
-			bind = shadersInstantiated++;
-			ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
+			//shader name not previously recorded
+			if (std::find(uniqueShadersInstantiated.begin(), uniqueShadersInstantiated.end(),
+				shaderName) == uniqueShadersInstantiated.end())
+			{
+				bind = uniqueShadersInstantiated.size();
+				ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
+			}
 		}
-		
+
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
-    
-		GLuint shaderID;
-		std::unordered_map<std::string, GLuint> uniforms;
 		std::string shaderName;
-    
-		inline static int shadersInstantiated{ 0 };
+		inline static std::vector<std::string> uniqueShadersInstantiated;
 		int bind;
 	};
 

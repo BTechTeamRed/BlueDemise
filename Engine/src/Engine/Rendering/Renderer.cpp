@@ -217,8 +217,8 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
-				m_colorCoordinates, m_gradientCoordinates, m_programId);
+			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
+				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);

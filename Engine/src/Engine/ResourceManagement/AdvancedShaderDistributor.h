@@ -12,32 +12,30 @@ namespace Engine
 	class ShaderGenerator;
 	enum ShaderFillType::FillType;
 
-	// Based on the advanced shader source code, this generates shaders for each
-	// shader fill type (check ShaderFillType.h). This means that each advanced
-	// shader can be applied to different sets of vertex data such as gradients,
-	// flat colours, and sprites. Above all, it makes it easier for the user
+	// Based on the advanced shader source code, this module makes it easier for the user
 	// developing the advanced shader since the advanced shader code and the
-	// default shader code are separate.
+	// default shader code are separate. Takes in the default shader as argument.
 	class AdvancedShaderDistributor
 	{
 	public:
-		AdvancedShaderDistributor(std::string advancedSource,
-			std::map<ShaderFillType::FillType, ShaderGenerator>& shaders);
+		//any time-related uniform in the advanced shader
+		const static inline float TIME_SPEEDUP_MOD = 2.5f;
+
+		//spreads advanced source to all default shaders unless a unique default shader is specified
+		AdvancedShaderDistributor(std::string advancedSource, ShaderGenerator& defaultShader);
 
 		//returns programId to run the shader. Note that advanced shaders are combined with each
 		//default shader, so the corresponding default shader enum must be assigned.
-		GLuint getAdvancedProgramId(ShaderFillType::FillType fillType = ShaderFillType::FillType::SN_TEXTURE_FILL);
+		GLuint getAdvancedProgramId();
 
 	private:
 		const static inline int SHADER_VERSION = 330;
-		GLuint advProgramIds[ShaderFillType::types];
-		std::string advancedSource;
-		std::string vertexSourceSet[ShaderFillType::types], fragmentSourceSet[ShaderFillType::types];
+		GLuint advProgramId;
 
 		const std::vector<std::string> VARIABLE_TYPES
 		{ "sampler2D", "bool", "int", "uint", "float", "double", "bvec2", "bvec3", "bvec4", "ivec2", "ivec3",
 			"ivec4", "uvec2", "uvec3", "uvec4", "vec2", "vec3", "vec4", "dvec2", "dvec3", "dvec4",
-			"mat2", "mat3", "mat4"};
+			"mat2", "mat3", "mat4" };
 
 		struct SourceExtractor
 		{
@@ -67,9 +65,6 @@ namespace Engine
 
 		//pushes back the attributes from the compiled shader to a string
 		void compileSource(std::string& to, SourceExtractor from);
-
-		//splits string into list separated by \n character.
-		std::vector<std::string> split(std::string source);
 
 		//substrings the parent string to represent its data declaration given the current entry.
 		//For example, if current entry == "layout (location = 0) in vec3 pos;", returns

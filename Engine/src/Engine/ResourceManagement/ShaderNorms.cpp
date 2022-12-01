@@ -12,10 +12,9 @@ namespace Engine
 
 	ShaderNorms::ShaderNorms()
 	{
-		addShader(ShaderFillType::FillType::SN_TEXTURE_FILL);
-		addShader(ShaderFillType::FillType::SN_COLOR_FILL);
-		addShader(ShaderFillType::FillType::SN_GRADIENT_FILL);
-		addShader(ShaderFillType::FillType::SN_TEXT_FILL);
+		addShader(ShaderFillType::DEFAULT_FILL_TYPE);
+		addShader(ShaderFillType::FillType::FT_COLOR_FILL);
+		addShader(ShaderFillType::FillType::FT_GRADIENT_FILL);
 	}
 
 	ShaderNorms::~ShaderNorms()
@@ -37,28 +36,26 @@ namespace Engine
 
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
-	void ShaderNorms::update(int advancedShaderBind, int stride, int& textureCoordinates,
+	void ShaderNorms::update(double time, int advancedShaderBind, int stride, int& textureCoordinates,
 		int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
 	{
+		timeCount += time;
+
 		if (advancedShaderBind != m_currentAdvancedShaderBind)
 		{
 			m_currentAdvancedShaderBind = advancedShaderBind;
 			if (m_currentAdvancedShaderBind != -1)
 			{
-				if (stride == textureCoordinates)
+				assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind).getAdvancedProgramId(), programId);
+
+				//quick access since we don't have a way of determining if a shader has a uniform time variable
+				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
-					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
-						.getAdvancedProgramId(ShaderFillType::FillType::SN_TEXTURE_FILL), programId);
-				}
-				else if (stride == colorCoordinates)
-				{
-					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
-						.getAdvancedProgramId(ShaderFillType::FillType::SN_COLOR_FILL), programId);
-				}
-				else if (stride == gradientCoordinates)
-				{
-					assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind)
-						.getAdvancedProgramId(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
+					//update time variables in real-time
+					int timeLocation = glGetUniformLocation(programId, "time");
+					glUniform1f(timeLocation, time * AdvancedShaderDistributor::TIME_SPEEDUP_MOD);
+					int tcountLocation = glGetUniformLocation(programId, "timeCounter");
+					glUniform1f(tcountLocation, timeCount);
 				}
 			}
 			else
@@ -83,11 +80,11 @@ namespace Engine
 		}
 		else if (stride == colorCoordinates)
 		{
-			assignProgram(getShaderReference(ShaderFillType::FillType::SN_COLOR_FILL), programId);
+			assignProgram(getShaderReference(ShaderFillType::FillType::FT_COLOR_FILL), programId);
 		}
 		else if (stride == gradientCoordinates)
 		{
-			assignProgram(getShaderReference(ShaderFillType::FillType::SN_GRADIENT_FILL), programId);
+			assignProgram(getShaderReference(ShaderFillType::FillType::FT_GRADIENT_FILL), programId);
 		}
 	}
 
@@ -117,7 +114,10 @@ namespace Engine
 	void ShaderNorms::addAdvancedShader(int bind, std::string& shaderName)
 	{
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
-		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource, m_shaders)));
+		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
+			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
+		GE_CORE_INFO("pushing (shaderName=" + shaderName + ", bind=" + to_string(bind) + ")");
+		m_advancedShaderBinds.insert(pair(shaderName, bind));
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
@@ -135,14 +135,15 @@ namespace Engine
 	{
 		switch (shaderName)
 		{
-		case ShaderFillType::FillType::SN_TEXTURE_FILL:
+		case ShaderFillType::FillType::FT_TEXTURE_FILL:
 			return "TextureFill";
-		case ShaderFillType::FillType::SN_COLOR_FILL:
+			break;
+		case ShaderFillType::FillType::FT_COLOR_FILL:
 			return "ColorFill";
-		case ShaderFillType::FillType::SN_TEXT_FILL:
-			return "TextFill";
-		default:
+			break;
+		case ShaderFillType::FillType::FT_GRADIENT_FILL:
 			return "GradientFill";
+			break;
 		}
 	}
 }

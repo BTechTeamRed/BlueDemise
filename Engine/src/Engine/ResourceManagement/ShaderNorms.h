@@ -15,16 +15,6 @@ namespace Engine
 	class ShaderNorms
 	{
 	public:
-		//shader tokens to access map of shaders
-		static enum ShaderName
-		{
-			SN_TEXTURE_FILL,
-			SN_COLOR_FILL,
-			SN_TEXT_FILL,
-			SN_GRADIENT_FILL
-		};
-		static const ShaderName DEFAULT_SHADER_NAME;
-
 		//requires the stride of the default shader's vertices component
 		~ShaderNorms();
 		ShaderNorms(ShaderNorms& other) = delete;
@@ -32,7 +22,7 @@ namespace Engine
 		static ShaderNorms* getInstance();
 
 		//load shader according to vertices component (given shader is not already loaded)
-		void update(int advancedShaderBind, int stride, int& textureCoordinates,
+		void update(double time, int advancedShaderBind, int stride, int& textureCoordinates,
 			int& colorCoordinates, int& gradientCoordinates, GLuint& programId);
 
 		//loads default shader program based on stride (used only for defaults)
@@ -53,9 +43,15 @@ namespace Engine
 		ShaderNorms();
 		static ShaderNorms* m_singleton;
 
+		//accessed in update as a counter variable for time
+		int timeCount = 0;
+
 		//shader generator is stored by default shaders map for further use by adv. shaders
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;
 		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
+
+		//store binds for reference by shader name
+		std::map<std::string, int> m_advancedShaderBinds;
 
 		//used to detect any change in stride
 		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };
