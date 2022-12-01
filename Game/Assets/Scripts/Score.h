@@ -8,6 +8,7 @@ namespace Engine
 	{
 	protected:
 		int score = 1;
+		virtual void onCreate() override;
 	public:
 		void setScore(int num);
 		void addOne();

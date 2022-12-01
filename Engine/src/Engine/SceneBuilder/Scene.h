@@ -18,6 +18,7 @@ namespace Engine
         bool m_switch{ false };
         int score = 1;
         std::string m_nextScene;
+		std::vector<std::string> m_sceneList;
         
         #pragma region Entity Management
         // Registry is a container to hold entities
