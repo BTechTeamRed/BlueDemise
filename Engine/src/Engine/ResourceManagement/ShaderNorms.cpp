@@ -110,7 +110,7 @@ namespace Engine
 			ResourceManager::getInstance()->getShaderData(shaderStr + ".vs").c_str(),
 			ResourceManager::getInstance()->getShaderData(shaderStr + ".fs").c_str()
 		)));
-		GE_CORE_INFO(getShaderNameString(shaderName) + " shader added.");
+		GE_CORE_INFO("[Shader Norms] " + getShaderNameString(shaderName) + " shader added.");
 	}
 
 	void ShaderNorms::addAdvancedShader(int bind, std::string& shaderName)
@@ -118,7 +118,7 @@ namespace Engine
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
 			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
-		GE_CORE_INFO("pushing (shaderName=" + shaderName + ", bind=" + to_string(bind) + ")");
+		GE_CORE_INFO("[Shader Norms] Pushing (shaderName=" + shaderName + ", bind=" + to_string(bind) + ")");
 		//m_advancedShaderBinds.insert(pair(shaderName, bind));
 	}
 

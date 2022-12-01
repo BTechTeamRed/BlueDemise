@@ -1422,7 +1422,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+			"shaderName": "SinWave",
             "texName": "player.png"
           },
           {

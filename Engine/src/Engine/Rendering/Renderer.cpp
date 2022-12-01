@@ -31,7 +31,7 @@ namespace Engine
 		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
-			GE_CORE_ERROR("Failed to initialize window");
+			GE_CORE_ERROR("[Renderer] Failed to initialize window");
 			glfwTerminate();
 			exit(0);
 		}
@@ -52,7 +52,7 @@ namespace Engine
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			GE_CORE_ERROR("Failed to initialize GLAD");
+			GE_CORE_ERROR("[Renderer] Failed to initialize GLAD");
 			glfwTerminate();
 
 			throw std::runtime_error("Failed to initialize GLAD");
