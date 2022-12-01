@@ -2,7 +2,7 @@
 
 #include "entt.h"
 #include "Engine/SceneBuilder/Scene.h"
-#include "Components.h"
+#include "Engine/SceneBuilder/Components.h"
 
 namespace Engine
 {
@@ -17,6 +17,7 @@ namespace Engine
 		Entity() = default;
 		Entity(entt::entity entityHandle, Scene* scene);
 		Entity(const Entity& other) = default;
+		Scene* getScene() const { return m_scene; }
 		inline entt::entity getHandle() { return m_entityHandle; }
 		const std::string& getName() { return getComponent<TagComponent>().tag; }
 		
@@ -66,6 +67,8 @@ namespace Engine
 
 		//Returns true if entity is null
 		operator bool() const { return m_entityHandle != entt::null; }
+
+		friend class ScriptableBehavior;
 #pragma endregion
 	};
 }

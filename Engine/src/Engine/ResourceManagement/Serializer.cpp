@@ -106,7 +106,7 @@ namespace Engine
 			
 			if (!tryDeserializeEntity(entity, item, out))
 			{
-				
+
 				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
 				return false;
@@ -136,9 +136,10 @@ namespace Engine
 		sceneJson["scene"]["name"] = scene->m_name;
 
 		std::cout << sceneJson << std::endl;
+		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 		return sceneJson.dump();
 		//TODO: Bind serialization to GUI event once we have one.
-		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
+
 	}
 
 	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
@@ -177,6 +178,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<TextComponent>())
+		{
+			auto c = entity.getComponent<TextComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_TextComponent);
+			j["text"] = c.text;
+
+			components.push_back(j);
+		}
+
 		if (entity.hasComponent<MaterialComponent>())
 		{
 			auto c = entity.getComponent<MaterialComponent>();
@@ -184,6 +195,7 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_MaterialComponent);
 			j["color"] = c.color;
 			j["texName"] = c.texName;
+			j["shaderName"] = c.shaderName;
 
 			components.push_back(j);
 		}
@@ -225,6 +237,27 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<PhysicsComponent>())
+		{
+			auto c = entity.getComponent<PhysicsComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_PhysicsComponent);
+			j["dimensions"] = c.boundingBox->getDimensions();
+			j["position"] = c.boundingBox->getPosition();
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<AudioComponent>())
+		{
+			auto c = entity.getComponent<AudioComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_AudioComponent);
+			j["soundFileName"] = c.soundFileName;
+
+			components.push_back(j);
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -235,7 +268,7 @@ namespace Engine
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
 	{
-		
+
 		//Loop through all components and deserialize each
 		for (const auto& component : entity["components"])
 		{
@@ -274,10 +307,17 @@ namespace Engine
 			{
 				
 				std::string texture = component["texName"];
+				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
 				
-				//glm::vec4 color, GLuint texID, std::string texName, GLuint shaderID)
-				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, 0); //0 Would be shaderID. waiting until shader code is imported ********
+				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
+				break;
+			}
+			case CO_TextComponent:
+			{
+				std::string text = component["text"];
+
+				out.addComponent<TextComponent>(text);
 				break;
 			}
 			case CO_VerticesComponent:
@@ -310,6 +350,20 @@ namespace Engine
 			{
 				std::string scriptName = component["scriptName"];
 				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
+				break;
+			}
+			case CO_PhysicsComponent:
+			{
+				glm::vec3 dimensions = component["dimensions"].get<glm::vec3>();
+				glm::vec3 position = component["position"].get<glm::vec3>();
+
+				out.addComponent<PhysicsComponent>(dimensions, position);
+				break;
+			}
+			case CO_AudioComponent:
+			{
+				std::string soundFileName = component["soundFileName"];
+				out.addComponent<AudioComponent>(soundFileName);
 				break;
 			}
 			default:

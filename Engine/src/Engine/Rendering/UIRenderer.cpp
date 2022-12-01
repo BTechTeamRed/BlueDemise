@@ -5,6 +5,7 @@
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Window.h"
 #include "Engine/SceneBuilder/Scene.h"
+#include "Engine/SceneBuilder/InputSystem.h"
 
 
 
@@ -60,6 +61,7 @@ namespace Engine
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Transform");
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Camera");
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Material");
+		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Serializable");
 		//m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Animation");
 
 		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
@@ -79,13 +81,14 @@ namespace Engine
 		UserInterface::shutdown();
 	}
 
-	void UIRenderer::renderUI(Scene& scene, const Window& window)
+	void UIRenderer::renderUI(Scene& scene, Window& window)
 	{
 		UserInterface::startUI();
 
 		m_mainMenu.show();
 
 		m_gamePanel.show(window); //This function will take in an fbo when one is created
+		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition());
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
@@ -189,8 +192,21 @@ namespace Engine
 						glm::vec4(1, 1, 1, 1.0f),
 						0,
 						"<Texture>",
-						0
+						"<Shader>"
 						);
+				}
+			}
+
+			if (component == "Serializable")
+			{
+				auto serializable = scene.m_registry.any_of<SerializableComponent>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!serializable)
+				{
+					scene.m_registry.emplace<SerializableComponent>(
+						handle,
+						true);
 				}
 			}
 

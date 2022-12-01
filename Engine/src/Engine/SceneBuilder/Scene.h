@@ -5,6 +5,7 @@
 #include <Engine/Utilities/DeltaTime.h>
 #include <string>
 
+#include "Engine/Physics/PhysicsSystem.h"
 namespace Engine
 {
     class Entity;
@@ -14,6 +15,9 @@ namespace Engine
     {
     public:
         bool m_closeScene = false;
+        bool m_switch{ false };
+        int score = 1;
+        std::string m_nextScene;
         
         #pragma region Entity Management
         // Registry is a container to hold entities
@@ -41,12 +45,22 @@ namespace Engine
 
         // Executes actions every time runtime is updated (every frame).
         void onRuntimeUpdate(const DeltaTime& dt);
+
+        void swapScene(const std::string& other);
         #pragma endregion
+
+        /// <summary>
+        /// Exposure of the picking system to scripts via m_entity.getScene()
+        /// </summary>
+        /// <param name="x">X-cooridnate on screen</param>
+        /// <param name="y">Y-coordinate on screen</param>
+        /// <returns></returns>
+        std::list<Entity*> pick(float x, float y);
 	
     private:
-
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
+        PhysicsSystem* m_physics;
 
         void runEntityScripts(const DeltaTime& dt);
 
@@ -54,5 +68,6 @@ namespace Engine
         
         friend class Entity;
         friend class Serializer;
+        
     };
 }

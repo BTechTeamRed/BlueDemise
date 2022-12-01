@@ -1,3 +1,4 @@
+#pragma once
 #include "glad/glad.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -8,7 +9,7 @@
 #include "Engine/SceneBuilder/InputSystem.h"
 
 #include "Engine/ResourceManagement/ResourceManager.h"
-#include "Engine/ResourceManagement/ShaderGenerator.h"
+#include "Engine/ResourceManagement/ShaderNorms.h"
 
 #include "Engine/Utilities/Log.h"
 
@@ -36,7 +37,14 @@ namespace Engine
 		}
 
 		//Adds the callback to the inputsystem for when the window is resized
-		InputSystem::getInstance()->setResizeCallback([&](int x, int y) {m_window.resize(x, y); });
+		if (!m_showUI) 
+		{
+			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { m_window.resize(x, y); });
+		}
+		else 
+		{
+			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { /*Resize Handled by GamePanel*/ });
+		}
 		
 		//Setting the icon
 		ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", m_window.getWindow());
@@ -57,8 +65,14 @@ namespace Engine
 		
 		glfwSwapInterval(1);
 
+		//Enable transparency
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//Sets the color of the 'clear' command. This is a dark grey
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		m_text.initializeText();
 	}
 
 	//Return the instance of resource manager. If one does not exist, create it, and return the pointer.
@@ -75,6 +89,16 @@ namespace Engine
 	void Renderer::updateUIHeiraarchy(std::string tag, Entity entity)
 	{
 		m_UI.updateHierarchyPanel(tag, entity);
+	}
+
+	glm::vec3 Renderer::screenToWorld(const glm::vec2& screenPosition)
+	{
+		return m_window.screenSpaceToWorldSpace(screenPosition, glm::vec2());
+	}
+
+	glm::vec2 Renderer::worldToScreen(const glm::vec3& worldPosition)
+	{
+		return m_window.worldSpaceToScreenSpace(worldPosition, glm::vec2());
 	}
 
 #pragma region Scene Management & Rendering
@@ -161,23 +185,29 @@ namespace Engine
 		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
 
+		glUseProgram(m_programId);
+
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
 		{
 			//Set a default transform component and color if the object does not contain one.
 			TransformComponent transform;
-			glm::vec4 color{ 1.f,1.f,1.f,1.f };
+			glm::vec4 color = m_defaultColor;
 
 			//Change the transform component if the entity contains one.
 			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
-			
+
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
+
+			//access to the advanced shader if it exists
+			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.
 			if (scene.m_registry.all_of<MaterialComponent>(entity))
 			{
 				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+				advancedShaderBind = material.bind;
 				
 				if (setTexture(material.texID, currentBoundTextures)){currentBoundTextures++;}
 			
@@ -185,10 +215,14 @@ namespace Engine
 				color = material.color;
 				//glUseProgram(material.shaderID);
 			}
+
+			//updates the shader based on vertices component's stride value and/or advanced shader
+			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
+				m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);
-			
+
 			//VAO is container for VBO, and is bound to ensure correct vertices are draw.
 			glBindVertexArray(vertices.vaoID);
 			
@@ -196,6 +230,37 @@ namespace Engine
 
 			//Draw currently bound objects.
 			glDrawElements(GL_TRIANGLES, vertices.numIndices, GL_UNSIGNED_INT, nullptr);
+		}
+		
+		//Get entities that contain text component.
+		const auto textRenderables = scene.getEntities<const TextComponent>();
+		
+		glUseProgram(m_text.m_textShaderProgram);
+		GLuint mvpID = glGetUniformLocation(m_text.m_textShaderProgram, "mvp");
+		
+		for (auto [entity, text] : textRenderables.each())
+		{
+			//Set a default transform component and color if the object does not contain one.
+			TransformComponent textTransform;
+			glm::vec4 color = m_defaultColor;
+
+			//Change the transform component if the entity contains one.
+			if (scene.m_registry.all_of<TransformComponent>(entity)) { textTransform = scene.m_registry.get<const TransformComponent>(entity); }
+
+			//Bind color, texture and shader if entity contains material.
+			if (scene.m_registry.all_of<MaterialComponent>(entity))
+			{
+				const auto material = scene.m_registry.get<const MaterialComponent>(entity);
+
+				if (setTexture(material.texID, currentBoundTextures)) { currentBoundTextures++; }
+
+				//Change color and shaderProgram to material components color and shader.
+				color = material.color;
+			}
+
+			std::string render = std::to_string(scene.score);
+
+			renderText(text, textTransform, color, m_text.m_textShaderProgram, mvpID);
 		}
 	}
 #pragma endregion
@@ -225,15 +290,68 @@ namespace Engine
 	//Load default shader to 'fill' object. This should be changed when multiple shaders are utilized *******************
 	void Renderer::loadShaders()
 	{
-		std::string vertexData = ResourceManager::getInstance()->getShaderData("Fill.vs");
-		std::string fragmentData = ResourceManager::getInstance()->getShaderData("Fill.fs");
-
-		ShaderGenerator shaderGenerator(vertexData.c_str(), fragmentData.c_str());
-		m_programId = shaderGenerator.getProgramId();
-
+		ShaderNorms::getInstance()->assignsNewStride(m_textureCoordinates);
+		m_programId = ShaderNorms::getInstance()->getShaderReference();
 		glUseProgram(m_programId);
 	}
-	
+
+	//Render a string line of text based on the transform location. Based on https://learnopengl.com/In-Practice/Text-Rendering
+	void Renderer::renderText(const TextComponent& text, const TransformComponent& transform, const glm::vec3& color, GLuint shader, GLuint mvpID)
+	{
+		TransformComponent charPos = transform;
+
+		//Access the current shader data/program and pass the color XYZ to the textColor variable in the shader.
+		glUniform3f(glGetUniformLocation(shader, "textColor"), color.x, color.y, color.z);
+
+		std::string printLine = text.text;
+
+
+		glBindVertexArray(m_text.m_textVertices.vaoID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_text.m_textVertices.iboID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_text.m_textVertices.vboID);
+
+		// iterate through all characters in printLine, adjusting the scale and position for each character before rendering the quad.
+		Text::Character ch;
+		for (char c : printLine)
+		{
+			ch = m_text.Characters[c];
+
+			if (c != ' ')
+			{
+				//Adjust the scale of the charPos transform to reflect the scale of text.
+				charPos.scale.x = ((charPos.position.x + ch.Size.x) - (charPos.position.x + (ch.Size.x / 2)));
+				charPos.scale.y = ((charPos.position.y + ch.Size.y) - (charPos.position.y));
+
+				//Adjust the charPos transform to the correct position for the character.
+				charPos.position.x += ch.Bearing.x;
+				charPos.position.y += (((ch.maxAscent + ch.maxDescent) - ch.bitmap_top) + ((ch.Size.y - ch.Bearing.y) / (charPos.scale.y)));
+
+				//Obtain MVP using transform and window's projection matrix.
+				const glm::mat4 mvp = updateMVP(charPos, m_window.getProjectionMatrix());
+				glUniformMatrix4fv(mvpID, 1, GL_FALSE, glm::value_ptr(mvp));
+
+				// render glyph texture over quad
+				glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+				
+				// render quad
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+				// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+				charPos.position.x += (ch.Size.x/2.f); //(ch.Advance >> 6) // bitshift by 6 to get value in pixels (2^6 = 64). Unused for now
+				charPos.position.y = transform.position.y;
+			}
+			else
+			{
+				charPos.position.x += m_text.m_whiteSpaceSize/3.f;
+			}
+		}
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 	//Update an MVP matrix, with the MVP generated in the function and returned.
 	glm::mat4 Renderer::updateMVP(TransformComponent transform, glm::mat4 projection)
 	{
