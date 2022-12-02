@@ -139,7 +139,7 @@ namespace Engine
 		m_mainMenu.show();
 
 		m_gamePanel.show(window); //This function will take in an fbo when one is created
-		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition() + glm::vec2(0, m_gamePanel.titleBarHeight)); //add stuff here
+		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition() + glm::vec2(0, m_gamePanel.TITLE_BAR_HEIGHT));
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
