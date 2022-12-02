@@ -4,6 +4,7 @@
 
 #include <Engine/ResourceManagement/ShaderFillType.h>
 #include <string>
+#include <vector>
 #include <map>
 
 namespace Engine
@@ -39,6 +40,9 @@ namespace Engine
 		//access the shader given key value
 		GLuint getShaderReference(ShaderFillType::FillType fillType = ShaderFillType::DEFAULT_FILL_TYPE);
 
+		//access to the list of shader names
+		std::vector<std::string>& getShaderNames();
+
 	private:
 		ShaderNorms();
 		static ShaderNorms* m_singleton;
@@ -52,6 +56,10 @@ namespace Engine
 
 		//store binds for reference by shader name
 		std::map<std::string, int> m_advancedShaderBinds;
+		std::vector<std::string> m_advancedShaderNames
+		{
+			"SinWave"
+		};
 
 		//used to detect any change in stride
 		int m_currentStride{ -1 }, m_currentAdvancedShaderBind{ -1 };

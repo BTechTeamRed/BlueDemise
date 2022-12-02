@@ -15,6 +15,12 @@ namespace Engine
 		addShader(ShaderFillType::DEFAULT_FILL_TYPE);
 		addShader(ShaderFillType::FillType::FT_COLOR_FILL);
 		addShader(ShaderFillType::FillType::FT_GRADIENT_FILL);
+		
+		//add advanced shaders
+		for (int i = 0; i < m_advancedShaderNames.size(); i++)
+		{
+			addAdvancedShader(i, m_advancedShaderNames[i]);
+		}
 	}
 
 	ShaderNorms::~ShaderNorms()
@@ -46,7 +52,6 @@ namespace Engine
 			m_currentAdvancedShaderBind = advancedShaderBind;
 			if (m_currentAdvancedShaderBind != -1)
 			{
-				GE_CORE_INFO("Requesting shader assignment at GLuint: " + to_string(m_currentAdvancedShaderBind));
 				assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind).getAdvancedProgramId(), programId);
 
 				//quick access since we don't have a way of determining if a shader has a uniform time variable
@@ -117,14 +122,17 @@ namespace Engine
 		string asSource = ResourceManager::getInstance()->getShaderData(shaderName + ".as");
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
 			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
-		GE_CORE_INFO("[Shader Norms] Pushing (shaderName=" + shaderName + ", bind=" + to_string(bind) + ")");
-		GE_CORE_INFO("Shader GLuint: " + to_string(m_advancedShaders.at(bind).getAdvancedProgramId()));
 		m_advancedShaderBinds.insert(pair(shaderName, bind));
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
 	{
 		return m_shaders.at(shaderName).getProgramId();
+	}
+
+	std::vector<std::string>& ShaderNorms::getShaderNames()
+	{
+		return m_advancedShaderNames;
 	}
 
 	void ShaderNorms::assignProgram(GLuint shaderBind, GLuint& shaderAccessor)

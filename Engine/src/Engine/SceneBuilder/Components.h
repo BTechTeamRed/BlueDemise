@@ -9,6 +9,7 @@
 #include <functional>
 #include "Engine/Physics/AABB.h"
 #include "Engine/ResourceManagement/Audio.h"
+#include "Engine/Utilities/Log.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -109,16 +110,16 @@ namespace Engine
 		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
 			: color(color), texID(texID), texName(texName), shaderName(shaderName)
 		{
-			//shader name not previously recorded
-			if (std::find(uniqueShadersInstantiated.begin(), uniqueShadersInstantiated.end(),
-				shaderName) == uniqueShadersInstantiated.end() && shaderName != "")
+			//the bind associated with a default shader instead of advanced
+			bind = -1;
+			
+			std::vector<std::string> names = ShaderNorms::getInstance()->getShaderNames();
+			for (int i = 0; i < names.size(); i++)
 			{
-				bind = uniqueShadersInstantiated.size() - 1;
-				uniqueShadersInstantiated.push_back(shaderName);
-				ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
-			}
-			else {
-				bind = -1;
+				if (shaderName == names[i]) {
+					bind = i;
+					break;
+				}
 			}
 		}
 
@@ -126,6 +127,7 @@ namespace Engine
 		std::string texName;
 		GLuint texID;
 		std::string shaderName;
+		/*
 		inline static std::vector<std::string> uniqueShadersInstantiated{
 			//The following values can be known as NOT ALLOWED. They don't get instantiated in the level script
 			//but somewhere in the modules. Once this is found, the default values of this vector can be removed.
@@ -133,6 +135,7 @@ namespace Engine
 			//advanced shader which can be denoted by the .as extension.
 			"TextureFill"
 		};
+		*/
 		int bind;
 	};
 
