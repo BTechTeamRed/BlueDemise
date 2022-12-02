@@ -14,7 +14,7 @@ namespace Engine
 	void GamePanel::show(Window& window)
 	{
 		ImGui::PushFont(s_fonts["MyriadPro_bold_18"]);
-		s_style->Colors[ImGuiCol_Text] = darkCyan;
+		s_style->Colors[ImGuiCol_Text] = DARK_CYAN;
 
 		ImGui::Begin("GamePanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |

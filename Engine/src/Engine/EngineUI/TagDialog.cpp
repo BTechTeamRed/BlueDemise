@@ -44,7 +44,7 @@ namespace Engine
 			ImGui::SetWindowSize("TagDialog", ImVec2(m_dimension.x, m_dimension.y));
 
 			ImGui::PushFont(s_fonts["MyriadPro_14"]);
-			s_style->Colors[ImGuiCol_Text] = offWhite;
+			s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 			ImGui::Text("Enter a tag:");
 
@@ -59,7 +59,7 @@ namespace Engine
 			ImGui::PopFont();
 
 			ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
-			s_style->Colors[ImGuiCol_Text] = white;
+			s_style->Colors[ImGuiCol_Text] = WHITE;
 
 			if (ImGui::Button("Okay", ImVec2(m_buttonDimension.x, m_buttonDimension.y)))
 			{

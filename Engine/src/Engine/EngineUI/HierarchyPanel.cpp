@@ -60,10 +60,10 @@ namespace Engine
 		ImGui::SetWindowSize("HierarchyPanel", ImVec2(m_dimension.x, m_dimension.y));
 
 		//defines the title section above the UI element
-		partition("MyriadPro_bold_18", "Entities", darkCyan);
+		partition("MyriadPro_bold_18", "Entities", DARK_CYAN);
 
 		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
-		s_style->Colors[ImGuiCol_Text] = white;
+		s_style->Colors[ImGuiCol_Text] = WHITE;
 
 		m_isAddButtonClicked = false;
 
@@ -75,7 +75,7 @@ namespace Engine
 		ImGui::PopFont();
 
 		ImGui::PushFont(s_fonts["MyriadPro_14"]);
-		s_style->Colors[ImGuiCol_Text] = offWhite;
+		s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 		if (m_entities.empty())
 		{

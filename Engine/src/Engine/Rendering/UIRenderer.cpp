@@ -105,23 +105,23 @@ namespace Engine
 		ImGui::GetStyle().GrabRounding = 5.0f;
 		ImGui::GetStyle().FrameBorderSize = 1.0f;
 
-		ImGui::GetStyle().Colors[ImGuiCol_Border] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_Border] = UserInterface::LIGHT_BLUE;
 
-		ImGui::GetStyle().Colors[ImGuiCol_Header] = UserInterface::lightBlue;
-		ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = UserInterface::lightBlue;
-		ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_Header] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = UserInterface::LIGHT_BLUE;
 
-		ImGui::GetStyle().Colors[ImGuiCol_FrameBg] = UserInterface::darkGrey;
-		ImGui::GetStyle().Colors[ImGuiCol_FrameBgActive] = UserInterface::lightBlue;
-		ImGui::GetStyle().Colors[ImGuiCol_FrameBgHovered] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBg] = UserInterface::DARK_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgHovered] = UserInterface::LIGHT_BLUE;
 
-		ImGui::GetStyle().Colors[ImGuiCol_Button] = UserInterface::darkGrey;
-		ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = UserInterface::lightBlue;
-		ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = UserInterface::lightBlue;
+		ImGui::GetStyle().Colors[ImGuiCol_Button] = UserInterface::DARK_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = UserInterface::LIGHT_BLUE;
 
-		ImGui::GetStyle().Colors[ImGuiCol_CheckMark] = UserInterface::lightGrey;
-		ImGui::GetStyle().Colors[ImGuiCol_SliderGrab] = UserInterface::lightGrey;
-		ImGui::GetStyle().Colors[ImGuiCol_SliderGrabActive] = UserInterface::lightGrey;
+		ImGui::GetStyle().Colors[ImGuiCol_CheckMark] = UserInterface::LIGHT_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrab] = UserInterface::LIGHT_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrabActive] = UserInterface::LIGHT_GREY;
 
 		return true;
 

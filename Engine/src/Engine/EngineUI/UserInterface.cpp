@@ -10,14 +10,14 @@ namespace Engine
 	std::unordered_map<std::string, ImFont*> UserInterface::s_fonts;
 
 	//define the ImGUI vec4s for each colour
-	ImVec4 UserInterface::lightGrey = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-	ImVec4 UserInterface::darkGrey = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
-	ImVec4 UserInterface::white = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	ImVec4 UserInterface::offWhite = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
-	ImVec4 UserInterface::darkBlue = UserInterface::ConvertColors(20, 13, 145);
-	ImVec4 UserInterface::lightBlue = UserInterface::ConvertColors(14, 127, 231);
-	ImVec4 UserInterface::darkCyan = UserInterface::ConvertColors(12, 186, 223);
-	ImVec4 UserInterface::lightCyan = UserInterface::ConvertColors(10, 223, 217);
+	const ImVec4 UserInterface::LIGHT_GREY = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+	const ImVec4 UserInterface::DARK_GREY = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
+	const ImVec4 UserInterface::WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const ImVec4 UserInterface::OFF_WHITE = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+	const ImVec4 UserInterface::DARK_BLUE = UserInterface::ConvertColors(20, 13, 145);
+	const ImVec4 UserInterface::LIGHT_BLUE = UserInterface::ConvertColors(14, 127, 231);
+	const ImVec4 UserInterface::DARK_CYAN = UserInterface::ConvertColors(12, 186, 223);
+	const ImVec4 UserInterface::LIGHT_CYAN = UserInterface::ConvertColors(10, 223, 217);
 
 	//initializes UI that can be used with provided GLFWwindow
 	bool UserInterface::initialize(GLFWwindow* window)

@@ -17,9 +17,9 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_bold_18", "Entities", darkBlue);
+		partition("MyriadPro_bold_18", "Entities", DARK_BLUE);
 
-		s_style->Colors[ImGuiCol_Text] = lightCyan;
+		s_style->Colors[ImGuiCol_Text] = LIGHT_CYAN;
 
 		//displays text in the UI element
 		ImGui::Text("Player");

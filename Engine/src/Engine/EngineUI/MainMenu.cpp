@@ -7,7 +7,7 @@ namespace Engine
 		if (ImGui::BeginMainMenuBar())
 		{
 			ImGui::PushFont(s_fonts["MyriadPro_14"]);
-			s_style->Colors[ImGuiCol_Text] = offWhite;
+			s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 			m_isSaveItemClicked = false;
 

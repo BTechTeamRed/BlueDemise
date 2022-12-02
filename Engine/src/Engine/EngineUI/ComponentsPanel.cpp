@@ -46,12 +46,12 @@ namespace Engine
 		ImGui::SetWindowSize(m_name.c_str(), ImVec2(m_dimension.x, m_dimension.y));
 
 		//defines the title section above the UI element
-		partition("MyriadPro_bold_18", m_name, darkCyan);
+		partition("MyriadPro_bold_18", m_name, DARK_CYAN);
 
 		m_isAddButtonClicked = false;
 
 		ImGui::PushFont(s_fonts["MyriadPro_14"]);
-		s_style->Colors[ImGuiCol_Text] = offWhite;
+		s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 		for (const auto& component : m_components)
 		{
@@ -77,7 +77,7 @@ namespace Engine
 		setSpacing(3);
 
 		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
-		s_style->Colors[ImGuiCol_Text] = white;
+		s_style->Colors[ImGuiCol_Text] = WHITE;
 
 		if (ImGui::Button("Add component to selected entity", ImVec2(250, 25)))
 		{

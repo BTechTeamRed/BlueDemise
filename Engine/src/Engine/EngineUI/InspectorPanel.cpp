@@ -44,10 +44,10 @@ namespace Engine
 				auto* tag = &(m_registry->get<TagComponent>(m_entityHandle));
 				
 				//For now we use "font" as a font tag, which is ignored anyway
-				partition("MyriadPro_bold_18", "Inspector - " + tag->tag, darkCyan);
+				partition("MyriadPro_bold_18", "Inspector - " + tag->tag, DARK_CYAN);
 
 				//We must set color back to default
-				s_style->Colors[ImGuiCol_Text] = lightGrey;
+				s_style->Colors[ImGuiCol_Text] = LIGHT_GREY;
 
 				setSpacing(spacing);
 			}
@@ -56,10 +56,10 @@ namespace Engine
 			{
 				auto* transform = &(m_registry->get<TransformComponent>(m_entityHandle));
 				
-				partition("MyriadPro_bold_14", "Transform", lightCyan);
+				partition("MyriadPro_bold_14", "Transform", LIGHT_CYAN);
 
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
-				s_style->Colors[ImGuiCol_Text] = offWhite;
+				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 				
 				ImGui::SliderFloat3("Position", &transform->position.x, -25.0f, 25.0f, "%.2f");
 				ImGui::SliderFloat3("Scale", &transform->scale.x, -25.0f, 25.0f, "%.2f");
@@ -74,10 +74,10 @@ namespace Engine
 			{
 				auto* camera = &(m_registry->get<CameraComponent>(m_entityHandle));
 
-				partition("MyriadPro_bold_14", "Camera", lightCyan);
+				partition("MyriadPro_bold_14", "Camera", LIGHT_CYAN);
 
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
-				s_style->Colors[ImGuiCol_Text] = offWhite;
+				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 				//Not sure what the min/max values should be
 				ImGui::SliderFloat("Far Z", &camera->farZ, 100.0f, 1000.0f, "%.2f");
@@ -92,10 +92,10 @@ namespace Engine
 			{
 				auto* material = &(m_registry->get<MaterialComponent>(m_entityHandle));
 
-				partition("MyriadPro_bold_14", "Material", lightCyan);
+				partition("MyriadPro_bold_14", "Material", LIGHT_CYAN);
 
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
-				s_style->Colors[ImGuiCol_Text] = offWhite;
+				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 				std::string id = "Texture ID: " + std::to_string(material->texID);
 				std::string name = "Texture Name: " + material->texName;
@@ -113,10 +113,10 @@ namespace Engine
 			{
 				auto* animation = &(m_registry->get<AnimationComponent>(m_entityHandle));
 
-				partition("MyriadPro_bold_14", "Animation", lightCyan);
+				partition("MyriadPro_bold_14", "Animation", LIGHT_CYAN);
 
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
-				s_style->Colors[ImGuiCol_Text] = offWhite;
+				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 				std::string id = "ID: " + std::to_string(animation->texID);
 				std::string name = "Name: " + animation->texName;
@@ -142,7 +142,7 @@ namespace Engine
 			if (m_registry->any_of<SerializableComponent>(m_entityHandle))
 			{
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
-				s_style->Colors[ImGuiCol_Text] = offWhite;
+				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 				auto* serializable = &(m_registry->get<SerializableComponent>(m_entityHandle));
 				ImGui::Checkbox("Is serializable", &serializable->serializable);
@@ -161,7 +161,7 @@ namespace Engine
 			if (m_registry->any_of<ScriptUI>(m_entityHandle))
 			{
 				auto* script = &(m_registry->get<ScriptUI>(m_entityHandle));
-				partition("MyriadPro_bold_14", "Script - " + script->sourceFileName, lightCyan);
+				partition("MyriadPro_bold_14", "Script - " + script->sourceFileName, LIGHT_CYAN);
 			}
 		}
 
