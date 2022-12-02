@@ -54,7 +54,7 @@ namespace Engine
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;
 		std::map<int, AdvancedShaderDistributor> m_advancedShaders;
 
-		//store binds for reference by shader name
+		//store information for reference by shader name
 		std::map<std::string, int> m_advancedShaderBinds;
 		std::vector<std::string> m_advancedShaderNames
 		{
