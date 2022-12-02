@@ -216,6 +216,7 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
+			GE_CORE_INFO("Advanced shader bind: " + std::to_string(advancedShaderBind));
 			//updates the shader based on vertices component's stride value and/or advanced shader
 			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
 				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);

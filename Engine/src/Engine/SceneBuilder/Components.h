@@ -111,11 +111,14 @@ namespace Engine
 		{
 			//shader name not previously recorded
 			if (std::find(uniqueShadersInstantiated.begin(), uniqueShadersInstantiated.end(),
-				shaderName) == uniqueShadersInstantiated.end())
+				shaderName) == uniqueShadersInstantiated.end() && shaderName != "")
 			{
-				bind = uniqueShadersInstantiated.size();
+				bind = uniqueShadersInstantiated.size() - 1;
 				uniqueShadersInstantiated.push_back(shaderName);
 				ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
+			}
+			else {
+				bind = -1;
 			}
 		}
 
@@ -123,7 +126,13 @@ namespace Engine
 		std::string texName;
 		GLuint texID;
 		std::string shaderName;
-		inline static std::vector<std::string> uniqueShadersInstantiated;
+		inline static std::vector<std::string> uniqueShadersInstantiated{
+			//The following values can be known as NOT ALLOWED. They don't get instantiated in the level script
+			//but somewhere in the modules. Once this is found, the default values of this vector can be removed.
+			//Note that this does not delete the TextureFill shader but instead refrains from treating it as an
+			//advanced shader which can be denoted by the .as extension.
+			"TextureFill"
+		};
 		int bind;
 	};
 

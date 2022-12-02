@@ -46,9 +46,9 @@ namespace Engine
 			m_currentAdvancedShaderBind = advancedShaderBind;
 			if (m_currentAdvancedShaderBind != -1)
 			{
-				//assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind).getAdvancedProgramId(), programId);
+				GE_CORE_INFO("Requesting shader assignment at GLuint: " + to_string(m_currentAdvancedShaderBind));
+				assignProgram(m_advancedShaders.at(m_currentAdvancedShaderBind).getAdvancedProgramId(), programId);
 
-				/*
 				//quick access since we don't have a way of determining if a shader has a uniform time variable
 				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
@@ -58,7 +58,6 @@ namespace Engine
 					int tcountLocation = glGetUniformLocation(programId, "timeCounter");
 					glUniform1f(tcountLocation, timeCount);
 				}
-				*/
 			}
 			else
 			{
@@ -119,7 +118,8 @@ namespace Engine
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
 			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
 		GE_CORE_INFO("[Shader Norms] Pushing (shaderName=" + shaderName + ", bind=" + to_string(bind) + ")");
-		//m_advancedShaderBinds.insert(pair(shaderName, bind));
+		GE_CORE_INFO("Shader GLuint: " + to_string(m_advancedShaders.at(bind).getAdvancedProgramId()));
+		m_advancedShaderBinds.insert(pair(shaderName, bind));
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
