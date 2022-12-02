@@ -9,7 +9,6 @@
 #include <functional>
 #include "Engine/Physics/AABB.h"
 #include "Engine/ResourceManagement/Audio.h"
-#include "Engine/Utilities/Log.h"
 
 /// Container file for all components.
 ///	As per the Entt specification, components are structs with data.
@@ -127,15 +126,6 @@ namespace Engine
 		std::string texName;
 		GLuint texID;
 		std::string shaderName;
-		/*
-		inline static std::vector<std::string> uniqueShadersInstantiated{
-			//The following values can be known as NOT ALLOWED. They don't get instantiated in the level script
-			//but somewhere in the modules. Once this is found, the default values of this vector can be removed.
-			//Note that this does not delete the TextureFill shader but instead refrains from treating it as an
-			//advanced shader which can be denoted by the .as extension.
-			"TextureFill"
-		};
-		*/
 		int bind;
 	};
 
