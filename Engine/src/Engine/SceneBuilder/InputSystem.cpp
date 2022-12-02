@@ -86,7 +86,7 @@ bool InputSystem::isKeyPressed(int key)
 	return m_isInit && m_keyMap[key];
 }
 
-glm::vec2& InputSystem::getCursorPos()
+glm::vec2 InputSystem::getCursorPos()
 {
 	return m_isInit ? m_cursorPos : glm::vec2(0, 0);
 }
