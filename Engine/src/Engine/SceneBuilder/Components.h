@@ -149,7 +149,7 @@ namespace Engine
 
 		//determines when to switch
 		float frameRate;
-		float deltaTime;
+		float deltaTime = 0;
 	};
 
 	//TODO: Animation controller component to allow users to easily store and switch between clips

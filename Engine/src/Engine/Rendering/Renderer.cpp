@@ -230,6 +230,11 @@ namespace Engine
 				//glUseProgram(material.shaderID);
 			}
 
+			//updates the shader based on vertices component's stride value and/or advanced shader
+			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
+				m_colorCoordinates, m_gradientCoordinates, m_programId);
+
+			//Apply animation uniform if necessary
 			if (scene.m_registry.all_of<AnimationComponent>(entity))
 			{
 				//Bind animation shader
@@ -237,16 +242,15 @@ namespace Engine
 				//Update uvMatrix uniform
 				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
 				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(anim.uvTransformMatrix));
+				auto s = scene.m_registry.get<const TagComponent>(entity).tag;
 			}
 			else {
 				//Ignore UV transformation by setting uvMatrix to an identity matrix
 				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
 				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));
-			}
+				auto s = scene.m_registry.get<const TagComponent>(entity).tag;
 
-			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
-				m_colorCoordinates, m_gradientCoordinates, m_programId);
+			}
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);

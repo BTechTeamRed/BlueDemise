@@ -9,7 +9,7 @@ namespace Engine
 	{
 	public:
 		DeltaTime(double dt = 0)
-		: m_Time(dt)
+		: m_Time(dt), m_previousTime(0)
 		{
 		}
 

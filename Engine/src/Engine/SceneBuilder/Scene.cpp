@@ -51,7 +51,7 @@ namespace Engine
 		while (!m_closeScene) //switch will be a swap condition
 		{
 			m_deltaTime.updateDeltaTime();
-			m_deltaTime = m_deltaTime > DT_THRESHOLD ? 0 : m_deltaTime;
+			m_deltaTime = m_deltaTime > DT_THRESHOLD ? DeltaTime() : m_deltaTime;
 			onRuntimeUpdate(m_deltaTime);
 		}
 

@@ -355,7 +355,7 @@ namespace Engine
 				auto spriteSize = component["spriteSize"].get<glm::vec<2, int>>();
 				auto spritesOnSheet = component["numSprites"].get<int>();
 
-				out.addComponent<AnimationComponent>(spriteSheetSize, spriteSize, numPerRow, frameRate);
+				out.addComponent<AnimationComponent>(spriteSheetSize, spriteSize, numPerRow, spritesOnSheet, frameRate);
 				break;
 			}
 			case CO_ScriptComponent:

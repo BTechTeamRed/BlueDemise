@@ -41,16 +41,19 @@ namespace Engine
 		if (component.currentIndex >= component.animationClip.size()) return false; //Cannot change to frame that is outside of clip
 		component.currentIndex = frameIndex;
 
-		//Calculate the row and 
+		//Calculate the row and column
 		int row = std::floor(component.animationClip[frameIndex] / component.numPerRow);
 		int col = component.animationClip[frameIndex] % component.numPerRow;
 
-		//Apply Scale
-		glm::vec2 scale = glm::vec2(component.spriteSize.x / component.spriteSheetSize.x, component.spriteSize.y / component.spriteSheetSize.y);
-		component.uvTransformMatrix = glm::scale(glm::mat3(1.f), scale);
+		glm::vec2 scale = glm::vec2(component.spriteSize.x / (float)component.spriteSheetSize.x, component.spriteSize.y / (float)component.spriteSheetSize.y);
 
-		//Apply Transform
-		component.uvTransformMatrix = glm::translate(component.uvTransformMatrix, glm::vec2(row * scale.x, col * scale.y));
+		//Apply Translate
+		component.uvTransformMatrix = glm::translate(glm::mat3(1.f), glm::vec2(col * scale.x, row * scale.y));
+
+		//Apply Scale
+		component.uvTransformMatrix = glm::scale(component.uvTransformMatrix, scale);
+
+		
 
 		return true;
 	}
