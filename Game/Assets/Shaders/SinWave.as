@@ -7,6 +7,7 @@
 [uniform]
 float time;
 float timeCounter;
+int tilesInstantiated;
 [in]
 [out]
 [main]

@@ -22,6 +22,12 @@ namespace Engine
 		void operator=(const ShaderNorms&) = delete;
 		static ShaderNorms* getInstance();
 
+		//sets the uniform value of a float
+		void setUniformValuef(int& bind, std::string uniformName, float value);
+
+		//sets the uniform value of an int
+		void setUniformValuei(int& bind, std::string uniformName, int value);
+
 		//load shader according to vertices component (given shader is not already loaded)
 		void update(double time, int advancedShaderBind, int stride, int& textureCoordinates,
 			int& colorCoordinates, int& gradientCoordinates, GLuint& programId);
@@ -39,6 +45,7 @@ namespace Engine
 
 		//access the shader given key value
 		GLuint getShaderReference(ShaderFillType::FillType fillType = ShaderFillType::DEFAULT_FILL_TYPE);
+		GLuint getAdvancedShaderReference(int bind);
 
 		//access to the list of shader names
 		std::vector<std::string>& getShaderNames();
