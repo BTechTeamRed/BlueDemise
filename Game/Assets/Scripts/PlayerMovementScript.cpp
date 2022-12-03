@@ -31,11 +31,12 @@ namespace Engine
 						auto player = m_entity;
 						int x = transform.position.x + 36;
 						int y = transform.position.y - 104;
-						player.addComponent<PositionLerpComponent>(glm::vec3(x, y, 0), 50.f);
+						auto& playerTransform = player.getComponent<TransformComponent>();
+						player.addComponent<PositionLerpComponent>(glm::vec3(x, y, playerTransform.position.z), 50.f);
 
 						auto& anim = player.getComponent<AnimationComponent>();
 						//Change animations
-						auto& playerTransform = player.getComponent<TransformComponent>();
+
 						if (playerTransform.position.x >= x && playerTransform.position.y >= y) { //Moving Right
 							anim.animationClip = m_clipSide;
 							anim.currentIndex = 0;

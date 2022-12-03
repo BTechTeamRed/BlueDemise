@@ -4,6 +4,66 @@
       {
         "components": [
           {
+            "name": "TransformComponent",
+            "position": {
+              "x": 896.0,
+              "y": 412.0,
+              "z": 2.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "SpriteSheet.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "PlayerMovementScript"
+          },
+          {
+            "name": "AudioComponent",
+            "soundFileName": "FOLEY_FOOTSTEP.wav"
+          },
+          {
+            "name": "AnimationComponent",
+            "spriteSheetSize": {
+              "x": 288,
+              "y": 288
+            },
+            "spriteSize": {
+              "x": 96,
+              "y": 96
+            },
+            "frameRate": 0.3,
+            "numPerRow": 3,
+            "numSprites": 9
+          }
+        ],
+        "tag": "player"
+      },
+      {
+        "components": [
+          {
             "name": "ScriptComponent",
             "scriptName": "Score"
           }
@@ -102,7 +162,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -157,7 +217,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -212,7 +272,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -267,7 +327,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -322,7 +382,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -377,7 +437,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -432,7 +492,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -487,7 +547,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -542,7 +602,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -597,7 +657,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -652,7 +712,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -707,7 +767,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -762,7 +822,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -817,7 +877,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -872,7 +932,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -927,7 +987,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -982,7 +1042,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1037,7 +1097,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1092,7 +1152,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1147,7 +1207,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1202,7 +1262,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1257,7 +1317,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1312,7 +1372,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1367,7 +1427,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			"shaderName": "TextureFill",
+            "shaderName": "TextureFill",
             "texName": "tileTemp.png"
           },
           {
@@ -1393,66 +1453,6 @@
           }
         ],
         "tag": "tile1"
-      },
-      {
-        "components": [
-          {
-            "name": "TransformComponent",
-            "position": {
-              "x": 896.0,
-              "y": 412.0,
-              "z": 2.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 128.0,
-              "y": 128.0,
-              "z": 1.0
-            }
-          },
-          {
-            "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 1.0,
-              "r": 1.0
-            },
-            "name": "MaterialComponent",
-            "shaderName": "TextureFill",
-            "texName": "SpriteSheet.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "PlayerMovementScript"
-          },
-          {
-            "name": "AudioComponent",
-            "soundFileName": "FOLEY_FOOTSTEP.wav"
-          },
-          {
-            "name": "AnimationComponent",
-            "spriteSheetSize": {
-              "x": 288,
-              "y": 288
-            },
-            "spriteSize": {
-              "x": 96,
-              "y": 96
-            },
-            "frameRate": 0.3,
-            "numPerRow": 3,
-            "numSprites": 9
-          }
-        ],
-        "tag": "player"
       },
       {
         "components": [

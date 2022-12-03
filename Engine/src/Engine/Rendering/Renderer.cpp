@@ -70,7 +70,7 @@ namespace Engine
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Sets the color of the 'clear' command. This is a dark grey
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
+		glClearColor(1.f, 0.1f, 0.1f, 1);
 
 		m_text.initializeText();
 	}
@@ -145,8 +145,6 @@ namespace Engine
 	//From scene, we should grab all the entities within that scene object and render each one.
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		//Bind the FBO for draw calls to render to.
 		m_window.bindFrameBuffer();
 
@@ -199,8 +197,15 @@ namespace Engine
 	//Draw all Entities within scene that contain a vertices component.
 	void Renderer::drawEntities(Scene& scene)
 	{
+		//https://skypjack.github.io/entt/md_docs_md_entity.html, "Sorting: is it Possible", "A full-owning group is the fastest tool a user can expect to use to iterate multiple components at once"
+		//
 		//Get entities that contain vertices component.
-		const auto renderables = scene.getEntities<const VerticesComponent>();
+		auto renderables = scene.m_registry.group<VerticesComponent, TransformComponent>();
+		renderables.sort<TransformComponent>([](const auto& lhs, const auto& rhs)
+		{
+			return lhs.position.z < rhs.position.z;
+		});
+		
 
 		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
@@ -208,14 +213,18 @@ namespace Engine
 		glUseProgram(m_programId);
 
 		//For each entitiy with a vertices component, render it.
-		for (auto [entity, vertices] : renderables.each())
+		for (auto entity : renderables)
 		{
+			auto& vertices = renderables.get<VerticesComponent>(entity); 
+			auto& transform = renderables.get<TransformComponent>(entity);
+
+
 			//Set a default transform component and color if the object does not contain one.
-			TransformComponent transform;
+			//TransformComponent transform;
 			glm::vec4 color = m_defaultColor;
 
 			//Change the transform component if the entity contains one.
-			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
+			//if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
 
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
