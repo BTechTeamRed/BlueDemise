@@ -395,10 +395,13 @@ namespace Engine
 	{
 		//Setup model view matrix
 		glm::mat4 mvm = glm::mat4(1.f);
+		glm::vec3 toCenter(transform.scale.x / 2.f, transform.scale.y / 2.f, 0.f);
 		mvm = glm::translate(mvm, transform.position);
+		mvm = glm::translate(mvm, toCenter);
 		mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
 		mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
 		mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
+		mvm = glm::translate(mvm, -toCenter);
 		mvm = glm::scale(mvm, transform.scale);
 
 		//Calculate MVP
