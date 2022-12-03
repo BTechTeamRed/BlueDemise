@@ -160,6 +160,12 @@ namespace Engine
 			animationSystem.updateAnimation(dt, anim);
 		}
 
+		//Update Lerps
+		auto lerps = scene.getEntities<PositionLerpComponent, TransformComponent>();
+		for (auto& [entity, lerp, trans] : lerps.each()) {
+			if(animationSystem.updatePositionLerps(dt, lerp, trans)) scene.m_registry.remove<PositionLerpComponent>(entity);
+		}
+
 
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);

@@ -225,6 +225,17 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<PositionLerpComponent>())
+		{
+			auto c = entity.getComponent<PositionLerpComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_PositionLerpComponent);
+			j["speed"] = c.speed;
+			j["target"] = c.target;
+
+			components.push_back(j);
+		}
+
 		if (entity.hasComponent<VerticesComponent>())
 		{
 			auto c = entity.getComponent<VerticesComponent>();
@@ -356,6 +367,14 @@ namespace Engine
 				auto spritesOnSheet = component["numSprites"].get<int>();
 
 				out.addComponent<AnimationComponent>(spriteSheetSize, spriteSize, numPerRow, spritesOnSheet, frameRate);
+				break;
+			}
+			case CO_PositionLerpComponent:
+			{
+				auto speed = component["speed"].get<float>();
+				auto target = component["target"].get<glm::vec3>();
+
+				out.addComponent<PositionLerpComponent>(target, speed);
 				break;
 			}
 			case CO_ScriptComponent:

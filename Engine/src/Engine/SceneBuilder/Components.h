@@ -154,6 +154,14 @@ namespace Engine
 
 	//TODO: Animation controller component to allow users to easily store and switch between clips
 
+	struct PositionLerpComponent
+	{
+		PositionLerpComponent() = default;
+		PositionLerpComponent(glm::vec3 target, float speed) : target(target), speed(speed) {}
+		glm::vec3 target;
+		float speed;
+	};
+
 	//Component that contains a string for rendering text to the screen.
 	struct TextComponent
 	{

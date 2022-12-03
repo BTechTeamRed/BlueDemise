@@ -28,6 +28,7 @@ namespace Engine
 			CO_MaterialComponent,
 			CO_TextComponent,
 			CO_AnimationComponent,
+			CO_PositionLerpComponent,
 			CO_VerticesComponent,
 			CO_SerializableComponent,
 			CO_ScriptComponent,
@@ -48,6 +49,7 @@ namespace Engine
 			if (component == "TransformComponent") return CO_TransformComponent;
 			if (component == "MaterialComponent") return CO_MaterialComponent;
 			if (component == "AnimationComponent") return CO_AnimationComponent;
+			if (component == "PositionLerpComponent") return CO_PositionLerpComponent;
 			if (component == "VerticesComponent") return CO_VerticesComponent;
 			if (component == "TextComponent") return CO_TextComponent;
 			if (component == "SerializableComponent") return CO_SerializableComponent;
