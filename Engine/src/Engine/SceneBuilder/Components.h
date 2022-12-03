@@ -120,22 +120,15 @@ namespace Engine
 					break;
 				}
 			}
-
-			//any uniforms to be set before runtime should be done here
-			if (shaderName == names[0])//"SinWave"
-			{
-				ShaderNorms::getInstance()->setUniformValuei(bind, "tilesInstantiated", ++tilesInstantiated);
-			}
 		}
 
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
 		std::string texName;
 		GLuint texID;
 		std::string shaderName;
-		int bind;
 
-		//unique reference to the tile for sinwave shader
-		inline static int tilesInstantiated{ 0 };
+		//unique reference to the advanced shader
+		int bind;
 	};
 
 	//A component containing animation data

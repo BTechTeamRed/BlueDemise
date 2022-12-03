@@ -16,6 +16,9 @@ namespace Engine
 	class ShaderNorms
 	{
 	public:
+		//any time-related uniform in the advanced shader
+		const static inline float TIME_SPEEDUP_MOD = 3.f;
+
 		//requires the stride of the default shader's vertices component
 		~ShaderNorms();
 		ShaderNorms(ShaderNorms& other) = delete;
@@ -27,6 +30,9 @@ namespace Engine
 
 		//sets the uniform value of an int
 		void setUniformValuei(int& bind, std::string uniformName, int value);
+
+		//sets the uniform value of a bool
+		void setUniformValueb(int& bind, std::string uniformName, bool value);
 
 		//load shader according to vertices component (given shader is not already loaded)
 		void update(double time, int advancedShaderBind, int stride, int& textureCoordinates,

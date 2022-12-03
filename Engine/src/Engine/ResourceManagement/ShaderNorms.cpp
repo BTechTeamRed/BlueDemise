@@ -50,10 +50,16 @@ namespace Engine
 		glUniform1i(glGetUniformLocation(m_advancedShaders.at(bind).getAdvancedProgramId(), uniformName.c_str()), value);
 	}
 
+	void ShaderNorms::setUniformValueb(int& bind, std::string uniformName, bool value)
+	{
+		glUniform1i(glGetUniformLocation(m_advancedShaders.at(bind).getAdvancedProgramId(), uniformName.c_str()),
+			!value ? 0 : 1);
+	}
+
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
-	void ShaderNorms::update(double time, int advancedShaderBind, int stride, int& textureCoordinates,
-		int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
+	void ShaderNorms::update(double time, int advancedShaderBind, int stride,
+		int& textureCoordinates, int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
 	{
 		timeCount += time;
 
@@ -68,7 +74,7 @@ namespace Engine
 				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
 					//update time variables in real-time
-					setUniformValuef(advancedShaderBind, "time", time * AdvancedShaderDistributor::TIME_SPEEDUP_MOD);
+					setUniformValuef(advancedShaderBind, "time", time * ShaderNorms::TIME_SPEEDUP_MOD);
 					setUniformValuef(advancedShaderBind, "timeCounter", timeCount);
 				}
 			}
@@ -131,6 +137,11 @@ namespace Engine
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
 			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
 		m_advancedShaderBinds.insert(pair(shaderName, bind));
+
+		if (shaderName == "SinWave")
+		{
+			setUniformValueb(bind, "tileLanded", false);
+		}
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)

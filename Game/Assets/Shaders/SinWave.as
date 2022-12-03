@@ -7,11 +7,10 @@
 [uniform]
 float time;
 float timeCounter;
-int tilesInstantiated;
 [in]
 [out]
 [main]
-if(timeCounter < 20)
+if(timeCounter < 1000)
 {
 	vec2 cPos = 2.0* uv - 1.0;
 	float cLength = length(cPos);

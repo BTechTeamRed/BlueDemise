@@ -200,7 +200,7 @@ namespace Engine
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 
-			//access to the advanced shader if it exists
+			//access to the advanced shader and tile bind if applicable
 			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.

@@ -18,9 +18,6 @@ namespace Engine
 	class AdvancedShaderDistributor
 	{
 	public:
-		//any time-related uniform in the advanced shader
-		const static inline float TIME_SPEEDUP_MOD = 2.5f;
-
 		//spreads advanced source to all default shaders unless a unique default shader is specified
 		AdvancedShaderDistributor(std::string advancedSource, ShaderGenerator& defaultShader);
 
