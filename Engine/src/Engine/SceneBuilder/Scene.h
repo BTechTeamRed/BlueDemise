@@ -18,6 +18,7 @@ namespace Engine
         bool m_switch{ false };
         int score = 1;
         std::string m_nextScene;
+		std::vector<std::string> m_sceneList;
         
         #pragma region Entity Management
         // Registry is a container to hold entities
@@ -61,6 +62,9 @@ namespace Engine
         std::string m_name;
         DeltaTime m_deltaTime{ 0 };
         PhysicsSystem* m_physics;
+
+		// Creates a new physics world and inserts physics entities
+        void createPhysics();
 
         void runEntityScripts(const DeltaTime& dt);
 
