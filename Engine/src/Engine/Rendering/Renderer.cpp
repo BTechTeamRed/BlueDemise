@@ -114,6 +114,9 @@ namespace Engine
 			if (!m_UI.initializeUI(m_window, scene))
 				GE_CORE_WARN("[Renderer] UI not initialized properly.");
 		}
+		else {
+			glEnable(GL_DEPTH_TEST);
+		}
 
 		//Create default shader.
 		loadShaders();
@@ -141,7 +144,10 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Bind the FBO for draw calls to render to.
-		m_window.bindFrameBuffer();
+		if (m_showUI)
+		{
+			m_window.bindFrameBuffer();
+		}
 
 		//Update window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
@@ -150,20 +156,28 @@ namespace Engine
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		
+
 		//Unbind the FBO.
-		m_window.unBindFrameBuffer();
+		if (m_showUI) 
+		{
+			m_window.unBindFrameBuffer();
+		}
+		else {
+			glClear(GL_DEPTH_BUFFER_BIT);
+		}
 
 		//UI window
 		if (m_showUI) 
 		{
 			m_UI.renderUI(scene, m_window);
 		}
-		else
-		{
-			//Draw the FBO to the screen.
-			glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		}
+		//else
+		//{
+		//	//Draw the FBO to the screen.
+		//	glBindFramebuffer(GL_FRAMEBUFFER, m_window.m_fboTextureID);
+		//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		//}
 
 		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());

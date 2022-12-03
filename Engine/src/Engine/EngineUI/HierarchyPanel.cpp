@@ -12,6 +12,17 @@ namespace Engine
 		return m_selectedEntity;
 	}
 
+	const std::string& HierarchyPanel::getSelectedEntityTag() const
+	{
+		for (const auto& entity : m_entities)
+		{
+			if (entity.second == m_selectedEntity)
+			{
+				return entity.first;
+			}
+		}
+	}
+
 	void HierarchyPanel::setFont(const std::string& font)
 	{
 		m_font = font;
@@ -21,6 +32,15 @@ namespace Engine
 	{
 		m_entities[entityTag] = entity;
 	}
+
+	//struct for entity list radio buttons
+	struct EntityButton 
+	{
+		bool state; // true if selected
+		std::string tag; // entity name
+		entt::entity entity; // actual entt entity 
+	};
+
 
 	void HierarchyPanel::show()
 	{
@@ -39,12 +59,11 @@ namespace Engine
 
 		ImGui::SetWindowSize("HierarchyPanel", ImVec2(m_dimension.x, m_dimension.y));
 
-		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition(m_font, "Entities", grey);
+		partition("MyriadPro_bold_18", "Entities", DARK_CYAN);
 
-		//sets the text colour to be red
-		s_style->Colors[ImGuiCol_Text] = red;
+		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
+		s_style->Colors[ImGuiCol_Text] = WHITE;
 
 		m_isAddButtonClicked = false;
 
@@ -52,6 +71,11 @@ namespace Engine
 		{
 			m_isAddButtonClicked = true;
 		}
+
+		ImGui::PopFont();
+
+		ImGui::PushFont(s_fonts["MyriadPro_14"]);
+		s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 		if (m_entities.empty())
 		{
@@ -62,15 +86,26 @@ namespace Engine
 		{
 			for (const auto& entity : m_entities)
 			{
-				if (ImGui::TreeNode(entity.first.c_str()))
+				// Initializes EntityButton struct for each entity
+				EntityButton Entity;
+				Entity.tag = entity.first.c_str();
+				Entity.entity = entity.second;
+				Entity.state = false;
+
+				// if this entity is selected, fill in the radio button
+				if (Entity.entity == m_selectedEntity) 
+				{
+					Entity.state = true;
+				}
+
+				if (ImGui::RadioButton(Entity.tag.c_str(), Entity.state))
 				{
 					m_selectedEntity = entity.second;
-					ImGui::TreePop();
 				}
 			}
 		}
 
+		ImGui::PopFont();
 		ImGui::End();
-
 	}
 }
