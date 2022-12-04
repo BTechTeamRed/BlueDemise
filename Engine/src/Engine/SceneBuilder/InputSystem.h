@@ -50,7 +50,7 @@ namespace Engine
 		/// Getter for current position of the cursor
 		/// </summary>
 		/// <returns>The current position of the cursor if initialized</returns>
-		glm::vec2& getCursorPos();
+		glm::vec2 getCursorPos();
 		/// <summary>
 		/// Seetter for the callback when the window is resized
 		/// </summary>

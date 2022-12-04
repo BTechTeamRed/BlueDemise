@@ -15,6 +15,8 @@ namespace Engine
 
 		entt::entity getSelectedEntity() const;
 
+		const std::string& getSelectedEntityTag() const;
+
 		void setFont(const std::string& font);
 
 		void addEntity(const std::string& entityTag, entt::entity entity);

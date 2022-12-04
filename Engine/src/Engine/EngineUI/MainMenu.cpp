@@ -6,8 +6,8 @@ namespace Engine
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
-			//sets the font colour to be white
-			//s_style->Colors[ImGuiCol_Text] = white;
+			ImGui::PushFont(s_fonts["MyriadPro_14"]);
+			s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 			m_isSaveItemClicked = false;
 
@@ -75,6 +75,7 @@ namespace Engine
 				ImGui::EndMenu();
 			}
 
+			ImGui::PopFont();
 			ImGui::EndMainMenuBar();
 		}
 	}

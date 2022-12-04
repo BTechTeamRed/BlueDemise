@@ -43,8 +43,12 @@ namespace Engine
 		UIRenderer m_UI;
 		Text m_text;
 
-		//flag, if true: ui is rendered, if false: no ui is rendered
-		bool m_showUI = true;
+		//flag, if in dubug mode: ui is rendered, if in release mode: no ui is rendered
+		#ifdef NDEBUG
+			const bool m_showUI = false; //release
+		#else
+			const bool m_showUI = true; //debug
+		#endif
 
 		//Sets the default color used for components that would be rendered, but do not have a material. This is a gray.
 		glm::vec4 m_defaultColor{ .5f,.5f,.5f,1.0f };

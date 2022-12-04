@@ -258,6 +258,16 @@ namespace Engine
 			components.push_back(j);
 		}
 
+		if (entity.hasComponent<ScriptUI>() && !entity.hasComponent<ScriptComponent>())
+		{
+			auto c = entity.getComponent<ScriptUI>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ScriptComponent);
+			j["scriptName"] = c.sourceFileName;
+
+			components.push_back(j);
+		}
+
 		//add all components and tag to json
 		nlohmann::json entityJson;
 		entityJson["components"] = components;
@@ -349,6 +359,7 @@ namespace Engine
 			case CO_ScriptComponent:
 			{
 				std::string scriptName = component["scriptName"];
+				out.addComponent<ScriptUI>(scriptName);
 				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
 				break;
 			}
