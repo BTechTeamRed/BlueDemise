@@ -1,10 +1,31 @@
 #include "ExplorerPanel.h"
+#include <filesystem>
+#include <iostream>
+#include <string>
 
 namespace Engine
 {
+	bool ExplorerPanel::isAddButtonClicked() 
+	{
+		bool isClicked = m_isAddButtonClicked;
+		m_isAddButtonClicked = false;
+		return isClicked;
+	}
+
+	const std::string& ExplorerPanel::getSelectedScript() const
+	{
+		return m_selectedScript;
+	}
+
+	//struct for radio buttons for scripts
+	struct ScriptButton
+	{
+		bool state; // true if selected
+		std::string tag; // script name
+	};
+
 	void ExplorerPanel::show()
 	{
-
 		ImGui::Begin("ExplorerPanel", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
@@ -22,37 +43,57 @@ namespace Engine
 
 		//Need some .otf/.ttf font files
 		//defines the title section above the UI element
-		partition("MyriadPro_Bold_16", "Explorer", grey);
+		partition("MyriadPro_bold_18", "Explorer", DARK_CYAN);
 
-		//sets the text colour to be green
-		s_style->Colors[ImGuiCol_Text] = green;
+		ImGui::PushFont(s_fonts["MyriadPro_14"]);
+		s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
 		//creates a drop down where if x is true (open), display y 
-		if (ImGui::TreeNode("Asset folder"))
+		if (ImGui::TreeNode("Scripts"))
 		{
-			if (ImGui::TreeNode("Models"))
-			{
-				ImGui::TreePop();
-			}
+			std::string path = "Assets\\Scripts\\";
 
-			if (ImGui::TreeNode("Textures"))
+			for (const auto& entry : std::filesystem::directory_iterator(path))
 			{
-				ImGui::TreePop();
-			}
+				auto filename = entry.path().u8string().substr(path.size());
 
-			if (ImGui::TreeNode("Sprites"))
-			{
-				ImGui::TreePop();
-			}
+				if (filename.find(".cpp") != std::string::npos)
+				{
+					// Initializes ScriptButton struct for each scritp
+					ScriptButton Script;
+					Script.tag = filename;
+					Script.state = false;
 
-			if (ImGui::TreeNode("Audio"))
-			{
-				ImGui::TreePop();
+					// if this script is selected, fill in the radio button
+					if (Script.tag == m_selectedScript)
+					{
+						Script.state = true;
+					}
+
+					if (ImGui::RadioButton(Script.tag.c_str(), Script.state))
+					{
+						m_selectedScript = Script.tag;
+					}
+				}
 			}
 
 			ImGui::TreePop();
 		}
 
+		ImGui::PopFont();
+
+		setSpacing(3);
+
+		ImGui::PushFont(s_fonts["MyriadPro_bold_14"]);
+		s_style->Colors[ImGuiCol_Text] = WHITE;
+
+		if (ImGui::Button("Add script to selected entity", ImVec2(250, 25)))
+		{
+			m_isAddButtonClicked = true;
+		}
+
+
+		ImGui::PopFont();
 		ImGui::End();
 	}
 }

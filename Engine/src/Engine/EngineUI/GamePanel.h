@@ -7,9 +7,15 @@ namespace Engine
 	class GamePanel : public UserInterface
 	{
 	public:
-		void setInitialPosition();
+
+		virtual ~GamePanel() {}
+
 		void show(Window& window);
+
 		glm::vec2 getPosition() { return m_position; };
+
+		const int TITLE_BAR_HEIGHT = 36;
+
 	private:
 
 	};

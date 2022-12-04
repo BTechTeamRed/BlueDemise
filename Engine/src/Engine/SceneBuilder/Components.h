@@ -220,4 +220,9 @@ namespace Engine
 			return audioPlayer->play3DSound(soundFileName.c_str(), sound3DPosition, loop, beginPaused, useSoundEffects, false);
 		}
 	};
+
+	struct ScriptUI
+	{
+		std::string sourceFileName;
+	};
 }
