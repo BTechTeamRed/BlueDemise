@@ -32,7 +32,9 @@ namespace Engine
 		/// <param name="dimensions">Dimensions of the AABB</param>
 		/// <param name="position">Center of the AABB</param>
 		AABB(glm::vec3& dimensions, glm::vec3& position);
-		//TODO: Copy constructor
+		AABB(const AABB& other) = default;
+		AABB& operator=(const AABB& other) = default;
+
 		// D'tor
 		~AABB();
 
@@ -80,12 +82,12 @@ namespace Engine
 		/// Getter for the dimensions of the AABB
 		/// </summary>
 		/// <returns>The dimensions</returns>
-		glm::vec3& getDimensions();
+		glm::vec3 getDimensions() const;
 		/// <summary>
 		/// Getter for the position/center of the AABB
 		/// </summary>
 		/// <returns>The position</returns>
-		glm::vec3& getPosition();
+		glm::vec3 getPosition() const;
 	protected:
 	private:
 		/// <summary>

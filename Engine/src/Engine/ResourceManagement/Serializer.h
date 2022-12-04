@@ -40,7 +40,7 @@ namespace Engine
 		static bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
 
 		//Serializes scene into a json file in sceneFile
-		static nlohmann::json serializeEntity(Entity& entity, const std::string& sceneFile);
+		static nlohmann::json serializeEntity(const Entity& entity, const std::string& sceneFile);
 
 		[[nodiscard]] static Components parseComponent(const std::string& component) 
 		{

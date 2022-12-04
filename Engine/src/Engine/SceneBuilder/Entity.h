@@ -32,7 +32,7 @@ namespace Engine
 
 		//A template for getting components from an entity.
 		template<typename T>
-		T& getComponent()
+		T& getComponent() const
 		{
 			return m_scene->m_registry.get<T>(m_entityHandle);
 		}
@@ -46,7 +46,7 @@ namespace Engine
 
 		//A template to check if an entity contains a component.
 		template<typename T>
-		bool hasComponent()
+		bool hasComponent() const
 		{
 			return m_scene->m_registry.all_of<T>(m_entityHandle);
 		}

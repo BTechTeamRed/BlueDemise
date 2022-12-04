@@ -130,12 +130,12 @@ glm::vec3 AABB::getCorner(Corner corner)
 	return m_corners[corner];
 }
 
-glm::vec3& AABB::getDimensions()
+glm::vec3 AABB::getDimensions() const
 {
 	return m_dimensions;
 }
 
-glm::vec3& AABB::getPosition()
+glm::vec3 AABB::getPosition() const
 {
 	return m_position;
 }

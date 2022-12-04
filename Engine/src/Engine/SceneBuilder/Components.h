@@ -190,6 +190,9 @@ namespace Engine
 		// Create physics component with the inputed dimensions and position (at center of dimensions)
 		PhysicsComponent(glm::vec3& dimensions, glm::vec3& position)
 			: boundingBox(new AABB(dimensions, position)) {}
+		PhysicsComponent(const PhysicsComponent& other) = default;
+		PhysicsComponent& operator=(const PhysicsComponent& other) = default;
+
 		~PhysicsComponent()
 		{
 			if (boundingBox)
