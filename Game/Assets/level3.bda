@@ -47,7 +47,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -102,7 +102,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -157,7 +157,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -212,7 +212,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -267,7 +267,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -322,7 +322,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -377,7 +377,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -415,7 +415,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -470,7 +470,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -525,7 +525,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -580,7 +580,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -635,7 +635,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -690,7 +690,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -745,7 +745,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -800,7 +800,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -855,7 +855,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -910,7 +910,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -965,7 +965,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1003,7 +1003,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1041,7 +1041,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1096,7 +1096,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1151,7 +1151,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1206,7 +1206,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1261,7 +1261,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1316,7 +1316,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png"
           },
           {
@@ -1371,7 +1371,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "player.png"
           },
           {

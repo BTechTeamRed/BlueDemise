@@ -137,11 +137,11 @@ namespace Engine
 		m_advancedShaders.insert(pair(bind, AdvancedShaderDistributor(asSource,
 			m_shaders.at(ShaderFillType::FillType::FT_TEXTURE_FILL))));
 		m_advancedShaderBinds.insert(pair(shaderName, bind));
+	}
 
-		if (shaderName == "SinWave")
-		{
-			setUniformValueb(bind, "tileLanded", false);
-		}
+	void ShaderNorms::resetTimeCount()
+	{
+		timeCount = 0;
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)

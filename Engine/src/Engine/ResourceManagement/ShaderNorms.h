@@ -49,6 +49,9 @@ namespace Engine
 		void addShader(ShaderFillType::FillType shaderName);
 		void addAdvancedShader(int bind, std::string& shaderName);
 
+		//check timeCount
+		void resetTimeCount();
+
 		//access the shader given key value
 		GLuint getShaderReference(ShaderFillType::FillType fillType = ShaderFillType::DEFAULT_FILL_TYPE);
 		GLuint getAdvancedShaderReference(int bind);
