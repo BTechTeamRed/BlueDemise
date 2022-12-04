@@ -135,14 +135,14 @@ namespace Engine
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
-		std::cout << sceneJson << std::endl;
+		//std::cout << sceneJson << std::endl;
 		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 		return sceneJson.dump();
 		//TODO: Bind serialization to GUI event once we have one.
 
 	}
 
-	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
+	nlohmann::json Serializer::serializeEntity(const Entity& entity, const std::string& sceneFile)
 	{
 
 
@@ -239,12 +239,12 @@ namespace Engine
 
 		if (entity.hasComponent<PhysicsComponent>())
 		{
-			auto c = entity.getComponent<PhysicsComponent>();
+			const auto& c = entity.getComponent<PhysicsComponent>();
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
-
+			
 			components.push_back(j);
 		}
 
