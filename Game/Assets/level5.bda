@@ -53,6 +53,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "player.png",
             "color": {
               "r": 1.0,
@@ -98,6 +99,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -139,6 +141,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -180,6 +183,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -221,6 +225,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -262,6 +267,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -303,6 +309,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -344,6 +351,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -385,6 +393,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -426,6 +435,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -467,6 +477,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -508,6 +519,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -549,6 +561,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -590,6 +603,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -631,6 +645,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -672,6 +687,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -713,6 +729,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -754,6 +771,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -795,6 +813,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -836,6 +855,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -877,6 +897,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,
@@ -918,6 +939,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -959,6 +981,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -1000,6 +1023,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -1041,6 +1065,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 0.0,
@@ -1082,6 +1107,7 @@
           },
           {
             "name": "MaterialComponent",
+            "shaderName": "SinWave",
             "texName": "tileTemp.png",
             "color": {
               "r": 1.0,

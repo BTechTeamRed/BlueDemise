@@ -58,10 +58,10 @@ namespace Engine
 
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
-	void ShaderNorms::update(double time, int advancedShaderBind, int stride,
+	void ShaderNorms::update(double deltaTime, int advancedShaderBind, int stride,
 		int& textureCoordinates, int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
 	{
-		timeCount += time;
+		timeCount += deltaTime;
 
 		if (advancedShaderBind != m_currentAdvancedShaderBind)
 		{
@@ -74,7 +74,7 @@ namespace Engine
 				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
 					//update time variables in real-time
-					setUniformValuef(advancedShaderBind, "time", time * ShaderNorms::TIME_SPEEDUP_MOD);
+					setUniformValuef(advancedShaderBind, "time", deltaTime * ShaderNorms::TIME_SPEEDUP_MOD);
 					setUniformValuef(advancedShaderBind, "timeCounter", timeCount);
 				}
 			}

@@ -35,7 +35,7 @@ namespace Engine
 		void setUniformValueb(int& bind, std::string uniformName, bool value);
 
 		//load shader according to vertices component (given shader is not already loaded)
-		void update(double time, int advancedShaderBind, int stride, int& textureCoordinates,
+		void update(double deltaTime, int advancedShaderBind, int stride, int& textureCoordinates,
 			int& colorCoordinates, int& gradientCoordinates, GLuint& programId);
 
 		//loads default shader program based on stride (used only for defaults)

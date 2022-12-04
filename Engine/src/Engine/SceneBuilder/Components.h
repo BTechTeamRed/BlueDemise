@@ -115,7 +115,8 @@ namespace Engine
 			std::vector<std::string> names = ShaderNorms::getInstance()->getShaderNames();
 			for (int i = 0; i < names.size(); i++)
 			{
-				if (shaderName == names[i]) {
+				if (shaderName == names[i])
+				{
 					bind = i;
 					break;
 				}
@@ -123,9 +124,8 @@ namespace Engine
 		}
 
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
-		std::string texName;
+		std::string texName, shaderName;
 		GLuint texID;
-		std::string shaderName;
 
 		//unique reference to the advanced shader
 		int bind;
