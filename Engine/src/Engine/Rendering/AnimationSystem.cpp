@@ -7,9 +7,11 @@ namespace Engine
 	void AnimationSystem::updateAnimation(const DeltaTime& dt, AnimationComponent& component)
 	{
 		component.deltaTime += dt.getSeconds();
-		if (component.deltaTime > component.frameRate) { //enough time has elapsed since last frame update
+		if (component.deltaTime > component.frameRate) //enough time has elapsed since last frame update
+		{ 
 			component.deltaTime -= component.frameRate;
-			if (++component.currentIndex >= component.animationClip.size()) { //Loop back to the start if we are at the end of the clip
+			if (++component.currentIndex >= component.animationClip.size()) //Loop back to the start if we are at the end of the clip
+			{ 
 				//TODO: add animation mode enum to dictate whether we loop here, stop, or reverse direction
 				component.currentIndex = 0; 
 			} 
@@ -34,15 +36,14 @@ namespace Engine
 		//Apply Scale
 		component.uvTransformMatrix = glm::scale(component.uvTransformMatrix, scale);
 
-		
-
 		return true;
 	}
 
 	std::vector<int> AnimationSystem::createAnimationClip(AnimationType type, const AnimationComponent& component) const
 	{
 		std::vector<int> result;
-		switch (type) {
+		switch (type) 
+		{
 			case RT_LoopRow:
 				result = std::vector<int>(component.numPerRow);
 				//Fills result with values 0 to numPerRow - 1
@@ -51,7 +52,8 @@ namespace Engine
 
 			case RT_LoopColumn:
 				//Fills result with the first index on each row;
-				for (int i = 0; i < std::floor(component.spritesOnSheet / component.numPerRow); i++) {
+				for (int i = 0; i < std::floor(component.spritesOnSheet / component.numPerRow); i++) 
+				{
 					result.push_back(component.numPerRow * i);
 				}
 				return result;
@@ -72,11 +74,13 @@ namespace Engine
 		step *= (dt.getSeconds() == 0) ? 1.f : dt.getSeconds();
 
 		//If the step is greater than the distance, we are at our destination
-		if (glm::length(dist) < glm::length(step)) { 
+		if (glm::length(dist) < glm::length(step)) 
+		{ 
 			transform.position = lerp.target;
 			return true;
 		}
-		else {
+		else 
+		{
 			transform.position -= step;
 			return false;
 		}

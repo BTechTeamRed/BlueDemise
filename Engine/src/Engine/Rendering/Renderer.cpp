@@ -131,7 +131,8 @@ namespace Engine
 
 		//Temp code, initialize animations for testing
 		auto animations = scene.getEntities<AnimationComponent>();
-		for (auto& [entity, anim] : animations.each()) {
+		for (auto& [entity, anim] : animations.each()) 
+		{
 			anim.animationClip = animationSystem.createAnimationClip(AnimationSystem::RT_LoopAll, anim);
 			animationSystem.changeFrame(0, anim);
 		}
@@ -160,13 +161,15 @@ namespace Engine
 
 		//Update all animations
 		auto animations = scene.getEntities<AnimationComponent>();
-		for (auto& [entity, anim] : animations.each()) {
+		for (auto& [entity, anim] : animations.each()) 
+		{
 			animationSystem.updateAnimation(dt, anim);
 		}
 
 		//Update Lerps
 		auto lerps = scene.getEntities<PositionLerpComponent, TransformComponent>();
-		for (auto& [entity, lerp, trans] : lerps.each()) {
+		for (auto& [entity, lerp, trans] : lerps.each()) 
+		{
 			if(animationSystem.updatePositionLerps(dt, lerp, trans)) scene.m_registry.remove<PositionLerpComponent>(entity);
 		}
 
@@ -273,7 +276,8 @@ namespace Engine
 				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(anim.uvTransformMatrix));
 				auto s = scene.m_registry.get<const TagComponent>(entity).tag;
 			}
-			else {
+			else 
+			{
 				//Ignore UV transformation by setting uvMatrix to an identity matrix
 				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
 				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));

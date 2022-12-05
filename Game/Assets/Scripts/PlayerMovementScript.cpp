@@ -32,7 +32,7 @@ namespace Engine
 						int x = transform.position.x + 36;
 						int y = transform.position.y - 104;
 						auto& playerTransform = player.getComponent<TransformComponent>();
-						player.addComponent<PositionLerpComponent>(glm::vec3(x, y, playerTransform.position.z), 50.f);
+						player.addComponent<PositionLerpComponent>(glm::vec3(x, y, playerTransform.position.z), m_moveSpeed);
 
 						auto& anim = player.getComponent<AnimationComponent>();
 						//Change animations

@@ -4,14 +4,12 @@
 #include <vector>
 #include <string>
 
-#include "Engine/ResourceManagement/ResourceManager.h"
-#include "Engine/SceneBuilder/Components.h"
-#include "Engine/Utilities/DeltaTime.h"
-
 
 namespace Engine 
 {
 	class ResourceManager;
+	struct DeltaTime;
+	struct AnimationComponent;
 	typedef unsigned int GLuint;
 
 	class ENGINE_API AnimationSystem
