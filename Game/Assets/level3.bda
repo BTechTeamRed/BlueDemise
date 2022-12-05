@@ -1372,7 +1372,7 @@
             },
             "name": "MaterialComponent",
             "shaderName": "TextureFill",
-            "texName": "player.png"
+            "texName": "SpriteSheet.png"
           },
           {
             "name": "VerticesComponent",
@@ -1385,6 +1385,20 @@
           {
             "name": "AudioComponent",
             "soundFileName": "FOLEY_FOOTSTEP.wav"
+          },
+          {
+            "name": "AnimationComponent",
+            "spriteSheetSize": {
+              "x": 288,
+              "y": 288
+            },
+            "spriteSize": {
+              "x": 96,
+              "y": 96
+            },
+            "frameRate": 0.3,
+            "numPerRow": 3,
+            "numSprites": 9
           }
         ],
         "tag": "player"
