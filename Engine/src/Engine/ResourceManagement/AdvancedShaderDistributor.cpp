@@ -11,67 +11,43 @@ using namespace Engine::Utilities;
 namespace Engine
 {
 	AdvancedShaderDistributor::AdvancedShaderDistributor(string advancedSource,
-		std::map<ShaderFillType::FillType, ShaderGenerator>& shaders) :
-		advancedSource(advancedSource)
+		ShaderGenerator& defaultShader)
 	{
-		//extract source from default shaders
-		vertexSourceSet[0] = shaders.at(ShaderFillType::FillType::SN_TEXTURE_FILL).getVertexSource();
-		vertexSourceSet[1] = shaders.at(ShaderFillType::FillType::SN_COLOR_FILL).getVertexSource();
-		vertexSourceSet[2] = shaders.at(ShaderFillType::FillType::SN_GRADIENT_FILL).getVertexSource();
-
-		fragmentSourceSet[0] = shaders.at(ShaderFillType::FillType::SN_TEXTURE_FILL).getFragmentSource();
-		fragmentSourceSet[1] = shaders.at(ShaderFillType::FillType::SN_COLOR_FILL).getFragmentSource();
-		fragmentSourceSet[2] = shaders.at(ShaderFillType::FillType::SN_GRADIENT_FILL).getFragmentSource();
+		string vertexSourceSet = defaultShader.getVertexSource(),
+			fragmentSourceSet = defaultShader.getFragmentSource();
 
 		//load source into shader variables
-		SourceExtractor vertexDistributor[ShaderFillType::types], fragmentDistributor[ShaderFillType::types];
-		SourceExtractor advancedVertexDistributor, advancedFragmentDistributor;
+		SourceExtractor vertexDistributor, fragmentDistributor,
+			advancedVertexDistributor, advancedFragmentDistributor;
 
 		//extract default shaders
-		for (int i = 0; i < ShaderFillType::types; i++)
-		{
-			extractSource(vertexSourceSet[i], vertexDistributor[i]);
-			extractSource(fragmentSourceSet[i], fragmentDistributor[i]);
-		}
+		extractSource(vertexSourceSet, vertexDistributor);
+		extractSource(fragmentSourceSet, fragmentDistributor);
 
 		//extract advanced shader source
 		extractAdvancedSource(advancedSource, advancedVertexDistributor, advancedFragmentDistributor);
 
 		//load advanced shader source into default variables
-		for (int i = 0; i < ShaderFillType::types; i++)
-		{
-			compileSource(vertexDistributor[i], advancedVertexDistributor);
-			compileSource(fragmentDistributor[i], advancedFragmentDistributor);
+		compileSource(vertexDistributor, advancedVertexDistributor);
+		compileSource(fragmentDistributor, advancedFragmentDistributor);
 
-			//load source set into string and compile
-			string vertexSrc = "#version " + to_string(SHADER_VERSION) + "\n\n",
-				fragmentSrc = vertexSrc;
-			compileSource(vertexSrc, vertexDistributor[i]);
-			compileSource(fragmentSrc, fragmentDistributor[i]);
+		//load source set into string and compile
+		string vertexSrc = "#version " + to_string(SHADER_VERSION) + "\n\n",
+			fragmentSrc = vertexSrc;
+		compileSource(vertexSrc, vertexDistributor);
+		compileSource(fragmentSrc, fragmentDistributor);
 
-			advProgramIds[i] = ShaderGenerator(vertexSrc, fragmentSrc).getProgramId();
-		}
+		advProgramId = ShaderGenerator(vertexSrc, fragmentSrc).getProgramId();
 	}
 
-	GLuint AdvancedShaderDistributor::getAdvancedProgramId(ShaderFillType::FillType fillType)
+	GLuint AdvancedShaderDistributor::getAdvancedProgramId()
 	{
-		switch (fillType)
-		{
-		case ShaderFillType::SN_TEXTURE_FILL:
-			return advProgramIds[0];
-			break;
-		case ShaderFillType::SN_COLOR_FILL:
-			return advProgramIds[1];
-			break;
-		default:
-			return advProgramIds[2];
-			break;
-		}
+		return advProgramId;
 	}
 
 	void AdvancedShaderDistributor::extractSource(string source, SourceExtractor& se)
 	{
-		vector<string> src = split(source);
+		vector<string> src = strSplit(source);
 		bool mainExtracting = false;
 		for (int i = 0; i < src.size(); i++)
 		{
@@ -99,7 +75,7 @@ namespace Engine
 					mainExtracting = true;
 					se.mainCommands.push_back(src[i]);
 				}
-				else if(strContains(src[i], "in"))
+				else if (strContains(src[i], "in"))
 				{
 					se.inVariables.push_back(substringAtDataDeclaration(src[i]));
 				}
@@ -110,8 +86,8 @@ namespace Engine
 	void AdvancedShaderDistributor::extractAdvancedSource(string source,
 		SourceExtractor& vertexExtractor, SourceExtractor& fragmentExtractor)
 	{
-		vector<string> src = split(source);
-		bool loadingVertex, messengerAssigned = false;
+		vector<string> src = strSplit(source);
+		bool loadingVertex = true, messengerAssigned = false;
 		for (int i = 0; i < src.size(); i++)
 		{
 			//check if assigning extractor variable for vertex of fragment
@@ -164,7 +140,7 @@ namespace Engine
 
 			//Given the above data, assign the corresponding source extractor variable
 			//with the corresponding data type
-			SourceExtractor* se = ((loadingVertex) ? &vertexExtractor : &fragmentExtractor);
+			SourceExtractor* se = (loadingVertex ? &vertexExtractor : &fragmentExtractor);
 			switch (pendingMessenger)
 			{
 			case SEMessenger::SEM_PENDING_LAYOUT:
@@ -241,20 +217,6 @@ namespace Engine
 		}
 	}
 
-	vector<string> AdvancedShaderDistributor::split(string source)
-	{
-		stringstream ss(source);
-		vector<string> list;
-
-		string s;
-		while (getline(ss, s, '\n'))
-		{
-			list.push_back(s);
-		}
-
-		return list;
-	}
-
 	//Given line of code, gathers the data type and variable name i.e. mat4 mvp;
 	//from layout(location=0) in mat4 mvp;
 	string AdvancedShaderDistributor::substringAtDataDeclaration(string parent)
@@ -268,7 +230,7 @@ namespace Engine
 				break;
 			}
 		}
-		
+
 		return ((keyword != "") ? parent.substr(parent.find(keyword)) : keyword);
 	}
 }

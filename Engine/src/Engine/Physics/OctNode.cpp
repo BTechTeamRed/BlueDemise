@@ -14,7 +14,7 @@ OctNode::OctNode(glm::vec3& dimensions, glm::vec3& center, OctNode* parent)
 
 OctNode::~OctNode()
 {
-	for (int i = LTF; i <= RBB; ++i)
+	for (int i = LTF; i <= RBB && m_children; ++i)
 	{
 		if (m_children[i])
 		{

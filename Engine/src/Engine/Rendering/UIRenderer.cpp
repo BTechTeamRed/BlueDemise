@@ -22,13 +22,49 @@ namespace Engine
 
 		//Load custom fonts - we must load a different for each size we require
 		//We are using MyriadPro currently as the Freedom font does not display numeric values
-		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "Freedom_12"))
+		if (!UserInterface::loadFont("MyriadPro.otf", 12, "MyriadPro_12"))
 		{
 			//Error loading font
 			GE_CORE_ERROR("Failed to load custom fonts");
 		}
 
-		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "Freedom_18"))
+		if (!UserInterface::loadFont("MyriadPro.otf", 14, "MyriadPro_14"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro.otf", 16, "MyriadPro_16"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro.otf", 18, "MyriadPro_18"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 12, "MyriadPro_bold_12"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 14, "MyriadPro_bold_14"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 16, "MyriadPro_bold_16"))
+		{
+			//Error loading font
+			GE_CORE_ERROR("Failed to load custom fonts");
+		}
+
+		if (!UserInterface::loadFont("MyriadPro_bold.otf", 18, "MyriadPro_bold_18"))
 		{
 			//Error loading font
 			GE_CORE_ERROR("Failed to load custom fonts");
@@ -41,11 +77,10 @@ namespace Engine
 		m_tagDialog.setPosition(glm::uvec2(0.5f * window.getWidth(), 0.5f * window.getHeight()));
 
 		m_explorerPanel.setPosition(glm::uvec2(0, menuHeight));
-		m_explorerPanel.setDimension(glm::uvec2(panelWidth, window.getWidth()));
+		m_explorerPanel.setDimension(glm::uvec2(panelWidth, window.getHeight()));
 
-		m_gamePanel.setPosition(glm::uvec2(panelWidth + 3, menuHeight));
-		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3, halfWindowHeight));
-		m_gamePanel.setInitialPosition();
+		m_gamePanel.setPosition(glm::uvec2(panelWidth, menuHeight));
+		m_gamePanel.setDimension(glm::uvec2(panelWidth * 3 - 3, halfWindowHeight));
 		
 		m_hierarchyPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, menuHeight));
 		m_hierarchyPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
@@ -53,24 +88,40 @@ namespace Engine
 		m_inspectorPanel.setPosition(glm::uvec2(panelWidth * 4 - 4, halfWindowHeight + menuHeight));
 		m_inspectorPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 1, menuHeight));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
-
+		m_componentsPanel.setPosition(glm::uvec2(panelWidth * 3 - 3, halfWindowHeight + menuHeight));
+		m_componentsPanel.setDimension(glm::uvec2(panelWidth, halfWindowHeight));
 
 		//TODO - Does this need to be read from a .json file?
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Transform");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Camera");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Material");
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Serializable");
-		//m_componentsPanels[(int)ComponentsPanel::PanelType::Components].addComponent("Animation");
-
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 4 - 2, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
-
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setPosition(glm::uvec2(panelWidth * 3 - 3, menuHeight + 0.5f * (window.getHeight() - menuHeight)));
-		m_componentsPanels[(int)ComponentsPanel::PanelType::Components].setDimension(glm::uvec2(panelWidth, halfWindowHeight));
+		m_componentsPanel.addComponent("Transform");
+		m_componentsPanel.addComponent("Camera");
+		m_componentsPanel.addComponent("Material");
+		m_componentsPanel.addComponent("Serializable");
+		//m_componentsPanels.addComponent("Animation");
 
 		m_inspectorPanel.setRegistry(&scene.m_registry);
+
+		//Set the style of the UI
+		ImGui::GetStyle().FrameRounding = 5.0f;
+		ImGui::GetStyle().GrabRounding = 5.0f;
+		ImGui::GetStyle().FrameBorderSize = 1.0f;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Border] = UserInterface::LIGHT_BLUE;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Header] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_HeaderHovered] = UserInterface::LIGHT_BLUE;
+
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBg] = UserInterface::DARK_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_FrameBgHovered] = UserInterface::LIGHT_BLUE;
+
+		ImGui::GetStyle().Colors[ImGuiCol_Button] = UserInterface::DARK_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonActive] = UserInterface::LIGHT_BLUE;
+		ImGui::GetStyle().Colors[ImGuiCol_ButtonHovered] = UserInterface::LIGHT_BLUE;
+
+		ImGui::GetStyle().Colors[ImGuiCol_CheckMark] = UserInterface::LIGHT_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrab] = UserInterface::LIGHT_GREY;
+		ImGui::GetStyle().Colors[ImGuiCol_SliderGrabActive] = UserInterface::LIGHT_GREY;
 
 		return true;
 
@@ -88,16 +139,13 @@ namespace Engine
 		m_mainMenu.show();
 
 		m_gamePanel.show(window); //This function will take in an fbo when one is created
-		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition());
+		InputSystem::getInstance()->setWindowOffset(m_gamePanel.getPosition() + glm::vec2(0, m_gamePanel.TITLE_BAR_HEIGHT));
 
 		m_explorerPanel.show();
 		m_hierarchyPanel.show();
 		m_inspectorPanel.show();
 
-		for (auto& panel : m_componentsPanels)
-		{
-			panel.show();
-		}
+		m_componentsPanel.show();
 
 		m_tagDialog.update();
 		m_tagDialog.show();
@@ -140,10 +188,31 @@ namespace Engine
 			//Do nothing if we cancel
 		}
 
-		if (m_componentsPanels[2].isAddButtonClicked())
+		if (m_explorerPanel.isAddButtonClicked())
+		{
+			auto scriptName = m_explorerPanel.getSelectedScript();
+			if (scriptName != "")
+			{
+				auto entityName = m_hierarchyPanel.getSelectedEntityTag();
+				scriptName.erase(scriptName.find(".cpp"), 4);
+
+				//Get the handle on the selected entity to add the component to
+				auto handle = m_hierarchyPanel.getSelectedEntity();
+
+				auto script = scene.m_registry.any_of<ScriptUI>(handle);
+
+				//Only add this component if there isn't already one attached
+				if (!script)
+				{
+					scene.m_registry.emplace<ScriptUI>(handle, scriptName);
+				}
+			}
+		}
+
+		if (m_componentsPanel.isAddButtonClicked())
 		{
 			//Check which component was selected to be added to entity
-			auto component = m_componentsPanels[2].getSelectedComponent();
+			auto component = m_componentsPanel.getSelectedComponent();
 
 			//Get the handle on the selected entity to add the component to
 			auto handle = m_hierarchyPanel.getSelectedEntity();

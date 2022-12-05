@@ -16,12 +16,16 @@ namespace Engine
 	public:
 
 		//initializes ImGUI vec4s to be used for colours
-		static ImVec4 red;
-		static ImVec4 green;
-		static ImVec4 darkGreen;
-		static ImVec4 blue;
-		static ImVec4 grey;
-		static ImVec4 white;
+		static const ImVec4 LIGHT_GREY;
+		static const ImVec4 DARK_GREY;
+		static const ImVec4 WHITE;
+		static const ImVec4 OFF_WHITE;
+		static const ImVec4 DARK_BLUE;
+		static const ImVec4 LIGHT_BLUE;
+		static const ImVec4 DARK_CYAN;
+		static const ImVec4 LIGHT_CYAN;
+
+		static ImVec4 ConvertColors(int r, int g, int b);
 
 		//initialize start and end functions
 		static void startUI();
@@ -29,8 +33,6 @@ namespace Engine
 
 		//loadFont takes in a string file name, float font size, and string tag and returns true if the font is valid
 		static bool loadFont(const std::string& fontFilename, float fontSize, const std::string& tag);
-
-
 
 		virtual ~UserInterface() = 0 {};
 
@@ -48,7 +50,7 @@ namespace Engine
 		void setSpacing(int amount);
 
 		//partition defines the title section of the UI element
-		void partition(const std::string& fontTag, const std::string& title = "", const ImVec4& color = white);
+		void partition(const std::string& fontTag, const std::string& title = "", const ImVec4& color = WHITE);
 
 		virtual void update() {}
 		virtual void show() {}

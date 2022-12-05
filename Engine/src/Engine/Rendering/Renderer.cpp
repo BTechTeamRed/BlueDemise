@@ -31,7 +31,7 @@ namespace Engine
 		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
-			GE_CORE_ERROR("Failed to initialize window");
+			GE_CORE_ERROR("[Renderer] Failed to initialize window");
 			glfwTerminate();
 			exit(0);
 		}
@@ -52,7 +52,7 @@ namespace Engine
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			GE_CORE_ERROR("Failed to initialize GLAD");
+			GE_CORE_ERROR("[Renderer] Failed to initialize GLAD");
 			glfwTerminate();
 
 			throw std::runtime_error("Failed to initialize GLAD");
@@ -114,6 +114,9 @@ namespace Engine
 			if (!m_UI.initializeUI(m_window, scene))
 				GE_CORE_WARN("[Renderer] UI not initialized properly.");
 		}
+		else {
+			glEnable(GL_DEPTH_TEST);
+		}
 
 		//Create default shader.
 		loadShaders();
@@ -146,7 +149,10 @@ namespace Engine
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
 		//Bind the FBO for draw calls to render to.
-		m_window.bindFrameBuffer();
+		if (m_showUI)
+		{
+			m_window.bindFrameBuffer();
+		}
 
 		//Update window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
@@ -168,20 +174,28 @@ namespace Engine
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene);
 
+		
+
 		//Unbind the FBO.
-		m_window.unBindFrameBuffer();
+		if (m_showUI) 
+		{
+			m_window.unBindFrameBuffer();
+		}
+		else {
+			glClear(GL_DEPTH_BUFFER_BIT);
+		}
 
 		//UI window
 		if (m_showUI) 
 		{
 			m_UI.renderUI(scene, m_window);
 		}
-		else
-		{
-			//Draw the FBO to the screen.
-			glBindTexture(GL_TEXTURE_2D, m_window.m_fboTextureID);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		}
+		//else
+		//{
+		//	//Draw the FBO to the screen.
+		//	glBindFramebuffer(GL_FRAMEBUFFER, m_window.m_fboTextureID);
+		//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		//}
 
 		//Swap the glfw buffers.
 		glfwSwapBuffers(m_window.getWindow());
@@ -229,7 +243,7 @@ namespace Engine
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 
-			//access to the advanced shader if it exists
+			//access to the advanced shader and tile bind if applicable
 			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.
@@ -246,8 +260,8 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
-				m_colorCoordinates, m_gradientCoordinates, m_programId);
+			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
+				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
 
 			//Apply animation uniform if necessary
 			if (scene.m_registry.all_of<AnimationComponent>(entity))

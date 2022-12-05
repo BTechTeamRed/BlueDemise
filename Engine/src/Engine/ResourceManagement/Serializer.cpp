@@ -82,22 +82,22 @@ namespace Engine
 		
 		if (!Renderer::getInstance())
 		{
-			GE_CORE_FATAL("Failed to initialize opengl");
+			GE_CORE_FATAL("[Serializer] Failed to initialize opengl");
 			return false;
 		}
 
 		auto data = ResourceManager::getInstance()->getJsonData(sceneFile);
 		if (!(data.find("scene") != data.end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-			GE_CORE_FATAL("No scene found.");
+			GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+			GE_CORE_FATAL("[Serializer] No scene found.");
 			return false;
 		}
 
 		if (!(data["scene"].find("name") != data["scene"].end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-			GE_CORE_FATAL("Scene does not contain the \"name\" attribute.");
+			GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+			GE_CORE_FATAL("[Serializer] Scene does not contain the \"name\" attribute.");
 			return false;
 		}
 
@@ -108,8 +108,8 @@ namespace Engine
 		{
 			if (!(item.find("tag") != item.end()))
 			{
-				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-				GE_CORE_FATAL("An entity does not contain the \"tag\" attribute");
+				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+				GE_CORE_FATAL("[Serializer] An entity does not contain the \"tag\" attribute");
 				return false;
 			}
 
@@ -118,8 +118,8 @@ namespace Engine
 			if (!tryDeserializeEntity(entity, item, out))
 			{
 
-				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
+				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+				GE_CORE_FATAL("[Serializer] The entity {0} has failed to serialize", item["tag"]);
 				return false;
 			
 			}
@@ -146,20 +146,20 @@ namespace Engine
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
 
-		std::cout << sceneJson << std::endl;
+		//std::cout << sceneJson << std::endl;
 		ResourceManager::getInstance()->saveJsonFile(sceneJson, sceneFile, "bda");
 		return sceneJson.dump();
 		//TODO: Bind serialization to GUI event once we have one.
 
 	}
 
-	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
+	nlohmann::json Serializer::serializeEntity(const Entity& entity, const std::string& sceneFile)
 	{
 
 
 		if (!entity.hasComponent<TagComponent>())
 		{
-			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
+			GE_CORE_ERROR("[Serializer] An entity was created without a tag component and cannot be serialized.");
 		}
 
 		nlohmann::json components = nlohmann::json::array();
@@ -260,12 +260,12 @@ namespace Engine
 
 		if (entity.hasComponent<PhysicsComponent>())
 		{
-			auto c = entity.getComponent<PhysicsComponent>();
+			const auto& c = entity.getComponent<PhysicsComponent>();
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
-
+			
 			components.push_back(j);
 		}
 
@@ -275,6 +275,16 @@ namespace Engine
 			nlohmann::json j;
 			j["name"] = parseComponentToString(CO_AudioComponent);
 			j["soundFileName"] = c.soundFileName;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<ScriptUI>() && !entity.hasComponent<ScriptComponent>())
+		{
+			auto c = entity.getComponent<ScriptUI>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_ScriptComponent);
+			j["scriptName"] = c.sourceFileName;
 
 			components.push_back(j);
 		}
@@ -295,8 +305,8 @@ namespace Engine
 		{
 			if (!(component.find("name") != component.end()))
 			{
-				GE_CORE_FATAL("Unable to deserialize entity {0}", entity["tag"]);
-				GE_CORE_FATAL("A component does not contain the \"name\" attribute");
+				GE_CORE_FATAL("[Serializer] Unable to deserialize entity {0}", entity["tag"]);
+				GE_CORE_FATAL("[Serializer] A component does not contain the \"name\" attribute");
 				return false;
 			}
 
@@ -346,8 +356,8 @@ namespace Engine
 				//Check if vertices is of type sprite
 				if (!(component.find("type") != component.end()))
 				{
-					GE_CORE_FATAL("Unable to deserialize entity {0}", entity["tag"]);
-					GE_CORE_FATAL("A VerticesComponent does not contain the \"type\" attribute");
+					GE_CORE_FATAL("[Serializer] Unable to deserialize entity {0}", entity["tag"]);
+					GE_CORE_FATAL("[Serializer] A VerticesComponent does not contain the \"type\" attribute");
 					return false;
 				}
 
@@ -380,6 +390,7 @@ namespace Engine
 			case CO_ScriptComponent:
 			{
 				std::string scriptName = component["scriptName"];
+				out.addComponent<ScriptUI>(scriptName);
 				ScriptSerializer::linkAndDeserializeScript(out, scriptName);
 				break;
 			}
@@ -399,7 +410,7 @@ namespace Engine
 			}
 			default:
 			{
-				GE_CORE_WARN("Could not deserialize component {0}", component["name"]);
+				GE_CORE_WARN("[Serializer] Could not deserialize component {0}", component["name"]);
 				break;
 			}
 			}

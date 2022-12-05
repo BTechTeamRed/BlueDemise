@@ -2,6 +2,11 @@
 
 namespace Engine
 {
+	void Score::onCreate()
+	{
+		// Get initial score from the scene
+		score = m_entity.getScene()->score;
+	}
 
 	void Score::setScore(int num)
 	{

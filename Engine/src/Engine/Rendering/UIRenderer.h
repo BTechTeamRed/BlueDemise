@@ -28,13 +28,8 @@ namespace Engine
         glm::vec2 getGameWindowPos() { return m_gamePanel.getPosition(); }
 
 	private:
-        //creates an array of three components panels
-        std::array<ComponentsPanel, 3> m_componentsPanels
-        {
-            "Active components",
-            "Attributes",
-            "Components"
-        };
+        //component panel is the UI element that lists the components
+        ComponentsPanel m_componentsPanel = "Components";
 
         //main menu is the UI element that shows the game
         MainMenu m_mainMenu;
