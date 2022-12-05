@@ -71,22 +71,22 @@ namespace Engine
 		
 		if (!Renderer::getInstance())
 		{
-			GE_CORE_FATAL("Failed to initialize opengl");
+			GE_CORE_FATAL("[Serializer] Failed to initialize opengl");
 			return false;
 		}
 
 		auto data = ResourceManager::getInstance()->getJsonData(sceneFile);
 		if (!(data.find("scene") != data.end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-			GE_CORE_FATAL("No scene found.");
+			GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+			GE_CORE_FATAL("[Serializer] No scene found.");
 			return false;
 		}
 
 		if (!(data["scene"].find("name") != data["scene"].end()))
 		{
-			GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-			GE_CORE_FATAL("Scene does not contain the \"name\" attribute.");
+			GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+			GE_CORE_FATAL("[Serializer] Scene does not contain the \"name\" attribute.");
 			return false;
 		}
 
@@ -97,8 +97,8 @@ namespace Engine
 		{
 			if (!(item.find("tag") != item.end()))
 			{
-				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-				GE_CORE_FATAL("An entity does not contain the \"tag\" attribute");
+				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+				GE_CORE_FATAL("[Serializer] An entity does not contain the \"tag\" attribute");
 				return false;
 			}
 
@@ -107,8 +107,8 @@ namespace Engine
 			if (!tryDeserializeEntity(entity, item, out))
 			{
 
-				GE_CORE_FATAL("Unable to deserialize scene {0}", sceneFile);
-				GE_CORE_FATAL("The entity {0} has failed to serialize", item["tag"]);
+				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
+				GE_CORE_FATAL("[Serializer] The entity {0} has failed to serialize", item["tag"]);
 				return false;
 			
 			}
@@ -148,7 +148,7 @@ namespace Engine
 
 		if (!entity.hasComponent<TagComponent>())
 		{
-			GE_CORE_ERROR("An entity was created without a tag component and cannot be serialized.");
+			GE_CORE_ERROR("[Serializer] An entity was created without a tag component and cannot be serialized.");
 		}
 
 		nlohmann::json components = nlohmann::json::array();
@@ -284,8 +284,8 @@ namespace Engine
 		{
 			if (!(component.find("name") != component.end()))
 			{
-				GE_CORE_FATAL("Unable to deserialize entity {0}", entity["tag"]);
-				GE_CORE_FATAL("A component does not contain the \"name\" attribute");
+				GE_CORE_FATAL("[Serializer] Unable to deserialize entity {0}", entity["tag"]);
+				GE_CORE_FATAL("[Serializer] A component does not contain the \"name\" attribute");
 				return false;
 			}
 
@@ -335,8 +335,8 @@ namespace Engine
 				//Check if vertices is of type sprite
 				if (!(component.find("type") != component.end()))
 				{
-					GE_CORE_FATAL("Unable to deserialize entity {0}", entity["tag"]);
-					GE_CORE_FATAL("A VerticesComponent does not contain the \"type\" attribute");
+					GE_CORE_FATAL("[Serializer] Unable to deserialize entity {0}", entity["tag"]);
+					GE_CORE_FATAL("[Serializer] A VerticesComponent does not contain the \"type\" attribute");
 					return false;
 				}
 
@@ -379,7 +379,7 @@ namespace Engine
 			}
 			default:
 			{
-				GE_CORE_WARN("Could not deserialize component {0}", component["name"]);
+				GE_CORE_WARN("[Serializer] Could not deserialize component {0}", component["name"]);
 				break;
 			}
 			}

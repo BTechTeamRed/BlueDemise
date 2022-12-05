@@ -31,7 +31,7 @@ namespace Engine
 		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
-			GE_CORE_ERROR("Failed to initialize window");
+			GE_CORE_ERROR("[Renderer] Failed to initialize window");
 			glfwTerminate();
 			exit(0);
 		}
@@ -52,7 +52,7 @@ namespace Engine
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			GE_CORE_ERROR("Failed to initialize GLAD");
+			GE_CORE_ERROR("[Renderer] Failed to initialize GLAD");
 			glfwTerminate();
 
 			throw std::runtime_error("Failed to initialize GLAD");
@@ -214,7 +214,7 @@ namespace Engine
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
 
-			//access to the advanced shader if it exists
+			//access to the advanced shader and tile bind if applicable
 			int advancedShaderBind = -1;
 			
 			//Bind color, texture and shader if entity contains material.
@@ -231,8 +231,8 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(advancedShaderBind, vertices.stride, m_textureCoordinates,
-				m_colorCoordinates, m_gradientCoordinates, m_programId);
+			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
+				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);
