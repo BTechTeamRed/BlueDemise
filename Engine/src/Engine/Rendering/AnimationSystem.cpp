@@ -2,6 +2,9 @@
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include <glm/gtx/matrix_transform_2d.hpp>
 
+#include "Engine/SceneBuilder/Components.h"
+#include "Engine/Utilities/DeltaTime.h"
+
 namespace Engine
 {
 	void AnimationSystem::updateAnimation(const DeltaTime& dt, AnimationComponent& component)

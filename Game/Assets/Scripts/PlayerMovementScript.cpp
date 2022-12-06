@@ -28,7 +28,7 @@ namespace Engine
 						static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance)->swapMyColor();
 
 						// Move to the tile the player clicked on
-						auto player = m_entity;
+						auto& player = m_entity;
 						int x = transform.position.x + 36;
 						int y = transform.position.y - 104;
 						auto& playerTransform = player.getComponent<TransformComponent>();

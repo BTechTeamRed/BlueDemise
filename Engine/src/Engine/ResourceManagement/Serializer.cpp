@@ -13,7 +13,7 @@
 
 namespace glm
 {
-	#pragma region Json Serialization
+#pragma region Json Serialization
 	//templates from nlohmann. Serializes/deserializes custom types
 	void to_json(nlohmann::json& j, const vec2& vec)
 	{
@@ -72,14 +72,14 @@ namespace glm
 	{
 		mat = mat4(j.at("matrix").get<float>());
 	}
-	#pragma endregion
+#pragma endregion
 }
 
 namespace Engine
 {
 	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
-		
+
 		if (!Renderer::getInstance())
 		{
 			GE_CORE_FATAL("[Serializer] Failed to initialize opengl");
@@ -114,17 +114,17 @@ namespace Engine
 			}
 
 			Entity entity = out.createEntity(item["tag"]);
-			
+
 			if (!tryDeserializeEntity(entity, item, out))
 			{
 
 				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("[Serializer] The entity {0} has failed to serialize", item["tag"]);
 				return false;
-			
+
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -133,15 +133,15 @@ namespace Engine
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
 		scene->m_registry.each([&](entt::entity entityHandle)
-			{
-				Entity entity = Entity{ entityHandle, scene };
-				if (!entity) return;
+		{
+			Entity entity = Entity{ entityHandle, scene };
+			if (!entity) return;
 
-				if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
-				{
-					entitiesJson.push_back(serializeEntity(entity, sceneFile));
-				}
-			});
+			if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
+			{
+				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+			}
+		});
 
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
@@ -265,7 +265,7 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
-			
+
 			components.push_back(j);
 		}
 
@@ -321,7 +321,7 @@ namespace Engine
 				auto aspectRatio = component["aspectRatio"].get<float>();
 				auto farZ = component["farZ"].get<float>();
 				auto nearZ = component["nearZ"].get<float>();
-				
+
 				out.addComponent<CameraComponent>(frustumWidth, aspectRatio, farZ, nearZ);
 				break;
 			}
@@ -336,11 +336,11 @@ namespace Engine
 			}
 			case CO_MaterialComponent:
 			{
-				
+
 				std::string texture = component["texName"];
 				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
-				
+
 				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
 				break;
 			}

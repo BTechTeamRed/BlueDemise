@@ -323,6 +323,11 @@ namespace Engine
 				color = material.color;
 			}
 
+			//Stop the text from animating (Change if text get's it's own shader)
+			GLuint uvUniformID = glGetUniformLocation(m_text.m_textShaderProgram, "uvMatrix");
+			glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));
+			auto s = scene.m_registry.get<const TagComponent>(entity).tag;
+
 			std::string render = std::to_string(scene.score);
 
 			renderText(text, textTransform, color, m_text.m_textShaderProgram, mvpID);

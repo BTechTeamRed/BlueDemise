@@ -43,12 +43,20 @@ namespace Engine
 		//Serializes scene into a json file in sceneFile
 		static nlohmann::json serializeEntity(const Entity& entity, const std::string& sceneFile);
 
-		//Serializes scene into a json file in sceneFile
-		static nlohmann::json serializeEntity(Entity& entity, const std::string& sceneFile);
-
 		[[nodiscard]] static Components parseComponent(const std::string& component)
 		{
-			return componentMap.find(component) != componentMap.end() ? componentMap.find(component)->second : CO_Invalid;
+			if (component == "CameraComponent") return CO_CameraComponent;
+			if (component == "TransformComponent") return CO_TransformComponent;
+			if (component == "MaterialComponent") return CO_MaterialComponent;
+			if (component == "AnimationComponent") return CO_AnimationComponent;
+			if (component == "PositionLerpComponent") return CO_PositionLerpComponent;
+			if (component == "VerticesComponent") return CO_VerticesComponent;
+			if (component == "TextComponent") return CO_TextComponent;
+			if (component == "SerializableComponent") return CO_SerializableComponent;
+			if (component == "ScriptComponent") return CO_ScriptComponent;
+			if (component == "PhysicsComponent") return CO_PhysicsComponent;
+			if (component == "AudioComponent") return CO_AudioComponent;
+			return CO_Invalid;
 		}
 
 		[[nodiscard]] static std::string parseComponentToString(const Components component)
@@ -57,6 +65,7 @@ namespace Engine
 			if (component == CO_TransformComponent) return"TransformComponent";
 			if (component == CO_MaterialComponent) return"MaterialComponent";
 			if (component == CO_AnimationComponent) return"AnimationComponent";
+			if (component == CO_PositionLerpComponent) return"PositionLerpComponent";
 			if (component == CO_VerticesComponent) return"VerticesComponent";
 			if (component == CO_TextComponent) return"TextComponent";
 			if (component == CO_SerializableComponent) return"SerializableComponent";
@@ -65,20 +74,6 @@ namespace Engine
 			if (component == CO_AudioComponent) return"AudioComponent";
 			return "";
 		}
-
-		inline static std::unordered_map<std::string, Components> componentMap
-		{
-			{ "CameraComponent", CO_CameraComponent },
-			{ "TransformComponent", CO_TransformComponent },
-			{ "MaterialComponent", CO_MaterialComponent },
-			{ "AnimationComponent", CO_AnimationComponent },
-			{ "VerticesComponent", CO_VerticesComponent },
-			{ "TextComponent", CO_TextComponent },
-			{ "SerializableComponent", CO_SerializableComponent },
-			{ "ScriptComponent", CO_ScriptComponent },
-			{ "PhysicsComponent", CO_PhysicsComponent },
-			{ "AudioComponent", CO_AudioComponent }
-		};
 	};
 
 }

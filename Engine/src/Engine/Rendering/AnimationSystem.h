@@ -8,8 +8,10 @@
 namespace Engine 
 {
 	class ResourceManager;
-	struct DeltaTime;
+	class DeltaTime;
 	struct AnimationComponent;
+	struct TransformComponent;
+	struct PositionLerpComponent;
 	typedef unsigned int GLuint;
 
 	class ENGINE_API AnimationSystem
