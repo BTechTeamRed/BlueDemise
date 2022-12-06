@@ -135,24 +135,37 @@ namespace Engine
 	struct AnimationComponent
 	{
 		AnimationComponent() = default;
-		AnimationComponent(GLuint texID, float frameRate, float texWidthFraction, float texHeightFraction, int numPerRow, int spritesOnSheet)
-			: texID(texID), frameRate(frameRate), texWidthFraction(texWidthFraction), texHeightFraction(texHeightFraction), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet) { }
-		
-		std::vector<glm::vec2> texCoords;
+		AnimationComponent(glm::vec<2, int> spriteSheetSize, glm::vec<2, int> spriteSize, int numPerRow, int spritesOnSheet, float frameRate = 0.3f)
+			: spriteSheetSize(spriteSheetSize), spriteSize(spriteSize), numPerRow(numPerRow), spritesOnSheet(spritesOnSheet), frameRate(frameRate), animationClip(std::vector<int>(1,0))
+		{}
+		//Dimensions of sprite and sheet in pixels
+		glm::vec<2, int> spriteSheetSize;
+		glm::vec<2, int> spriteSize;
 
-		GLuint texID;
-		std::string texName;
+		//Matrix to scale and translate UV coordinates to sprite on sheet
+		glm::mat3 uvTransformMatrix; //If multithreading the animation system, this will need to be locked with mutex
 
+		//Determines the available sprites on the spritesheet
 		int currentIndex = 0;
 		int numPerRow;
 		int spritesOnSheet;
-		
-		double animationSpeed = 0.3;
 
-		float deltaTime;
+		//List of indicies 
+		std::vector<int> animationClip; 
+
+		//determines when to switch
 		float frameRate;
-		float texWidthFraction;
-		float texHeightFraction;
+		float deltaTime = 0;
+	};
+
+	//TODO: Animation controller component to allow users to easily store and switch between clips
+
+	struct PositionLerpComponent
+	{
+		PositionLerpComponent() = default;
+		PositionLerpComponent(glm::vec3 target, float speed) : target(target), speed(speed) {}
+		glm::vec3 target;
+		float speed;
 	};
 
 	//Component that contains a string for rendering text to the screen.

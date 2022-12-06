@@ -20,7 +20,7 @@ namespace Engine
 			for (auto entity : entities)
 			{
 				//GE_TRACE("Picked this: {0}", entity->getComponent<TagComponent>().tag);
-				if (entity->hasComponent<TransformComponent>())
+				if (entity->hasComponent<TransformComponent>() && !m_entity.hasComponent<PositionLerpComponent>())
 				{
 					auto transform = entity->getComponent<TransformComponent>();
 					if (tileInRange(*entity))
@@ -29,11 +29,36 @@ namespace Engine
 						if (ref) ref->swapMyColor();
 
 						// Move to the tile the player clicked on
-						auto player = m_entity;
+						auto& player = m_entity;
 						int x = transform.position.x + 36;
 						int y = transform.position.y - 104;
-						player.getComponent<TransformComponent>().position.x = x;
-						player.getComponent<TransformComponent>().position.y = y;
+						auto& playerTransform = player.getComponent<TransformComponent>();
+						player.addComponent<PositionLerpComponent>(glm::vec3(x, y, playerTransform.position.z), m_moveSpeed);
+
+						auto& anim = player.getComponent<AnimationComponent>();
+						//Change animations
+
+						if (playerTransform.position.x >= x && playerTransform.position.y >= y) //Moving Right
+						{ 
+							anim.animationClip = m_clipSide;
+							anim.currentIndex = 0;
+							playerTransform.rotation.y = 3.14f;
+						}
+						else if (playerTransform.position.x <= x && playerTransform.position.y >= y) //Moving Left
+						{ 
+							anim.animationClip = m_clipSide;
+							anim.currentIndex = 0;
+							playerTransform.rotation.y = 0.f;
+						}
+						else if (playerTransform.position.x <= x && playerTransform.position.y <= y) //Moving Down
+						{ 
+							anim.animationClip = m_clipDown;
+							anim.currentIndex = 0;
+						}
+						else { //Moving up
+							anim.animationClip = m_clipDown;
+							anim.currentIndex = 0;
+						}
 						if (player.hasComponent<AudioComponent>())
 						{
 							player.getComponent<AudioComponent>().playSound(false, false, false);

@@ -13,7 +13,7 @@
 
 namespace glm
 {
-	#pragma region Json Serialization
+#pragma region Json Serialization
 	//templates from nlohmann. Serializes/deserializes custom types
 	void to_json(nlohmann::json& j, const vec2& vec)
 	{
@@ -24,6 +24,17 @@ namespace glm
 	{
 		vec.x = j.at("x").get<float>();
 		vec.y = j.at("y").get<float>();
+	}
+
+	void to_json(nlohmann::json& j, const vec<2, int>& vec)
+	{
+		j = { { "x", vec.x }, { "y", vec.y } };
+	}
+
+	void from_json(const nlohmann::json& j, vec<2, int>& vec)
+	{
+		vec.x = j.at("x").get<int>();
+		vec.y = j.at("y").get<int>();
 	}
 
 	void to_json(nlohmann::json& j, const vec3& vec)
@@ -61,14 +72,14 @@ namespace glm
 	{
 		mat = mat4(j.at("matrix").get<float>());
 	}
-	#pragma endregion
+#pragma endregion
 }
 
 namespace Engine
 {
 	bool Serializer::tryDeserializeScene(Scene& out, const std::string& sceneFile)
 	{
-		
+
 		if (!Renderer::getInstance())
 		{
 			GE_CORE_FATAL("[Serializer] Failed to initialize opengl");
@@ -103,17 +114,17 @@ namespace Engine
 			}
 
 			Entity entity = out.createEntity(item["tag"]);
-			
+
 			if (!tryDeserializeEntity(entity, item, out))
 			{
 
 				GE_CORE_FATAL("[Serializer] Unable to deserialize scene {0}", sceneFile);
 				GE_CORE_FATAL("[Serializer] The entity {0} has failed to serialize", item["tag"]);
 				return false;
-			
+
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -122,15 +133,15 @@ namespace Engine
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
 		scene->m_registry.each([&](entt::entity entityHandle)
-			{
-				Entity entity = Entity{ entityHandle, scene };
-				if (!entity) return;
+		{
+			Entity entity = Entity{ entityHandle, scene };
+			if (!entity) return;
 
-				if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
-				{
-					entitiesJson.push_back(serializeEntity(entity, sceneFile));
-				}
-			});
+			if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
+			{
+				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+			}
+		});
 
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
@@ -207,10 +218,20 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_AnimationComponent);
 			j["numPerRow"] = c.numPerRow;
 			j["frameRate"] = c.frameRate;
-			j["texWidthFraction"] = c.texWidthFraction;
-			j["texHeightFraction"] = c.texHeightFraction;
-			j["texName"] = c.texName;
+			j["spriteSheetSize"] = c.spriteSheetSize;
+			j["spriteSize"] = c.spriteSize;
 			j["numSprites"] = c.spritesOnSheet;
+
+			components.push_back(j);
+		}
+
+		if (entity.hasComponent<PositionLerpComponent>())
+		{
+			auto c = entity.getComponent<PositionLerpComponent>();
+			nlohmann::json j;
+			j["name"] = parseComponentToString(CO_PositionLerpComponent);
+			j["speed"] = c.speed;
+			j["target"] = c.target;
 
 			components.push_back(j);
 		}
@@ -244,7 +265,7 @@ namespace Engine
 			j["name"] = parseComponentToString(CO_PhysicsComponent);
 			j["dimensions"] = c.boundingBox->getDimensions();
 			j["position"] = c.boundingBox->getPosition();
-			
+
 			components.push_back(j);
 		}
 
@@ -300,7 +321,7 @@ namespace Engine
 				auto aspectRatio = component["aspectRatio"].get<float>();
 				auto farZ = component["farZ"].get<float>();
 				auto nearZ = component["nearZ"].get<float>();
-				
+
 				out.addComponent<CameraComponent>(frustumWidth, aspectRatio, farZ, nearZ);
 				break;
 			}
@@ -315,11 +336,11 @@ namespace Engine
 			}
 			case CO_MaterialComponent:
 			{
-				
+
 				std::string texture = component["texName"];
 				std::string shader = component["shaderName"];
 				auto image = ResourceManager::getInstance()->getTexture(texture);
-				
+
 				out.addComponent <MaterialComponent>(component["color"].get<glm::vec4>(), image.texID, texture, shader);
 				break;
 			}
@@ -349,11 +370,21 @@ namespace Engine
 			}
 			case CO_AnimationComponent:
 			{
-				std::string texture = component["texName"];
-				auto spritesheet = ResourceManager::getInstance()->getSpritesheet(texture);
+				auto numPerRow = component["numPerRow"].get<int>();
+				auto frameRate = component["frameRate"].get<float>();
+				auto spriteSheetSize = component["spriteSheetSize"].get<glm::vec<2, int>>();
+				auto spriteSize = component["spriteSize"].get<glm::vec<2, int>>();
+				auto spritesOnSheet = component["numSprites"].get<int>();
 
-				out.addComponent<AnimationComponent>(spritesheet.texID, 0, spritesheet.texWidthFraction,
-					spritesheet.texHeightFraction, spritesheet.spritesPerRow, spritesheet.numSprites);
+				out.addComponent<AnimationComponent>(spriteSheetSize, spriteSize, numPerRow, spritesOnSheet, frameRate);
+				break;
+			}
+			case CO_PositionLerpComponent:
+			{
+				auto speed = component["speed"].get<float>();
+				auto target = component["target"].get<glm::vec3>();
+
+				out.addComponent<PositionLerpComponent>(target, speed);
 				break;
 			}
 			case CO_ScriptComponent:

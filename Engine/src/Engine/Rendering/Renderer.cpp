@@ -70,7 +70,7 @@ namespace Engine
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Sets the color of the 'clear' command. This is a dark grey
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
+		glClearColor(1.f, 0.1f, 0.1f, 1);
 
 		m_text.initializeText();
 	}
@@ -128,6 +128,14 @@ namespace Engine
 		auto cameraView = scene.getEntities<CameraComponent>();
 		const auto camera = scene.m_registry.get<CameraComponent>(cameraView.back());
 		m_window.updateCamera(camera);
+
+		//Temp code, initialize animations for testing
+		auto animations = scene.getEntities<AnimationComponent>();
+		for (auto& [entity, anim] : animations.each()) 
+		{
+			anim.animationClip = animationSystem.createAnimationClip(AnimationSystem::RT_LoopAll, anim);
+			animationSystem.changeFrame(0, anim);
+		}
 	}
 
 	//For when the scene must be stopped, perform cleanup
@@ -141,8 +149,6 @@ namespace Engine
 	//From scene, we should grab all the entities within that scene object and render each one.
 	void Renderer::renderScene(const DeltaTime& dt, Scene& scene)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		//Bind the FBO for draw calls to render to.
 		if (m_showUI)
 		{
@@ -152,6 +158,21 @@ namespace Engine
 		//Update window camera.
 		auto cameraView = scene.getEntities<CameraComponent>();
 		m_window.updateCamera(scene.m_registry.get<CameraComponent>(cameraView.back()));
+
+		//Update all animations
+		auto animations = scene.getEntities<AnimationComponent>();
+		for (auto& [entity, anim] : animations.each()) 
+		{
+			animationSystem.updateAnimation(dt, anim);
+		}
+
+		//Update Lerps
+		auto lerps = scene.getEntities<PositionLerpComponent, TransformComponent>();
+		for (auto& [entity, lerp, trans] : lerps.each()) 
+		{
+			if(animationSystem.updatePositionLerps(dt, lerp, trans)) scene.m_registry.remove<PositionLerpComponent>(entity);
+		}
+
 
 		//Render all entities with vertices, and associated components.
 		drawEntities(scene, dt);
@@ -193,8 +214,15 @@ namespace Engine
 	//Draw all Entities within scene that contain a vertices component.
 	void Renderer::drawEntities(Scene& scene, const DeltaTime& dt)
 	{
+		//https://skypjack.github.io/entt/md_docs_md_entity.html, "Sorting: is it Possible", "A full-owning group is the fastest tool a user can expect to use to iterate multiple components at once"
+		//
 		//Get entities that contain vertices component.
-		const auto renderables = scene.getEntities<const VerticesComponent>();
+		auto renderables = scene.m_registry.group<VerticesComponent, TransformComponent>();
+		renderables.sort<TransformComponent>([](const auto& lhs, const auto& rhs)
+		{
+			return lhs.position.z < rhs.position.z;
+		});
+		
 
 		//Set the currentBound textures to 0 for this draw call.
 		int currentBoundTextures = 0;
@@ -204,14 +232,14 @@ namespace Engine
 		bool shaderFirstPass = true;
 
 		//For each entitiy with a vertices component, render it.
-		for (auto [entity, vertices] : renderables.each())
+		for (auto entity : renderables)
 		{
-			//Set a default transform component and color if the object does not contain one.
-			TransformComponent transform;
-			glm::vec4 color = m_defaultColor;
+			auto& vertices = renderables.get<VerticesComponent>(entity); 
+			auto& transform = renderables.get<TransformComponent>(entity);
 
-			//Change the transform component if the entity contains one.
-			if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
+
+			//Set a default transform component and color if the object does not contain one.
+			glm::vec4 color = m_defaultColor;
 
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
@@ -229,7 +257,6 @@ namespace Engine
 			
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
-				//glUseProgram(material.shaderID);
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
@@ -237,6 +264,25 @@ namespace Engine
 				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId, shaderFirstPass);
 
 			shaderFirstPass = false; //This way the ShaderNorms will only update the time once
+
+			//Apply animation uniform if necessary
+			if (scene.m_registry.all_of<AnimationComponent>(entity))
+			{
+				//Bind animation shader
+				const auto anim = scene.m_registry.get<const AnimationComponent>(entity);
+				//Update uvMatrix uniform
+				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
+				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(anim.uvTransformMatrix));
+				auto s = scene.m_registry.get<const TagComponent>(entity).tag;
+			}
+			else 
+			{
+				//Ignore UV transformation by setting uvMatrix to an identity matrix
+				GLuint uvUniformID = glGetUniformLocation(m_programId, "uvMatrix");
+				glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));
+				auto s = scene.m_registry.get<const TagComponent>(entity).tag;
+
+			}
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);
@@ -275,6 +321,11 @@ namespace Engine
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
 			}
+
+			//Stop the text from animating (Change if text get's it's own shader)
+			GLuint uvUniformID = glGetUniformLocation(m_text.m_textShaderProgram, "uvMatrix");
+			glUniformMatrix3fv(uvUniformID, 1, false, glm::value_ptr(glm::mat3(1.f)));
+			auto s = scene.m_registry.get<const TagComponent>(entity).tag;
 
 			std::string render = std::to_string(scene.score);
 
@@ -375,10 +426,13 @@ namespace Engine
 	{
 		//Setup model view matrix
 		glm::mat4 mvm = glm::mat4(1.f);
+		glm::vec3 toCenter(transform.scale.x / 2.f, transform.scale.y / 2.f, 0.f);
 		mvm = glm::translate(mvm, transform.position);
+		mvm = glm::translate(mvm, toCenter);
 		mvm = glm::rotate(mvm, transform.rotation.x, glm::vec3(1, 0, 0));
 		mvm = glm::rotate(mvm, transform.rotation.y, glm::vec3(0, 1, 0));
 		mvm = glm::rotate(mvm, transform.rotation.z, glm::vec3(0, 0, 1));
+		mvm = glm::translate(mvm, -toCenter);
 		mvm = glm::scale(mvm, transform.scale);
 
 		//Calculate MVP
