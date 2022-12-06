@@ -109,19 +109,25 @@ namespace Engine
 		MaterialComponent(glm::vec4 color, GLuint texID, std::string texName, std::string shaderName)
 			: color(color), texID(texID), texName(texName), shaderName(shaderName)
 		{
-			bind = shadersInstantiated++;
-			ShaderNorms::getInstance()->addAdvancedShader(bind, shaderName);
+			//the bind associated with a default shader instead of advanced
+			bind = -1;
+			
+			std::vector<std::string> names = ShaderNorms::getInstance()->getShaderNames();
+			for (int i = 0; i < names.size(); i++)
+			{
+				if (shaderName == names[i])
+				{
+					bind = i;
+					break;
+				}
+			}
 		}
-		
+
 		glm::vec4 color{ 1.f,1.f,1.f,1.f };
-		std::string texName;
+		std::string texName, shaderName;
 		GLuint texID;
-    
-		GLuint shaderID;
-		std::unordered_map<std::string, GLuint> uniforms;
-		std::string shaderName;
-    
-		inline static int shadersInstantiated{ 0 };
+
+		//unique reference to the advanced shader
 		int bind;
 	};
 
@@ -190,6 +196,9 @@ namespace Engine
 		// Create physics component with the inputed dimensions and position (at center of dimensions)
 		PhysicsComponent(glm::vec3& dimensions, glm::vec3& position)
 			: boundingBox(new AABB(dimensions, position)) {}
+		PhysicsComponent(const PhysicsComponent& other) = default;
+		PhysicsComponent& operator=(const PhysicsComponent& other) = default;
+
 		~PhysicsComponent()
 		{
 			if (boundingBox)

@@ -7,12 +7,12 @@ namespace Engine
 	public:
 		static enum FillType
 		{
-			SN_TEXTURE_FILL,
-			SN_COLOR_FILL,
-			SN_TEXT_FILL,
-			SN_GRADIENT_FILL
+			FT_TEXTURE_FILL,
+			FT_COLOR_FILL,
+			FT_GRADIENT_FILL,
+			FT_EMPTY_VALUE
 		};
-		inline static const FillType DEFAULT_FILL_TYPE = FillType::SN_TEXTURE_FILL;
+		inline static const FillType DEFAULT_FILL_TYPE = FillType::FT_TEXTURE_FILL;
 		inline static const int types = 3;
 	};
 }

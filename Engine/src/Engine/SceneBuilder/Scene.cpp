@@ -10,6 +10,7 @@
 #include "InputSystem.h"
 #include "Engine/ResourceManagement/Serializer.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/ResourceManagement/ShaderNorms.h"
 
 const float DT_THRESHOLD = 10;
 
@@ -138,6 +139,7 @@ namespace Engine
 		
 		m_registry = entt::registry();
 		Serializer::tryDeserializeScene(*this, other);
+		ShaderNorms::getInstance()->resetTimeCount();
 		
 		// Delete old physics, recreate physics for the new scene
 		delete m_physics;
