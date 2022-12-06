@@ -84,6 +84,61 @@
           {
             "name": "TransformComponent",
             "position": {
+              "x": -290.0,
+              "y": -50.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 2500.0,
+              "y": 1250.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "texName": "Background.png",
+            "shaderName": "TextureFill"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 200.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "background"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
               "x": 860.0,
               "y": 315.0,
               "z": 0.0
@@ -107,7 +162,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "texName": "tileTemp.png",
+            "texName": "Tile.png",
             "shaderName": "SinWave"
           },
           {
@@ -162,8 +217,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-			      "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+			"shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -217,8 +272,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -272,8 +327,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -327,8 +382,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -382,8 +437,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -437,8 +492,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -492,8 +547,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -547,8 +602,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -602,8 +657,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -657,8 +712,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -712,8 +767,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -767,8 +822,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+			"shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -822,8 +877,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -877,8 +932,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -932,8 +987,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+			"shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -987,8 +1042,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+			"shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1042,8 +1097,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1097,8 +1152,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1152,8 +1207,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1207,8 +1262,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1262,8 +1317,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1317,8 +1372,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1372,8 +1427,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1427,8 +1482,8 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "tileTemp.png"
+            "texName": "Tile.png",
+            "shaderName": "SinWave"
           },
           {
             "name": "VerticesComponent",
@@ -1453,6 +1508,52 @@
           }
         ],
         "tag": "tile1"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 896.0,
+              "y": 412.0,
+              "z": 1.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "player.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "PlayerMovementScript"
+          },
+          {
+            "name": "AudioComponent",
+            "soundFileName": "FOLEY_FOOTSTEP.wav"
+          }
+        ],
+        "tag": "player"
       },
       {
         "components": [

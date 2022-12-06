@@ -55,6 +55,10 @@ namespace Engine
 							anim.animationClip = m_clipDown;
 							anim.currentIndex = 0;
 						}
+						if (player.hasComponent<AudioComponent>())
+						{
+							player.getComponent<AudioComponent>().playSound(false, false, false);
+						}
 					}
 				}
 			}

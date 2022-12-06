@@ -1,1451 +1,1492 @@
 {
   "scene": {
-      "entities": [
+    "entities": [
+      {
+        "components": [
           {
-              "components": [
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "Score"
-                  }
-              ],
-              "tag": "score"
-          },
-          {
-              "components": [
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "Timer"
-                  }
-              ],
-              "tag": "timer"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 860.0,
-                          "y": 315.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 0.0,
-                          "y": 200.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile25"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 960.0,
-                          "y": 365.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 100.0,
-                          "y": 150.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile24"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1060.0,
-                          "y": 415.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 200.0,
-                          "y": 100.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile23"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1160.0,
-                          "y": 465.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 300.0,
-                          "y": 50.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile22"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1260.0,
-                          "y": 515.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 400.0,
-                          "y": 0.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile21"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 760.0,
-                          "y": 365.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -100.0,
-                          "y": 150.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile20"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 860.0,
-                          "y": 415.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 0.0,
-                          "y": 100.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile19"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 960.0,
-                          "y": 465.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 100.0,
-                          "y": 50.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile18"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1060.0,
-                          "y": 515.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 200.0,
-                          "y": 0.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile17"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1160.0,
-                          "y": 565.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 300.0,
-                          "y": -49.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile16"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 660.0,
-                          "y": 415.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -200.0,
-                          "y": 100.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile15"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 760.0,
-                          "y": 465.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  }
-              ],
-              "tag": "obstacle"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 860.0,
-                          "y": 515.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 0.0,
-                          "y": 0.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile13"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 960.0,
-                          "y": 565.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  }
-              ],
-              "tag": "obstacle"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 1060.0,
-                          "y": 615.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 200.0,
-                          "y": -99.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile11"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 560.0,
-                          "y": 465.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -300.0,
-                          "y": 50.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile10"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 660.0,
-                          "y": 515.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -200.0,
-                          "y": 0.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile9"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 760.0,
-                          "y": 565.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -100.0,
-                          "y": -49.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile8"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 860.0,
-                          "y": 615.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 0.0,
-                          "y": -99.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile7"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 960.0,
-                          "y": 665.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 100.0,
-                          "y": -149.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile6"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 460.0,
-                          "y": 515.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -400.0,
-                          "y": 0.02362060546875,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile5"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 560.0,
-                          "y": 565.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -300.0,
-                          "y": -49.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile4"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 660.0,
-                          "y": 615.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 1.0,
-                          "g": 0.0,
-                          "r": 0.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -200.0,
-                          "y": -99.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile3"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 760.0,
-                          "y": 665.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": -100.0,
-                          "y": -149.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile2"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TransformComponent",
-                      "position": {
-                          "x": 860.0,
-                          "y": 715.0,
-                          "z": 0.0
-                      },
-                      "rotation": {
-                          "x": 0.0,
-                          "y": 0.0,
-                          "z": 0.0
-                      },
-                      "scale": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      }
-                  },
-                  {
-                      "color": {
-                          "a": 1.0,
-                          "b": 0.0,
-                          "g": 0.0,
-                          "r": 1.0
-                      },
-                      "name": "MaterialComponent",
-                      "shaderName": "TextureFill",
-                      "texName": "tileTemp.png"
-                  },
-                  {
-                      "name": "VerticesComponent",
-                      "type": "sprite"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "ColorSwap"
-                  },
-                  {
-                      "dimensions": {
-                          "x": 200.0,
-                          "y": 50.0,
-                          "z": 1.0
-                      },
-                      "name": "PhysicsComponent",
-                      "position": {
-                          "x": 0.0,
-                          "y": -199.97637939453125,
-                          "z": -48.45000076293945
-                      }
-                  }
-              ],
-              "tag": "tile1"
-          },
-          {
-            "components": [
-              {
-                "name": "TransformComponent",
-                "position": {
-                  "x": 896.0,
-                  "y": 512.0,
-                  "z": 1.0
-                },
-                "rotation": {
-                  "x": 0.0,
-                  "y": 0.0,
-                  "z": 0.0
-                },
-                "scale": {
-                  "x": 128.0,
-                  "y": 128.0,
-                  "z": 1.0
-                }
-              },
-              {
-                "color": {
-                  "a": 1.0,
-                  "b": 1.0,
-                  "g": 1.0,
-                  "r": 1.0
-                },
-                "name": "MaterialComponent",
-                "shaderName": "TextureFill",
-                "texName": "SpriteSheet.png"
-              },
-              {
-                "name": "VerticesComponent",
-                "type": "sprite"
-              },
-              {
-                "name": "ScriptComponent",
-                "scriptName": "PlayerMovementScript"
-              },
-              {
-                "name": "AudioComponent",
-                "soundFileName": "FOLEY_FOOTSTEP.wav"
-              },
-              {
-                "name": "AnimationComponent",
-                "spriteSheetSize": {
-                  "x": 288,
-                  "y": 288
-                },
-                "spriteSize": {
-                  "x": 96,
-                  "y": 96
-                },
-                "frameRate": 0.3,
-                "numPerRow": 3,
-                "numSprites": 9
-              }
-            ],
-              "tag": "player"
-          },
-          {
-              "components": [
-                  {
-                      "aspectRatio": 1.7776999473571777,
-                      "farZ": 100.0,
-                      "frustumWidth": 1920.0,
-                      "name": "CameraComponent",
-                      "nearZ": 0.10000000149011612
-                  }
-              ],
-              "tag": "camera"
-          },
-          {
-              "components": [
-                  {
-                      "name": "TextComponent",
-                      "text": "2"
-                  },
-                  {
-                      "name": "ScriptComponent",
-                      "scriptName": "Score"
-                  }
-              ],
-              "tag": "text1"
+            "name": "ScriptComponent",
+            "scriptName": "Score"
           }
-      ],
+        ],
+        "tag": "score"
+      },
+      {
+        "components": [
+          {
+            "name": "ScriptComponent",
+            "scriptName": "Timer"
+          }
+        ],
+        "tag": "timer"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": -290.0,
+              "y": -50.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 2500.0,
+              "y": 1250.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "texName": "Background.png",
+            "shaderName": "TextureFill"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 200.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "background"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860.0,
+              "y": 315.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 200.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile25"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 365.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": 150.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile24"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1060.0,
+              "y": 415.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 200.0,
+              "y": 100.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile23"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1160.0,
+              "y": 465.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 300.0,
+              "y": 50.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile22"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1260.0,
+              "y": 515.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 400.0,
+              "y": 0.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile21"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760.0,
+              "y": 365.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": 150.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile20"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860.0,
+              "y": 415.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 100.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile19"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 465.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": 50.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile18"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1060.0,
+              "y": 515.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 200.0,
+              "y": 0.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile17"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1160.0,
+              "y": 565.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 300.0,
+              "y": -49.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile16"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 660.0,
+              "y": 415.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": 100.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile15"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760.0,
+              "y": 465.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
+        "tag": "obstacle"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860.0,
+              "y": 515.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": 0.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile13"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 565.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
+        "tag": "obstacle"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 1060.0,
+              "y": 615.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 200.0,
+              "y": -99.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile11"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 560.0,
+              "y": 465.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -300.0,
+              "y": 50.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile10"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 660.0,
+              "y": 515.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": 0.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile9"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760.0,
+              "y": 565.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": -49.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile8"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860.0,
+              "y": 615.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": -99.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile7"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 960.0,
+              "y": 665.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 100.0,
+              "y": -149.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile6"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 460.0,
+              "y": 515.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -400.0,
+              "y": 0.02362060546875,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile5"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 560.0,
+              "y": 565.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -300.0,
+              "y": -49.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile4"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 660.0,
+              "y": 615.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 0.0,
+              "r": 0.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -200.0,
+              "y": -99.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile3"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 760.0,
+              "y": 665.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": -100.0,
+              "y": -149.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile2"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 860.0,
+              "y": 715.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 0.0,
+              "g": 0.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "Tile.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "ColorSwap"
+          },
+          {
+            "dimensions": {
+              "x": 200.0,
+              "y": 50.0,
+              "z": 1.0
+            },
+            "name": "PhysicsComponent",
+            "position": {
+              "x": 0.0,
+              "y": -199.97637939453125,
+              "z": -48.45000076293945
+            }
+          }
+        ],
+        "tag": "tile1"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": 896.0,
+              "y": 512.0,
+              "z": 1.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "shaderName": "TextureFill",
+            "texName": "player.png"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "PlayerMovementScript"
+          },
+          {
+            "name": "AudioComponent",
+            "soundFileName": "FOLEY_FOOTSTEP.wav"
+          }
+        ],
+        "tag": "player"
+      },
+      {
+        "components": [
+          {
+            "aspectRatio": 1.7776999473571777,
+            "farZ": 100.0,
+            "frustumWidth": 1920.0,
+            "name": "CameraComponent",
+            "nearZ": 0.10000000149011612
+          }
+        ],
+        "tag": "camera"
+      },
+      {
+        "components": [
+          {
+            "name": "TextComponent",
+            "text": "2"
+          },
+          {
+            "name": "ScriptComponent",
+            "scriptName": "Score"
+          }
+        ],
+        "tag": "text1"
+      }
+    ],
       "name": "level2"
   }
 }
