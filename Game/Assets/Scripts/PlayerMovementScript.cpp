@@ -17,12 +17,12 @@ namespace Engine
 			// Use picking to get entities (with physics component) player clicked on
 			std::list<Entity*> entities = m_entity.getScene()->pick(mouseX, mouseY);
 			//GE_TRACE("Pick @ {0} {1}", mouseX, mouseY);
-			for (auto entity : entities)
+			for (auto& entity : entities)
 			{
 				//GE_TRACE("Picked this: {0}", entity->getComponent<TagComponent>().tag);
 				if (entity->hasComponent<TransformComponent>() && !m_entity.hasComponent<PositionLerpComponent>())
 				{
-					auto transform = entity->getComponent<TransformComponent>();
+					auto& transform = entity->getComponent<TransformComponent>();
 					if (tileInRange(*entity))
 					{
 						auto* ref = static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance);

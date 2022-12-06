@@ -62,7 +62,7 @@ namespace Engine
 				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 				
 				ImGui::SliderFloat3("Position", &transform->position.x, -25.0f, 25.0f, "%.2f");
-				ImGui::SliderFloat3("Scale", &transform->scale.x, -25.0f, 25.0f, "%.2f");
+				ImGui::SliderFloat3("Scale", &transform->scale.x, -25.0f, 300.0f, "%.2f");
 				ImGui::SliderFloat3("Rotation", &transform->rotation.x, -25.0f, 25.0f, "%.2f");
 
 				setSpacing(spacing);
