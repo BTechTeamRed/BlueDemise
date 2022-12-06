@@ -1506,6 +1506,24 @@
       },
       {
         "components": [
+			{
+            "name": "TransformComponent",
+            "position": {
+              "x": 25.0,
+              "y": -35,
+              "z": 5.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
+            }
+          },
           {
             "name": "TextComponent",
             "text": "1"

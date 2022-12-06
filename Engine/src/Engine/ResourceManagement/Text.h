@@ -52,7 +52,7 @@ namespace Engine
 		//that we add to the Characters map, all data require to render for later use
 		std::map<char, Character> Characters;
 	private:
-		Font defaultFont = RT_Arial;
+		Font defaultFont = RT_VioletWasteland;
 
 		static std::string parseFontToString(Font fontType)
 		{

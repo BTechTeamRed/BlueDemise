@@ -15,6 +15,7 @@ namespace Engine
 		addShader(ShaderFillType::DEFAULT_FILL_TYPE);
 		addShader(ShaderFillType::FillType::FT_COLOR_FILL);
 		addShader(ShaderFillType::FillType::FT_GRADIENT_FILL);
+		addShader(ShaderFillType::FillType::FT_TEXT_FILL);
 		
 		//add advanced shaders
 		for (int i = 0; i < m_advancedShaderNames.size(); i++)
@@ -178,6 +179,9 @@ namespace Engine
 			return "ColorFill";
 		case ShaderFillType::FillType::FT_GRADIENT_FILL:
 			return "GradientFill";
+		case ShaderFillType::FillType::FT_TEXT_FILL:
+			return "TextFill";
+			
 		}
 	}
 }

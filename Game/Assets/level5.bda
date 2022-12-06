@@ -83,10 +83,6 @@
               "b": 0.36,
               "g": 0.13,
               "r": 0.90
-              "a": 0.5,
-              "b": 0.36,
-              "g": 0.13,
-              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1070,9 +1066,27 @@
       },
       {
         "components": [
+			{
+            "name": "TransformComponent",
+            "position": {
+              "x": 25.0,
+              "y": -35,
+              "z": 5.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 128.0,
+              "y": 128.0,
+              "z": 1.0
+            }
+          },
           {
             "name": "TextComponent",
-            "text": "5"
+            "text": "1"
           },
           {
             "name": "ScriptComponent",
