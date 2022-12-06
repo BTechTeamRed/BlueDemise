@@ -54,7 +54,7 @@ namespace Engine
 		#endif
 
 		//Sets the default color used for components that would be rendered, but do not have a material. This is a gray.
-		glm::vec4 m_defaultColor{ .5f,.5f,.5f,1.0f };
+		glm::vec4 m_defaultColor{ .5f,.0f,.9f,1.0f };
 
 		//Define the max number of bindable textures (31 in this case, as one is used for the Frame Buffer Object)
 		int m_maxBindableTextures = 31;
@@ -68,7 +68,7 @@ namespace Engine
 		void loadShaders();
 
 		//Draw entities with a VerticesComponent to screen/FBO
-		void drawEntities(Scene& scene);
+		void drawEntities(Scene& scene, const DeltaTime& dt);
 
 		//Render text given a text component
 		void renderText(const TextComponent& text, const TransformComponent& transform, const glm::vec3& color, GLuint shader, GLuint mvpID);

@@ -66,8 +66,7 @@ namespace Engine
 		for (auto& [entity, transform] : entities.each())
 		{
 			Entity other = { entity, m_entity.getScene() };
-			if (other.getComponent<TagComponent>().tag != "player" &&
-				other.getComponent<TagComponent>().tag != "obstacle")
+			if (other.getComponent<TagComponent>().tag.find("tile") != -1)
 			{
 				tileCount++;
 				if (color == other.getComponent<MaterialComponent>().color)

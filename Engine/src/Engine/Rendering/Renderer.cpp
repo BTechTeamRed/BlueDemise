@@ -175,7 +175,7 @@ namespace Engine
 
 
 		//Render all entities with vertices, and associated components.
-		drawEntities(scene);
+		drawEntities(scene, dt);
 
 		
 
@@ -212,7 +212,7 @@ namespace Engine
 	}
 
 	//Draw all Entities within scene that contain a vertices component.
-	void Renderer::drawEntities(Scene& scene)
+	void Renderer::drawEntities(Scene& scene, const DeltaTime& dt)
 	{
 		//https://skypjack.github.io/entt/md_docs_md_entity.html, "Sorting: is it Possible", "A full-owning group is the fastest tool a user can expect to use to iterate multiple components at once"
 		//
@@ -228,6 +228,8 @@ namespace Engine
 		int currentBoundTextures = 0;
 
 		glUseProgram(m_programId);
+
+		bool shaderFirstPass = true;
 
 		//For each entitiy with a vertices component, render it.
 		for (auto entity : renderables)
@@ -258,8 +260,10 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
-				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
+			ShaderNorms::getInstance()->update(dt, advancedShaderBind, vertices.stride,
+				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId, shaderFirstPass);
+
+			shaderFirstPass = false; //This way the ShaderNorms will only update the time once
 
 			//Apply animation uniform if necessary
 			if (scene.m_registry.all_of<AnimationComponent>(entity))

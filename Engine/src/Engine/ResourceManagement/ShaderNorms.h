@@ -36,7 +36,7 @@ namespace Engine
 
 		//load shader according to vertices component (given shader is not already loaded)
 		void update(double deltaTime, int advancedShaderBind, int stride, int& textureCoordinates,
-			int& colorCoordinates, int& gradientCoordinates, GLuint& programId);
+			int& colorCoordinates, int& gradientCoordinates, GLuint& programId, bool firstPass);
 
 		//loads default shader program based on stride (used only for defaults)
 		void assignOnStride(int stride, int& textureCoordinates, int& colorCoordinates,
@@ -64,7 +64,7 @@ namespace Engine
 		static ShaderNorms* m_singleton;
 
 		//accessed in update as a counter variable for time
-		int timeCount = 0;
+		double m_timeCount = 0;
 
 		//shader generator is stored by default shaders map for further use by adv. shaders
 		std::map<ShaderFillType::FillType, ShaderGenerator> m_shaders;

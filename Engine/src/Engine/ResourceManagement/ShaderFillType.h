@@ -9,6 +9,7 @@ namespace Engine
 		{
 			FT_TEXTURE_FILL,
 			FT_COLOR_FILL,
+			FT_TEXT_FILL,
 			FT_GRADIENT_FILL,
 			FT_EMPTY_VALUE
 		};
