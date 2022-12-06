@@ -25,12 +25,16 @@ namespace Engine
 			};
 
 			#pragma region Manage Animation
+
 			//Updates an Animation component, changing the frame if required
 			void updateAnimation(const DeltaTime& dt, AnimationComponent& component);
+
 			//updates the UV matrix to reflect the sprite at the frameIndex, if it is a valid index
 			bool changeFrame(int frameIndex, AnimationComponent& component);
+
 			//Creates a list of indicies to the component's sprites to create an animation of the specified type
 			std::vector<int> createAnimationClip(AnimationType type, const AnimationComponent& component) const;
+			
 			//Updates a PositionLerpComponent, moving the transform towards the lerp target by step. Returns true if position == target
 			bool updatePositionLerps(const DeltaTime& dt, PositionLerpComponent& lerp, TransformComponent& transform);
 			#pragma endregion

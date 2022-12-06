@@ -237,11 +237,7 @@ namespace Engine
 
 
 			//Set a default transform component and color if the object does not contain one.
-			//TransformComponent transform;
 			glm::vec4 color = m_defaultColor;
-
-			//Change the transform component if the entity contains one.
-			//if (scene.m_registry.all_of<TransformComponent>(entity)) {transform = scene.m_registry.get<const TransformComponent>(entity);}
 
 			//Obtain MVP using transform and window's projection matrix.
 			const glm::mat4 mvp = updateMVP(transform, m_window.getProjectionMatrix());
@@ -259,7 +255,6 @@ namespace Engine
 			
 				//Change color and shaderProgram to material components color and shader.
 				color = material.color;
-				//glUseProgram(material.shaderID);
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader

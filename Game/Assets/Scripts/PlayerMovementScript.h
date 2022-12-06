@@ -15,6 +15,6 @@ namespace Engine
 		std::vector<int> m_clipDown = { 0, 1, 2 };
 		std::vector<int> m_clipWalkUp = { 3, 4, 5 };
 		std::vector<int> m_clipSide = { 6, 7, 8 };
-		int m_moveSpeed = 50.f;
+		int m_moveSpeed = 100.f;
 	};
 }

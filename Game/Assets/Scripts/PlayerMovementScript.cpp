@@ -37,17 +37,20 @@ namespace Engine
 						auto& anim = player.getComponent<AnimationComponent>();
 						//Change animations
 
-						if (playerTransform.position.x >= x && playerTransform.position.y >= y) { //Moving Right
+						if (playerTransform.position.x >= x && playerTransform.position.y >= y) //Moving Right
+						{ 
 							anim.animationClip = m_clipSide;
 							anim.currentIndex = 0;
 							playerTransform.rotation.y = 3.14f;
 						}
-						else if (playerTransform.position.x <= x && playerTransform.position.y >= y) { //Moving Left
+						else if (playerTransform.position.x <= x && playerTransform.position.y >= y) //Moving Left
+						{ 
 							anim.animationClip = m_clipSide;
 							anim.currentIndex = 0;
 							playerTransform.rotation.y = 0.f;
 						}
-						else if (playerTransform.position.x <= x && playerTransform.position.y <= y) { //Moving Down
+						else if (playerTransform.position.x <= x && playerTransform.position.y <= y) //Moving Down
+						{ 
 							anim.animationClip = m_clipDown;
 							anim.currentIndex = 0;
 						}

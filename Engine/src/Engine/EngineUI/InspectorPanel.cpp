@@ -118,22 +118,12 @@ namespace Engine
 				ImGui::PushFont(s_fonts["MyriadPro_14"]);
 				s_style->Colors[ImGuiCol_Text] = OFF_WHITE;
 
-				//TODO: redo the animation component ui
-				/*std::string id = "ID: " + std::to_string(animation->texID);
-				std::string name = "Name: " + animation->texName;
-
-				ImGui::Text(id.c_str());
-				ImGui::Text(name.c_str());
-
 				std::string index = "Index: " + std::to_string(animation->currentIndex);
-				std::string numPerRow = "Number per row: " + std::to_string(animation->numPerRow);
-
 				ImGui::Text(index.c_str());
-				ImGui::Text(numPerRow.c_str());
-
 				ImGui::SliderFloat("Frame rate", &animation->frameRate, 0.0f, 1.0f, "%.2f");
-				ImGui::SliderFloat("Texture width", &animation->texWidthFraction, 0.0f, 1.0f, "%.2f");
-				ImGui::SliderFloat("Texture height", &animation->texHeightFraction, 0.0f, 1.0f, "%.2f");*/
+
+				ImGui::SliderInt2("spriteSheetSize", &animation->spriteSheetSize.x, 1, 4000, "%.2f");
+				ImGui::SliderInt2("spriteSize", &animation->spriteSize.x, 1, 4000, "%.2f");
 				
 				setSpacing(spacing);
 
