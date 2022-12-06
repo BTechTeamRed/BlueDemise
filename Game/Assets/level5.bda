@@ -53,23 +53,6 @@
           {
             "name": "VerticesComponent",
             "type": "sprite"
-          },
-          {
-            "name": "ScriptComponent",
-            "scriptName": "ColorSwap"
-          },
-          {
-            "dimensions": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            },
-            "name": "PhysicsComponent",
-            "position": {
-              "x": 0.0,
-              "y": 200.02362060546875,
-              "z": -48.45000076293945
-            }
           }
         ],
         "tag": "background"

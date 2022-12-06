@@ -25,7 +25,8 @@ namespace Engine
 					auto transform = entity->getComponent<TransformComponent>();
 					if (tileInRange(*entity))
 					{
-						static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance)->swapMyColor();
+						auto* ref = static_cast<ColorSwap*>(entity->getComponent<ScriptComponent>().m_instance);
+						if (ref) ref->swapMyColor();
 
 						// Move to the tile the player clicked on
 						auto player = m_entity;

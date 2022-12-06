@@ -77,7 +77,7 @@ namespace Engine
 				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
 					//update time variables in real-time
-					setUniformValuef(advancedShaderBind, "time", 3);
+					setUniformValuef(advancedShaderBind, "time", 2);
 					setUniformValuef(advancedShaderBind, "timeCounter", m_timeCount);
 				}
 			}

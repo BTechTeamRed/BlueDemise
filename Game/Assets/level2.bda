@@ -4,6 +4,57 @@
       {
         "components": [
           {
+            "name": "ScriptComponent",
+            "scriptName": "Score"
+          }
+        ],
+        "tag": "score"
+      },
+      {
+        "components": [
+          {
+            "name": "ScriptComponent",
+            "scriptName": "Timer"
+          }
+        ],
+        "tag": "timer"
+      },
+      {
+        "components": [
+          {
+            "name": "TransformComponent",
+            "position": {
+              "x": -290.0,
+              "y": -50.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "scale": {
+              "x": 2500.0,
+              "y": 1250.0,
+              "z": 1.0
+            }
+          },
+          {
+            "color": {
+              "a": 1.0,
+              "b": 1.0,
+              "g": 1.0,
+              "r": 1.0
+            },
+            "name": "MaterialComponent",
+            "texName": "Background.png",
+            "shaderName": "TextureFill"
+          },
+          {
+            "name": "VerticesComponent",
+            "type": "sprite"
+          }
+        ],
         "tag": "background"
       },
       {
@@ -34,7 +85,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -89,7 +140,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -144,7 +195,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -199,7 +250,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -254,7 +305,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -309,7 +360,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -364,7 +415,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -419,7 +470,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -474,7 +525,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -529,7 +580,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -584,7 +635,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -639,7 +690,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -677,7 +728,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -732,7 +783,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -770,7 +821,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -825,7 +876,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -880,7 +931,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -935,7 +986,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -990,7 +1041,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1045,7 +1096,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1100,7 +1151,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1155,7 +1206,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1210,7 +1261,7 @@
               "r": 0.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1265,7 +1316,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
@@ -1320,7 +1371,7 @@
               "r": 1.0
             },
             "name": "MaterialComponent",
-            "shaderName": "TextureFill",
+            "shaderName": "SinWave",
             "texName": "Tile.png"
           },
           {
