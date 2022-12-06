@@ -57,9 +57,10 @@ namespace Engine
         /// <param name="y">Y-coordinate on screen</param>
         /// <returns></returns>
         std::list<Entity*> pick(float x, float y);
+
+        std::string m_name;
 	
     private:
-        std::string m_name;
         DeltaTime m_deltaTime{ 0 };
         PhysicsSystem* m_physics;
 

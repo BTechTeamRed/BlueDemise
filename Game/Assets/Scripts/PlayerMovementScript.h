@@ -7,6 +7,7 @@ namespace Engine
 	{
 	protected:
 		virtual void onUpdate(const Engine::DeltaTime& dt) override;
+		virtual void onCreate() override;
 
 	public:
 		virtual std::string getScriptName() override { return "PlayerMovementScript"; }

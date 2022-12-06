@@ -79,10 +79,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -134,10 +134,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -189,10 +189,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -244,10 +244,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -299,10 +299,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -354,10 +354,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -392,44 +392,6 @@
           {
             "name": "TransformComponent",
             "position": {
-              "x": 860.0,
-              "y": 415.0,
-              "z": 0.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            }
-          },
-          {
-            "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 0.0
-            },
-            "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "Tile.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          }
-        ],
-        "tag": "obstacle"
-      },
-      {
-        "components": [
-          {
-            "name": "TransformComponent",
-            "position": {
               "x": 960.0,
               "y": 465.0,
               "z": 0.0
@@ -447,10 +409,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -502,10 +464,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -557,10 +519,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -612,10 +574,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -667,10 +629,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -722,10 +684,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -777,10 +739,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -832,10 +794,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -887,10 +849,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -942,10 +904,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -980,82 +942,6 @@
           {
             "name": "TransformComponent",
             "position": {
-              "x": 760.0,
-              "y": 565.0,
-              "z": 0.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            }
-          },
-          {
-            "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 0.0
-            },
-            "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "Tile.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          }
-        ],
-        "tag": "obstacle"
-      },
-      {
-        "components": [
-          {
-            "name": "TransformComponent",
-            "position": {
-              "x": 860.0,
-              "y": 615.0,
-              "z": 0.0
-            },
-            "rotation": {
-              "x": 0.0,
-              "y": 0.0,
-              "z": 0.0
-            },
-            "scale": {
-              "x": 200.0,
-              "y": 50.0,
-              "z": 1.0
-            }
-          },
-          {
-            "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 0.0
-            },
-            "name": "MaterialComponent",
-            "shaderName": "SinWave",
-            "texName": "Tile.png"
-          },
-          {
-            "name": "VerticesComponent",
-            "type": "sprite"
-          }
-        ],
-        "tag": "obstacle"
-      },
-      {
-        "components": [
-          {
-            "name": "TransformComponent",
-            "position": {
               "x": 960.0,
               "y": 665.0,
               "z": 0.0
@@ -1073,10 +959,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1128,10 +1014,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1183,10 +1069,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1238,10 +1124,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1293,10 +1179,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 1.0,
-              "g": 0.0,
-              "r": 0.0
+              "a": 0.5,
+              "b": 0.05,
+              "g": 0.64,
+              "r": 0.89
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1348,10 +1234,10 @@
           },
           {
             "color": {
-              "a": 1.0,
-              "b": 0.0,
-              "g": 0.0,
-              "r": 1.0
+              "a": 0.5,
+              "b": 0.36,
+              "g": 0.13,
+              "r": 0.90
             },
             "name": "MaterialComponent",
             "shaderName": "SinWave",
@@ -1388,7 +1274,7 @@
             "position": {
               "x": 896.0,
               "y": 412.0,
-              "z": 1.0
+              "z": 9.13
             },
             "rotation": {
               "x": 0.0,

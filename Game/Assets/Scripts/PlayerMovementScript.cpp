@@ -7,6 +7,32 @@
 
 namespace Engine
 {
+	void PlayerMovementScript::onCreate()
+	{
+		auto entities = m_entity.getScene()->getEntities<TransformComponent, TagComponent>();
+		for (auto& [entity, transform, tag] : entities.each())
+		{
+			if (tag.tag.find("tile") != -1)
+			{
+				transform.position.x += 10;
+				transform.position.y -= 11;
+				transform.scale.x = 175.0;
+				transform.scale.y = 87.0;
+			}
+
+			if (tag.tag == "tile1") transform.position.z = 8.0f;
+			if (tag.tag == "tile2" || tag.tag == "tile6") transform.position.z = 7.9f;
+			if (tag.tag == "tile3" || tag.tag == "tile7" || tag.tag == "tile11") transform.position.z = 7.8f;
+			if (tag.tag == "tile4" || tag.tag == "tile8" || tag.tag == "tile12" || tag.tag == "tile16") transform.position.z = 7.7f;
+			if (tag.tag == "tile5" || tag.tag == "tile9" || tag.tag == "tile13" || tag.tag == "tile17" || tag.tag == "tile21") transform.position.z = 7.6f;
+			if (tag.tag == "tile10" || tag.tag == "tile14" || tag.tag == "tile18" || tag.tag == "tile22") transform.position.z = 7.5f;
+			if (tag.tag == "tile15" || tag.tag == "tile19" || tag.tag == "tile23") transform.position.z = 7.4f;
+			if (tag.tag == "tile20" || tag.tag == "tile24") transform.position.z = 7.3f;
+			if (tag.tag == "tile25") transform.position.z = 7.2f;
+		}
+	}
+
+
 	void PlayerMovementScript::onUpdate(const Engine::DeltaTime& dt)
 	{
 		if (InputSystem::getInstance()->isButtonPressed(0))
