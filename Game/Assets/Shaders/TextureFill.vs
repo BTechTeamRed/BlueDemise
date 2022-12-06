@@ -7,8 +7,11 @@ out vec2 uv;
 
 uniform mat4 mvp;
 
+uniform mat3 uvMatrix;
+
 void main()
 {
 	gl_Position = mvp * vec4(pos, 1);
-	uv = vertexUV;
+	vec3 uvTransformed = uvMatrix * vec3(vertexUV, 1);
+	uv = vec2(uvTransformed.x, uvTransformed.y);
 }

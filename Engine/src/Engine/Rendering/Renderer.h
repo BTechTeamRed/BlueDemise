@@ -4,6 +4,7 @@
 #include <Engine/Rendering/Window.h>
 #include <Engine/Rendering/UIRenderer.h>
 #include <Engine/ResourceManagement/Text.h>
+#include <Engine/Rendering/AnimationSystem.h>
 
 namespace Engine
 {
@@ -19,6 +20,8 @@ namespace Engine
 		void updateUIHeiraarchy(std::string tag, Entity entity);
 		glm::vec3 screenToWorld(const glm::vec2& screenPosition);
 		glm::vec2 worldToScreen(const glm::vec3& worldPosition);
+
+		AnimationSystem animationSystem;
 
 		#pragma region Singleton Instance Management
 		//Singletons should not be cloneable, this is to prevent clones.
