@@ -53,15 +53,18 @@ namespace Engine
 	void ShaderNorms::setUniformValueb(int& bind, std::string uniformName, bool value)
 	{
 		glUniform1i(glGetUniformLocation(m_advancedShaders.at(bind).getAdvancedProgramId(), uniformName.c_str()),
-			!value ? 0 : 1);
+		!value ? 0 : 1);
 	}
 
 	//tests the current renderable or vbo being rendered with the previous. If the current
 	//stride doesn't match the previous, a new shader is loaded. Gets called by renderer.
 	void ShaderNorms::update(double deltaTime, int advancedShaderBind, int stride,
-		int& textureCoordinates, int& colorCoordinates, int& gradientCoordinates, GLuint& programId)
+		int& textureCoordinates, int& colorCoordinates, int& gradientCoordinates, GLuint& programId, bool firstPass)
 	{
-		timeCount += deltaTime;
+		if (firstPass) 
+		{
+			m_timeCount += deltaTime;
+		}
 
 		if (advancedShaderBind != m_currentAdvancedShaderBind)
 		{
@@ -74,8 +77,8 @@ namespace Engine
 				if (advancedShaderBind == m_advancedShaderBinds.at("SinWave"))
 				{
 					//update time variables in real-time
-					setUniformValuef(advancedShaderBind, "time", deltaTime * ShaderNorms::TIME_SPEEDUP_MOD);
-					setUniformValuef(advancedShaderBind, "timeCounter", timeCount);
+					setUniformValuef(advancedShaderBind, "time", 3);
+					setUniformValuef(advancedShaderBind, "timeCounter", m_timeCount);
 				}
 			}
 			else
@@ -141,7 +144,7 @@ namespace Engine
 
 	void ShaderNorms::resetTimeCount()
 	{
-		timeCount = 0;
+		m_timeCount = 0;
 	}
 
 	GLuint ShaderNorms::getShaderReference(ShaderFillType::FillType shaderName)
@@ -171,13 +174,10 @@ namespace Engine
 		{
 		case ShaderFillType::FillType::FT_TEXTURE_FILL:
 			return "TextureFill";
-			break;
 		case ShaderFillType::FillType::FT_COLOR_FILL:
 			return "ColorFill";
-			break;
 		case ShaderFillType::FillType::FT_GRADIENT_FILL:
 			return "GradientFill";
-			break;
 		}
 	}
 }

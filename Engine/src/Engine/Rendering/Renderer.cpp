@@ -154,7 +154,7 @@ namespace Engine
 		m_window.updateCamera(scene.m_registry.get<CameraComponent>(cameraView.back()));
 
 		//Render all entities with vertices, and associated components.
-		drawEntities(scene);
+		drawEntities(scene, dt);
 
 		
 
@@ -191,7 +191,7 @@ namespace Engine
 	}
 
 	//Draw all Entities within scene that contain a vertices component.
-	void Renderer::drawEntities(Scene& scene)
+	void Renderer::drawEntities(Scene& scene, const DeltaTime& dt)
 	{
 		//Get entities that contain vertices component.
 		const auto renderables = scene.getEntities<const VerticesComponent>();
@@ -200,6 +200,8 @@ namespace Engine
 		int currentBoundTextures = 0;
 
 		glUseProgram(m_programId);
+
+		bool shaderFirstPass = true;
 
 		//For each entitiy with a vertices component, render it.
 		for (auto [entity, vertices] : renderables.each())
@@ -231,8 +233,10 @@ namespace Engine
 			}
 
 			//updates the shader based on vertices component's stride value and/or advanced shader
-			ShaderNorms::getInstance()->update(glfwGetTime(), advancedShaderBind, vertices.stride,
-				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId);
+			ShaderNorms::getInstance()->update(dt, advancedShaderBind, vertices.stride,
+				m_textureCoordinates, m_colorCoordinates, m_gradientCoordinates, m_programId, shaderFirstPass);
+
+			shaderFirstPass = false; //This way the ShaderNorms will only update the time once
 			
 			//Set the color of the object
 			setColor(mvp, color, m_programId);

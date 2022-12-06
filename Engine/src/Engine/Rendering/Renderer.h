@@ -65,7 +65,7 @@ namespace Engine
 		void loadShaders();
 
 		//Draw entities with a VerticesComponent to screen/FBO
-		void drawEntities(Scene& scene);
+		void drawEntities(Scene& scene, const DeltaTime& dt);
 
 		//Render text given a text component
 		void renderText(const TextComponent& text, const TransformComponent& transform, const glm::vec3& color, GLuint shader, GLuint mvpID);
