@@ -1,6 +1,7 @@
 #include "Audio.h"
 #include <iostream>
 #include <filesystem>
+#include "ResourceManager.h"
 
 using namespace std;
 using namespace irrklang;
@@ -42,7 +43,8 @@ ISound* AudioPlayerSingleton::playSound(const char* soundNamePath,
 		}
 		return nullptr;
 	}
-	string filePath = m_engineMediaPath + soundNamePath;
+	string filePath = ResourceManager::getInstance()->getFile(soundNamePath);
+	
 	std::replace(filePath.begin(), filePath.end(), '\\', '/');
 	const char* fullPath = filePath.c_str();
 	ISound* theSound = engine->play2D(fullPath, loop,
@@ -51,20 +53,15 @@ ISound* AudioPlayerSingleton::playSound(const char* soundNamePath,
 	{
 		return theSound;
 	}
-	string filePath2 = m_gameMediaPath;
-	for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+	string filePath2 = ResourceManager::getInstance()->getFile(soundNamePath);
+	
+	ISound* theSound2 = engine->play2D(filePath2.c_str(),
+		loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
+	if (theSound2 != 0)
 	{
-		if (dEntry.path().filename() == soundNamePath)
-		{
-			ISound* theSound2 = engine->play2D(dEntry.path().string().c_str(),
-				loop, startPaused, true, ESM_AUTO_DETECT, useSoundEffects);
-			if (theSound2 != 0)
-			{
-				return theSound2;
-			}
-			return nullptr;
-		}
+		return theSound2;
 	}
+			
 	return nullptr;
 }
 
@@ -89,7 +86,7 @@ ISound* AudioPlayerSingleton::play3DSound(const char* soundNamePath, vec3df soun
 		}
 		return nullptr;
 	}
-	string filePath = m_engineMediaPath + soundNamePath;
+	string filePath = ResourceManager::getInstance()->getFile(soundNamePath);
 	std::replace(filePath.begin(), filePath.end(), '\\', '/');
 	const char* fullPath = filePath.c_str();
 	ISound* theSound = engine->play3D(fullPath, sound3DPosition,
@@ -98,19 +95,13 @@ ISound* AudioPlayerSingleton::play3DSound(const char* soundNamePath, vec3df soun
 	{
 		return theSound;
 	}
-	string filePath2 = m_gameMediaPath;
-	for (const auto& dEntry : std::filesystem::recursive_directory_iterator(filePath2))
+	string filePath2 = ResourceManager::getInstance()->getFile(soundNamePath);
+
+	ISound* theSound2 = engine->play3D(filePath2.c_str(), sound3DPosition,
+		loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
+	if (theSound2 != 0)
 	{
-		if (dEntry.path().filename() == soundNamePath)
-		{
-			ISound* theSound2 = engine->play3D(dEntry.path().string().c_str(), sound3DPosition,
-				loop, beginPaused, true, irrklang::ESM_AUTO_DETECT, useSoundEffects);
-			if (theSound2 != 0)
-			{
-				return theSound2;
-			}
-			return nullptr;
-		}
+		return theSound2;
 	}
 	return nullptr;
 }

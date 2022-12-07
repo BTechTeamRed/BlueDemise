@@ -207,8 +207,8 @@ namespace Engine
 		return nullptr;
 	}
 
-	//A function to get font file path
-	std::string ResourceManager::getFont(const std::string& name)
+	//A function to get file path
+	std::string ResourceManager::getFile(const std::string& name)
 	{
 		std::string path;
 

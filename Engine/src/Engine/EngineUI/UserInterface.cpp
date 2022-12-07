@@ -63,7 +63,7 @@ namespace Engine
 	//loads a font, returns true if the font is loaded correctly
 	bool UserInterface::loadFont(const std::string& fontFilename, float fontSize, const std::string& tag)
 	{
-		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF(ResourceManager::getInstance()->getFont(fontFilename).c_str(), fontSize);
+		auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF(ResourceManager::getInstance()->getFile(fontFilename).c_str(), fontSize);
 
 		if (!font)
 		{
