@@ -9,7 +9,6 @@ public:
 		Engine::Scene scene1;
 		if (Engine::Serializer::tryDeserializeScene(scene1, "level1.bda"))
 		{
-			//scene1.m_nextScene = "level2.bda";
 			// lvl1 Won't actually be swapped to, just here to make the vector be correct size
 			scene1.m_sceneList.push_back("level1.bda"); 
 			scene1.m_sceneList.push_back("level2.bda");

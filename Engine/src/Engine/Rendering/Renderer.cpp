@@ -7,6 +7,9 @@
 #include "Engine/SceneBuilder/Scene.h"
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/SceneBuilder/InputSystem.h"
+#include "Engine/Utilities/Multithreading/ThreadJob.h"
+#include "Engine/Utilities/Multithreading/ThreadPool.h"
+#include "Engine/Utilities/Multithreading/JobQueue.h"
 
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "Engine/ResourceManagement/ShaderNorms.h"
@@ -28,6 +31,8 @@ namespace Engine
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+		ThreadPool::getInstance();
+
 		//Initialize the window and associated functions, and make the window the current context. If fails, close the program.
 		if(!m_window.initialize())
 		{
@@ -46,8 +51,11 @@ namespace Engine
 			InputSystem::getInstance()->setResizeCallback([&](int x, int y) { /*Resize Handled by GamePanel*/ });
 		}
 		
-		//Setting the icon
-		ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", m_window.getWindow());
+		//Set app icon through threadpool
+		GLFWwindow& window = *m_window.getWindow();
+		std::function<void(void*)> func = [&](void* param) { ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", &window); };
+		ThreadJob* job = new ThreadJob(func, nullptr);
+		JobQueue::getInstance()->postJob(job);
 
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

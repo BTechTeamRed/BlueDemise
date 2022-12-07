@@ -118,6 +118,7 @@ namespace Engine
 	//Obtain icon at filepath stored in this class, then set the icon for the provided window.
 	void ResourceManager::setAppIcon(std::string& appIcon, GLFWwindow* window)
 	{
+
 		ImageData img;
 		
 		//Create an iterator to check if the file exists in the map (done since using m_filePaths[name] will create a new entry if it doesn't exist).
@@ -133,6 +134,8 @@ namespace Engine
 		std::string path = m_filePaths[appIcon];
 		std::string extension = path.substr(path.find_last_of('.') + 1);
 
+		std::unique_lock lock(m_mutex);
+		
 		//Ensure the file is an image file
 		if (std::find(m_imageFileExts.begin(), m_imageFileExts.end(), extension) != m_imageFileExts.end())
 		{
@@ -152,6 +155,7 @@ namespace Engine
 			GE_CORE_WARN("[ResourceManager] Icon extension not supported for {0}", appIcon);
 		}
 		
+		lock.unlock();
 	}
 #pragma endregion
 	
