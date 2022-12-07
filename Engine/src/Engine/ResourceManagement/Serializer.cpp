@@ -1,6 +1,7 @@
 #include "Serializer.h"
 
 #include <iostream>
+#include <future>
 
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/Utilities/Log.h"
@@ -10,6 +11,8 @@
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "Engine/ResourceManagement/ScriptSerializer.h"
 #include "Engine/Scripts/ScriptableBehavior.h"
+#include "Engine/Utilities/Multithreading/ThreadJob.h"
+#include "Engine/Utilities/Multithreading/JobQueue.h"
 
 namespace glm
 {
@@ -132,6 +135,7 @@ namespace Engine
 	{
 		nlohmann::json sceneJson;
 		nlohmann::json entitiesJson;
+		
 		scene->m_registry.each([&](entt::entity entityHandle)
 		{
 			Entity entity = Entity{ entityHandle, scene };
@@ -139,7 +143,10 @@ namespace Engine
 
 			if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
 			{
-				entitiesJson.push_back(serializeEntity(entity, sceneFile));
+
+				serializeEntity(entity, sceneFile, entitiesJson);
+				
+				//std::future handle = std::async(std::launch::async, serializeEntity, entity, sceneFile, entitiesJson);
 			}
 		});
 
@@ -153,7 +160,7 @@ namespace Engine
 
 	}
 
-	nlohmann::json Serializer::serializeEntity(const Entity& entity, const std::string& sceneFile)
+	void Serializer::serializeEntity(Entity& entity, const std::string& sceneFile, nlohmann::json& out)
 	{
 
 
@@ -294,7 +301,9 @@ namespace Engine
 		entityJson["components"] = components;
 		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
 
-		return entityJson;
+		GE_CORE_INFO("[Serializer] Serialized Component: {0}", entityJson.dump());
+
+		out.push_back(entityJson);
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)

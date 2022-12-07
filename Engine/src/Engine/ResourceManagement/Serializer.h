@@ -3,12 +3,13 @@
 #include <string>
 #include "Engine/Core.h"
 #include "json.h"
+#include <mutex>
 
 namespace Engine
 {
 	class Scene;
 	class Entity;
-
+	
 	class ENGINE_API Serializer
 	{
 	public:
@@ -19,6 +20,7 @@ namespace Engine
 		//Serializes scene into a json file in sceneFile
 		static std::string serializeScene(Scene* scene, const std::string& sceneFile);
 	private:
+
 
 		enum Components
 		{
@@ -41,7 +43,7 @@ namespace Engine
 		static bool tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene);
 
 		//Serializes scene into a json file in sceneFile
-		static nlohmann::json serializeEntity(const Entity& entity, const std::string& sceneFile);
+		static void serializeEntity(Entity& entity, const std::string& sceneFile, nlohmann::json& out);
 
 		[[nodiscard]] static Components parseComponent(const std::string& component)
 		{

@@ -34,12 +34,14 @@ namespace Engine
 	ResourceManager* ResourceManager::getInstance() 
 	{
 		//To ensure this is thread safe, lock this function until it returns a value.
-		std::lock_guard<std::mutex> lock(m_mutex);
+		std::unique_lock<std::mutex> lock(m_mutex);
 
 		if (m_pinstance == nullptr)
 		{
 			m_pinstance = new ResourceManager();
 		}
+
+		lock.unlock();
 
 		return m_pinstance;
 	}
