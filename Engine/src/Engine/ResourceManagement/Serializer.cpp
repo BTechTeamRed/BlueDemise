@@ -1,7 +1,7 @@
 #include "Serializer.h"
 
-#include <iostream>
 #include <future>
+#include <iostream>
 
 #include "Engine/SceneBuilder/Entity.h"
 #include "Engine/Utilities/Log.h"
@@ -11,8 +11,6 @@
 #include "Engine/ResourceManagement/ResourceManager.h"
 #include "Engine/ResourceManagement/ScriptSerializer.h"
 #include "Engine/Scripts/ScriptableBehavior.h"
-#include "Engine/Utilities/Multithreading/ThreadJob.h"
-#include "Engine/Utilities/Multithreading/JobQueue.h"
 
 namespace glm
 {
@@ -134,21 +132,24 @@ namespace Engine
 	std::string Serializer::serializeScene(Scene* scene, const std::string& sceneFile)
 	{
 		nlohmann::json sceneJson;
+		std::vector<std::future<nlohmann::json>> threads;
 		nlohmann::json entitiesJson;
-		
 		scene->m_registry.each([&](entt::entity entityHandle)
-		{
-			Entity entity = Entity{ entityHandle, scene };
-			if (!entity) return;
-
-			if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
 			{
+				Entity entity = Entity{ entityHandle, scene };
+				if (!entity) return;
 
-				serializeEntity(entity, sceneFile, entitiesJson);
-				
-				//std::future handle = std::async(std::launch::async, serializeEntity, entity, sceneFile, entitiesJson);
-			}
-		});
+				if (entity.hasComponent<SerializableComponent>()) //skip entities that were generated/don't have this component
+				{
+					threads.push_back(std::async(std::launch::async, serializeEntity, entity, sceneFile));
+				}
+			});
+
+		for (auto& thread : threads)
+		{
+			thread.wait();
+			entitiesJson.push_back(thread.get());
+		}
 
 		sceneJson["scene"]["entities"] = entitiesJson;
 		sceneJson["scene"]["name"] = scene->m_name;
@@ -160,10 +161,8 @@ namespace Engine
 
 	}
 
-	void Serializer::serializeEntity(Entity& entity, const std::string& sceneFile, nlohmann::json& out)
+	nlohmann::json Serializer::serializeEntity(Entity& entity, const std::string& sceneFile)
 	{
-
-
 		if (!entity.hasComponent<TagComponent>())
 		{
 			GE_CORE_ERROR("[Serializer] An entity was created without a tag component and cannot be serialized.");
@@ -301,9 +300,7 @@ namespace Engine
 		entityJson["components"] = components;
 		entityJson["tag"] = entity.getComponent<TagComponent>().tag;
 
-		GE_CORE_INFO("[Serializer] Serialized Component: {0}", entityJson.dump());
-
-		out.push_back(entityJson);
+		return entityJson;
 	}
 
 	bool Serializer::tryDeserializeEntity(Entity& out, const nlohmann::json& entity, Scene& scene)
