@@ -53,9 +53,10 @@ namespace Engine
 		
 		//Set app icon through threadpool
 		GLFWwindow& window = *m_window.getWindow();
-		std::function<void(void*)> func = [&](void* param) { ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", &window); };
-		ThreadJob* job = new ThreadJob(func, nullptr);
-		JobQueue::getInstance()->postJob(job);
+		ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", &window);
+		//std::function<void(void*)> func = [&](void* param) { ResourceManager::getInstance()->setAppIcon((std::string)"BlueDemiseIcon.png", &window); };
+		//ThreadJob* job = new ThreadJob(func, nullptr);
+		//JobQueue::getInstance()->postJob(job);
 
 		//Initialize GLAD. Close program if fails.
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
